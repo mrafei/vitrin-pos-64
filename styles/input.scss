@@ -1,0 +1,63 @@
+.material-input {
+  border-bottom: 1px solid #949c9f;
+  color: #4f595b;
+  font-size: 14px;
+  padding: 8px;
+  cursor: pointer;
+
+  &::placeholder {
+    color: #949c9f;
+  }
+}
+
+.c-assistive-text {
+  min-height: 20px;
+}
+
+.MuiInputLabel-formControl {
+  font-family: inherit !important;
+}
+
+.MuiInputBase-root {
+  font-size: 16px !important;
+  transform-origin: top right !important;
+}
+
+.MuiInputLabel-root {
+  transform-origin: top right !important;
+}
+
+.MuiInputLabel-filled {
+  transform: translate(-12px, 20px) !important;
+  right: 0 !important;
+  left: unset !important;
+}
+
+.MuiInputLabel-filled.MuiInputLabel-shrink {
+  transform: translate(-12px, 10px) scale(0.75) !important;
+}
+
+.MuiInputLabel-shrink {
+  transform-origin: top right !important;
+}
+
+.MuiFilledInput-underline:after {
+  border-bottom: 2px solid $primary-blue !important;
+}
+
+.MuiFormLabel-root.Mui-focused {
+  color: $primary-blue !important;
+}
+
+.calendar-no-box-shadow {
+  box-shadow: none !important;
+}
+
+.calendar-custom-today-day {
+  color: #168FD5 !important;
+  border: 1px solid #168FD5 !important;
+}
+
+.calendar-custom-today-day::after {
+  visibility: hidden;
+}
