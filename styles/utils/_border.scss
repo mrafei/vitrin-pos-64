@@ -9,6 +9,7 @@
 .u-border-radius-50-percent {
   border-radius: 50%;
 }
+
 .u-border-bottom-left-radius-4 {
   border-bottom-left-radius: 4px;
 }
@@ -72,4 +73,8 @@
 
 .u-border-bottom-dark {
   border-bottom: 1px solid black;
+}
+
+.u-border-bottom-dark-grey {
+  border-bottom: 2px solid $dark-grey;
 }

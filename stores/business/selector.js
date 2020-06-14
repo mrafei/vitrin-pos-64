@@ -10,19 +10,19 @@ const selectBusiness = state => state.business || initialState;
 const makeSelectBusiness = () =>
   createSelector(
     selectBusiness,
-    state => state.business,
+    state => state.business
   );
 
 const makeSelectPosts = () =>
   createSelector(
     selectBusiness,
-    state => state.business.posts,
+    state => state.business.posts
   );
 
 const makeSelectCategories = () =>
   createSelector(
     selectBusiness,
-    state => state.business.deal_categories,
+    state => state.business.deal_categories
   );
 const makeSelectProducts = () =>
   createSelector(
@@ -38,48 +38,48 @@ const makeSelectProducts = () =>
         return false;
       });
       return products;
-    },
+    }
   );
 
 const makeSelectCategory = id =>
   createSelector(
     selectBusiness,
     state =>
-      state.business.deal_categories.find(category => category.id === id),
+      state.business.deal_categories.find(category => category.id === id)
   );
 
 const makeSelectBusinessThemeColor = () =>
   createSelector(
     selectBusiness,
-    state => (state.business ? state.business.theme_config.theme_color : null),
+    state => (state.business ? state.business.theme_config.theme_color : null)
   );
 const makeSelectBusinessFoodDemo = () =>
   createSelector(
     selectBusiness,
-    () => true,
+    () => true
   );
 const makeSelectBusinessSlug = () =>
   createSelector(
     selectBusiness,
-    state => state.business.slug,
+    state => state.business.slug
   );
 
 const makeSelectBusinessSiteDomain = () =>
   createSelector(
     selectBusiness,
-    state => 'olddowntown',
+    state => state.business.site_domain
   );
 
 const makeSelectBusinessTitle = () =>
   createSelector(
     selectBusiness,
-    state => state.business.revised_title,
+    state => state.business.revised_title
   );
 
 const makeSelectBusinessPhone = () =>
   createSelector(
     selectBusiness,
-    state => state.business.phone_zero_starts,
+    state => state.business.phone_zero_starts
   );
 
 const makeSelectBusinessLocation = () =>
@@ -87,14 +87,14 @@ const makeSelectBusinessLocation = () =>
     selectBusiness,
     state => ({
       latitude: state.business.latitude,
-      longitude: state.business.longitude,
-    }),
+      longitude: state.business.longitude
+    })
   );
 
 const makeSelectBusinessId = () =>
   createSelector(
     selectBusiness,
-    state => state.business.id,
+    state => state.business.id
   );
 
 const makeSelectBusinessCallToActionKeyword = () =>
@@ -102,31 +102,31 @@ const makeSelectBusinessCallToActionKeyword = () =>
     selectBusiness,
     state =>
       state.business.theme_config.menu_keyword_for_vitrin ||
-      state.business.menu_keyword_for_vitrin,
+      state.business.menu_keyword_for_vitrin
   );
 
 const makeSelectBusinessThemeConfig = () =>
   createSelector(
     selectBusiness,
-    state => state.business.theme_config,
+    state => state.business.theme_config
   );
 
 const makeSelectBusinessCoverImage = () =>
   createSelector(
     selectBusiness,
-    state => state.business.cover_image_url,
+    state => state.business.cover_image_url
   );
 
 const makeSelectBusinessWorkingHours = () =>
   createSelector(
     selectBusiness,
-    state => state.business.work_hours,
+    state => state.business.work_hours
   );
 
 const makeSelectPost = id =>
   createSelector(
     selectBusiness,
-    state => state.business.posts.find(post => post.id === id),
+    state => state.business.posts.find(post => post.id === id)
   );
 
 const makeSelectProduct = id =>
@@ -136,8 +136,8 @@ const makeSelectProduct = id =>
       state.business.deal_categories.find(category =>
         category.deals
           .find(product => product.id === id)
-          .deals.find(product => product.id === id),
-      ),
+          .deals.find(product => product.id === id)
+      )
   );
 
 export {
@@ -159,5 +159,5 @@ export {
   makeSelectBusinessSiteDomain,
   makeSelectBusinessWorkingHours,
   makeSelectProducts,
-  makeSelectBusinessFoodDemo,
+  makeSelectBusinessFoodDemo
 };

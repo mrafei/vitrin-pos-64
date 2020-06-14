@@ -373,6 +373,10 @@ function useCustomForm(form) {
 const validateDomain = domain =>
   /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]$/.test(domain);
 
+function validatePhone(number) {
+  return /^[0][9]\d{9}$/.test(number);
+}
+
 function isBusinessOpenNow(workingHours) {
   const nowDate = new Date();
   const label = Object.keys(workingHours).find(
@@ -497,5 +501,6 @@ export {
   deliveryTimeFormatter,
   getMonthName,
   hexToRgb,
-  formatWeekDays
+  formatWeekDays,
+  validatePhone
 };

@@ -20,262 +20,69 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82274cec-ab6a-4498-8256-a20a904aae1a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/assets/images/404.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/android-button.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/android-dots.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/character.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/chef.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/delete-24px 1.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/domain-tutorial.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/download-app.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/dragg-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/edit-vitrin-tutorial.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/favicon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/frying-pan.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/icons/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/ios-button.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/ios-home-screen.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/lock-img-blue.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/no-access.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/online-shop-tutorial.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/pattern.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/pen.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/post-tutorial.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/promotion-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/promotion-text.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/skeleton.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/images/tick.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Icon/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/OrderCard/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/OrderSelector/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/configureStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/containers/App/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/containers/App/constants.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/containers/App/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/containers/App/reducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/containers/App/saga.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/containers/App/selectors.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/reducers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/business/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/business/constants.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/business/reducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/business/saga.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/business/selector.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/transaction/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/transaction/constants.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/transaction/reducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/transaction/saga.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/transaction/selector.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/ui/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/ui/constants.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/ui/reducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/ui/selector.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/ui/selectorHelper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/user/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/user/constants.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/user/reducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/user/saga.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/user/selector.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/_main.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/_radio_button.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/base/_base.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/_functions.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/_grid.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/_mixins.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/_reboot.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/_root.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/_utilities.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/_variables.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/bootstrap.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_background-variant.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_border-radius.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_breakpoints.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_buttons.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_clearfix.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_float.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_grid-framework.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_grid.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_hover.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_margins.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_paddings.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_screen-reader.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/mixins/_size.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_align.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_background.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_borders.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_clearfix.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_display.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_embed.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_flex.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_float.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_position.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_screenreaders.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_sizing.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_spacing.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/bootstrap/utilities/_text.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/checkbox.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_Loading.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_animation.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_business.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_button.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_category.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_components.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_dashboard.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_footer.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_header.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_input.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_login.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_modal.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_search.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_selector.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_sidebar.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/_themes.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/fixed_container.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/flickity.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/fonts/_fonts.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/input.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/leaflet.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/mixin/_media.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/mixin/_mixin.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/pulse.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/radio.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/rate.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/reset/_reset.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/utils/_background-colors.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/utils/_border.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/utils/_margin.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/utils/_positions.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/utils/_public.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/utils/_sizes.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/utils/_texts.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/utils/_utilis.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/varibles/_color.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/varibles/_varibles.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/checkStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/constants.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/helper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/history.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/injectReducer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/injectSaga.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/loadable.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/reducerInjectors.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/request.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/sagaInjectors.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/themeConfig/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CODE_OF_CONDUCT.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.testcafe-electron-rc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Routes.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/actions/counter.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.global.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.icns" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/Counter.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/Counter.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/Home.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/Home.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/css.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/constants/routes.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/containers/App.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/containers/CounterPage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/containers/HomePage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/containers/Root.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.dev.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.prod.js.LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/menu.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/reducers/counter.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/reducers/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/reducers/types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/store/configureStore.dev.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/store/configureStore.prod.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/store/configureStore.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/azure-pipelines.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/babel.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/.eslintrc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/webpack.config.base.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/webpack.config.eslint.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/webpack.config.main.prod.babel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/webpack.config.renderer.dev.babel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/webpack.config.renderer.dev.dll.babel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/webpack.config.renderer.prod.babel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/erb-banner.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/erb-logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/eslint-padded-90.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/eslint-padded.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/eslint.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/jest-padded-90.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/jest-padded.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/jest.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/js-padded.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/js.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/npm.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/react-padded-90.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/react-padded.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/react-router-padded-90.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/react-router-padded.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/react-router.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/react.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/redux-padded-90.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/redux-padded.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/redux.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/webpack-padded-90.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/webpack-padded.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/webpack.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/yarn-padded-90.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/yarn-padded.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/img/yarn.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/mocks/fileMock.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/.eslintrc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/BabelRegister.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/CheckBuildsExist.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/CheckNativeDep.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/CheckNodeEnv.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/CheckPortInUse.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/CheckYarn.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/DeleteSourceMaps.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internals/scripts/ElectronRebuild.js" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/login-bg-1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/login-bg-2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/images/vitrin-blue.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Button/Loading.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Button/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/Home/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/Login/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/OnlineOrders/actions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/OnlineOrders/constants.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/OnlineOrders/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/OnlineOrders/reducer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/OnlineOrders/saga.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/OnlineOrders/selectors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icon.icns" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/1024x1024.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/128x128.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/16x16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/24x24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/256x256.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/32x32.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/48x48.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/512x512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/64x64.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/icons/96x96.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/.eslintrc.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/actions/__snapshots__/counter.spec.ts.snap" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/actions/counter.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/components/Counter.spec.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/components/__snapshots__/Counter.spec.tsx.snap" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/containers/CounterPage.spec.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/e2e/HomePage.e2e.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/e2e/helpers.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/example.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/reducers/__snapshots__/counter.spec.ts.snap" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/reducers/counter.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/css/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/css/_example/_example.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/_example/_example.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/404.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/404.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/android-button.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/android-button.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/android-dots.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/android-dots.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/character.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/character.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/chef.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/chef.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/delete-24px 1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/delete-24px 1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/domain-tutorial.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/domain-tutorial.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/download-app.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/download-app.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/dragg-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/dragg-icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/edit-vitrin-tutorial.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/edit-vitrin-tutorial.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/favicon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/frying-pan.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/frying-pan.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/icons/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/icons/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/ios-button.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/ios-button.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/ios-home-screen.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/ios-home-screen.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/lock-img-blue.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/lock-img-blue.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/no-access.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/no-access.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/online-shop-tutorial.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/online-shop-tutorial.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/pattern.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/pattern.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/pen.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/pen.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/post-tutorial.gif" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/post-tutorial.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/promotion-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/promotion-icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/promotion-text.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/promotion-text.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/skeleton.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/skeleton.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/tick.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/tick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/OrderCard/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/OrderCard/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/OrderSelector/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/OrderSelector/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/configureStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/configureStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/reducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/saga.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/saga.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/selectors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stores/business/selector.js" beforeDir="false" afterPath="$PROJECT_DIR$/stores/business/selector.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stores/user/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/stores/user/actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stores/user/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/stores/user/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stores/user/saga.js" beforeDir="false" afterPath="$PROJECT_DIR$/stores/user/saga.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/input.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/input.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/utils/_border.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/utils/_border.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/helper.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/helper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/history.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/history.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.dev.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.dev.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,8 +94,8 @@
       <list>
         <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
-        <option value="JavaScript File" />
         <option value="HTTP Public Environment File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -311,22 +118,22 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
-    <property name="ts.external.directory.path" value="C:\Users\Mohammad\WebstormProjects\vitrin-pos\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.1.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src\components" />
-      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos" />
-      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src\assets" />
-      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src\containers\App" />
-      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\app" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src" />
+      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\assets\images" />
       <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos" />
+      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src" />
       <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src\containers" />
       <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\app\containers\App" />
-      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\app\containers\index" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src\components" />
+      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\assets\images\icons" />
+      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src\assets\images" />
+      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos\src\containers\OnlineOrders" />
+      <recent name="C:\Users\Mohammad\WebstormProjects\vitrin-pos" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -341,7 +148,8 @@
       <updated>1591795679488</updated>
       <workItem from="1591795680778" duration="274000" />
       <workItem from="1592024835463" duration="10428000" />
-      <workItem from="1592040146628" duration="9607000" />
+      <workItem from="1592040146628" duration="10409000" />
+      <workItem from="1592125946964" duration="17775000" />
     </task>
     <servers />
   </component>
@@ -361,10 +169,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1592035626328">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1592132822561">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1592035626328" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1592132822561" />
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1592040319838">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -377,13 +185,17 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1592036876489" />
-    <state x="478" y="145" width="579" height="534" key="find.popup" timestamp="1592050551446">
+    <state x="502" y="290" width="645" height="534" key="find.popup" timestamp="1592143562857">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="478" y="145" width="579" height="534" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1592050551446" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1592050901527">
+    <state x="502" y="290" width="645" height="534" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1592143562857" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1592142348610">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1592050901527" />
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1592142348610" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1592143210844">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1592143210844" />
   </component>
 </project>

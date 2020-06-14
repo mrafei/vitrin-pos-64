@@ -6,8 +6,7 @@ export const EMAIL_API = `${BASE_URL}send_custom_email/`;
 export const FILE_SERVER_URL_API = `${BASE_URL}get_minio_url/`;
 
 // User API
-export const LOGIN_API = slug =>
-  `${BASE_URL}businesses/${slug}/vitrin_verification/`;
+export const LOGIN_API = `${BASE_URL}users/phone_verification/`;
 export const VERIFY_API = `${BASE_URL}token_sign/`;
 export const USER_INFO_API = `${BASE_URL}users/self/`;
 export const IS_ADMIN_API = slug => `${BASE_URL}businesses/${slug}/is_admin/`;

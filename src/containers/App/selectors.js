@@ -1,100 +1,77 @@
+/**
+ * The global state selectors
+ */
+
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
-/**
- * Direct selector to the admin state domain
- */
+const selectGlobal = state => state.global || initialState;
 
-const selectAdminDomain = state => state.admin || initialState;
+const selectRouter = state => state.router;
 
-/**
- * Other specific selectors
- */
-
-/**
- * Default selector used by Admin
- */
-
-const makeSelectAdmin = () =>
+const makeSelectLoading = () =>
   createSelector(
-    selectAdminDomain,
-    substate => substate,
-  );
-const makeSelectPageViews = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.vitrinPageViews,
-  );
-const makeSelectCallRequests = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.vitrinCallRequests,
-  );
-const makeSelectFoodAdminOrders = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.foodAdminOrders,
-  );
-const makeSelectEcommerceAdminOrders = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.ecommerceAdminOrders,
-  );
-const makeSelectFoodAdminOrder = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.foodAdminOrder,
-  );
-const makeSelectEcommerceAdminOrder = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.ecommerceAdminOrder,
+    selectGlobal,
+    globalState => globalState.loading,
   );
 
-const makeSelectAdminSupermarketOrders = () =>
+const makeSelectUploadProgress = () =>
   createSelector(
-    selectAdminDomain,
-    substate => substate,
-  );
-const makeSelectSuperMarketAdminOrders = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.superMarketAdminOrders,
-  );
-const makeSelectSuperMarketAdminOrder = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.superMarketAdminOrder,
-  );
-const makeSelectAdminReviews = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.reviews,
-  );
-const makeSelectAdminReview = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.review,
-  );
-const makeSelectAdminSelectedDeliveryDate = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.selectedDeliveryDate,
+    selectGlobal,
+    globalState => globalState.uploadProgress,
   );
 
-export default makeSelectAdmin;
+const makeSelectUploadStarted = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.uploadStarted,
+  );
+
+const makeSelectInitLoading = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.initLoading,
+  );
+
+const makeSelectUploadedFile = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.uploadedFile,
+  );
+
+const makeSelectUploadedFiles = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.multipleUploadedFiles,
+  );
+
+const makeSelectError = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.error,
+  );
+
+const makeSelectSubDomain = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.subdomain,
+  );
+
+const makeSelectLocation = () =>
+  createSelector(
+    selectRouter,
+    routerState => routerState.location,
+  );
+
 export {
-  makeSelectCallRequests,
-  makeSelectPageViews,
-  selectAdminDomain,
-  makeSelectFoodAdminOrders,
-  makeSelectEcommerceAdminOrders,
-  makeSelectFoodAdminOrder,
-  makeSelectEcommerceAdminOrder,
-  makeSelectAdminSupermarketOrders,
-  makeSelectSuperMarketAdminOrders,
-  makeSelectSuperMarketAdminOrder,
-  makeSelectAdminReviews,
-  makeSelectAdminReview,
-  makeSelectAdminSelectedDeliveryDate,
+  makeSelectInitLoading,
+  makeSelectUploadedFiles,
+  makeSelectSubDomain,
+  selectGlobal,
+  makeSelectLoading,
+  makeSelectError,
+  makeSelectLocation,
+  makeSelectUploadedFile,
+  makeSelectUploadProgress,
+  makeSelectUploadStarted,
 };

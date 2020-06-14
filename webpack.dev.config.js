@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { spawn } = require('child_process');
-import TerserPlugin from 'terser-webpack-plugin';
 
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
 
@@ -95,7 +94,7 @@ module.exports = {
                 optimizationLevel: 7
               },
               pngquant: {
-                quality: '65-90',
+                quality: [0.65,0.90],
                 speed: 4
               }
             }
@@ -124,13 +123,6 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify('development')
     })
   ],
-  optimization: {
-    minimizer: new TerserPlugin({
-      parallel: true,
-      sourceMap: true,
-      cache: true
-    })
-  },
   devtool: 'cheap-source-map',
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),

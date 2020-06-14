@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-collapse';
 import Icon from '../../components/Icon';
-import { ICONS } from '../../assets/images/icons';
+import { ICONS } from '../../../assets/images/icons';
 
 const OrderSelector = ({ collapseState, setCollapseState }) => {
   const [collapse, setCollapse] = useState(false);

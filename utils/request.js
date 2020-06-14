@@ -1,5 +1,4 @@
 import Axios from 'axios';
-Axios.defaults.headers.common.Authorization = `Token 7ed230dc0749ff7f341e306894faa576c72853790740ff57ac46a099873dd82b`;
 
 export default async function request(
   url,

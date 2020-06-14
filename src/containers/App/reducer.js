@@ -1,41 +1,42 @@
 /*
+ * AppReducer
  *
- * Admin reducer
+ * The reducer takes care of our data. Using actions, we can
+ * update our application state. To add a new action,
+ * add it to the switch statement in the reducer function
  *
  */
+
 import produce from 'immer';
 import {
-  SET_FOOD_ADMIN_ORDERS,
-  SET_ECOMMERCE_ADMIN_ORDERS,
-  DEFAULT_ACTION,
-  SET_SUPERMARKET_ORDERS,
-  SET_SUPERMARKET_ORDER,
-  SET_VITRIN_PAGE_VIEWS,
-  SET_VITRIN_CALL_BUTTON_CLICKS,
-  SET_FOOD_ADMIN_ORDER,
-  SET_ECOMMERCE_ADMIN_ORDER,
-  SET_ADMIN_REVIEWS,
-  SET_ADMIN_REVIEW,
-  SET_SELECTED_DELIVERY_DATE, START_LOADING, STOP_LOADING
+  FILE_UPLOADED,
+  REMOVE_FILE,
+  START_LOADING,
+  STOP_LOADING,
+  CLEAR_UPLOADED_FILES,
+  START_INIT_LOADING,
+  STOP_INIT_LOADING,
+  SET_SITE_DOMAIN,
+  UPLOAD_PROGRESS,
+  UPLOAD_REQUEST,
+  UPLOAD_REQUEST_FINISHED,
 } from './constants';
 
+// The initial state of the App
 export const initialState = {
-  foodAdminOrders: [],
-  foodAdminOrder: { items: [] },
-  ecommerceAdminOrders: [],
-  ecommerceAdminOrder: { items: [] },
-  superMarketAdminOrders: [],
-  superMarketAdminOrder: { items: [] },
-  reviews: [],
-  review: null,
-  vitrinPageViews: null,
-  vitrinCallRequests: null,
-  selectedDeliveryDate: {},
   loading: false,
+  initLoading: true,
+  error: false,
+  user: null,
+  uploadedFile: null,
+  uploadProgress: null,
+  uploadStarted: false,
+  subdomain: '',
+  multipleUploadedFiles: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const adminReducer = (state = initialState, action) =>
+const appReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case START_LOADING:
@@ -45,42 +46,45 @@ const adminReducer = (state = initialState, action) =>
       case STOP_LOADING:
         draft.loading = false;
         break;
-      case SET_FOOD_ADMIN_ORDERS:
-        draft.foodAdminOrders = action.data;
+
+      case START_INIT_LOADING:
+        draft.initLoading = true;
         break;
-      case SET_ECOMMERCE_ADMIN_ORDERS:
-        draft.ecommerceAdminOrders = action.data;
+
+      case STOP_INIT_LOADING:
+        draft.initLoading = false;
         break;
-      case SET_FOOD_ADMIN_ORDER:
-        draft.foodAdminOrder = action.data;
+
+      case UPLOAD_REQUEST:
+        draft.uploadStarted = true;
         break;
-      case SET_ECOMMERCE_ADMIN_ORDER:
-        draft.ecommerceAdminOrder = action.data;
+      case UPLOAD_REQUEST_FINISHED:
+        draft.uploadStarted = false;
         break;
-      case SET_SUPERMARKET_ORDERS:
-        draft.superMarketAdminOrders = action.data;
+      case UPLOAD_PROGRESS:
+        draft.uploadProgress = action.payload;
         break;
-      case SET_SUPERMARKET_ORDER:
-        draft.superMarketAdminOrder = action.data;
+      case FILE_UPLOADED:
+        draft.uploadedFile = action.data;
+        draft.multipleUploadedFiles.unshift(action.data);
         break;
-      case SET_VITRIN_PAGE_VIEWS:
-        draft.vitrinPageViews = action.data;
+
+      case REMOVE_FILE:
+        draft.uploadedFile = null;
+        if (action.index > -1) {
+          const uploadedFiles = [...draft.multipleUploadedFiles];
+          uploadedFiles.splice(action.index, 1);
+          draft.multipleUploadedFiles = uploadedFiles;
+        }
         break;
-      case SET_VITRIN_CALL_BUTTON_CLICKS:
-        draft.vitrinCallRequests = action.data;
+      case CLEAR_UPLOADED_FILES:
+        draft.uploadedFile = null;
+        draft.multipleUploadedFiles = [];
         break;
-      case SET_ADMIN_REVIEWS:
-        draft.reviews = action.data;
-        break;
-      case SET_ADMIN_REVIEW:
-        draft.review = action.data;
-        break;
-      case SET_SELECTED_DELIVERY_DATE:
-        draft.selectedDeliveryDate = action.data;
-        break;
-      case DEFAULT_ACTION:
+      case SET_SITE_DOMAIN:
+        draft.subdomain = action.data;
         break;
     }
   });
 
-export default adminReducer;
+export default appReducer;

@@ -9,7 +9,7 @@ import {
   priceFormatter,
 } from '../../../utils/helper';
 import Icon from '../Icon';
-import { ICONS } from '../../assets/images/icons';
+import { ICONS } from '../../../assets/images/icons';
 
 function OrderCard({ order, link }) {
   const {
