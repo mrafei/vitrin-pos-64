@@ -23,7 +23,7 @@ function Login({ _login, loading, _verify, history }) {
       <div className="u-text-black u-fontWeightBold u-fontVeryLarge mt-5 text-center">به نرم‌افزار مدیریت فروش ویترین
         خوش آمدید.
       </div>
-      <div className="mt-3 text-center u-text-black u-fontLarge">برای ورود شماره تماس و کد تایید پیامک شده به موبایل خود
+      <div className="mt-3 text-center u-text-black">برای ورود شماره تماس و کد تایید پیامک شده به موبایل خود
         را وارد کنید.
       </div>
     </div>

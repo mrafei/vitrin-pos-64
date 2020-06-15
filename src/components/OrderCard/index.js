@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import {
   ellipseText,
   englishNumberToPersianNumber,
-  priceFormatter,
+  priceFormatter
 } from '../../../utils/helper';
 import Icon from '../Icon';
 import { ICONS } from '../../../assets/images/icons';
@@ -18,13 +18,13 @@ function OrderCard({ order, link }) {
     created_at: createdAt,
     order_status: orderStatus,
     payment_status: paymentStatus,
-    delivery_on_site: deliveryOnSite,
+    delivery_on_site: deliveryOnSite
   } = order;
   const orderDate = new Date(createdAt);
   const orderTime = moment(
     `${orderDate.getFullYear()}-${orderDate.getMonth() +
-      1}-${orderDate.getDate()}`,
-    'YYYY-MM-DD',
+    1}-${orderDate.getDate()}`,
+    'YYYY-MM-DD'
   );
   const backgroundColor =
     (orderStatus === 0 && '#168FD4') ||
@@ -34,12 +34,12 @@ function OrderCard({ order, link }) {
     <>
       <Link
         to={link}
-        className="d-flex col-12 col-sm-10 col-md-6 mx-auto px-0 u-cursor-pointer c-order-card mb-3 overflow-hidden"
+        className="d-flex px-0 u-cursor-pointer c-order-card mb-3 overflow-hidden"
       >
         <div
           style={{
             width: 8,
-            backgroundColor,
+            backgroundColor
           }}
         />
         <div className="flex-1">
@@ -69,8 +69,8 @@ function OrderCard({ order, link }) {
               <span>
                 {englishNumberToPersianNumber(
                   `${`0${orderDate.getHours()}`.slice(
-                    -2,
-                  )}:${`0${orderDate.getMinutes()}`.slice(-2)}`,
+                    -2
+                  )}:${`0${orderDate.getMinutes()}`.slice(-2)}`
                 )}
               </span>
               <div
@@ -79,7 +79,7 @@ function OrderCard({ order, link }) {
               />
               <span>
                 {englishNumberToPersianNumber(
-                  orderTime.format('jYYYY/jMM/jDD'),
+                  orderTime.format('jYYYY/jMM/jDD')
                 )}
               </span>
             </div>
@@ -97,7 +97,7 @@ function OrderCard({ order, link }) {
             )}
             {paymentStatus === 2 && (
               <div className="d-flex">
-                <Icon icon={ICONS.CASH} size={19} color="#E13F18" />
+                <Icon icon={ICONS.CASH} size={19} color="#E13F18"/>
                 <span className="u-text-red mr-1">نقدی</span>
               </div>
             )}
@@ -133,9 +133,10 @@ function OrderCard({ order, link }) {
     </>
   );
 }
+
 OrderCard.propTypes = {
   order: PropTypes.object.isRequired,
-  link: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired
 };
 
 export default memo(OrderCard);

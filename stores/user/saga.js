@@ -16,6 +16,7 @@ import { toggleModal, setSnackBarMessage } from '../ui/actions';
 import { VERIFICATION_MODAL } from '../ui/constants';
 import { setLoginCallBack, setToken, setUser } from './actions';
 import { makeSelectLoginCallBack } from './selector';
+import { getBusinessData } from '../business/saga';
 
 export function* login(payload) {
   try {
@@ -79,6 +80,8 @@ export function* getBusinesses(action) {
       else {
         // yield put(setSiteDomain(businessesWithVitrin[0].get_vitrin_absolute_url));
         yield put(setSiteDomain('olddowntown'));
+        yield call(getBusinessData);
+
         action.history.push('/online-orders');
       }
     }

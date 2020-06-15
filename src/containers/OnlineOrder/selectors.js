@@ -5,7 +5,7 @@ import { initialState } from './reducer';
  * Direct selector to the admin state domain
  */
 
-const selectAdminDomain = state => state.adminOrders || initialState;
+const selectAdminDomain = state => state.adminOrder || initialState;
 
 /**
  * Other specific selectors

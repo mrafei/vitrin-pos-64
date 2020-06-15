@@ -13,9 +13,11 @@ import OnlineOrders from '../OnlineOrders';
 import Login from '../Login';
 import Axios from 'axios';
 import { getBusinesses } from '../../../stores/user/actions';
+import Layout from '../../components/Layout';
+import OnlineOrder from '../OnlineOrder';
 
 
-const App = function({ history, _getBusinesses }) {
+const App = function({ history, _getBusinesses, location }) {
   useInjectReducer({ key: 'app', reducer });
   useInjectSaga({ key: 'app', saga });
 
@@ -30,11 +32,14 @@ const App = function({ history, _getBusinesses }) {
   }, []);
 
   return (
-    <div className="u-height-100vh w-100 u-background-white d-flex">
-      <Switch>
-        <Route exact path="/login" component={Login}/>
-        <Route exact path="/online-orders" component={OnlineOrders}/>
-      </Switch>
+    <div className="u-height-100vh w-100 u-background-melo-grey d-flex">
+      <Layout location={location}>
+        <Switch>
+          <Route exact path="/login" component={Login}/>
+          <Route exact path="/online-orders/:id" component={OnlineOrder}/>
+          <Route exact path="/online-orders" component={OnlineOrders}/>
+        </Switch>
+      </Layout>
     </div>
   );
 };

@@ -48,7 +48,7 @@ const PrimaryButton = ({
     ) : (
       <>
         {imageSrc && (
-          <LazyImage src={imageSrc} alt="بهترینو" className="ml-1" />
+          <img src={imageSrc} alt="بهترینو" className="ml-1" />
         )}
         {text}
       </>

@@ -12,7 +12,7 @@ import { SET_BUSINESS } from './constants';
 
 // The initial state of the App
 export const initialState = {
-  business: null,
+  business: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
