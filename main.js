@@ -4,6 +4,7 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
+const { setup: setupPushReceiver } = require('electron-push-receiver');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -72,6 +73,7 @@ function createWindow() {
       mainWindow.webContents.openDevTools()
     }
   })
+  setupPushReceiver(mainWindow.webContents);
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

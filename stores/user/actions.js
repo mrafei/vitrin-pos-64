@@ -44,10 +44,9 @@ export function verify(phone, code, history) {
   };
 }
 
-export function getBusinesses(history) {
+export function getBusinesses() {
   return {
     type: GET_BUSINESSES,
-    history
   };
 }
 

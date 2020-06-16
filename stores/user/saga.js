@@ -2,8 +2,8 @@
  * Gets the repositories of the user from Github
  */
 import Axios from 'axios';
-import { call, put, takeLatest, select } from 'redux-saga/effects';
-import { setSiteDomain, startLoading, stopLoading } from '../../src/containers/App/actions';
+import {call, put, takeLatest, select, take} from 'redux-saga/effects';
+import {setSiteDomain, startLoading, stopLoading} from '../../src/containers/App/actions';
 import request from '../../utils/request';
 import {
   BUSINESSES_BY_OWNER_API,
@@ -11,22 +11,22 @@ import {
   USER_INFO_API,
   VERIFY_API
 } from '../../utils/api';
-import { GET_BUSINESSES, LOGIN, UPDATE_PROFILE, VERIFICATION } from './constants';
-import { toggleModal, setSnackBarMessage } from '../ui/actions';
-import { VERIFICATION_MODAL } from '../ui/constants';
-import { setLoginCallBack, setToken, setUser } from './actions';
-import { makeSelectLoginCallBack } from './selector';
-import { getBusinessData } from '../business/saga';
+import {GET_BUSINESSES, LOGIN, UPDATE_PROFILE, VERIFICATION} from './constants';
+import {toggleModal, setSnackBarMessage} from '../ui/actions';
+import {VERIFICATION_MODAL} from '../ui/constants';
+import {setLoginCallBack, setToken, setUser} from './actions';
+import {makeSelectLoginCallBack} from './selector';
+import {getBusinessData} from '../business/saga';
 
 export function* login(payload) {
   try {
     yield put(startLoading());
-    const { data } = payload;
+    const {data} = payload;
     const dto = {
       phone: data
     };
     yield call(request, LOGIN_API, dto, 'POST');
-    yield put(toggleModal(VERIFICATION_MODAL, true, true));
+    yield put(setSnackBarMessage('کد تایید به موبایل شما پیامک شد.', 'default'));
     yield put(stopLoading());
   } catch (err) {
     yield put(stopLoading());
@@ -37,22 +37,23 @@ export function* verify(action) {
   try {
     yield put(startLoading());
     const {
-      data: { username, password }
+      data: {username, password}
     } = action;
     const dto = {
       username,
       password
     };
     const {
-      response: { meta, data: userToken }
+      response: {meta, data: userToken}
     } = yield call(request, VERIFY_API, dto, 'POST');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      const { token, user } = userToken;
+      const {token, user} = userToken;
       yield put(setToken(token));
       yield put(setUser(user));
       localStorage.setItem('token', token);
       Axios.defaults.headers.common.Authorization = `Token ${token}`;
-      yield call(getBusinesses, { history: action.history });
+      yield call(getBusinesses);
+      action.history.push('/online-orders')
       yield put(stopLoading());
       const callBack = yield select(makeSelectLoginCallBack());
       yield call(callBack);
@@ -66,23 +67,20 @@ export function* verify(action) {
   }
 }
 
-export function* getBusinesses(action) {
+export function* getBusinesses() {
   try {
     yield put(startLoading());
 
     const {
-      response: { meta, data }
+      response: {meta, data}
     } = yield call(request, BUSINESSES_BY_OWNER_API);
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       const businessesWithVitrin = data.filter(b => b.get_vitrin_absolute_url);
       if (businessesWithVitrin.length === 0)
         window.location.href = 'https://panel.vitrin.site';
       else {
-        // yield put(setSiteDomain(businessesWithVitrin[0].get_vitrin_absolute_url));
-        yield put(setSiteDomain('olddowntown'));
+        yield put(setSiteDomain(businessesWithVitrin[0].site_domain));
         yield call(getBusinessData);
-
-        action.history.push('/online-orders');
       }
     }
     yield put(stopLoading());
@@ -96,7 +94,7 @@ export function* updateProfile(action) {
   try {
     yield put(startLoading());
     const {
-      response: { data, meta }
+      response: {data, meta}
     } = yield call(request, USER_INFO_API, action.data, 'PATCH');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(

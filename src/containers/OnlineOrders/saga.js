@@ -10,7 +10,6 @@ import {
 import {
   setFoodAdminOrders,
   setFoodAdminOrder,
-  getFoodAdminOrders
 } from './actions';
 import {
   GET_FOOD_ADMIN_ORDERS,

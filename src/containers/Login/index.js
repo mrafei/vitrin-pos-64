@@ -1,25 +1,25 @@
-import React, { memo, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, {memo, useState} from 'react';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 import bg1 from '../../../assets/images/login-bg-1.png';
 import bg2 from '../../../assets/images/login-bg-2.png';
 import logo from '../../../assets/images/vitrin-blue.png';
-import { PrimaryButton } from '../../components/Button';
-import { validatePhone } from '../../../utils/helper';
-import { compose } from 'redux';
-import { login, verify } from '../../../stores/user/actions';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectLoading } from '../App/selectors';
+import {PrimaryButton} from '../../components/Button';
+import {persianToEnglishNumber, validatePhone} from '../../../utils/helper';
+import {compose} from 'redux';
+import {login, verify} from '../../../stores/user/actions';
+import {createStructuredSelector} from 'reselect';
+import {makeSelectLoading} from '../App/selectors';
 
-function Login({ _login, loading, _verify, history }) {
+function Login({_login, loading, _verify, history}) {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
 
   const [phoneError, setPhoneError] = useState('');
-  return <div className="d-flex flex-1 justify-content-around align-items-center">
-    <div className="d-flex flex-column align-items-center justify-content-center" style={{ width: 400 }}>
-      <img className="" src={logo} style={{ height: 85, width: 220 }}/>
+  return <div className="d-flex flex-1 justify-content-around align-items-center u-background-white">
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{width: '45%', maxWidth: 400}}>
+      <img className="" src={logo} style={{height: 85, width: 220}}/>
       <div className="u-text-black u-fontWeightBold u-fontVeryLarge mt-5 text-center">به نرم‌افزار مدیریت فروش ویترین
         خوش آمدید.
       </div>
@@ -27,24 +27,25 @@ function Login({ _login, loading, _verify, history }) {
         را وارد کنید.
       </div>
     </div>
-    <div className="d-flex flex-column justify-content-center" style={{ width: 400 }}>
-      <input className="u-border-bottom-dark-grey w-100 text-center"
+    <div className="d-flex flex-column justify-content-center" style={{width: '45%', maxWidth: 400}}>
+      <input className="u-border-bottom-dark-grey w-100 text-center direction-ltr"
              type="tel"
              onChange={(e) => {
+               const number = persianToEnglishNumber(e.target.value.slice(0, 11))
                setPhoneError('');
-               if (e.target.value.length > 10)
-                 if (!validatePhone(e.target.value))
+               if (number.length > 10)
+                 if (!validatePhone(number))
                    setPhoneError('شماره تلفن را به درستی وارد کنید.');
                  else
-                   _login(phone);
-               setPhone(e.target.value.slice(0, 11));
+                   _login(number);
+               setPhone(number);
              }}
              value={phone}
       />
       <div className="u-text-red text-right mt-2">{phoneError}</div>
       <input className="u-border-bottom-dark-grey w-100 text-center" maxLength="4"
-             onChange={(e) => setCode(e.target.value)} style={{ marginTop: 60 }}/>
-      <PrimaryButton isLoading={loading} text="تایید و ادامه" style={{ marginTop: 60 }}
+             onChange={(e) => setCode(e.target.value)} style={{marginTop: 60}}/>
+      <PrimaryButton isLoading={loading} text="تایید و ادامه" style={{marginTop: 60}}
                      disabled={code.length !== 4 || !validatePhone(phone)}
                      onClick={() => {
                        _verify(phone, code, history);
