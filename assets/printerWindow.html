@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="./printStyle.css" type="text/css"/>
+</head>
+<body>
+<script>
+  const ipcRenderer = require("electron").ipcRenderer;
+  ipcRenderer.on("print", (event, content) => {
+    document.body.innerHTML = content;
+
+    ipcRenderer.send("readyToPrint");
+  });
+</script>
+</body>
+</html>

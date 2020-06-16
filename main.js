@@ -1,14 +1,15 @@
 'use strict'
 
 // Import parts of electron to use
-const { app, BrowserWindow } = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const url = require('url')
-const { setup: setupPushReceiver } = require('electron-push-receiver');
+const {setup: setupPushReceiver} = require('electron-push-receiver');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let workerWindow
 
 // Keep a reference for dev mode
 let dev = false
@@ -57,7 +58,6 @@ function createWindow() {
       slashes: true
     })
   }
-
   mainWindow.loadURL(indexPath)
 
   // Don't show until we are ready and loaded
@@ -66,7 +66,7 @@ function createWindow() {
 
     // Open the DevTools automatically if developing
     if (dev) {
-      const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
+      const {default: installExtension, REACT_DEVELOPER_TOOLS} = require('electron-devtools-installer')
 
       installExtension(REACT_DEVELOPER_TOOLS)
         .catch(err => console.log('Error loading React DevTools: ', err))
@@ -76,12 +76,19 @@ function createWindow() {
   setupPushReceiver(mainWindow.webContents);
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
+  mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null
   })
+  workerWindow = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+    }
+  });
+  workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
+  workerWindow.hide();
 }
 
 // This method will be called when Electron has finished
@@ -105,3 +112,11 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+ipcMain.on('print', (event, content) => {
+  workerWindow.webContents.send('print', content);
+});
+
+ipcMain.on('readyToPrint', (event) => {
+  workerWindow.webContents.print({silent: true});
+});

@@ -1,19 +1,20 @@
-import React, { memo, useRef } from 'react';
+import React, {memo, useRef} from 'react';
+import {renderToString} from 'react-dom/server';
 import moment from 'moment-jalaali';
 import PropTypes from 'prop-types';
-import ReactToPrint from 'react-to-print';
 import QRCode from 'qrcode.react';
 import {
   englishNumberToPersianNumber,
   priceFormatter
 } from '../../../utils/helper';
 import Icon from '../../components/Icon';
-import { ICONS } from '../../../assets/images/icons';
+import {ICONS} from '../../../assets/images/icons';
+import {ipcRenderer} from "electron";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class ComponentToPrint extends React.Component {
   render() {
-    const { order, business } = this.props;
+    const {order, business} = this.props;
     let cost = 'رایگان';
     if (+order.delivery_price === 999999) cost = 'خارج از محدوده ارسال';
     else if (+order.delivery_price !== 0)
@@ -25,7 +26,7 @@ class ComponentToPrint extends React.Component {
     } = business;
     const date = moment(order.submitted_at).format('jYYYY/jMM/jDD - HH:mm:ss');
     return (
-      <div className="bg-white w-100 u-text-black printable px-3 u-fontVerySmall">
+      <div className="bg-white w-100 u-text-black px-3 u-fontVerySmall">
         <div className="py-1 px-2 u-border-bottom-dark">
           <div className="d-flex justify-content-between">
             <div className="text-center">
@@ -69,7 +70,7 @@ class ComponentToPrint extends React.Component {
             <span>جزئیات ارسال: </span>
             <span
               className="u-fontWeightBold"
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{whiteSpace: 'pre-wrap'}}
             >
               {(order && order.description) || 'ندارد'}
             </span>
@@ -78,15 +79,15 @@ class ComponentToPrint extends React.Component {
 
         <div className="py-1 u-border-bottom-dark">
           <div className="d-flex flex-row px-2 mt-1 u-background-black u-text-white py-1">
-            <div style={{ width: 160, whiteSpace: 'pre-wrap' }}>نام</div>
-            <div className="text-center" style={{ width: 80 }}>
+            <div style={{width: 160, whiteSpace: 'pre-wrap'}}>نام</div>
+            <div className="text-center" style={{width: 80}}>
               فی
             </div>
-            <div className="text-center" style={{ width: 25 }}>
+            <div className="text-center" style={{width: 25}}>
               تعداد
             </div>
 
-            <div className="text-center" style={{ width: 80 }}>
+            <div className="text-center" style={{width: 80}}>
               قیمت کل
             </div>
           </div>
@@ -96,16 +97,16 @@ class ComponentToPrint extends React.Component {
               className="d-flex flex-row px-2 mt-1"
               key={`order-item-${item.id}`}
             >
-              <div style={{ width: 160, whiteSpace: 'pre-wrap' }}>
+              <div style={{width: 160, whiteSpace: 'pre-wrap'}}>
                 {item.deal.title}
               </div>
-              <div className="text-center" style={{ width: 80 }}>
+              <div className="text-center" style={{width: 80}}>
                 {priceFormatter(item.deal.discounted_price)}
               </div>
-              <div className="text-center" style={{ width: 25 }}>
+              <div className="text-center" style={{width: 25}}>
                 {englishNumberToPersianNumber(item.amount)}
               </div>
-              <div className="text-center" style={{ width: 80 }}>
+              <div className="text-center" style={{width: 80}}>
                 {priceFormatter(item.deal.discounted_price * item.amount)}
               </div>
             </div>
@@ -116,7 +117,7 @@ class ComponentToPrint extends React.Component {
             <span>قیمت اولیه: </span>
             <span
               className="u-fontWeightBold"
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{whiteSpace: 'pre-wrap'}}
             >
               {priceFormatter(order.total_initial_price)} تومان
             </span>
@@ -125,7 +126,7 @@ class ComponentToPrint extends React.Component {
             <span>جمع تخفیف‌ها: </span>
             <span
               className="u-fontWeightBold"
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{whiteSpace: 'pre-wrap'}}
             >
               {priceFormatter(
                 order.total_initial_price - order.final_price_without_delivery
@@ -141,7 +142,7 @@ class ComponentToPrint extends React.Component {
             <span>مبلغ قابل پرداخت: </span>
             <span
               className="u-fontWeightBold u-background-black u-text-white p-1"
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{whiteSpace: 'pre-wrap'}}
             >
               {priceFormatter(order.final_price)} تومان
             </span>
@@ -159,36 +160,26 @@ class ComponentToPrint extends React.Component {
   }
 }
 
-function PrintButton({ order, business }) {
-  const componentRef = useRef();
+function PrintButton({order, business}) {
   return (
     <>
-      <ReactToPrint
-        trigger={() => (
-          <div
-            className="u-border-radius-8 mx-2 px-2 w-100 u-cursor-pointer d-flex justify-content-center align-items-center u-background-primary-light-blue">
-            <Icon
-              icon={ICONS.PRINT}
-              color="white"
-              size={19}
-              className="d-flex"
-            />
-            <button
-              type="button"
-              className="u-text-white d-inline-block mr-1"
-            >
-              پرینت سفارش
-            </button>
-          </div>
-        )}
-        content={() => componentRef.current}
-      />
-      <div style={{ display: 'none' }}>
-        <ComponentToPrint
-          ref={componentRef}
-          order={order}
-          business={business}
+      <div
+        onClick={() => {
+          ipcRenderer.send('print', renderToString(<ComponentToPrint order={order} business={business}/>))
+        }}
+        className="u-border-radius-8 mx-2 px-2 w-100 u-cursor-pointer d-flex justify-content-center align-items-center u-background-primary-light-blue">
+        <Icon
+          icon={ICONS.PRINT}
+          color="white"
+          size={19}
+          className="d-flex"
         />
+        <button
+          type="button"
+          className="u-text-white d-inline-block mr-1"
+        >
+          پرینت سفارش
+        </button>
       </div>
     </>
   );
