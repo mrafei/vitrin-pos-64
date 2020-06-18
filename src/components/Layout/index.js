@@ -36,7 +36,6 @@ function Layout({children, location, title}) {
       </div>
       <div className="px-3 u-fontWeightBold">{title}</div>
       <div style={{width: 1, background: "#C8CBD0", height: 'calc(100% - 30px)'}}/>
-      <img className="mx-5" src={logo} style={{height: 29, width: 76}}/>
 
     </div>
     {children}
