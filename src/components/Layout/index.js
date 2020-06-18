@@ -24,7 +24,7 @@ function Layout({children, location, title}) {
         {routes.map(route => {
           const isActive = location.pathname.includes(route.path);
           if (route.disabled)
-            return <div style={{opacity: 0.5}} className="pr-4 py-1">
+            return <div style={{opacity: 0.5}} className="pr-4 py-1" key={`menu-link-${route.id}`}>
               <Icon icon={route.icon} size={24} color={isActive ? '#168fd5' : '#4F595B'} className="ml-1"/>
               <span className="u-text-darkest-grey">{route.title}</span>
             </div>
