@@ -113,8 +113,8 @@ app.on('activate', () => {
   }
 })
 
-ipcMain.on('print', (event, content) => {
-  workerWindow.webContents.send('print', content);
+ipcMain.on('print', (event, content, url) => {
+  workerWindow.webContents.send('print', content, url);
 });
 
 ipcMain.on('readyToPrint', (event) => {

@@ -8,10 +8,27 @@
 <body>
 <script>
   const ipcRenderer = require("electron").ipcRenderer;
-  ipcRenderer.on("print", (event, content) => {
-    document.body.innerHTML = content;
-
+  const QRious = require('qrious');
+  ipcRenderer.on("print", (event, content, url) => {
+    document.write(
+      `<html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <title>Title</title>
+          <link rel="stylesheet" href="./printStyle.css" type="text/css"/>
+        </head>
+        <body>
+        ${content}
+        </body>
+        </html>`);
+    (function () {
+      new QRious({
+        element: document.getElementById('qr'),
+        value: url
+      });
+    })();
     ipcRenderer.send("readyToPrint");
+    document.close();
   });
 </script>
 </body>

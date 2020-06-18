@@ -46,8 +46,10 @@
     "postpackage": "electron-packager ./ --asar --overwrite --out=build --icon=assets/icon.ico"
   },
   "dependencies": {
+    "electron-push-receiver": "^2.1.3",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
+    "qrious": "^4.0.2",
     "react": "^16.13.1",
     "react-collapse": "^5.0.1",
     "react-dom": "^16.13.1",
@@ -55,8 +57,7 @@
     "redux": "^4.0.5",
     "redux-saga": "^1.1.3",
     "reselect": "^4.0.0",
-    "sass-loader": "^8.0.2",
-    "electron-push-receiver": "^2.1.3"
+    "sass-loader": "^8.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
