@@ -7,7 +7,7 @@ function PriceSection({order}) {
   else if (+order.delivery_price !== 0)
     cost = ` ${priceFormatter(+order.delivery_price)} تومان `;
 
-  return <div className="w-100 py-2 u-background-white mt-1 px-3">
+  return <div className="w-100 py-2 u-background-white mt-1 px-3 flex-1">
     <div
       className='flex-1 u-fontMedium u-fontWeightBold mb-2 u-text-black'
     >

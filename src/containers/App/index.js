@@ -51,7 +51,7 @@ const App = function ({history, _getBusinesses, location, siteDomain, _setSnackB
     </div>
   return (
     <>
-      <div className="u-height-100vh w-100 u-background-melo-grey d-flex">
+      <div className="u-height-100vh w-100 u-background-melo-grey d-flex h-100">
         <Layout location={location} title={businessTitle}>
           <Switch>
             <Route exact path="/login" component={Login}/>

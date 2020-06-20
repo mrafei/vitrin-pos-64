@@ -25,13 +25,15 @@ const OnlineOrders = function ({_getAdminOrders, adminOrders: orders, pagination
     _getAdminOrders(page || 1);
   }, [location]);
   return (
-    <div className="u-border-radius-8 container px-0 container-shadow">
-      <div className="d-flex text-center px-60 u-mt-50 py-3">
+    <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden u-mt-50" style={{
+      height: 'calc(100% - 150px)'
+    }}>
+      <div className="d-flex text-center px-60 py-3" >
         <span className="px-0 col-3">کد سفارش</span>
         <span className="px-0 col-5">نام مشتری</span>
         <span className="px-0 col-4">جمع قابل پرداخت</span>
       </div>
-      <div className="flex-1 u-background-white px-60 py-5">
+      <div className="u-background-white px-60 py-5 overflow-auto" style={{height: 'calc(100% - 54px)'}}>
         <div>
           {orders.map(order => (
             <OrderCard

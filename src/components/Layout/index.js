@@ -3,6 +3,7 @@ import {NavLink} from 'react-router-dom';
 import Icon from '../Icon';
 import {ICONS} from '../../../assets/images/icons';
 import logo from "../../../assets/images/vitrin-blue.png";
+import {remote} from 'electron';
 
 const routes = [
   {id: 1, disabled: false, title: 'سفارش آنلاین', path: '/online-orders', icon: ICONS.GLOBAL},
@@ -23,21 +24,26 @@ function Layout({children, location, title}) {
       <div className="d-flex flex-1">
         {routes.map(route => {
           const isActive = location.pathname.includes(route.path);
-          if (route.disabled)
-            return <div style={{opacity: 0.5}} className="pr-4 py-1" key={`menu-link-${route.id}`}>
+          if (!route.disabled)
+            // return <div style={{opacity: 0.5}} className="pr-4 py-1" key={`menu-link-${route.id}`}>
+            //   <Icon icon={route.icon} size={24} color={isActive ? '#168fd5' : '#4F595B'} className="ml-1"/>
+            //   <span className="u-text-darkest-grey">{route.title}</span>
+            // </div>
+            return <NavLink to={route.path} key={`menu-link-${route.id}`} className="pr-4 py-1">
               <Icon icon={route.icon} size={24} color={isActive ? '#168fd5' : '#4F595B'} className="ml-1"/>
-              <span className="u-text-darkest-grey">{route.title}</span>
-            </div>
-          return <NavLink to={route.path} key={`menu-link-${route.id}`} className="pr-4 py-1">
-            <Icon icon={route.icon} size={24} color={isActive ? '#168fd5' : '#4F595B'} className="ml-1"/>
-            <span
-              className={isActive ? 'u-text-primary-blue u-fontWeightBold' : 'u-text-darkest-grey'}>{route.title}</span>
-          </NavLink>;
+              <span
+                className={isActive ? 'u-text-primary-blue u-fontWeightBold' : 'u-text-darkest-grey'}>{route.title}</span>
+            </NavLink>;
         })}
       </div>
       <div className="px-3 u-fontWeightBold">{title}</div>
       <div style={{width: 1, background: "#C8CBD0", height: 'calc(100% - 30px)'}}/>
-      <img className="mx-5" src={logo} style={{height: 29, width: 76}}/>
+      <div className="u-height-36">
+        <img className="mr-5 ml-2" src={logo} style={{height: 29, width: 76}}/>
+      </div>
+      <Icon icon={ICONS.REFRESH} size={36} color="#65BBEE" className="ml-5 u-cursor-pointer" onClick={() => {
+        remote.getCurrentWindow().reload();
+      }}/>
     </div>
     {children}
   </div>;

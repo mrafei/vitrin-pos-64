@@ -2,7 +2,7 @@ import React from 'react';
 import { englishNumberToPersianNumber, priceFormatter } from '../../../../utils/helper';
 
 function ItemsSection({ order }) {
-  return <div className="w-100 py-2 u-background-white mt-1 px-3">
+  return <div className="w-100 py-2 u-background-white px-3">
     <div
       className='flex-1 u-fontWeightBold mb-2 u-text-black'
     >آیتم‌های سفارش

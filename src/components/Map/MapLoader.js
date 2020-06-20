@@ -35,6 +35,7 @@ const CustomMap = ({
     },
     zoom = 11,
     ref,
+    style,
   },
 }) => {
   const markerUrl = 'pin-package.png';
@@ -82,7 +83,7 @@ const CustomMap = ({
         />
         <Map
           ref={ref || map}
-          style={{ height, width, margin: '0 auto', borderRadius: 4 }}
+          style={{ height, width, margin: '0 auto', borderRadius: 4, ...style }}
           center={[centerLocation.latitude, centerLocation.longitude]}
           zoom={zoom}
           zoomControl={false}
@@ -98,7 +99,7 @@ const CustomMap = ({
     <Map
       ref={ref || map}
       keyboard={false}
-      style={{ height, width, margin: '0 auto', borderRadius: 4 }}
+      style={{ height, width, margin: '0 auto', borderRadius: 4, ...style }}
       center={[centerLocation.latitude, centerLocation.longitude]}
       zoom={zoom}
       zoomControl={false}

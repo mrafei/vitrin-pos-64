@@ -46,7 +46,8 @@ function createWindow() {
       nodeIntegration: true
     }
   })
-
+  mainWindow.maximize()
+  mainWindow.setMenu(null)
   // and load the index.html of the app.
   let indexPath
 
