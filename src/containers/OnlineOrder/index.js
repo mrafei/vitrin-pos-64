@@ -63,7 +63,7 @@ export function OnlineOrder({
     <div className="d-flex flex-1 u-border-radius-8 mx-5 mt-5">
       <div className="u-background-melo-grey container-shadow flex-1">
         <div className="text-center u-fontMedium u-text-dark-grey py-2 u-background-white">
-          <div className="px-3 u-text-darkest-grey">
+          <div className="px-3 u-text-darkest-grey u-fontWeightBold">
             جزییات سفارش
             <Icon
               className="c-modal-header-close float-right"
@@ -100,8 +100,8 @@ export function OnlineOrder({
             <PrintButton order={order} business={business}/>
             {order.user_address && (
               <a href={`tel:${order.user_address.phone}`}
-                 className="w-100 mx-2 px-2 u-cursor-pointer u-text-white d-flex justify-content-center align-items-center u-background-dark-grey u-border-radius-8">
-                <Icon icon={ICONS.PHONE} className="ml-1" color="white" size={24} width={15} height={15}/>
+                 className="w-100 mx-2 px-2 u-cursor-pointer u-text-primary-light-blue u-border-primary-light-blue d-flex justify-content-center align-items-center u-border-radius-8">
+                <Icon icon={ICONS.PHONE} className="ml-1" color="#65BBEE" size={24}/>
                 تماس با مشتری
               </a>
             )}

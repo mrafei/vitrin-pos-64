@@ -179,6 +179,8 @@ function PrintButton({order, business}) {
           icon={ICONS.PRINT}
           color="white"
           size={19}
+          width={24}
+          height={24}
           className="d-flex"
         />
         <button

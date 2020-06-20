@@ -43,7 +43,7 @@ function OrderCard({ order, link }) {
           }}
         />
         <div className="flex-1">
-          <div className="d-flex text-center py-2 u-text-darkest-grey u-background-medium-grey">
+          <div className="d-flex text-center py-2 u-text-darkest-grey u-background-light-grey">
             <span className="col-3 px-0">
               {ellipseText(englishNumberToPersianNumber(order.order_id), 8)}
             </span>
@@ -123,7 +123,7 @@ function OrderCard({ order, link }) {
                 تایید شده
               </span>
             )}
-            <div className="d-flex align-items-center c-btn c-btn--cancel--order u-w-auto px-1">
+            <div className="d-flex align-items-center u-fontWeightBold c-btn c-btn--cancel--order u-w-auto px-2 shadow-none">
               {' '}
               مشاهده جزییات
             </div>

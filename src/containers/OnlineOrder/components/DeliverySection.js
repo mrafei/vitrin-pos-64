@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  googleMapsNavigate,
-  wazeNavigate
-} from '../../../../utils/helper';
 import Map from '../../../components/Map';
-import { CDN_BASE_URL } from '../../../../utils/api';
-
-const wazeText = `${CDN_BASE_URL}waze_PNG23.svg`;
-const waze = `${CDN_BASE_URL}wazeTextlogo.svg`;
-const google = `${CDN_BASE_URL}google_PNG19644.svg`;
-const googleText = `${CDN_BASE_URL}google-maps-png-google-maps-icon-1600.svg`;
 
 function DeliverySection({ order }) {
   const mapOptions = {
@@ -29,7 +19,7 @@ function DeliverySection({ order }) {
   };
   return <div className="w-100 py-2 u-background-white mt-1 px-3">
     <div
-      className='flex-1 u-fontMedium u-fontWeightBold mb-2 u-text-black'
+      className='flex-1 u-fontWeightBold mb-2 u-text-black'
     >جزئیات ارسال
     </div>
     <div className="d-flex flex-column justify-content-between px-3">
@@ -68,41 +58,13 @@ function DeliverySection({ order }) {
             <div className="my-2">
               <Map options={mapOptions}/>
             </div>
-            <div className="mt-1 mb-2 d-flex">
-              <button
-                type="button"
-                onClick={() =>
-                  wazeNavigate(
-                    order.user_address.latitude,
-                    order.user_address.longitude
-                  )
-                }
-                className="c-btn c-btn-transparent-bg c-btn-routing flex-1 ml-1"
-              >
-                <img className="h-50" src={waze} alt=""/>
-                <img className="mr-1" src={wazeText} alt=""/>
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  googleMapsNavigate(
-                    order.user_address.latitude,
-                    order.user_address.longitude
-                  )
-                }
-                className="c-btn c-btn-transparent-bg flex-1 c-btn-routing"
-              >
-                <img className="h-100" src={google} alt=""/>
-                <img className="" src={googleText} alt=""/>
-              </button>
-            </div>
           </>
         ) : null}
       </div>
       <div className="mt-2">
-        <div className="u-textBlack">جزئیات ارسال:</div>
+        <span className="u-textBlack">جزئیات ارسال:</span>
         <span
-          className="u-text-darkest-grey"
+          className="u-text-darkest-grey pr-1"
           style={{ whiteSpace: 'pre-wrap' }}
         >
           {(order && order.description) || 'ندارد'}

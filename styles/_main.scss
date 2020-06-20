@@ -446,8 +446,8 @@ input:not([type='checkbox']) {
   height: 70px;
 }
 
-.u-height-18 {
-  height: 18px;
+.u-max-height-18 {
+  max-height: 18px;
 }
 
 .u-max-width-470 {
@@ -2127,4 +2127,7 @@ h6 {
 
 .container-shadow {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+.shadow-none{
+  box-shadow: none;
 }
