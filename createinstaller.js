@@ -8,7 +8,7 @@ getInstallerConfig()
     process.exit(1)
   })
 
-function getInstallerConfig () {
+function getInstallerConfig() {
   console.log('creating windows installer')
   const rootPath = path.join('./')
   const outPath = path.join(rootPath, 'build')
@@ -20,6 +20,8 @@ function getInstallerConfig () {
     outputDirectory: path.join(outPath, 'installable'),
     exe: 'vitrin-pos.exe',
     setupExe: 'VitrinPOS.exe',
-    setupIcon: path.join(rootPath, 'assets', 'icon.ico')
+    setupIcon: path.join(rootPath, 'assets', 'icon.ico'),
+    skipUpdateIcon: true,
+    loadingGif: path.join(rootPath, 'assets', 'loading.gif'),
   })
 }
