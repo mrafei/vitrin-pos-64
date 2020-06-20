@@ -30,13 +30,14 @@ function Layout({children, location, title}) {
             </div>
           return <NavLink to={route.path} key={`menu-link-${route.id}`} className="pr-4 py-1">
             <Icon icon={route.icon} size={24} color={isActive ? '#168fd5' : '#4F595B'} className="ml-1"/>
-            <span className={isActive ? 'u-text-primary-blue u-fontWeightBold' : 'u-text-darkest-grey'}>{route.title}</span>
+            <span
+              className={isActive ? 'u-text-primary-blue u-fontWeightBold' : 'u-text-darkest-grey'}>{route.title}</span>
           </NavLink>;
         })}
       </div>
       <div className="px-3 u-fontWeightBold">{title}</div>
       <div style={{width: 1, background: "#C8CBD0", height: 'calc(100% - 30px)'}}/>
-
+      <img className="mx-5" src={logo} style={{height: 29, width: 76}}/>
     </div>
     {children}
   </div>;
