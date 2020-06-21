@@ -190,3 +190,4 @@ export const defaultDeliveryTimes = {
 
 export const START_LOADING = 'vitrin/App/START_LOADING';
 export const STOP_LOADING = 'vitrin/App/STOP_LOADING';
+export const ADMIN_ORDERS_PAGE_SIZE = 20;

@@ -46,9 +46,10 @@ function createWindow() {
       nodeIntegration: true
     }
   })
-  mainWindow.maximize()
-  mainWindow.setMenu(null)
-  // and load the index.html of the app.
+  if (!dev) {
+    mainWindow.maximize()
+    mainWindow.setMenu(null)
+  }// and load the index.html of the app.
   let indexPath
 
   if (dev && process.argv.indexOf('--noDevServer') === -1) {

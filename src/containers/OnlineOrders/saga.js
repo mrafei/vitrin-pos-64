@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { call, put, takeLatest, select } from '@redux-saga/core/effects';
-import {stopLoading } from './actions';
+import {call, put, takeLatest, select} from '@redux-saga/core/effects';
+import {stopLoading} from './actions';
 
 import request from '../../../utils/request';
 import {
@@ -13,25 +13,26 @@ import {
 } from './actions';
 import {
   GET_FOOD_ADMIN_ORDERS,
-  GET_FOOD_ADMIN_ORDER,
+  GET_FOOD_ADMIN_ORDER, ADMIN_ORDERS_PAGE_SIZE,
 } from './constants';
-import { makeSelectSubDomain } from '../App/selectors';
+import {makeSelectSubDomain} from '../App/selectors';
 
 export function* getFoodAdminOrdersFunc(action) {
   try {
     const domain = yield select(makeSelectSubDomain());
     const page = action.data || 1;
     const {
-      response: { data, pagination }
+      response: {data, pagination}
     } = yield call(
       request,
-      BUSINESS_ORDERS_API('food', page),
-      { domain },
+      BUSINESS_ORDERS_API('food', page, ADMIN_ORDERS_PAGE_SIZE),
+      {domain},
       'PATCH'
     );
+    const pagesCount = Math.ceil(pagination.count / ADMIN_ORDERS_PAGE_SIZE);
 
     if (data) {
-      yield put(setFoodAdminOrders(data, pagination));
+      yield put(setFoodAdminOrders(data, {...pagination, pagesCount}));
     }
   } catch (err) {
     console.log(err);
@@ -42,7 +43,7 @@ export function* getFoodAdminOrdersFunc(action) {
 export function* getFoodAdminOrder(action) {
   try {
     const {
-      response: { data }
+      response: {data}
     } = yield call(
       request,
       USER_ORDERS_ITEMS_API(action.data.id, 'food'),

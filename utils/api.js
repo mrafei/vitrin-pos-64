@@ -57,8 +57,8 @@ export const USER_ORDERS_API = plugin =>
   `${BASE_URL}${plugin}_orders/by_business_by_user/`;
 export const USER_ORDERS_ITEMS_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/`;
-export const BUSINESS_ORDERS_API = (plugin, page) =>
-  `${BASE_URL}${plugin}_orders/by_business_site_domain/?page=${page}`;
+export const BUSINESS_ORDERS_API = (plugin, page, pageSize) =>
+  `${BASE_URL}${plugin}_orders/by_business_site_domain/?page=${page}&page_size=${pageSize}`;
 export const ORDER_CHANGE_PAYMENT_STATUS_TO_ON_SITE_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/change_payment_status_to_on_site/`;
 export const ORDER_STATUS_PROGRESS_API = (id, plugin) =>
