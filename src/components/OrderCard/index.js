@@ -15,7 +15,7 @@ function OrderCard({ order, link }) {
   const {
     final_price: totalPrice,
     user_address: userAddress,
-    created_at: createdAt,
+    submitted_at: createdAt,
     order_status: orderStatus,
     payment_status: paymentStatus,
     delivery_on_site: deliveryOnSite
