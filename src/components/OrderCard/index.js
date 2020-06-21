@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React, {memo} from 'react';
 import moment from 'moment-jalaali';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import {
   ellipseText,
@@ -9,9 +9,9 @@ import {
   priceFormatter
 } from '../../../utils/helper';
 import Icon from '../Icon';
-import { ICONS } from '../../../assets/images/icons';
+import {ICONS} from '../../../assets/images/icons';
 
-function OrderCard({ order, link }) {
+function OrderCard({order, link}) {
   const {
     final_price: totalPrice,
     user_address: userAddress,
@@ -43,12 +43,12 @@ function OrderCard({ order, link }) {
           }}
         />
         <div className="flex-1">
-          <div className="d-flex text-center py-2 u-text-darkest-grey u-background-light-grey">
+          <div className="d-flex text-center py-1 u-text-darkest-grey u-background-light-grey">
             <span className="col-3 px-0">
               {ellipseText(englishNumberToPersianNumber(order.order_id), 8)}
             </span>
             <div
-              style={{ minWidth: 1 }}
+              style={{minWidth: 1}}
               className="u-background-darkest-grey"
             />
 
@@ -57,7 +57,7 @@ function OrderCard({ order, link }) {
             </span>
 
             <div
-              style={{ minWidth: 1 }}
+              style={{minWidth: 1}}
               className="u-background-darkest-grey"
             />
             <span className="col-4 px-0">
@@ -65,7 +65,7 @@ function OrderCard({ order, link }) {
             </span>
           </div>
           <div className="d-flex justify-content-between px-2 py-1">
-            <div className="d-flex">
+            <div className="d-flex align-items-center">
               <span>
                 {englishNumberToPersianNumber(
                   `${`0${orderDate.getHours()}`.slice(
@@ -74,8 +74,8 @@ function OrderCard({ order, link }) {
                 )}
               </span>
               <div
-                style={{ width: 2 }}
-                className="mx-2 h-100 u-background-medium-grey"
+                style={{width: 2, height: 15}}
+                className="mx-2 u-background-dark-grey"
               />
               <span>
                 {englishNumberToPersianNumber(
@@ -102,29 +102,34 @@ function OrderCard({ order, link }) {
               </div>
             )}
           </div>
-          <div className="px-2 py-1">
-            {' '}
+          <div className="px-2 py-1 d-flex align-items-center">
+            <span>
             شماره تماس: {englishNumberToPersianNumber(userAddress.phone)}
-          </div>
-          <div className="px-2 py-1">
+            </span>
+            <div
+              style={{width: 2, height: 15}}
+              className="mx-2 u-background-dark-grey"
+            />
+            <span>
             آدرس:{' '}
-            {deliveryOnSite ? 'تحویل در محل رستوران' : userAddress.address}
+              {deliveryOnSite ? 'تحویل در محل رستوران' : userAddress.address}
+            </span>
           </div>
 
-          <div className="px-3 pb-3 d-flex justify-content-between align-items-center">
+          <div className="px-3 pb-2 d-flex justify-content-between align-items-center">
             {orderStatus === 0 && (
-              <span className="u-fontWeightBold u-text-primary-blue">جدید</span>
+              <span className="u-fontWeightBold u-text-primary-blue u-font-medium">جدید</span>
             )}
             {orderStatus === 2 && (
-              <span className="u-fontWeightBold u-text-red">لغو شده</span>
+              <span className="u-fontWeightBold u-text-red u-font-medium">لغو شده</span>
             )}
             {(orderStatus === 1 || orderStatus === 3) && (
-              <span className="u-fontWeightBold u-text-primary-green">
+              <span className="u-fontWeightBold u-text-primary-green u-font-medium">
                 تایید شده
               </span>
             )}
-            <div className="d-flex align-items-center u-fontWeightBold c-btn c-btn--cancel--order u-w-auto px-2 shadow-none">
-              {' '}
+            <div
+              className="d-flex align-items-center u-fontWeightBold c-btn c-btn--cancel--order u-w-auto px-2 shadow-none">
               مشاهده جزییات
             </div>
           </div>
