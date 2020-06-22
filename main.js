@@ -1,6 +1,8 @@
 'use strict'
 
 // Import parts of electron to use
+const {testDataBase} = require("./utils/database");
+
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const url = require('url')
@@ -12,6 +14,8 @@ if (require('electron-squirrel-startup')) app.quit()
 if (handleSquirrelEvent()) {
   process.exit()
 }
+
+testDataBase()
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
