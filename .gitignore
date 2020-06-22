@@ -53,3 +53,4 @@ ehthumbs.db
 #####################
 *.lnk
 .idea
+database.sqlite
