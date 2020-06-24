@@ -35,6 +35,13 @@ const App = function ({history, _getBusinesses, location, siteDomain, _setSnackB
       _getBusinesses();
     } else
       history.push('/login');
+    document.addEventListener("keydown", function (zEvent) {
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "x") {
+        delete Axios.defaults.headers.common.Authorization;
+        history.push('/login');
+        localStorage.removeItem('token');
+      }
+    });
   }, []);
 
   useEffect(() => {

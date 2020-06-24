@@ -61,7 +61,8 @@ export function OnlineOrder({
   };
   return (<div className="h-100 pb-4">
       <div className="d-flex flex-1 mx-5 mt-5" style={{height: 'calc(100% - 200px)'}}>
-        <div className="u-background-melo-grey u-border-radius-8 overflow-hidden flex-1 box-shadow h-100 d-flex flex-column">
+        <div
+          className="u-background-melo-grey u-border-radius-8 overflow-hidden flex-1 box-shadow h-100 d-flex flex-column">
           <div className="text-center u-fontMedium u-text-dark-grey py-2 u-background-white mb-1">
             <div className="px-3 u-text-darkest-grey u-fontWeightBold">
               جزییات سفارش
@@ -75,13 +76,15 @@ export function OnlineOrder({
             </div>
           </div>
 
-          <div className="d-flex flex-1 flex-column align-items-center overflow-auto" style={{height: 'calc(100% - 49px)'}}>
+          <div className="d-flex flex-1 flex-column align-items-center overflow-auto"
+               style={{height: 'calc(100% - 49px)'}}>
             <ItemsSection order={order}/>
             <DeliverySection order={order}/>
             <PriceSection order={order}/>
           </div>
 
         </div>
+        {order.order_status === 0 &&
         <div className="u-relative u-background-white box-shadow u-border-radius-8 mr-4"
              style={{width: 395, height: 'fit-content'}}>
 
@@ -102,9 +105,10 @@ export function OnlineOrder({
               onChange={value => setDuration(persianToEnglishNumber(value))}
             />
           </div>
-        </div>
+        </div>}
       </div>
-      <div className="px-3 u-background-white m-5 u-height-70 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
+      <div
+        className="px-3 u-background-white m-5 u-height-70 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
         {order.order_status === 0 && <>
           <PrimaryButton isLoading={loading} onClick={accept} className="mx-2" text="تایید سفارش"/>
           <PrimaryButton isLoading={loading} onClick={() => {
