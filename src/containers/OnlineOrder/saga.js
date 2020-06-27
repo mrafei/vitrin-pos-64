@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
-import { call, put, takeLatest } from '@redux-saga/core/effects';
-import { startLoading, stopLoading } from './actions';
+import {call, put, takeLatest} from '@redux-saga/core/effects';
+import {startLoading, stopLoading} from './actions';
 
 import request from '../../../utils/request';
 import {
   USER_ORDERS_ITEMS_API,
   ORDER_STATUS_PROGRESS_API,
   ORDER_STATUS_CANCELLED_API,
-  ORDER_DELIVERY_TIME_API
+  ORDER_DELIVERY_TIME_API, ORDER_DELIVERER_API
 } from '../../../utils/api';
 import {
   setFoodAdminOrder,
@@ -18,13 +18,13 @@ import {
   ACCEPT_FOOD_ORDER,
   CANCEL_FOOD_ORDER
 } from './constants';
-import { setSnackBarMessage } from '../../../stores/ui/actions';
+import {setSnackBarMessage} from '../../../stores/ui/actions';
 
 
 export function* getFoodAdminOrder(action) {
   try {
     const {
-      response: { data }
+      response: {data}
     } = yield call(
       request,
       USER_ORDERS_ITEMS_API(action.data.id, 'food'),
@@ -35,22 +35,30 @@ export function* getFoodAdminOrder(action) {
   } catch (err) {
     yield put(stopLoading());
   }
-}
+}p
 
 export function* acceptFoodOrder(action) {
   try {
     yield put(startLoading());
     const {
-      response: { meta }
+      response: {meta}
     } = yield call(
       request,
       ORDER_DELIVERY_TIME_API(action.data.id, action.data.plugin),
-      { delivery_time: action.data.deliveryTime },
+      {delivery_time: action.data.deliveryTime},
       'PATCH'
     );
     if (meta.status_code >= 200 && meta.status_code <= 300) {
+      if (action.data.deliverer)
+        yield call(
+          request,
+          ORDER_DELIVERER_API(action.data.id, 'food'),
+          {deliverer_name: action.data.deliverer},
+          'PATCH'
+        );
+
       const {
-        response: { data }
+        response: {data}
       } = yield call(
         request,
         ORDER_STATUS_PROGRESS_API(action.data.id, 'food'),
@@ -81,7 +89,7 @@ export function* cancelFoodOrder(action) {
   try {
     yield put(startLoading());
     const {
-      response: { data }
+      response: {data}
     } = yield call(
       request,
       ORDER_STATUS_CANCELLED_API(action.data.id, 'food'),

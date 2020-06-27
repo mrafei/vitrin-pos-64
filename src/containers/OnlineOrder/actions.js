@@ -55,7 +55,7 @@ export function changeCategoryOrder(id, newIndex) {
     type: CHANGE_CATEGORY_ORDER,
     data: {
       id,
-      newIndex
+      newIndex,
     }
   };
 }

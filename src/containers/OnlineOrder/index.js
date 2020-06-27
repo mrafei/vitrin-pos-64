@@ -24,7 +24,7 @@ import {
   getFoodAdminOrder,
   setDeliveryTime
 } from './actions';
-import {makeSelectBusiness} from '../../../stores/business/selector';
+import {makeSelectBusiness, makeSelectPlugin} from '../../../stores/business/selector';
 import {ICONS} from '../../../assets/images/icons';
 import Input from '../../components/Input';
 import ItemsSection from './components/ItemsSection';
@@ -45,7 +45,8 @@ export function OnlineOrder({
                               _cancelOrder,
                               history,
                               business,
-                              _setDeliveryTime
+                              _setDeliveryTime,
+                              pluginData
                             }) {
   useInjectReducer({key: 'adminOrder', reducer});
   useInjectSaga({key: 'adminOrder', saga});
@@ -56,9 +57,11 @@ export function OnlineOrder({
     }, 0);
   }, []);
   const [duration, setDuration] = useState('');
+  const [deliverer, setDeliverer] = useState(null);
   const accept = () => {
-    _acceptOrder({id: order.id, plugin: 'food', deliveryTime: duration ? parseInt(duration, 10) * 60 : ''});
+    _acceptOrder({id: order.id, plugin: 'food', deliveryTime: duration ? parseInt(duration, 10) * 60 : '', deliverer});
   };
+  const deliverers = pluginData.data && pluginData.data.deliverers ? pluginData.data.deliverers : [];
   return (<div className="h-100 pb-4">
       <div className="d-flex flex-1 mx-5 mt-5" style={{height: 'calc(100% - 200px)'}}>
         <div
@@ -85,26 +88,57 @@ export function OnlineOrder({
 
         </div>
         {order.order_status === 0 &&
-        <div className="u-relative u-background-white box-shadow u-border-radius-8 mr-4"
-             style={{width: 395, height: 'fit-content'}}>
+        <div>
+          <div className="u-relative u-background-white box-shadow u-border-radius-8 mr-4"
+               style={{width: 395, height: 'fit-content'}}>
 
-          <div className="d-flex flex-column flex-1 p-3">
-            <div className="u-text-black u-fontWeightBold">
-              حداکثر زمان آماده‌سازی و ارسال
-            </div>
+            <div className="d-flex flex-column flex-1 p-3">
+              <div className="u-text-black u-fontWeightBold">
+                <Icon icon={ICONS.TIME} size={24} color="black" className="ml-2"/>
+                حداکثر زمان آماده‌سازی و ارسال
+              </div>
 
-            <div className="u-text-black u-fontMedium mt-2">
-              مدت زمان تخمینی آماده‌سازی و ارسال این سفارش را وارد کنید.
+              <div className="u-text-black u-fontMedium mt-2">
+                مدت زمان تخمینی آماده‌سازی و ارسال این سفارش را وارد کنید.
+              </div>
+              <Input
+                className="mt-2"
+                noModal
+                numberOnly
+                label="مدت زمان (دقیقه)"
+                value={duration ? englishNumberToPersianNumber(duration) : ''}
+                onChange={value => setDuration(persianToEnglishNumber(value))}
+              />
             </div>
-            <Input
-              className="mt-2"
-              noModal
-              numberOnly
-              label="مدت زمان (دقیقه)"
-              value={duration ? englishNumberToPersianNumber(duration) : ''}
-              onChange={value => setDuration(persianToEnglishNumber(value))}
-            />
           </div>
+          <div className="u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4"
+               style={{width: 395, height: 'fit-content'}}>
+
+            <div className="d-flex flex-column flex-1 p-3">
+
+              <div className="u-text-black u-fontWeightBold">
+                <Icon icon={ICONS.DELIVERY} size={24} color="black" className="ml-2"/>
+                پیک‌ها
+              </div>
+              <div className="d-flex flex-wrap mt-4">
+                {deliverers.map(d =>
+                  <div className="d-flex col-6 px-0 mt-2 u-cursor-pointer"
+                       onClick={() => setDeliverer(d.name)}
+                       key={`deliverer-${d.name}`}>
+                    <label className="radio-container">
+                      <input type="radio" name="radio" readOnly checked={deliverer === d.name}/>
+                      <span className="radio-checkmark">
+                  <div className="after"/>
+                </span>
+                    </label>
+                    <span className="u-text-black">
+                {d.name}
+                </span>
+                  </div>)}
+              </div>
+            </div>
+          </div>
+
         </div>}
       </div>
       <div
@@ -152,7 +186,8 @@ export function OnlineOrder({
 const mapStateToProps = createStructuredSelector({
   adminOrder: makeSelectFoodAdminOrder(),
   loading: makeSelectLoading(),
-  business: makeSelectBusiness()
+  business: makeSelectBusiness(),
+  pluginData: makeSelectPlugin()
 });
 
 function mapDispatchToProps(dispatch) {

@@ -46,7 +46,7 @@
     "package": "npm run build",
     "postpackage": "electron-packager ./ --asar --overwrite --platform=win32 --arch=ia32 --out=build --icon=assets/icon.ico",
     "create-installer-win": "node createinstaller.js",
-    "postinstall": "electron-rebuild  install-app-deps"
+    "postinstall": "electron-rebuild  --arch=ia32 -f -w sqlite3"
   },
   "dependencies": {
     "electron-push-receiver": "^2.1.3",

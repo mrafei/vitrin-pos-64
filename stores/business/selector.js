@@ -2,8 +2,8 @@
  * The global state selectors
  */
 
-import { createSelector } from 'reselect';
-import { initialState } from './reducer';
+import {createSelector} from 'reselect';
+import {initialState} from './reducer';
 
 const selectBusiness = state => state.business || initialState;
 
@@ -11,6 +11,12 @@ const makeSelectBusiness = () =>
   createSelector(
     selectBusiness,
     state => state.business
+  );
+
+const makeSelectPlugin = () =>
+  createSelector(
+    selectBusiness,
+    state => state.business.plugins_config ? state.business.plugins_config.food : {}
   );
 
 const makeSelectPosts = () =>
@@ -159,5 +165,6 @@ export {
   makeSelectBusinessSiteDomain,
   makeSelectBusinessWorkingHours,
   makeSelectProducts,
-  makeSelectBusinessFoodDemo
+  makeSelectBusinessFoodDemo,
+  makeSelectPlugin,
 };

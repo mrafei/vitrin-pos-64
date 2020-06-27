@@ -73,6 +73,8 @@ export const ORDER_DISCOUNT_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/discount_code_action/`;
 export const ORDER_DELIVERY_TIME_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/set_delivery_time/`;
+export const ORDER_DELIVERER_API = (id, plugin) =>
+  `${BASE_URL}${plugin}_orders/${id}/set_deliverer_name/`;
 
 // Plugins API
 export const PLUGIN_TRIAL_API = slug =>

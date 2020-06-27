@@ -8,7 +8,7 @@ function ItemsSection({ order }) {
     >آیتم‌های سفارش
     </div>
     {order.items.map(item => (
-      <div key={`order-item-${item.id}`} className="d-flex flex-row justify-content-between mt-2 px-3">
+      <div key={`order-item-${item.id}`} className="d-flex align-items-center flex-row justify-content-between mt-2 px-3">
         <div className="wrapper--img-order">
           <img
             alt={item.deal.title}
@@ -16,7 +16,7 @@ function ItemsSection({ order }) {
             src={item.deal.main_image_thumbnail_url}
           />
         </div>
-        <div className="flex-1 d-flex align-items-center">
+        <div className="flex-1 d-flex flex-column justify-content-center">
           <div className="u-fontNormal u-textBlack u-fontWeightBold">
             {item.deal.title}
           </div>
@@ -31,7 +31,7 @@ function ItemsSection({ order }) {
           <div>{englishNumberToPersianNumber(item.amount)}</div>
           عدد
         </div>
-        <div className="u-no-wrap d-flex justify-content-center align-items-center">
+        <div className="u-no-wrap d-flex flex-column justify-content-center">
           {item.deal.discounted_price !== item.deal.initial_price && (
             <div className="u-fontSemiSmall u-text-darkest-grey u-text-line-through">
               {priceFormatter(item.deal.initial_price)}
