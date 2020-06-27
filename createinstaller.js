@@ -14,12 +14,13 @@ function getInstallerConfig() {
   const outPath = path.join(rootPath, 'build')
 
   return Promise.resolve({
-    appDirectory: path.join(outPath, 'vitrin-pos-win32-x64/'),
+    // appDirectory: path.join(outPath, 'vitrin-pos-win32-x64/'),
+    appDirectory: path.join(outPath, 'vitrin-pos-win32-ia32/'),
     authors: 'mrafei',
     noMsi: true,
     outputDirectory: path.join(outPath, 'installable'),
     exe: 'vitrin-pos.exe',
-    setupExe: 'VitrinPOS.exe',
+    setupExe: 'VitrinPOS-32bit.exe',
     setupIcon: path.join(rootPath, 'assets', 'icon.ico'),
     skipUpdateIcon: true,
     loadingGif: path.join(rootPath, 'assets', 'loading.gif'),

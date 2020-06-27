@@ -27,7 +27,7 @@ export function* getFoodAdminOrdersFunc(action) {
       request,
       BUSINESS_ORDERS_API('food', page, ADMIN_ORDERS_PAGE_SIZE),
       {domain},
-      'PATCH'
+      'GET'
     );
     const pagesCount = Math.ceil(pagination.count / ADMIN_ORDERS_PAGE_SIZE);
 
