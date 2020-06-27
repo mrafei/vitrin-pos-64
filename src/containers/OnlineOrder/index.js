@@ -110,11 +110,22 @@ export function OnlineOrder({
       <div
         className="px-3 u-background-white m-5 u-height-70 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
         {order.order_status === 0 && <>
-          <PrimaryButton isLoading={loading} onClick={accept} className="mx-2" text="تایید سفارش"/>
-          <PrimaryButton isLoading={loading} onClick={() => {
-            _cancelOrder({id: order.id});
-          }} className="mx-2 u-text-primary-blue" bgColor="white"
-                         style={{border: '1px solid #168fd5'}} text="لغو سفارش"/></>}
+          <PrintButton order={order} business={business} acceptOrder={accept} loading={loading}/>
+
+          <button
+            className={`c-btn c-btn-blue d-flex justify-content-center align-items-center c-btn-primary u-fontSemiSmall mx-2 u-text-white u-background-primary-light-blue`}
+            disabled={loading}
+            type="button"
+            tabIndex="0"
+            onClick={() => {
+              _cancelOrder({id: order.id});
+            }}>
+            <div className="d-flex ml-2 u-border-radius-50-percent u-background-white" style={{width: 20, height: 20}}>
+              <Icon icon={ICONS.CLOSE} size={25} width={20} height={20} color="#65BBEE"/>
+            </div>
+            لغو سفارش
+          </button>
+        </>}
 
         {order.order_status === 1 || order.order_status === 3 ?
           <div
@@ -126,7 +137,6 @@ export function OnlineOrder({
             className="text-center u-text-red mx-2 u-border-radius-8 d-flex justify-content-center align-items-center"
             style={{width: '200%', border: '1px solid #E13F18'}}>سفارش لغو شد.</div> : null}
 
-        <PrintButton order={order} business={business}/>
         {order.user_address && (
           <a href={`tel:${order.user_address.phone}`}
              className="w-100 mx-2 px-2 u-cursor-pointer u-text-primary-light-blue u-border-primary-light-blue d-flex justify-content-center align-items-center u-border-radius-8">

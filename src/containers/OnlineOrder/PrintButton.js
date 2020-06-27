@@ -10,11 +10,12 @@ import {
 import Icon from '../../components/Icon';
 import {ICONS} from '../../../assets/images/icons';
 import {ipcRenderer} from "electron";
+import ButtonLoading from "../../components/Button/Loading";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class ComponentToPrint extends React.Component {
   render() {
-    const { order, business } = this.props;
+    const {order, business} = this.props;
     let cost = 'رایگان';
     if (+order.delivery_price === 999999) cost = 'خارج از محدوده ارسال';
     else if (+order.delivery_price !== 0)
@@ -70,7 +71,7 @@ class ComponentToPrint extends React.Component {
             <span>جزئیات ارسال: </span>
             <span
               className="u-fontWeightBold"
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{whiteSpace: 'pre-wrap'}}
             >
               {(order && order.description) || 'ندارد'}
             </span>
@@ -78,16 +79,17 @@ class ComponentToPrint extends React.Component {
         </div>
 
         <div className="py-1 u-border-bottom-dark">
-          <div className="d-flex flex-row px-2 mt-1 u-background-black u-fontWeightBold u-text-white u-border-bottom-dark py-1">
-            <div style={{ width: 160, whiteSpace: 'pre-wrap' }}>نام</div>
-            <div className="text-center" style={{ width: 80 }}>
+          <div
+            className="d-flex flex-row px-2 mt-1 u-background-black u-fontWeightBold u-text-white u-border-bottom-dark py-1">
+            <div style={{width: 160, whiteSpace: 'pre-wrap'}}>نام</div>
+            <div className="text-center" style={{width: 80}}>
               فی
             </div>
-            <div className="text-center" style={{ width: 25 }}>
+            <div className="text-center" style={{width: 25}}>
               تعداد
             </div>
 
-            <div className="text-center" style={{ width: 80 }}>
+            <div className="text-center" style={{width: 80}}>
               قیمت کل
             </div>
           </div>
@@ -97,16 +99,16 @@ class ComponentToPrint extends React.Component {
               className="d-flex flex-row px-2 mt-1"
               key={`order-item-${item.id}`}
             >
-              <div style={{ width: 160, whiteSpace: 'pre-wrap' }}>
+              <div style={{width: 160, whiteSpace: 'pre-wrap'}}>
                 {item.deal.title}
               </div>
-              <div className="text-center" style={{ width: 80 }}>
+              <div className="text-center" style={{width: 80}}>
                 {priceFormatter(item.deal.discounted_price)}
               </div>
-              <div className="text-center" style={{ width: 25 }}>
+              <div className="text-center" style={{width: 25}}>
                 {englishNumberToPersianNumber(item.amount)}
               </div>
-              <div className="text-center" style={{ width: 80 }}>
+              <div className="text-center" style={{width: 80}}>
                 {priceFormatter(item.deal.discounted_price * item.amount)}
               </div>
             </div>
@@ -117,7 +119,7 @@ class ComponentToPrint extends React.Component {
             <span>قیمت اولیه: </span>
             <span
               className="u-fontWeightBold"
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{whiteSpace: 'pre-wrap'}}
             >
               {priceFormatter(order.total_initial_price)} تومان
             </span>
@@ -126,7 +128,7 @@ class ComponentToPrint extends React.Component {
             <span>جمع تخفیف‌ها: </span>
             <span
               className="u-fontWeightBold"
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{whiteSpace: 'pre-wrap'}}
             >
               {priceFormatter(
                 order.total_initial_price - order.final_price_without_delivery,
@@ -142,7 +144,7 @@ class ComponentToPrint extends React.Component {
             <span>قابل پرداخت: </span>
             <span
               className="u-fontWeightBold u-background-black u-text-white p-1"
-              style={{ whiteSpace: 'pre-wrap' }}
+              style={{whiteSpace: 'pre-wrap'}}
             >
               {priceFormatter(order.final_price)} تومان
             </span>
@@ -164,30 +166,31 @@ class ComponentToPrint extends React.Component {
 
 }
 
-function PrintButton({order, business}) {
+function PrintButton({order, business, acceptOrder, loading}) {
   return (
     <>
       <div
         onClick={() => {
+          acceptOrder();
           ipcRenderer.send('print',
             renderToString(<ComponentToPrint order={order}
                                              business={business}/>),
             business.get_vitrin_absolute_url)
         }}
-        className="u-border-radius-8 mx-2 px-2 w-100 u-cursor-pointer d-flex justify-content-center align-items-center u-background-primary-light-blue">
-        <Icon
+        className="u-border-radius-8 mx-2 px-2 w-100 u-cursor-pointer d-flex justify-content-center align-items-center u-background-primary-blue">
+        {!loading && <Icon
           icon={ICONS.PRINT}
           color="white"
           size={19}
           width={24}
           height={24}
           className="d-flex"
-        />
+        />}
         <button
           type="button"
           className="u-text-white d-inline-block mr-1"
         >
-          پرینت سفارش
+          {loading ? <ButtonLoading/> : 'تایید و پرینت سفارش'}
         </button>
       </div>
     </>
@@ -196,7 +199,8 @@ function PrintButton({order, business}) {
 
 PrintButton.propTypes = {
   order: PropTypes.object.isRequired,
-  business: PropTypes.object.isRequired
+  business: PropTypes.object.isRequired,
+  acceptOrder: PropTypes.func,
 };
 ComponentToPrint.propTypes = {
   order: PropTypes.object.isRequired,
