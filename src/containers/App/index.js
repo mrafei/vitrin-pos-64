@@ -22,6 +22,7 @@ import {makeSelectSnackBarMessage} from "../../../stores/ui/selector";
 import initPushNotification from "../pushNotification";
 import {getFoodAdminOrders} from "../OnlineOrders/actions";
 import {makeSelectBusinessTitle} from "../../../stores/business/selector";
+import DeliverersList from "../DeliverersList";
 
 
 const App = function ({history, _getBusinesses, location, siteDomain, _setSnackBarMessage, snackBarMessage, _getAdminOrders, businessTitle}) {
@@ -64,6 +65,8 @@ const App = function ({history, _getBusinesses, location, siteDomain, _setSnackB
             <Route exact path="/login" component={Login}/>
             <Route exact path="/online-orders/:id" component={OnlineOrder}/>
             <Route exact path="/online-orders" component={OnlineOrders}/>
+            <Route exact path="/delivery" component={DeliverersList}/>
+
             <Redirect path="/" to="/online-orders"/>
           </Switch>
         </Layout>

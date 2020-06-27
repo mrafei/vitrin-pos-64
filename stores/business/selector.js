@@ -145,7 +145,14 @@ const makeSelectProduct = id =>
           .deals.find(product => product.id === id)
       )
   );
-
+const makeSelectDeliverers = () =>
+  createSelector(
+    selectBusiness,
+    state => state.business.plugins_config
+      && state.business.plugins_config.food
+      && state.business.plugins_config.food.data
+      && state.business.plugins_config.food.data.deliverers || []
+  );
 export {
   makeSelectProduct,
   makeSelectBusiness,
@@ -167,4 +174,5 @@ export {
   makeSelectProducts,
   makeSelectBusinessFoodDemo,
   makeSelectPlugin,
+  makeSelectDeliverers,
 };

@@ -10,7 +10,8 @@ const routes = [
   {id: 2, disabled: true, title: 'سفارش تلفنی', path: '/phone-orders', icon: ICONS.PHONE},
   {id: 3, disabled: true, title: 'سفارش سالن و بیرون‌بر', path: '/takeout-orders', icon: ICONS.ORDER},
   {id: 4, disabled: true, title: 'مدیریت منو رستوران', path: 'products', icon: ICONS.LIST},
-  {id: 5, disabled: true, title: 'لیست مشترکین', path: '/users', icon: ICONS.PROFILE}
+  {id: 5, disabled: true, title: 'لیست مشترکین', path: '/users', icon: ICONS.PROFILE},
+  {id: 5, disabled: true, title: 'مدیریت پیک‌ها', path: '/delivery', icon: ICONS.DELIVERY},
 ];
 
 function Layout({children, location, title}) {
