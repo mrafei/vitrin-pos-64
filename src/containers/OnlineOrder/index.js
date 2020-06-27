@@ -111,8 +111,8 @@ export function OnlineOrder({
               />
             </div>
           </div>
-          <div className="u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4"
-               style={{width: 395, height: 'fit-content'}}>
+          {deliverers.length ? <div className="u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4"
+                                     style={{width: 395, height: 'fit-content'}}>
 
             <div className="d-flex flex-column flex-1 p-3">
 
@@ -137,8 +137,7 @@ export function OnlineOrder({
                   </div>)}
               </div>
             </div>
-          </div>
-
+          </div>: null}
         </div>}
       </div>
       <div

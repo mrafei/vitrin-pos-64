@@ -35,7 +35,7 @@ export function* getFoodAdminOrder(action) {
   } catch (err) {
     yield put(stopLoading());
   }
-}p
+}
 
 export function* acceptFoodOrder(action) {
   try {

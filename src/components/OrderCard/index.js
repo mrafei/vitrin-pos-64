@@ -34,38 +34,17 @@ function OrderCard({order, link}) {
     <>
       <Link
         to={link}
-        className="d-flex px-0 u-cursor-pointer c-order-card mb-3 overflow-hidden"
+        className="d-flex px-0 u-cursor-pointer c-order-card overflow-hidden"
       >
         <div
           style={{
-            width: 8,
+            minWidth: 4,
             backgroundColor
           }}
         />
-        <div className="flex-1">
-          <div className="d-flex text-center py-1 u-text-darkest-grey u-background-light-grey">
-            <span className="col-3 px-0">
-              {ellipseText(englishNumberToPersianNumber(order.order_id), 8)}
-            </span>
-            <div
-              style={{minWidth: 1}}
-              className="u-background-darkest-grey"
-            />
-
-            <span className="col-5 px-0">
-              {ellipseText(userAddress.name, 18)}
-            </span>
-
-            <div
-              style={{minWidth: 1}}
-              className="u-background-darkest-grey"
-            />
-            <span className="col-4 px-0">
-              {englishNumberToPersianNumber(priceFormatter(totalPrice))} تومان{' '}
-            </span>
-          </div>
-          <div className="d-flex justify-content-between px-2 py-1">
-            <div className="d-flex align-items-center">
+        <div
+          className={`d-flex w-100 text-center py-1 ${order.order_status !== 0 ? "u-background-melo-grey u-text-darkest-grey" : "u-background-white u-fontWeightBold u-text-black"}  pl-2`}>
+          <div className="d-flex px-2 align-items-center">
               <span>
                 {englishNumberToPersianNumber(
                   `${`0${orderDate.getHours()}`.slice(
@@ -73,65 +52,44 @@ function OrderCard({order, link}) {
                   )}:${`0${orderDate.getMinutes()}`.slice(-2)}`
                 )}
               </span>
-              <div
-                style={{width: 2, height: 15}}
-                className="mx-2 u-background-dark-grey"
-              />
-              <span>
-                {englishNumberToPersianNumber(
-                  orderTime.format('jYYYY/jMM/jDD')
-                )}
-              </span>
-            </div>
-            {paymentStatus === 1 && (
-              <div className="d-flex">
-                <Icon
-                  icon={ICONS.CREDIT_CARD}
-                  width="16"
-                  height="12"
-                  className="mt-1"
-                  color="#67B977"
-                />
-                <span className="u-text-green mr-1">آنلاین</span>
-              </div>
-            )}
-            {paymentStatus === 2 && (
-              <div className="d-flex">
-                <Icon icon={ICONS.CASH} size={19} color="#E13F18"/>
-                <span className="u-text-red mr-1">نقدی</span>
-              </div>
-            )}
-          </div>
-          <div className="px-2 py-1 d-flex align-items-center">
-            <span>
-            شماره تماس: {englishNumberToPersianNumber(userAddress.phone)}
-            </span>
             <div
               style={{width: 2, height: 15}}
               className="mx-2 u-background-dark-grey"
             />
             <span>
-            آدرس:{' '}
-              {deliveryOnSite ? 'تحویل در محل رستوران' : userAddress.address}
-            </span>
+                {englishNumberToPersianNumber(
+                  orderTime.format('jYYYY/jMM/jDD')
+                )}
+              </span>
           </div>
 
-          <div className="px-3 pb-2 d-flex justify-content-between align-items-center">
-            {orderStatus === 0 && (
-              <span className="u-fontWeightBold u-text-primary-blue u-font-medium">جدید</span>
-            )}
-            {orderStatus === 2 && (
-              <span className="u-fontWeightBold u-text-red u-font-medium">لغو شده</span>
-            )}
-            {(orderStatus === 1 || orderStatus === 3) && (
-              <span className="u-fontWeightBold u-text-primary-green u-font-medium">
-                تایید شده
-              </span>
-            )}
-            <div
-              className="d-flex align-items-center u-fontWeightBold c-btn c-btn--cancel--order u-w-auto px-2 shadow-none">
-              مشاهده جزییات
+          <span className="px-2" style={{width: 75}}>
+              {ellipseText(englishNumberToPersianNumber(order.order_id), 8)}
+            </span>
+          <span className="u-text-ellipse px-2" style={{width: 114}}>
+            {ellipseText(userAddress.name, 18)}
+          </span>
+
+          <span className="u-text-ellipse px-2 flex-1 text-right">
+            {deliveryOnSite ? 'تحویل در محل رستوران' : userAddress.address}
+            </span>
+          {paymentStatus === 1 && (
+            <div className="d-flex" style={{width: 35}}>
+              <span className="u-text-green mr-1">آنلاین</span>
             </div>
+          )}
+          {paymentStatus === 2 && (
+            <div className="d-flex" style={{width: 35}}>
+              <span className="u-text-red mr-1">نقدی</span>
+            </div>
+          )}
+
+          <span className="px-2 u-no-wrap u-text-ellipse" style={{width: 110}}>
+            {englishNumberToPersianNumber(priceFormatter(totalPrice))} تومان{' '}
+          </span>
+          <div style={{width: 30}}>
+            {order.deliverer_name && <Icon icon={ICONS.DELIVERY} size={24} width={18} height={18} color="#67B977"/>}
+
           </div>
         </div>
       </Link>
