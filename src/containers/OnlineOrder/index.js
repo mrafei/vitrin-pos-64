@@ -56,8 +56,11 @@ export function OnlineOrder({
       _getAdminOrder({id: match.params.id});
     }, 0);
   }, []);
+  useEffect(() => {
+    setDeliverer(order.deliverer_name)
+  }, [order])
   const [duration, setDuration] = useState('');
-  const [deliverer, setDeliverer] = useState(null);
+  const [deliverer, setDeliverer] = useState('');
   const accept = () => {
     _acceptOrder({id: order.id, plugin: 'food', deliveryTime: duration ? parseInt(duration, 10) * 60 : '', deliverer});
   };
@@ -87,7 +90,6 @@ export function OnlineOrder({
           </div>
 
         </div>
-        {order.order_status === 0 &&
         <div>
           <div className="u-relative u-background-white box-shadow u-border-radius-8 mr-4"
                style={{width: 395, height: 'fit-content'}}>
@@ -102,6 +104,7 @@ export function OnlineOrder({
                 مدت زمان تخمینی آماده‌سازی و ارسال این سفارش را وارد کنید.
               </div>
               <Input
+                disabled={order.order_status !== 0}
                 className="mt-2"
                 noModal
                 numberOnly
@@ -112,7 +115,7 @@ export function OnlineOrder({
             </div>
           </div>
           {deliverers.length ? <div className="u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4"
-                                     style={{width: 395, height: 'fit-content'}}>
+                                    style={{width: 395, height: 'fit-content'}}>
 
             <div className="d-flex flex-column flex-1 p-3">
 
@@ -122,23 +125,23 @@ export function OnlineOrder({
               </div>
               <div className="d-flex flex-wrap mt-4">
                 {deliverers.map(d =>
-                  <div className="d-flex col-6 px-0 mt-2 u-cursor-pointer"
+                  <div className={`d-flex col-6 px-0 mt-2 u-cursor-pointer ${order.order_status !== 0 && "u-pointer-events-none"}`}
                        onClick={() => setDeliverer(d.name)}
                        key={`deliverer-${d.name}`}>
                     <label className="radio-container">
                       <input type="radio" name="radio" readOnly checked={deliverer === d.name}/>
                       <span className="radio-checkmark">
-                  <div className="after"/>
-                </span>
+                        <div className="after"/>
+                      </span>
                     </label>
                     <span className="u-text-black">
-                {d.name}
-                </span>
+                      {d.name}
+                    </span>
                   </div>)}
               </div>
             </div>
-          </div>: null}
-        </div>}
+          </div> : null}
+        </div>
       </div>
       <div
         className="px-3 u-background-white m-5 u-height-70 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
