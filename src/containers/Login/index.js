@@ -11,6 +11,7 @@ import {compose} from 'redux';
 import {login, verify} from '../../../stores/user/actions';
 import {createStructuredSelector} from 'reselect';
 import {makeSelectLoading} from '../App/selectors';
+import Input from "../../components/Input";
 
 function Login({_login, loading, _verify, history}) {
   const [phone, setPhone] = useState('');
@@ -32,11 +33,12 @@ function Login({_login, loading, _verify, history}) {
         </div>
       </div>
       <div className="d-flex flex-column justify-content-center" style={{width: '45%', maxWidth: 400}}>
-        <input className="u-border-bottom-dark-grey w-100 text-center direction-ltr"
+        <Input className="u-border-bottom-dark-grey w-100 direction-ltr"
+               style={{textAlign: 'center'}}
                placeholder="۰۹** *** ****"
                type="tel"
-               onChange={(e) => {
-                 const number = persianToEnglishNumber(e.target.value.slice(0, 11))
+               onChange={(value) => {
+                 const number = persianToEnglishNumber(value.slice(0, 11))
                  setPhoneError('');
                  if (number.length > 10)
                    if (!validatePhone(number))
@@ -48,9 +50,11 @@ function Login({_login, loading, _verify, history}) {
                value={phone ? englishNumberToPersianNumber(phone) : ''}
         />
         <div className="u-text-red text-right mt-2">{phoneError}</div>
-        <input className="u-border-bottom-dark-grey w-100 text-center" id="otp" maxLength="4"
+        <Input className="u-border-bottom-dark-grey w-100 text-center" id="otp" maxLength="4"
+               style={{textAlign: 'center'}}
                placeholder="...."
-               onChange={(e) => setCode(e.target.value)} style={{marginTop: 60}}/>
+               value={code ? englishNumberToPersianNumber(code) : ''}
+               onChange={(value) => setCode(persianToEnglishNumber(value))}/>
         <PrimaryButton isLoading={loading} text="تایید و ادامه" style={{marginTop: 60}}
                        disabled={code.length !== 4 || !validatePhone(phone)}
                        onClick={() => {

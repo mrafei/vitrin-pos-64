@@ -23,3 +23,7 @@ export const DELETE_POST = 'store/business/DELETE_POST';
 export const UPDATE_POST = 'store/business/UPDATE_POST';
 
 export const UPDATE_SECTION = 'store/business/UPDATE_SECTION';
+export const SET_PLUGIN_DATA = 'store/business/SET_PLUGIN_DATA';
+export const GET_DELIVERIES = 'store/business/GET_DELIVERIES';
+export const SET_DELIVERIES = 'store/business/SET_DELIVERIES';
+export const DELIVERIES_PAGE_SIZE = 20;

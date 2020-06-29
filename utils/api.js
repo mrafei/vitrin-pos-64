@@ -67,6 +67,8 @@ export const ORDER_STATUS_CANCELLED_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/change_order_status_to_cancelled/`;
 export const ORDER_STATUS_DELIVERED_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/change_order_status_to_delivered/`;
+export const ORDER_DELIVERIES_BY_DELIVERER = (page, pageSize) => `${BASE_URL}food_orders/by_deliverer_name/?page=${page}&page_size=${pageSize}`;
+
 export const ORDER_ONLINE_PAYMENT_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/payment_transaction/`;
 export const ORDER_DISCOUNT_API = (id, plugin) =>

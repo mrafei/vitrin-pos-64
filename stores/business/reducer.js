@@ -8,11 +8,13 @@
  */
 
 import produce from 'immer';
-import { SET_BUSINESS } from './constants';
+import {SET_BUSINESS, SET_DELIVERIES} from './constants';
 
 // The initial state of the App
 export const initialState = {
   business: {},
+  deliveries: [],
+  deliveriesPagination: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -21,6 +23,10 @@ const appReducer = (state = initialState, action) =>
     switch (action.type) {
       case SET_BUSINESS:
         draft.business = action.data;
+        break;
+      case SET_DELIVERIES:
+        draft.deliveries = action.data;
+        draft.deliveriesPagination = action.pagination;
         break;
     }
   });

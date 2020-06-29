@@ -153,6 +153,16 @@ const makeSelectDeliverers = () =>
       && state.business.plugins_config.food.data
       && state.business.plugins_config.food.data.deliverers || []
   );
+const makeSelectDeliveries = () =>
+  createSelector(
+    selectBusiness,
+    state => state.deliveries
+  );
+const makeSelectDeliveriesPagination = () =>
+  createSelector(
+    selectBusiness,
+    state => state.deliveriesPagination
+  );
 export {
   makeSelectProduct,
   makeSelectBusiness,
@@ -175,4 +185,6 @@ export {
   makeSelectBusinessFoodDemo,
   makeSelectPlugin,
   makeSelectDeliverers,
+  makeSelectDeliveries,
+  makeSelectDeliveriesPagination
 };

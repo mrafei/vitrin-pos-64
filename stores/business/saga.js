@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select } from '@redux-saga/core/effects';
+import {call, put, takeLatest, select} from '@redux-saga/core/effects';
 import {
   startLoading,
   stopLoading,
@@ -18,6 +18,7 @@ import {
   SUGGEST_EDIT_API,
   POST_VIDEOS_API,
   POST_VIDEOS_ITEM_API,
+  SET_PLUGIN_DATA_API, ORDER_DELIVERIES_BY_DELIVERER,
 } from '../../utils/api';
 import {
   UPDATE_BUSINESS_REQUEST,
@@ -35,24 +36,26 @@ import {
   UPDATE_POST,
   DELETE_POST,
   UPDATE_SECTION,
-  SUGGEST_BUSINESS_EDIT,
+  SUGGEST_BUSINESS_EDIT, SET_PLUGIN_DATA, GET_DELIVERIES, DELIVERIES_PAGE_SIZE,
 } from './constants';
-import { setBusiness } from './actions';
-import { makeSelectSubDomain } from '../../src/containers/App/selectors';
-import { closeModals, setSnackBarMessage } from '../ui/actions';
+import {setBusiness, setDeliveries} from './actions';
+import {makeSelectSubDomain} from '../../src/containers/App/selectors';
+import {closeModals, setSnackBarMessage} from '../ui/actions';
 import {
   makeSelectBusiness,
   makeSelectBusinessSlug,
   makeSelectBusinessThemeConfig,
 } from './selector';
-import { sectionNames } from '../../utils/themeConfig/constants';
+import {sectionNames} from '../../utils/themeConfig/constants';
+import {ADMIN_ORDERS_PAGE_SIZE} from "../../src/containers/OnlineOrders/constants";
+import {setFoodAdminOrders} from "../../src/containers/OnlineOrders/actions";
 
 export function* getBusinessData() {
   try {
     yield put(startLoading());
     const subdomain = yield select(makeSelectSubDomain());
     const {
-      response: { data: business },
+      response: {data: business},
     } = yield call(request, BUSINESS_BY_SITE_DOMAIN_API(subdomain), {}, 'GET');
     yield put(closeModals());
     yield put(setBusiness(business));
@@ -63,12 +66,12 @@ export function* getBusinessData() {
 }
 
 export function* updateBusiness(action) {
-  const { successMessage, failMessage } = action;
+  const {successMessage, failMessage} = action;
   try {
     yield put(startLoading());
     const slug = yield select(makeSelectBusinessSlug());
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(request, BUSINESS_BY_SLUG_API(slug), action.data, 'PATCH');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(
@@ -93,10 +96,10 @@ export function* updateBusiness(action) {
 }
 
 export function* updateBusinessWorkingHour(action) {
-  const { data, label } = action;
+  const {data, label} = action;
   const business = yield select(makeSelectBusiness());
 
-  const workingHours = { ...business.working_hours };
+  const workingHours = {...business.working_hours};
   workingHours[label] = data.map(shift => ({
     to: `${shift.to}:00`,
     from: `${shift.from}:00`,
@@ -104,11 +107,11 @@ export function* updateBusinessWorkingHour(action) {
   try {
     yield put(startLoading());
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(
       request,
       BUSINESS_BY_SLUG_API(business.slug),
-      { working_hours: workingHours },
+      {working_hours: workingHours},
       'PATCH',
     );
     if (meta.status_code >= 200 && meta.status_code <= 300) {
@@ -121,11 +124,11 @@ export function* updateBusinessWorkingHour(action) {
 }
 
 export function* createCategory(action) {
-  const { name } = action.data;
+  const {name} = action.data;
   try {
     yield put(startLoading());
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(request, CATEGORIES_API, action.data, 'POST');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(
@@ -145,13 +148,13 @@ export function* createCategory(action) {
 }
 
 export function* updateCategory(action) {
-  const { id, name } = action.data;
+  const {id, name} = action.data;
   try {
     yield put(startLoading());
 
     const {
-      response: { meta },
-    } = yield call(request, CATEGORIES_ITEMS_API(id), { name }, 'PATCH');
+      response: {meta},
+    } = yield call(request, CATEGORIES_ITEMS_API(id), {name}, 'PATCH');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(
         setSnackBarMessage(
@@ -174,12 +177,12 @@ export function* updateCategory(action) {
 }
 
 export function* deleteCategory(action) {
-  const { name, id } = action.data;
-  const { history } = action;
+  const {name, id} = action.data;
+  const {history} = action;
   try {
     yield put(startLoading());
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(request, CATEGORIES_ITEMS_API(id), {}, 'DELETE');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(
@@ -202,10 +205,10 @@ export function* deleteCategory(action) {
 export function* createProduct(action) {
   try {
     yield put(startLoading());
-    const { product, images } = action.data;
+    const {product, images} = action.data;
 
     const {
-      response: { meta, data: deal },
+      response: {meta, data: deal},
     } = yield call(request, DEALS_API, product, 'POST');
 
     if (meta.status_code >= 200 && meta.status_code <= 300) {
@@ -229,10 +232,10 @@ export function* createProduct(action) {
 export function* updateProduct(action) {
   try {
     yield put(startLoading());
-    const { id, product, images } = action.data;
+    const {id, product, images} = action.data;
 
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(request, DEALS_ITEM_API(id), product, 'PATCH');
 
     if (meta.status_code >= 200 && meta.status_code <= 300) {
@@ -258,9 +261,9 @@ export function* updateProduct(action) {
 export function* deleteProduct(action) {
   try {
     yield put(startLoading());
-    const { id } = action.data;
+    const {id} = action.data;
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(request, DEALS_ITEM_API(id), {}, 'DELETE');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(setSnackBarMessage('محصول مورد نظر حذف شد.', 'success'));
@@ -277,7 +280,7 @@ export function* addImageToProduct(action) {
   try {
     yield put(startLoading());
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(request, DEALS_IMAGES_API, action.data, 'POST');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield call(getBusinessData);
@@ -291,9 +294,9 @@ export function* addImageToProduct(action) {
 export function* deleteImageFromProduct(action) {
   try {
     yield put(startLoading());
-    const { id } = action.data;
+    const {id} = action.data;
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(request, DEALS_IMAGES_ITEM_API(id), {}, 'DELETE');
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       // yield call(getBusinessData);
@@ -307,9 +310,9 @@ export function* deleteImageFromProduct(action) {
 export function* createPost(action) {
   try {
     yield put(startLoading());
-    const { post } = action.data;
+    const {post} = action.data;
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(
       request,
       action.postType === 'image' ? POST_IMAGES_API : POST_VIDEOS_API,
@@ -331,10 +334,10 @@ export function* createPost(action) {
 export function* updatePost(action) {
   try {
     yield put(startLoading());
-    const { post } = action.data;
+    const {post} = action.data;
 
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(
       request,
       action.postType === 'image'
@@ -358,9 +361,9 @@ export function* updatePost(action) {
 export function* deletePost(action) {
   try {
     yield put(startLoading());
-    const { id } = action.data;
+    const {id} = action.data;
     const {
-      response: { meta },
+      response: {meta},
     } = yield call(
       request,
       action.postType === 'image'
@@ -386,17 +389,17 @@ export function* changeCategoryOrderFunc(action) {
     const slug = yield select(makeSelectBusinessSlug());
     const themeConfig = yield select(makeSelectBusinessThemeConfig());
     const business = yield select(makeSelectBusiness());
-    const { data: sections } = action;
+    const {data: sections} = action;
     const {
-      response: { meta, data },
+      response: {meta, data},
     } = yield call(
       request,
       BUSINESS_BY_SLUG_API(slug),
-      { theme_config: { ...themeConfig, sections_skeleton: sections } },
+      {theme_config: {...themeConfig, sections_skeleton: sections}},
       'PATCH',
     );
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      yield put(setBusiness({ ...business, ...data }));
+      yield put(setBusiness({...business, ...data}));
     } else yield put(setSnackBarMessage('ویرایش ناموفق بود!', 'fail'));
     yield put(stopLoading());
   } catch (err) {
@@ -411,18 +414,18 @@ export function* updateSection(action) {
     const slug = yield select(makeSelectBusinessSlug());
     const themeConfig = yield select(makeSelectBusinessThemeConfig());
     const business = yield select(makeSelectBusiness());
-    const { sections_skeleton: sections } = themeConfig;
-    const { data: updatedSection } = action;
+    const {sections_skeleton: sections} = themeConfig;
+    const {data: updatedSection} = action;
     const sectionIndex = sections.findIndex(
       s => s.name === updatedSection.name,
     );
     sections.splice(sectionIndex, 1, updatedSection);
     const {
-      response: { meta, data },
+      response: {meta, data},
     } = yield call(
       request,
       BUSINESS_BY_SLUG_API(slug),
-      { theme_config: { ...themeConfig, sections_skeleton: sections } },
+      {theme_config: {...themeConfig, sections_skeleton: sections}},
       'PATCH',
     );
     if (meta.status_code >= 200 && meta.status_code <= 300) {
@@ -434,7 +437,7 @@ export function* updateSection(action) {
           'success',
         ),
       );
-      yield put(setBusiness({ ...business, ...data }));
+      yield put(setBusiness({...business, ...data}));
     } else yield put(setSnackBarMessage('ویرایش ناموفق بود!', 'fail'));
     yield put(stopLoading());
   } catch (err) {
@@ -442,19 +445,72 @@ export function* updateSection(action) {
     yield put(stopLoading());
   }
 }
+
 export function* suggestEdit(action) {
   try {
     const business = yield select(makeSelectBusiness());
     yield call(
       request,
       SUGGEST_EDIT_API,
-      { business: business.id, ...action.data },
+      {business: business.id, ...action.data},
       'POST',
     );
   } catch (err) {
     // console.log(err);
   }
 }
+
+export function* setPluginData(action) {
+  try {
+    yield put(startLoading());
+    const slug = yield select(makeSelectBusinessSlug());
+    const business = yield select(makeSelectBusiness());
+    const {
+      response: {data},
+    } = yield call(request, SET_PLUGIN_DATA_API(slug), action.data, 'PATCH');
+    if (data) {
+      yield put(setBusiness({...business, ...data}));
+      yield put(
+        setSnackBarMessage(
+          action.successMessage,
+          'success',
+        ),
+      );
+    } else yield put(setSnackBarMessage(
+      action.errorMessage,
+      'fail',
+    ));
+
+    yield put(stopLoading());
+  } catch (err) {
+    yield put(setSnackBarMessage(
+      action.errorMessage,
+      'fail',
+    ));
+    yield put(stopLoading());
+  }
+}
+
+export function* getDeliveries(action) {
+  try {
+    yield put(startLoading());
+    const domain = yield select(makeSelectSubDomain());
+    const page = action.data.page || 1;
+    const {
+      response: {data, pagination},
+    } = yield call(request, ORDER_DELIVERIES_BY_DELIVERER(page, DELIVERIES_PAGE_SIZE)
+      , {domain, deliverer_name: action.data.deliverer}, 'GET');
+    const pagesCount = Math.ceil(pagination.count / DELIVERIES_PAGE_SIZE);
+
+    if (data) {
+      yield put(setDeliveries(data, {...pagination, pagesCount}));
+    }
+    yield put(stopLoading());
+  } catch (err) {
+    yield put(stopLoading());
+  }
+}
+
 export default [
   takeLatest(GET_BUSINESS, getBusinessData),
   takeLatest(UPDATE_BUSINESS_REQUEST, updateBusiness),
@@ -472,4 +528,6 @@ export default [
   takeLatest(DELETE_POST, deletePost),
   takeLatest(UPDATE_SECTION, updateSection),
   takeLatest(SUGGEST_BUSINESS_EDIT, suggestEdit),
+  takeLatest(SET_PLUGIN_DATA, setPluginData),
+  takeLatest(GET_DELIVERIES, getDeliveries),
 ];

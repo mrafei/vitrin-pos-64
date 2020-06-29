@@ -71,3 +71,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.MuiFilledInput-root {
+  background-color: white !important;
+}

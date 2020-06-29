@@ -76,7 +76,7 @@ export function OnlineOrder({
                 className="c-modal-header-close float-right"
                 icon={ICONS.CLOSE}
                 size={25}
-                onClick={() => history.push('/online-orders')}
+                onClick={history.goBack}
                 color="#949c9f"
               />
             </div>

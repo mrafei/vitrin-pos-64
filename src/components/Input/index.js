@@ -5,7 +5,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, {memo, useState} from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/esm/TextField';
 
@@ -18,6 +18,7 @@ function Input({
                  themeColor,
                  noModal,
                  numberOnly,
+                 style,
                  ...props
                }) {
   const [assistiveText, setAssistiveText] = useState('');
@@ -45,8 +46,9 @@ function Input({
         ) : (
           <TextField
             InputLabelProps={{
-              style: { textAlign: 'left', direction: 'rtl' }
+              style: {textAlign: 'left', direction: 'rtl'},
             }}
+            inputProps={{style}}
             fullWidth
             variant="filled"
             className={`u-fontLarge ${className}`}

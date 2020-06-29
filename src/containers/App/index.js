@@ -23,6 +23,9 @@ import initPushNotification from "../pushNotification";
 import {getFoodAdminOrders} from "../OnlineOrders/actions";
 import {makeSelectBusinessTitle} from "../../../stores/business/selector";
 import DeliverersList from "../DeliverersList";
+import CreateDeliverer from "../CreateDeliverer";
+import EditDeliverer from "../EditDeliverer";
+import DeliveriesList from "../DeliveriesList";
 
 
 const App = function ({history, _getBusinesses, location, siteDomain, _setSnackBarMessage, snackBarMessage, _getAdminOrders, businessTitle}) {
@@ -37,7 +40,7 @@ const App = function ({history, _getBusinesses, location, siteDomain, _setSnackB
     } else
       history.push('/login');
     document.addEventListener("keydown", function (zEvent) {
-      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "x") {
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "X") {
         delete Axios.defaults.headers.common.Authorization;
         history.push('/login');
         localStorage.removeItem('token');
@@ -65,8 +68,11 @@ const App = function ({history, _getBusinesses, location, siteDomain, _setSnackB
             <Route exact path="/login" component={Login}/>
             <Route exact path="/online-orders/:id" component={OnlineOrder}/>
             <Route exact path="/online-orders" component={OnlineOrders}/>
-            <Route exact path="/delivery" component={DeliverersList}/>
-
+            <Route exact path="/delivery/deliverers/new" component={CreateDeliverer}/>
+            <Route exact path="/delivery/deliverers/:id" component={EditDeliverer}/>
+            <Route exact path="/delivery/deliverers" component={DeliverersList}/>
+            <Route exact path="/delivery/deliveries" component={DeliveriesList}/>
+            <Redirect path="/delivery" to="/delivery/deliverers"/>
             <Redirect path="/" to="/online-orders"/>
           </Switch>
         </Layout>

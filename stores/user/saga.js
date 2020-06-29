@@ -76,9 +76,7 @@ export function* getBusinesses() {
     } = yield call(request, BUSINESSES_BY_OWNER_API);
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       const businessesWithVitrin = data.filter(b => b.get_vitrin_absolute_url);
-      if (businessesWithVitrin.length === 0)
-        window.location.href = 'https://panel.vitrin.site';
-      else {
+      if (businessesWithVitrin.length !== 0) {
         yield put(setSiteDomain(businessesWithVitrin[0].site_domain));
         yield call(getBusinessData);
       }
