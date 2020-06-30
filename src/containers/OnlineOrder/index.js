@@ -35,6 +35,7 @@ import {useInjectSaga} from '../../../utils/injectSaga';
 import saga from './saga';
 import reducer from './reducer';
 import PrintButton from './PrintButton';
+import PrintOnly from "./PrintOnly";
 
 export function OnlineOrder({
                               adminOrder: order,
@@ -57,7 +58,8 @@ export function OnlineOrder({
     }, 0);
   }, []);
   useEffect(() => {
-    setDeliverer(order.deliverer_name)
+    setDeliverer(order.deliverer_name);
+    setDuration(order.delivery_time ? order.delivery_time / 60 : '')
   }, [order])
   const [duration, setDuration] = useState('');
   const [deliverer, setDeliverer] = useState('');
@@ -125,9 +127,10 @@ export function OnlineOrder({
               </div>
               <div className="d-flex flex-wrap mt-4">
                 {deliverers.map(d =>
-                  <div className={`d-flex col-6 px-0 mt-2 u-cursor-pointer ${order.order_status !== 0 && "u-pointer-events-none"}`}
-                       onClick={() => setDeliverer(d.name)}
-                       key={`deliverer-${d.name}`}>
+                  <div
+                    className={`d-flex col-6 px-0 mt-2 u-cursor-pointer ${order.order_status !== 0 && "u-pointer-events-none"}`}
+                    onClick={() => setDeliverer(d.name)}
+                    key={`deliverer-${d.name}`}>
                     <label className="radio-container">
                       <input type="radio" name="radio" readOnly checked={deliverer === d.name}/>
                       <span className="radio-checkmark">
@@ -149,15 +152,17 @@ export function OnlineOrder({
           <PrintButton order={order} business={business} acceptOrder={accept} loading={loading}/>
 
           <button
-            className={`c-btn c-btn-blue d-flex justify-content-center align-items-center c-btn-primary u-fontSemiSmall mx-2 u-text-white u-background-primary-light-blue`}
+            className={`d-flex justify-content-center u-border-radius-8 align-items-center c-btn-primary u-fontSemiSmall mx-2 u-text-primary-blue u-background-white`}
+            style={{border: '1px solid #168FD5'}}
             disabled={loading}
             type="button"
             tabIndex="0"
             onClick={() => {
               _cancelOrder({id: order.id});
             }}>
-            <div className="d-flex ml-2 u-border-radius-50-percent u-background-white" style={{width: 20, height: 20}}>
-              <Icon icon={ICONS.CLOSE} size={25} width={20} height={20} color="#65BBEE"/>
+            <div className="d-flex ml-2 u-border-radius-50-percent u-background-primary-blue"
+                 style={{width: 20, height: 20}}>
+              <Icon icon={ICONS.CLOSE} size={25} width={20} height={20} color="white"/>
             </div>
             لغو سفارش
           </button>
@@ -172,6 +177,7 @@ export function OnlineOrder({
           <div
             className="text-center u-text-red mx-2 u-border-radius-8 d-flex justify-content-center align-items-center"
             style={{width: '200%', border: '1px solid #E13F18'}}>سفارش لغو شد.</div> : null}
+        <PrintOnly order={order} business={business}/>
 
         {order.user_address && (
           <a href={`tel:${order.user_address.phone}`}

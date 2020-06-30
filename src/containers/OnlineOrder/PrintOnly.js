@@ -166,38 +166,37 @@ class ComponentToPrint extends React.Component {
 
 }
 
-function PrintButton({order, business, acceptOrder, loading}) {
+function PrintOnly({order, business}) {
   return (
     <>
       <div
         onClick={() => {
-          acceptOrder();
           ipcRenderer.send('print',
             renderToString(<ComponentToPrint order={order}
                                              business={business}/>),
-            business.get_vitrin_absolute_url, true)
+            business.get_vitrin_absolute_url, false)
         }}
-        className="u-border-radius-8 mx-2 px-2 w-100 u-cursor-pointer d-flex justify-content-center align-items-center u-background-primary-blue">
-        {!loading && <Icon
+        className="u-border-radius-8 mx-2 px-2 w-100 u-cursor-pointer d-flex justify-content-center align-items-center u-background-primary-light-blue">
+        <Icon
           icon={ICONS.PRINT}
           color="white"
           size={19}
           width={24}
           height={24}
           className="d-flex"
-        />}
+        />
         <button
           type="button"
           className="u-text-white d-inline-block mr-1"
         >
-          {loading ? <ButtonLoading/> : 'تایید و پرینت سفارش'}
+          {'پرینت در پرینترهای دیگر'}
         </button>
       </div>
     </>
   );
 }
 
-PrintButton.propTypes = {
+PrintOnly.propTypes = {
   order: PropTypes.object.isRequired,
   business: PropTypes.object.isRequired,
   acceptOrder: PropTypes.func,
@@ -206,4 +205,4 @@ ComponentToPrint.propTypes = {
   order: PropTypes.object.isRequired,
   business: PropTypes.object.isRequired
 };
-export default memo(PrintButton);
+export default memo(PrintOnly);

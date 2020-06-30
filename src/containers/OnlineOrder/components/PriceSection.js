@@ -33,7 +33,7 @@ function PriceSection({order}) {
         <span className="u-textBlack">جمع تخفیف‌ها: </span>
         <span className="u-text-darkest-grey">
           {priceFormatter(
-            order.final_price_without_delivery - order.total_initial_price
+            order.total_initial_price - order.final_price_without_delivery
           )}
           <span className="u-fontWeightBold" style={{paddingRight: 2, paddingLeft: 5}}>-</span>تومان
                 </span>

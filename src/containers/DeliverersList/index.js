@@ -26,7 +26,7 @@ export function DeliverersList({
       }}>
         <div className="px-60 text-left pt-3">
           <Link
-            to="/deliverers/new"
+            to="/delivery/deliverers/new"
             className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3">
             <Icon icon={ICONS.PLUS} color="white" className="ml-2" size={12}/>
             <span className="u-fontWeightBold u-fontMedium u-text-white">افزودن پیک جدید</span>
@@ -40,7 +40,7 @@ export function DeliverersList({
         <div className="u-background-white py-5 overflow-auto px-60" style={{height: 'calc(100% - 54px)'}}>
           {deliverers.map((deliverer, index) => (
             <Link className="d-flex text-center py-2 mt-1 bg-gray-melo u-border-radius-4"
-                  to={`/deliverers/${index}`}
+                  to={`/delivery/deliverers/${index}`}
                   key={`deliverer-${deliverer.name}`}>
               <span className="px-0 col-1">{englishNumberToPersianNumber(index)}</span>
               <span className="px-0 col-6">{deliverer.name}</span>

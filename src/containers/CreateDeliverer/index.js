@@ -39,7 +39,7 @@ export function CreateDeliverer({
               className="c-modal-header-close float-right"
               icon={ICONS.CLOSE}
               size={25}
-              onClick={() => history.push('/deliverers')}
+              onClick={history.goBack}
               color="#949c9f"
             />
           </div>
@@ -73,7 +73,7 @@ export function CreateDeliverer({
               style={{border: '2px solid #168FD5', boxShadow: 'none'}}
               type="button"
               tabIndex="0"
-              onClick={() => history.push('/deliverers')}
+              onClick={history.goBack}
             >
               لغو و بازگشت
             </button>

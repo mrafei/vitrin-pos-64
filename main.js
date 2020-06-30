@@ -127,12 +127,12 @@ app.on('activate', () => {
   }
 })
 
-ipcMain.on('print', (event, content, url) => {
-  workerWindow.webContents.send('print', content, url);
+ipcMain.on('print', (event, content, url, silent) => {
+  workerWindow.webContents.send('print', content, url, silent);
 });
 
-ipcMain.on('readyToPrint', (event) => {
-  workerWindow.webContents.print({silent: true});
+ipcMain.on('readyToPrint', (event, silent) => {
+  workerWindow.webContents.print({silent});
 });
 
 function handleSquirrelEvent() {
