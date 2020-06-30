@@ -53,7 +53,7 @@ export function* acceptFoodOrder(action) {
         yield call(
           request,
           ORDER_DELIVERER_API(action.data.id, 'food'),
-          {deliverer_name: action.data.deliverer},
+          {deliverer_name: action.data.deliverer, send_sms: action.data.sendSms},
           'PATCH'
         );
 

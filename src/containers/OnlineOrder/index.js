@@ -63,8 +63,16 @@ export function OnlineOrder({
   }, [order])
   const [duration, setDuration] = useState('');
   const [deliverer, setDeliverer] = useState('');
+  const [sendSms, setSendSms] = useState(true);
+
   const accept = () => {
-    _acceptOrder({id: order.id, plugin: 'food', deliveryTime: duration ? parseInt(duration, 10) * 60 : '', deliverer});
+    _acceptOrder({
+      id: order.id,
+      plugin: 'food',
+      deliveryTime: duration ? parseInt(duration, 10) * 60 : '',
+      deliverer,
+      sendSms
+    });
   };
   const deliverers = pluginData.data && pluginData.data.deliverers ? pluginData.data.deliverers : [];
   return (<div className="h-100 pb-4">
@@ -125,6 +133,21 @@ export function OnlineOrder({
                 <Icon icon={ICONS.DELIVERY} size={24} color="black" className="ml-2"/>
                 پیک‌ها
               </div>
+              {order.order_status === 0 && <div className="u-text-black u-fontMedium mt-3">
+                <label className="checkbox-container mb-0" htmlFor="defaultCheck1">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    checked={sendSms}
+                    onChange={e => {
+                      setSendSms(e.target.checked);
+                    }}
+                    id="defaultCheck1"
+                  />
+                  <span className="checkmark"/>
+                  آدرس مشتری روی نقشه برای پیک پیامک شود.
+                </label>
+              </div>}
               <div className="d-flex flex-wrap mt-4">
                 {deliverers.map(d =>
                   <div

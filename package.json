@@ -3,7 +3,7 @@
   "productName": "vitrin-pos",
   "version": "0.2.1",
   "description": "Application for vitrin POS",
-  "license": "MIT",
+  "license": "Vitrin",
   "private": false,
   "repository": {
     "type": "git",
