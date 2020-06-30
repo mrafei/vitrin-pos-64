@@ -3,15 +3,15 @@
   "productName": "vitrin-pos",
   "version": "0.2.1",
   "description": "Application for vitrin POS",
-  "license": "MIT",
+  "license": "Vitrin",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/mrafei/vitrin-pos.git"
+    "url": "https://github.com/mrafei/vitrin-pos-64.git"
   },
   "homepage": "",
   "bugs": {
-    "url": "https://github.com/mrafei/vitrin-pos/issues"
+    "url": "https://github.com/mrafei/vitrin-pos-64/issues"
   },
   "author": {
     "name": "mrafei",
@@ -46,7 +46,7 @@
     "package": "npm run build",
     "postpackage": "electron-packager ./ --asar --overwrite --out=build --icon=assets/icon.ico",
     "create-installer-win": "node createinstaller.js",
-    "postinstall": "electron-rebuild  -f -w sqlite3"
+    "postinstall": "electron-rebuild -f -w sqlite3"
   },
   "dependencies": {
     "electron-push-receiver": "^2.1.3",
