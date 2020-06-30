@@ -1,0 +1,181 @@
+.u-textCenter {
+  text-align: center;
+}
+
+.u-textLeft {
+  text-align: right;
+}
+
+.u-textLeft {
+  text-align: left;
+}
+
+.u-fontTiny {
+  font-size: 8px;
+}
+
+.u-fontVerySmall {
+  font-size: 10px;
+}
+
+.u-fontSmall {
+  font-size: 11px;
+}
+
+.u-font-semi-small {
+  font-size: 12px;
+}
+
+.u-fontNormal {
+  font-size: 13px;
+}
+
+.u-fontMedium {
+  font-size: 14px;
+}
+
+.u-fontSemiLarge {
+  font-size: 15px;
+}
+
+.u-fontLarge {
+  font-size: 16px;
+}
+
+.u-fontVeryLarge {
+  font-size: 18px;
+}
+
+.u-fontExteraLarge {
+  font-size: 20px;
+}
+
+.u-font-largest {
+  font-size: 24px;
+}
+
+.u-fontExtreme {
+  font-size: 65px;
+}
+
+.u-font-semi-small-r {
+  font-size: 12px;
+
+  @media (min-width: 1200px) {
+    font-size: 14px !important;
+  }
+}
+
+.u-fontNormal-r {
+  font-size: 13px;
+
+  @include largeDesktop() {
+    font-size: 14px;
+  }
+}
+
+.u-fontSmall-r {
+  font-size: 11px;
+
+  @include largeDesktop() {
+    font-size: 13px;
+  }
+}
+
+.u-fontLarge-r {
+  font-size: 14px;
+
+  @include largeDesktop() {
+    font-size: 16px;
+  }
+}
+
+.u-textJustify {
+  text-align: justify;
+}
+
+.u-fontWeightNormal {
+  font-weight: normal;
+}
+
+.u-fontWeightMedium {
+  font-weight: 500;
+}
+
+.u-fontWeightBold {
+  font-weight: bold;
+}
+
+.u-fontWeightLight {
+  font-weight: lighter;
+}
+
+.u-ltr {
+  direction: ltr;
+}
+
+.u-rtl {
+  direction: rtl;
+}
+
+.u-textNormal {
+  font-style: normal;
+}
+
+.u-text-ellipse {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.u-textWhite {
+  color: $white !important;
+}
+
+.u-textBlack {
+  color: $black;
+}
+
+.u-text-red {
+  color: $red;
+}
+
+.u-text-white {
+  color: $white;
+}
+
+.u-text-primary-yellow {
+  color: $primary-yellow;
+}
+
+.u-text-primary-light-blue {
+  color: $primary-light-blue !important;
+}
+
+.u-text-primary-ll-blue {
+  color: $primary-ll-blue;
+}
+
+.u-text-primary-green {
+  color: $primary-green;
+}
+
+.u-text-darkest-grey {
+  color: $darkest-grey !important;
+}
+
+.u-text-dark-grey {
+  color: $dark-grey !important;
+}
+
+.u-text-medium-grey {
+  color: $medium-grey;
+}
+
+.u-text-light-grey {
+  color: $light-grey;
+}
+
+.u-text-line-through {
+  text-decoration: line-through;
+}

@@ -1,0 +1,90 @@
+/*
+ * AppReducer
+ *
+ * The reducer takes care of our data. Using actions, we can
+ * update our application state. To add a new action,
+ * add it to the switch statement in the reducer function
+ *
+ */
+
+import produce from 'immer';
+import {
+  FILE_UPLOADED,
+  REMOVE_FILE,
+  START_LOADING,
+  STOP_LOADING,
+  CLEAR_UPLOADED_FILES,
+  START_INIT_LOADING,
+  STOP_INIT_LOADING,
+  SET_SITE_DOMAIN,
+  UPLOAD_PROGRESS,
+  UPLOAD_REQUEST,
+  UPLOAD_REQUEST_FINISHED,
+} from './constants';
+
+// The initial state of the App
+export const initialState = {
+  loading: false,
+  initLoading: true,
+  error: false,
+  user: null,
+  uploadedFile: null,
+  uploadProgress: null,
+  uploadStarted: false,
+  subdomain: '',
+  multipleUploadedFiles: [],
+};
+
+/* eslint-disable default-case, no-param-reassign */
+const appReducer = (state = initialState, action) =>
+  produce(state, draft => {
+    switch (action.type) {
+      case START_LOADING:
+        draft.loading = true;
+        break;
+
+      case STOP_LOADING:
+        draft.loading = false;
+        break;
+
+      case START_INIT_LOADING:
+        draft.initLoading = true;
+        break;
+
+      case STOP_INIT_LOADING:
+        draft.initLoading = false;
+        break;
+
+      case UPLOAD_REQUEST:
+        draft.uploadStarted = true;
+        break;
+      case UPLOAD_REQUEST_FINISHED:
+        draft.uploadStarted = false;
+        break;
+      case UPLOAD_PROGRESS:
+        draft.uploadProgress = action.payload;
+        break;
+      case FILE_UPLOADED:
+        draft.uploadedFile = action.data;
+        draft.multipleUploadedFiles.unshift(action.data);
+        break;
+
+      case REMOVE_FILE:
+        draft.uploadedFile = null;
+        if (action.index > -1) {
+          const uploadedFiles = [...draft.multipleUploadedFiles];
+          uploadedFiles.splice(action.index, 1);
+          draft.multipleUploadedFiles = uploadedFiles;
+        }
+        break;
+      case CLEAR_UPLOADED_FILES:
+        draft.uploadedFile = null;
+        draft.multipleUploadedFiles = [];
+        break;
+      case SET_SITE_DOMAIN:
+        draft.subdomain = action.data;
+        break;
+    }
+  });
+
+export default appReducer;

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="./printStyle.css" type="text/css"/>
+</head>
+<body>
+<script>
+  const ipcRenderer = require("electron").ipcRenderer;
+  const QRious = require('qrious');
+  ipcRenderer.on("print", (event, content, url, silent) => {
+    document.write(
+      `<html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <title>Title</title>
+          <link rel="stylesheet" href="./printStyle.css" type="text/css"/>
+        </head>
+        <body>
+        ${content}
+        </body>
+        </html>`);
+    (function () {
+      new QRious({
+        element: document.getElementById('qr'),
+        value: url
+      });
+    })();
+    ipcRenderer.send("readyToPrint", silent);
+    document.close();
+  });
+</script>
+</body>
+</html>
