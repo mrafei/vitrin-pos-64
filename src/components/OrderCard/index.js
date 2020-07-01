@@ -85,11 +85,11 @@ function OrderCard({order, link}) {
           )}
 
           <span className="px-2 u-no-wrap u-text-ellipse" style={{width: 110}}>
-            {englishNumberToPersianNumber(priceFormatter(totalPrice))} تومان{' '}
+            {englishNumberToPersianNumber(priceFormatter(totalPrice))}
+            <span className="u-font-semi-small"> تومان</span>
           </span>
           <div style={{width: 30}}>
             {order.deliverer_name && <Icon icon={ICONS.DELIVERY} size={24} width={18} height={18} color="#67B977"/>}
-
           </div>
         </div>
       </Link>
