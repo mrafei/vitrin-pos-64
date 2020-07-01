@@ -39,7 +39,9 @@ function ItemsSection({ order }) {
           )}
           <div className="u-textBlack u-fontMedium">
                     <span>
-                      {priceFormatter(item.deal.discounted_price)} تومان
+                      {priceFormatter(item.deal.discounted_price)}
+                      <span className="u-font-semi-small"> تومان</span>
+
                     </span>
           </div>
         </div>

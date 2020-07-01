@@ -71,7 +71,8 @@ function DelivererOrderCard({order, link}) {
           )}
 
           <span className="px-2 u-no-wrap u-text-ellipse" style={{width: 110}}>
-            {englishNumberToPersianNumber(priceFormatter(totalPrice))} تومان{' '}
+            {englishNumberToPersianNumber(priceFormatter(totalPrice))}
+            <span className="u-font-semi-small"> تومان</span>
           </span>
         </div>
       </Link>
