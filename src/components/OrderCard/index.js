@@ -75,12 +75,12 @@ function OrderCard({order, link}) {
             </span>
           {paymentStatus === 1 && (
             <div className="d-flex" style={{width: 35}}>
-              <span className="u-text-green mr-1">آنلاین</span>
+              <span className="mr-1">آنلاین</span>
             </div>
           )}
           {paymentStatus === 2 && (
             <div className="d-flex" style={{width: 35}}>
-              <span className="u-text-red mr-1">نقدی</span>
+              <span className="mr-1">نقدی</span>
             </div>
           )}
 
