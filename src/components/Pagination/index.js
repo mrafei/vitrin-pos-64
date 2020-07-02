@@ -30,7 +30,7 @@ function Pagination({ location, pagination }) {
       <div className="d-flex justify-content-center align-items-center">
         {pages[0] + 1 < pagination.pagesCount && (
           <div className="d-flex align-items-center">
-            <Link to={`${location.pathname}?page=${pagination.pagesCount}`} className="py-1 px-2">
+            <Link to={`${location.pathname}?page=${pagination.pagesCount}`} className="px-2">
               <div className="u-border-radius-50-percent u-text-darkest-grey">
                 {englishNumberToPersianNumber(pagination.pagesCount)}
               </div>
@@ -41,7 +41,7 @@ function Pagination({ location, pagination }) {
         {pages.map((p) => (
           <Link key={`page-${p}`} to={`${location.pathname}?page=${p + 1}`}>
             <div
-              className="u-border-radius-4 py-1 px-2"
+              className="u-border-radius-4 px-2"
               style={{
                 backgroundColor: p + 1 === +page ? "#168fd5" : "white",
                 fontWeight: p + 1 === +page ? "bold" : "normal",
@@ -54,7 +54,7 @@ function Pagination({ location, pagination }) {
         {pages[pages.length - 1] > 0 && (
           <div className="d-flex align-items-center">
             <span>...</span>
-            <Link to={`${location.pathname}?page=${1}`} className="py-1 px-2">
+            <Link to={`${location.pathname}?page=${1}`} className="px-2">
               <div className="u-border-radius-50-percent u-text-darkest-grey">۱</div>
             </Link>
           </div>

@@ -1,7 +1,7 @@
-@font-face{
+@font-face {
   font-family: "IranSans";
-  src: url('./fonts/IRANSansWeb.ttf') format('truetype'),
-  url('./fonts/IRANSansWeb.woff') format('woff');
+  src: url("./fonts/IRANSansWeb.ttf") format("truetype"),
+    url("./fonts/IRANSansWeb.woff") format("woff");
   font-weight: normal;
   font-display: swap;
 }
@@ -14,7 +14,7 @@ body {
 }
 
 .w-100 {
-  width: 100%
+  width: 100%;
 }
 
 .bg-white {

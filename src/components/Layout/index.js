@@ -9,7 +9,7 @@ const routes = [
   {id: 1, disabled: false, title: 'سفارش آنلاین', path: '/online-orders', icon: ICONS.GLOBAL},
   {id: 2, disabled: true, title: 'سفارش تلفنی', path: '/phone-orders', icon: ICONS.PHONE},
   {id: 3, disabled: true, title: 'سفارش سالن و بیرون‌بر', path: '/takeout-orders', icon: ICONS.ORDER},
-  {id: 4, disabled: true, title: 'مدیریت منو رستوران', path: 'products', icon: ICONS.LIST},
+  {id: 4, disabled: false, title: 'مدیریت منو', path: '/products', icon: ICONS.GRID},
   {id: 5, disabled: true, title: 'لیست مشترکین', path: '/users', icon: ICONS.PROFILE},
   {id: 6, disabled: false, title: 'مدیریت پیک‌ها', path: '/delivery', icon: ICONS.DELIVERY},
 ];
@@ -17,7 +17,7 @@ const subRoutes = [
   [],
   [],
   [],
-  [],
+  [{id: 1, title: 'همه محصولات', path: '/products/all'}, ],
   [],
   [{id: 1, title: 'لیست پیک‌ها', path: '/delivery/deliverers'}, {
     id: 2,
