@@ -63,7 +63,6 @@ export const SEND_CUSTOM_VISIT_CARD =
 export const SET_SELECTED_DELIVERY_DATE =
   'app/AdminPanelApp/SET_SELECTED_DELIVERY_DATE';
 export const SET_DELIVERY_TIME = 'app/AdminPanelApp/SET_DELIVERY_TIME';
-
 export const defaultDiscounts = [
   { id: 0, text: '۰ درصد', discount: 0 },
   { id: 1, text: '۱ درصد', discount: 1 },
@@ -76,6 +75,8 @@ export const defaultDiscounts = [
   { id: 8, text: '۲۰ درصد', discount: 20 },
   { id: 9, text: '۳۰ درصد', discount: 30 },
 ];
+
+export const SET_PRINTER_OPTIONS = 'app/AdminPanelApp/SET_PRINTER_OPTIONS';
 
 export const defaultOrderDurations = [
   { id: 0, text: 'نیم ساعت', duration: 0.5 * 60 * 60 },

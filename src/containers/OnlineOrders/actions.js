@@ -41,12 +41,15 @@ import {
   CHANGE_CATEGORY_ORDER,
   NEW_SECTION_ORDERING,
   SET_GROUP_DISCOUNT,
-  SET_DELIVERY_TIME, STOP_LOADING, START_LOADING
-} from './constants';
+  SET_DELIVERY_TIME,
+  STOP_LOADING,
+  START_LOADING,
+  SET_PRINTER_OPTIONS,
+} from "./constants";
 
 export function defaultAction() {
   return {
-    type: DEFAULT_ACTION
+    type: DEFAULT_ACTION,
   };
 }
 
@@ -55,79 +58,85 @@ export function changeCategoryOrder(id, newIndex) {
     type: CHANGE_CATEGORY_ORDER,
     data: {
       id,
-      newIndex
-    }
+      newIndex,
+    },
   };
 }
-
+export function setPrinterOptions(data) {
+  localStorage.setItem("printerOptions", JSON.stringify(data));
+  return {
+    type: SET_PRINTER_OPTIONS,
+    data,
+  };
+}
 export function setGroupDiscount(percent, id) {
   return {
     type: SET_GROUP_DISCOUNT,
     data: {
       percent,
-      id
-    }
+      id,
+    },
   };
 }
 
 export function newSectionOrdering(sections) {
   return {
     type: NEW_SECTION_ORDERING,
-    data: sections
+    data: sections,
   };
 }
 
 export function getSuperMarketAdminOrders() {
   return {
-    type: GET_SUPERMARKET_ORDERS
+    type: GET_SUPERMARKET_ORDERS,
   };
 }
 
 export function setSuperMarketAdminOrders(data) {
   return {
     type: SET_SUPERMARKET_ORDERS,
-    data
+    data,
   };
 }
 
 export function getSuperMarketAdminOrder(data) {
   return {
     type: GET_SUPERMARKET_ORDER,
-    data
+    data,
   };
 }
 
 export function setSuperMarketAdminOrder(data) {
   return {
     type: SET_SUPERMARKET_ORDER,
-    data
+    data,
   };
 }
 
 export function acceptSuperMarketOrder(data) {
   return {
     type: ACCEPT_SUPERMARKET_ORDER,
-    data
+    data,
   };
 }
 
 export function cancelSuperMarketOrder(data) {
   return {
     type: CANCEL_SUPERMARKET_ORDER,
-    data
+    data,
   };
 }
 
 export function getFoodAdminOrders(page) {
   return {
     type: GET_FOOD_ADMIN_ORDERS,
-    data: page
+    data: page,
   };
 }
 
 export function getEcommerceAdminOrders() {
   return {
-    type: GET_ECOMMERCE_ADMIN_ORDERS
+    type: GET_ECOMMERCE_ADMIN_ORDERS,
   };
 }
 
@@ -135,103 +144,103 @@ export function setFoodAdminOrders(data, pagination) {
   return {
     type: SET_FOOD_ADMIN_ORDERS,
     data,
-    pagination
+    pagination,
   };
 }
 
 export function setEcommerceAdminOrders(data) {
   return {
     type: SET_ECOMMERCE_ADMIN_ORDERS,
-    data
+    data,
   };
 }
 
 export function getFoodAdminOrder(data) {
   return {
     type: GET_FOOD_ADMIN_ORDER,
-    data
+    data,
   };
 }
 
 export function getEcommerceAdminOrder(data) {
   return {
     type: GET_ECOMMERCE_ADMIN_ORDER,
-    data
+    data,
   };
 }
 
 export function setFoodAdminOrder(data) {
   return {
     type: SET_FOOD_ADMIN_ORDER,
-    data
+    data,
   };
 }
 
 export function setEcommerceAdminOrder(data) {
   return {
     type: SET_ECOMMERCE_ADMIN_ORDER,
-    data
+    data,
   };
 }
 
 export function getAdminPageViews() {
   return {
-    type: GET_VITRIN_PAGE_VIEWS
+    type: GET_VITRIN_PAGE_VIEWS,
   };
 }
 
 export function setAdminPageViews(data) {
   return {
     type: SET_VITRIN_PAGE_VIEWS,
-    data
+    data,
   };
 }
 
 export function getAdminCallRequests() {
   return {
-    type: GET_VITRIN_CALL_BUTTON_CLICKS
+    type: GET_VITRIN_CALL_BUTTON_CLICKS,
   };
 }
 
 export function setAdminCallRequests(data) {
   return {
     type: SET_VITRIN_CALL_BUTTON_CLICKS,
-    data
+    data,
   };
 }
 
 export function acceptFoodOrder(data) {
   return {
     type: ACCEPT_FOOD_ORDER,
-    data
+    data,
   };
 }
 
 export function setDeliveryTime(data) {
   return {
     type: SET_DELIVERY_TIME,
-    data
+    data,
   };
 }
 
 export function acceptEcommerceOrder(data) {
   return {
     type: ACCEPT_ECOMMERCE_ORDER,
-    data
+    data,
   };
 }
 
 export function cancelFoodOrder(data) {
   return {
     type: CANCEL_FOOD_ORDER,
-    data
+    data,
   };
 }
 
 export function cancelEcommerceOrder(data) {
   return {
     type: CANCEL_ECOMMERCE_ORDER,
-    data
+    data,
   };
 }
 
@@ -239,7 +248,7 @@ export function buyPlugin(data, businessSlug) {
   return {
     type: BUY_PLUGIN,
     data,
-    businessSlug
+    businessSlug,
   };
 }
 
@@ -248,73 +257,73 @@ export function activateTrial(data, businessSlug, history) {
     type: ACTIVATE_TRIAL,
     data,
     businessSlug,
-    history
+    history,
   };
 }
 
 export function sendVisitCard(data) {
   return {
     type: SEND_VISIT_CARD,
-    data
+    data,
   };
 }
 
 export function sendGroupVisitCard(data) {
   return {
     type: SEND_GROUP_VISIT_CARD,
-    data
+    data,
   };
 }
 
 export function sendCustomVisitCard(data) {
   return {
     type: SEND_CUSTOM_VISIT_CARD,
-    data
+    data,
   };
 }
 
 export function getAdminReviews() {
   return {
-    type: GET_ADMIN_REVIEWS
+    type: GET_ADMIN_REVIEWS,
   };
 }
 
 export function setAdminReviews(data) {
   return {
     type: SET_ADMIN_REVIEWS,
-    data
+    data,
   };
 }
 
 export function getAdminReview(data) {
   return {
     type: GET_ADMIN_REVIEW,
-    data
+    data,
   };
 }
 
 export function setAdminReview(data) {
   return {
     type: SET_ADMIN_REVIEW,
-    data
+    data,
   };
 }
 
 export function setSelectedDeliveryDate(data) {
   return {
     type: SET_SELECTED_DELIVERY_DATE,
-    data
+    data,
   };
 }
 
 export function startLoading() {
   return {
-    type: START_LOADING
+    type: START_LOADING,
   };
 }
 
 export function stopLoading() {
   return {
-    type: STOP_LOADING
+    type: STOP_LOADING,
   };
 }
