@@ -21,6 +21,7 @@ function OrderCard({ order, link }) {
     `${orderDate.getFullYear()}-${orderDate.getMonth() + 1}-${orderDate.getDate()}`,
     "YYYY-MM-DD"
   );
+  const nowDate = new Date();
   const backgroundColor =
     (orderStatus === 0 && "#168FD4") || (orderStatus === 2 && "#E13F18") || "#67b977";
   return (
@@ -38,14 +39,20 @@ function OrderCard({ order, link }) {
               ? "u-background-melo-grey u-text-darkest-grey"
               : "u-background-white u-fontWeightBold u-text-black"
           }  pl-2`}>
-          <div className="d-flex px-2 align-items-center">
-            <span>
-              {englishNumberToPersianNumber(
-                `${`0${orderDate.getHours()}`.slice(-2)}:${`0${orderDate.getMinutes()}`.slice(-2)}`
-              )}
-            </span>
-            <div style={{ width: 2, height: 15 }} className="mx-2 u-background-dark-grey" />
-            <span>{englishNumberToPersianNumber(orderTime.format("jYYYY/jMM/jDD"))}</span>
+          <div className="d-flex px-2 align-items-center justify-content-center" style={{ width: 90 }}>
+            {orderDate.getMonth() === nowDate.getMonth() &&
+            orderDate.getFullYear() === nowDate.getFullYear() &&
+            orderDate.getDate() === nowDate.getDate() ? (
+              <span>
+                {englishNumberToPersianNumber(
+                  `${`0${orderDate.getHours()}`.slice(-2)}:${`0${orderDate.getMinutes()}`.slice(
+                    -2
+                  )}`
+                )}
+              </span>
+            ) : (
+              <span>{englishNumberToPersianNumber(orderTime.format("jYYYY/jMM/jDD"))}</span>
+            )}
           </div>
 
           <span className="px-2" style={{ width: 75 }}>
@@ -55,7 +62,9 @@ function OrderCard({ order, link }) {
             {ellipseText(userAddress.name, 18)}
           </span>
 
-          <span className="u-text-ellipse mx-2 text-right flex-1 position-relative" style={{width: 500}}>
+          <span
+            className="u-text-ellipse mx-2 text-right flex-1 position-relative"
+            style={{ width: 500 }}>
             {deliveryOnSite ? "تحویل در محل رستوران" : userAddress.address}
           </span>
           {paymentStatus === 1 && (
