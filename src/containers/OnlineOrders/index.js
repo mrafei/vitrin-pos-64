@@ -36,7 +36,7 @@ const OnlineOrders = function ({ _getAdminOrders, adminOrders: orders, paginatio
       </div>
       <div
         className="u-background-white px-60 py-5 overflow-auto"
-        style={{ height: "calc(100% - 54px)" }}>
+        style={{ height: "calc(100% - 108px)" }}>
         <div>
           {orders.map((order) => (
             <OrderCard
@@ -46,8 +46,8 @@ const OnlineOrders = function ({ _getAdminOrders, adminOrders: orders, paginatio
             />
           ))}
         </div>
-        <Pagination pagination={pagination} location={location} />
       </div>
+      <Pagination pagination={pagination} location={location} />
     </div>
   );
 };
