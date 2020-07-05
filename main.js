@@ -141,6 +141,7 @@ ipcMain.on("readyToPrint", (event, printOptions) => {
     deviceName: printOptions.device,
     copies: printOptions.copies,
     landscape: false,
+    margins: { marginType: "none" },
   });
 });
 

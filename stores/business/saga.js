@@ -50,6 +50,8 @@ import {
 import { sectionNames } from "../../utils/themeConfig/constants";
 import { ADMIN_ORDERS_PAGE_SIZE } from "../../src/containers/OnlineOrders/constants";
 import { setFoodAdminOrders, setPrinterOptions } from "../../src/containers/OnlineOrders/actions";
+import { remote } from "electron";
+import { englishNumberToPersianNumber } from "../../utils/helper";
 
 export function* getBusinessData() {
   try {
@@ -63,12 +65,26 @@ export function* getBusinessData() {
     if (localStorage.getItem("printerOptions"))
       yield put(setPrinterOptions(JSON.parse(localStorage.getItem("printerOptions"))));
     else {
+      const defaultPrinter = remote
+        .getCurrentWebContents()
+        .getPrinters()
+        .find((p) => p.isDefault);
+      let printers = [];
+      if (defaultPrinter)
+        printers.push({
+          id: 1,
+          title: `چاپگر ۱`,
+          device: defaultPrinter.name,
+          isActive: true,
+          copies: 1,
+          factor: {},
+        });
       yield put(
         setPrinterOptions({
           title: business.revised_title,
           phone: business.phone_zero_starts,
           website: business.get_vitrin_absolute_url,
-          printers: [],
+          printers,
         })
       );
     }

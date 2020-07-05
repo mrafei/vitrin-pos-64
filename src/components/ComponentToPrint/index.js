@@ -19,7 +19,7 @@ export default class ComponentToPrint extends React.Component {
     return (
       <div
         className="bg-white w-100 u-text-black printable px-3 u-fontVerySmall"
-        style={{ minWidth: 405 }}>
+        style={{ minWidth: 300 }}>
         <div className="py-1 px-2 u-border-bottom-dark">
           <div className="d-flex justify-content-between">
             <div className="d-flex flex-column justify-content-center align-items-center">
