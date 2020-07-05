@@ -67,6 +67,7 @@ export function OnlineOrder({
           "print",
           renderToString(
             <ComponentToPrint
+              printOptions={printOptions.printers[index].factor}
               order={order}
               business={{
                 ...business,

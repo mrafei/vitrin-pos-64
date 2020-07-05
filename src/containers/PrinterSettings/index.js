@@ -4,7 +4,7 @@ import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
-import { makeSelectPrinterOptions } from "../../../stores/business/selector";
+import { makeSelectBusiness, makeSelectPrinterOptions } from "../../../stores/business/selector";
 import Icon from "../../components/Icon";
 import { ICONS } from "../../../assets/images/icons";
 import { setPrinterOptions } from "../OnlineOrders/actions";
@@ -12,12 +12,14 @@ import { remote } from "electron";
 import Select from "../../components/Select";
 import { englishNumberToPersianNumber, persianToEnglishNumber } from "../../../utils/helper";
 import Switch from "../../components/Swtich";
+import FactorModal from "./FactorModal";
 
-function PrinterSettings({ options, _setPrinterOptions }) {
+function PrinterSettings({ options, _setPrinterOptions, business }) {
   const [phone, setPhone] = useState("");
   const [website, setWebsite] = useState("");
   const [title, setTitle] = useState("");
   const [printers, setPrinters] = useState([]);
+  const [modal, setModal] = useState(-1);
   useEffect(() => {
     setPhone(options.phone);
     setTitle(options.title);
@@ -41,12 +43,20 @@ function PrinterSettings({ options, _setPrinterOptions }) {
           device: "",
           isActive: true,
           copies: 1,
+          factor: {},
         },
       ],
     });
   }, [printers]);
   return (
     <div className="overflow-auto pb-5" style={{ height: "calc(100% - 110px)" }}>
+      <FactorModal
+        save={submitChanges}
+        index={modal}
+        _onClose={() => setModal(-1)}
+        business={business}
+        printOptions={options}
+      />
       <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden u-mt-50">
         <div className="px-5 py-3">
           <div className="u-fontWeightBold u-text-black">اطلاعات اصلی روی فیش</div>
@@ -167,6 +177,12 @@ function PrinterSettings({ options, _setPrinterOptions }) {
                   label="تعداد چاپ"
                 />
               </div>
+              <div
+                className="u-text-primary-blue u-cursor-pointer col-12 mt-2"
+                onClick={() => setModal(index)}>
+                پیش‌نمایش و تنظیم اطلاعات روی فیش
+                <Icon icon={ICONS.CHEVRON} color="#168fd5" size={24} />
+              </div>
             </div>
           ))}
         </div>
@@ -176,6 +192,7 @@ function PrinterSettings({ options, _setPrinterOptions }) {
 }
 const mapStateToProps = createStructuredSelector({
   options: makeSelectPrinterOptions(),
+  business: makeSelectBusiness(),
 });
 function mapDispatchToProps(dispatch) {
   return {
