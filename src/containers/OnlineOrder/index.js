@@ -63,22 +63,26 @@ export function OnlineOrder({
   const printOrder = useCallback(() => {
     printOptions.printers.map((p, index) => {
       if (p.isActive)
-        ipcRenderer.send(
-          "print",
-          renderToString(
-            <ComponentToPrint
-              printOptions={printOptions.printers[index].factor}
-              order={order}
-              business={{
-                ...business,
-                phone_zero_starts: printOptions.phone,
-                get_vitrin_absolute_url: printOptions.website,
-                revised_title: printOptions.title,
-              }}
-            />
-          ),
-          printOptions.website,
-          printOptions.printers[index]
+        setTimeout(
+          () =>
+            ipcRenderer.send(
+              "print",
+              renderToString(
+                <ComponentToPrint
+                  printOptions={printOptions.printers[index].factor}
+                  order={order}
+                  business={{
+                    ...business,
+                    phone_zero_starts: printOptions.phone,
+                    get_vitrin_absolute_url: printOptions.website,
+                    revised_title: printOptions.title,
+                  }}
+                />
+              ),
+              printOptions.website,
+              printOptions.printers[index]
+            ),
+          200
         );
     });
   }, [printOptions, business, order]);
