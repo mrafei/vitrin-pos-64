@@ -98,6 +98,10 @@ const makeSelectDeliverers = () =>
 const makeSelectDeliveries = () => createSelector(selectBusiness, (state) => state.deliveries);
 const makeSelectDeliveriesPagination = () =>
   createSelector(selectBusiness, (state) => state.deliveriesPagination);
+const makeSelectPrinterOptions = () =>
+  createSelector(selectBusiness, (state) => state.printerOptions);
+
+  createSelector(selectBusiness, (state) => state.deliveriesPagination);
 const makeSelectBusinessAddress = () =>
   createSelector(selectBusiness, (state) => state.business.get_vitrin_absolute_url);
 export {
@@ -124,5 +128,6 @@ export {
   makeSelectDeliverers,
   makeSelectDeliveries,
   makeSelectDeliveriesPagination,
+  makeSelectPrinterOptions,
   makeSelectBusinessAddress,
 };

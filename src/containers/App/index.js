@@ -26,6 +26,7 @@ import DeliverersList from "../DeliverersList";
 import CreateDeliverer from "../CreateDeliverer";
 import EditDeliverer from "../EditDeliverer";
 import DeliveriesList from "../DeliveriesList";
+import PrinterSettings from "../PrinterSettings";
 import Products from "../Products";
 
 const App = function ({
@@ -50,8 +51,8 @@ const App = function ({
     document.addEventListener("keydown", function (zEvent) {
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "X") {
         delete Axios.defaults.headers.common.Authorization;
+        localStorage.clear();
         history.push("/login");
-        localStorage.removeItem("token");
       }
     });
   }, []);
@@ -74,12 +75,15 @@ const App = function ({
             <Route exact path="/login" component={Login} />
             <Route exact path="/online-orders/:id" component={OnlineOrder} />
             <Route exact path="/online-orders" component={OnlineOrders} />
-            <Route exact path="/products/all" component={Products} />
             <Route exact path="/delivery/deliverers/new" component={CreateDeliverer} />
             <Route exact path="/delivery/deliverers/:id" component={EditDeliverer} />
             <Route exact path="/delivery/deliverers" component={DeliverersList} />
             <Route exact path="/delivery/deliveries" component={DeliveriesList} />
+            <Route exact path="/settings/printer" component={PrinterSettings} />
+            <Route exact path="/products/all" component={Products} />
+
             <Redirect path="/products" to="/products/all" />
+            <Redirect path="/settings" to="/settings/printer" />
             <Redirect path="/delivery" to="/delivery/deliverers" />
             <Redirect path="/" to="/online-orders" />
           </Switch>

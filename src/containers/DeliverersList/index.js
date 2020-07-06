@@ -37,7 +37,7 @@ export function DeliverersList({
           <span className="px-0 col-6">نام پیک</span>
           <span className="px-0 col-5">شماره همراه</span>
         </div>
-        <div className="u-background-white py-5 overflow-auto px-60" style={{height: 'calc(100% - 54px)'}}>
+        <div className="u-background-white pt-5 u-pb-80 overflow-auto px-60" style={{height: 'calc(100% - 54px)'}}>
           {deliverers.map((deliverer, index) => (
             <Link className="d-flex text-center py-2 mt-1 bg-gray-melo u-border-radius-4"
                   to={`/delivery/deliverers/${index}`}
