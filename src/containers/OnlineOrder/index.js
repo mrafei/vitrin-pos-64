@@ -55,7 +55,7 @@ export function OnlineOrder({
     setTimeout(() => {
       _getAdminOrder({ id: match.params.id });
     }, 0);
-  }, []);
+  }, [match]);
   useEffect(() => {
     setDeliverer(order.deliverer_name);
     setDuration(order.delivery_time ? order.delivery_time / 60 : "");
@@ -82,7 +82,7 @@ export function OnlineOrder({
               printOptions.website,
               printOptions.printers[index]
             ),
-          200 * index
+          index * 200
         );
     });
   }, [printOptions, business, order]);
