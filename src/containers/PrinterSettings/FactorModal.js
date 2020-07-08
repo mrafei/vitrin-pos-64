@@ -1,9 +1,10 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 import Modal from "../../components/Modal";
 import Icon from "../../components/Icon";
 import { ICONS } from "../../../assets/images/icons";
 import ComponentToPrint from "../../components/ComponentToPrint";
+import CheckBox from "../../components/CheckBox";
 const options = [
   {
     id: 1,
@@ -70,29 +71,23 @@ function FactorModal({ save, _onClose, business, printOptions, index }) {
               <div key={`section-${s.id}`} className="mb-5">
                 <div className="u-text-black u-fontWeightBold mb-3">{s.title}</div>
                 {s.sections.map((o) => (
-                  <label
+                  <CheckBox
+                    text={o.text}
                     key={`option-${o.id}`}
-                    className={`checkbox-container mb-0 u-text-black u-fontMedium mt-2 ${o.className}`}
-                    htmlFor={`defaultCheck${o.id}`}>
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={!printerOptions.factor[o.field]}
-                      onChange={(e) => {
-                        let newPrinters = [...printOptions.printers];
-                        newPrinters[index] = {
-                          ...newPrinters[index],
-                          factor: { ...printerOptions.factor, [o.field]: !e.target.checked },
-                        };
-                        save({
-                          printers: newPrinters,
-                        });
-                      }}
-                      id={`defaultCheck${o.id}`}
-                    />
-                    <span className="checkmark" />
-                    {o.text}
-                  </label>
+                    className={`u-text-black u-fontMedium mt-2 ${o.className}`}
+                    checked={!printerOptions.factor[o.field]}
+                    onChange={(checked) => {
+                      let newPrinters = [...printOptions.printers];
+                      newPrinters[index] = {
+                        ...newPrinters[index],
+                        factor: { ...printerOptions.factor, [o.field]: !checked },
+                      };
+                      save({
+                        printers: newPrinters,
+                      });
+                    }}
+                    label={`defaultCheck${o.id}`}
+                  />
                 ))}
               </div>
             ))}

@@ -27,9 +27,10 @@ const subRoutes = [
   [],
   [],
   [
-    { id: 1, title: "لیست پیک‌ها", path: "/delivery/deliverers" },
+    { id: 1, title: "تخصیص پیک", path: "/delivery/assign" },
+    { id: 2, title: "لیست پیک‌ها", path: "/delivery/deliverers" },
     {
-      id: 2,
+      id: 3,
       title: "لیست تحویل‌ها",
       path: "/delivery/deliveries",
     },

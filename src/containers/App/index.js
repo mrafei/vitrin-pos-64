@@ -27,6 +27,7 @@ import CreateDeliverer from "../CreateDeliverer";
 import EditDeliverer from "../EditDeliverer";
 import DeliveriesList from "../DeliveriesList";
 import PrinterSettings from "../PrinterSettings";
+import AssignDeliverer from "../AssignDeliverer";
 
 const App = function ({
   history,
@@ -74,14 +75,17 @@ const App = function ({
             <Route exact path="/login" component={Login} />
             <Route exact path="/online-orders/:id" component={OnlineOrder} />
             <Route exact path="/online-orders" component={OnlineOrders} />
+
             <Route exact path="/delivery/deliverers/new" component={CreateDeliverer} />
             <Route exact path="/delivery/deliverers/:id" component={EditDeliverer} />
+            <Route exact path="/delivery/assign" component={AssignDeliverer} />
             <Route exact path="/delivery/deliverers" component={DeliverersList} />
             <Route exact path="/delivery/deliveries" component={DeliveriesList} />
+
             <Route exact path="/settings/printer" component={PrinterSettings} />
 
             <Redirect path="/settings" to="/settings/printer" />
-            <Redirect path="/delivery" to="/delivery/deliverers" />
+            <Redirect path="/delivery" to="/delivery/assign" />
             <Redirect path="/" to="/online-orders" />
           </Switch>
         </Layout>

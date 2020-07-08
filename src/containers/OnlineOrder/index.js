@@ -35,6 +35,7 @@ import PrintModal from "./components/PrintModal";
 import { ipcRenderer } from "electron";
 import { renderToString } from "react-dom/server";
 import ComponentToPrint from "../../components/ComponentToPrint";
+import CheckBox from "../../components/CheckBox";
 
 export function OnlineOrder({
   adminOrder: order,
@@ -169,19 +170,12 @@ export function OnlineOrder({
                   </div>
                   {order.order_status === 0 && (
                     <div className="u-text-black u-fontMedium mt-3">
-                      <label className="checkbox-container mb-0" htmlFor="defaultCheck1">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          checked={sendSms}
-                          onChange={(e) => {
-                            setSendSms(e.target.checked);
-                          }}
-                          id="defaultCheck1"
-                        />
-                        <span className="checkmark" />
-                        آدرس مشتری روی نقشه برای پیک پیامک شود.
-                      </label>
+                      <CheckBox
+                        label="defaultCheck1"
+                        checked={sendSms}
+                        onChange={setSendSms}
+                        text="آدرس مشتری روی نقشه برای پیک پیامک شود."
+                      />
                     </div>
                   )}
                   <div className="d-flex flex-wrap mt-4">
