@@ -27,7 +27,7 @@ export function CreateDeliverer({
   }, [pluginData, name, phone])
   return (<div className="h-100 pb-4">
       <div
-        className="u-border-radius-8 container px-0 container-shadow overflow-hidden u-mt-50 d-flex flex-column flex-1"
+        className="u-border-radius-8 container px-0 container-shadow overflow-hidden mt-5 d-flex flex-column flex-1"
         style={{
           height: 'calc(100% - 150px)'
         }}>

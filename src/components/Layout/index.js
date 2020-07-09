@@ -6,30 +6,21 @@ import logo from "../../../assets/images/vitrin-blue.png";
 import { remote } from "electron";
 
 const routes = [
-  { id: 1, disabled: false, title: "سفارش آنلاین", path: "/online-orders", icon: ICONS.GLOBAL },
-  { id: 2, disabled: true, title: "سفارش تلفنی", path: "/phone-orders", icon: ICONS.PHONE },
-  {
-    id: 3,
-    disabled: true,
-    title: "سفارش سالن و بیرون‌بر",
-    path: "/takeout-orders",
-    icon: ICONS.ORDER,
-  },
-  { id: 4, disabled: true, title: "مدیریت منو رستوران", path: "products", icon: ICONS.LIST },
-  { id: 5, disabled: true, title: "لیست مشترکین", path: "/users", icon: ICONS.PROFILE },
-  { id: 6, disabled: false, title: "مدیریت پیک‌ها", path: "/delivery", icon: ICONS.DELIVERY },
-  { id: 7, disabled: false, title: "تنظیمات", path: "/settings", icon: ICONS.SETTING },
+  { id: 1, disabled: false, title: "مدیریت سفارش‌ها", path: "/orders", icon: ICONS.LIST },
+  { id: 2, disabled: true, title: "مدیریت منو رستوران", path: "products", icon: ICONS.GRID },
+  { id: 3, disabled: true, title: "لیست مشترکین", path: "/users", icon: ICONS.PROFILE },
+  { id: 4, disabled: false, title: "مدیریت پیک‌ها", path: "/delivery", icon: ICONS.DELIVERY },
+  { id: 5, disabled: false, title: "تنظیمات", path: "/settings", icon: ICONS.SETTING },
 ];
 const subRoutes = [
-  [],
-  [],
-  [],
+  [{ id: 1, title: "همه سفارش‌ها", path: "/orders/all" }],
   [],
   [],
   [
-    { id: 1, title: "لیست پیک‌ها", path: "/delivery/deliverers" },
+    { id: 1, title: "تخصیص پیک", path: "/delivery/assign" },
+    { id: 2, title: "لیست پیک‌ها", path: "/delivery/deliverers" },
     {
-      id: 2,
+      id: 3,
       title: "لیست تحویل‌ها",
       path: "/delivery/deliveries",
     },
@@ -37,7 +28,7 @@ const subRoutes = [
   [{ id: 1, title: "تنظیمات چاپگر", path: "settings/printer", icon: ICONS.PRINT }],
 ];
 
-function Layout({ children, location, title }) {
+function Layout({ children, location, title, loading }) {
   if (location.pathname === "/login") return children;
   const activeRouteIndex = routes.findIndex((route) => location.pathname.includes(route.path));
   return (
@@ -121,6 +112,17 @@ function Layout({ children, location, title }) {
           })}
         </div>
       ) : null}
+      {loading ? (
+        <div className="overflow-hidden" style={{ height: 6 }}>
+          <div className="progress">
+            <div className="line" />
+            <div className="subline inc" />
+            <div className="subline dec" />
+          </div>
+        </div>
+      ) : (
+        <div style={{ height: 6, width: "100%" }} />
+      )}
       {children}
     </div>
   );

@@ -1,5 +1,11 @@
 import { call, put, takeLatest, select } from "@redux-saga/core/effects";
-import { startLoading, stopLoading } from "../../src/containers/App/actions";
+import {
+  setPrinterOptions,
+  startLoading,
+  startProgressLoading,
+  stopLoading,
+  stopProgressLoading,
+} from "../../src/containers/App/actions";
 import request from "../../utils/request";
 import {
   BUSINESS_BY_SLUG_API,
@@ -48,10 +54,7 @@ import {
   makeSelectBusinessThemeConfig,
 } from "./selector";
 import { sectionNames } from "../../utils/themeConfig/constants";
-import { ADMIN_ORDERS_PAGE_SIZE } from "../../src/containers/OnlineOrders/constants";
-import { setFoodAdminOrders, setPrinterOptions } from "../../src/containers/OnlineOrders/actions";
 import { remote } from "electron";
-import { englishNumberToPersianNumber } from "../../utils/helper";
 
 export function* getBusinessData() {
   try {
@@ -468,6 +471,7 @@ export function* setPluginData(action) {
 
 export function* getDeliveries(action) {
   try {
+    yield put(startProgressLoading());
     yield put(startLoading());
     const domain = yield select(makeSelectSubDomain());
     const page = action.data.page || 1;
@@ -484,8 +488,10 @@ export function* getDeliveries(action) {
     if (data) {
       yield put(setDeliveries(data, { ...pagination, pagesCount }));
     }
+    yield put(stopProgressLoading());
     yield put(stopLoading());
   } catch (err) {
+    yield put(stopProgressLoading());
     yield put(stopLoading());
   }
 }

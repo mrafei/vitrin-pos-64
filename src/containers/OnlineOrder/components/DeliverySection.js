@@ -29,7 +29,7 @@ function DeliverySection({order}) {
     'YYYY-MM-DD'
   );
   return (
-    <div className="w-100 py-2 u-background-white mt-1 px-3">
+    <div className="w-100 flex-1 py-2 u-background-white mt-1 px-3">
       <div className="flex-1 u-fontWeightBold mb-2 u-text-black">جزئیات ارسال</div>
       <div className="d-flex justify-content-between flex-wrap px-3">
         <div className="ml-4 mb-2" style={{ maxWidth: "70%" }}>

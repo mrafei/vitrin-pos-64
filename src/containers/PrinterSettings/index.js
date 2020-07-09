@@ -7,12 +7,12 @@ import { withRouter } from "react-router-dom";
 import { makeSelectBusiness, makeSelectPrinterOptions } from "../../../stores/business/selector";
 import Icon from "../../components/Icon";
 import { ICONS } from "../../../assets/images/icons";
-import { setPrinterOptions } from "../OnlineOrders/actions";
 import { remote } from "electron";
 import Select from "../../components/Select";
 import { englishNumberToPersianNumber, persianToEnglishNumber } from "../../../utils/helper";
 import Switch from "../../components/Swtich";
 import FactorModal from "./FactorModal";
+import { setPrinterOptions } from "../App/actions";
 
 function PrinterSettings({ options, _setPrinterOptions, business }) {
   const [phone, setPhone] = useState("");
@@ -156,9 +156,9 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
                     .getCurrentWebContents()
                     .getPrinters()
                     .map((printer) => ({ id: printer.name, text: printer.name }))}
-                  selectOption={(option) => {
+                  selectOption={(value) => {
                     let newPrinters = [...printers];
-                    newPrinters[index] = { ...newPrinters[index], device: option.text };
+                    newPrinters[index] = { ...newPrinters[index], device: value };
                     submitChanges({ printers: newPrinters });
                   }}
                 />

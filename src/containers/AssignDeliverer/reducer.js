@@ -4,18 +4,20 @@
  *
  */
 import produce from "immer";
-import { DEFAULT_ACTION, SET_FOOD_ADMIN_ORDER } from "./constants";
+import { SET_FOOD_ADMIN_ORDERS, DEFAULT_ACTION } from "./constants";
 
 export const initialState = {
-  foodAdminOrder: { items: [] },
+  orders: [],
+  ordersPagination: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const adminReducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case SET_FOOD_ADMIN_ORDER:
-        draft.foodAdminOrder = action.data;
+      case SET_FOOD_ADMIN_ORDERS:
+        draft.orders = action.data;
+        draft.ordersPagination = action.pagination;
         break;
       case DEFAULT_ACTION:
         break;

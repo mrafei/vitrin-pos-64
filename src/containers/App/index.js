@@ -15,7 +15,7 @@ import Axios from "axios";
 import { getBusinesses } from "../../../stores/user/actions";
 import Layout from "../../components/Layout";
 import OnlineOrder from "../OnlineOrder";
-import { makeSelectSubDomain } from "./selectors";
+import { makeSelectProgressLoading, makeSelectSubDomain } from "./selectors";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import { setSnackBarMessage } from "../../../stores/ui/actions";
 import { makeSelectSnackBarMessage } from "../../../stores/ui/selector";
@@ -27,6 +27,7 @@ import CreateDeliverer from "../CreateDeliverer";
 import EditDeliverer from "../EditDeliverer";
 import DeliveriesList from "../DeliveriesList";
 import PrinterSettings from "../PrinterSettings";
+import AssignDeliverer from "../AssignDeliverer";
 
 const App = function ({
   history,
@@ -37,6 +38,7 @@ const App = function ({
   snackBarMessage,
   _getAdminOrders,
   businessTitle,
+  progressLoading,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
@@ -69,20 +71,25 @@ const App = function ({
   return (
     <>
       <div className="u-height-100vh w-100 u-background-melo-grey d-flex h-100">
-        <Layout location={location} title={businessTitle}>
+        <Layout location={location} title={businessTitle} loading={progressLoading}>
           <Switch>
             <Route exact path="/login" component={Login} />
-            <Route exact path="/online-orders/:id" component={OnlineOrder} />
-            <Route exact path="/online-orders" component={OnlineOrders} />
+
+            <Route exact path="/orders/all" component={OnlineOrders} />
+            <Route exact path="/orders/:id" component={OnlineOrder} />
+
             <Route exact path="/delivery/deliverers/new" component={CreateDeliverer} />
             <Route exact path="/delivery/deliverers/:id" component={EditDeliverer} />
+            <Route exact path="/delivery/assign" component={AssignDeliverer} />
             <Route exact path="/delivery/deliverers" component={DeliverersList} />
             <Route exact path="/delivery/deliveries" component={DeliveriesList} />
+
             <Route exact path="/settings/printer" component={PrinterSettings} />
 
+            <Redirect path="/orders" to="/orders/all" />
             <Redirect path="/settings" to="/settings/printer" />
-            <Redirect path="/delivery" to="/delivery/deliverers" />
-            <Redirect path="/" to="/online-orders" />
+            <Redirect path="/delivery" to="/delivery/assign" />
+            <Redirect path="/" to="/orders" />
           </Switch>
         </Layout>
       </div>
@@ -112,6 +119,7 @@ const mapStateToProps = createStructuredSelector({
   siteDomain: makeSelectSubDomain(),
   businessTitle: makeSelectBusinessTitle(),
   snackBarMessage: makeSelectSnackBarMessage(),
+  progressLoading: makeSelectProgressLoading(),
 });
 
 function mapDispatchToProps(dispatch) {

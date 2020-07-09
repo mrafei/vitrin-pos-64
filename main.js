@@ -3,7 +3,7 @@
 // Import parts of electron to use
 const { testDataBase } = require("./utils/database");
 
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const url = require("url");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
@@ -20,6 +20,7 @@ testDataBase();
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let workerWindow;
+let notifWindow;
 
 // Keep a reference for dev mode
 let dev = false;
@@ -41,6 +42,10 @@ if (process.platform === "win32") {
 }
 
 function createWindow() {
+  let display = screen.getPrimaryDisplay();
+  let width = display.bounds.width;
+  let height = display.bounds.height;
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1024,
@@ -98,15 +103,33 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
     workerWindow = null;
+    notifWindow = null;
     app.quit();
   });
   workerWindow = new BrowserWindow({
+    show: false,
     webPreferences: {
       nodeIntegration: true,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
-  workerWindow.hide();
+
+  notifWindow = new BrowserWindow({
+    width: 240,
+    height: 135,
+    show: false,
+    transparent: true,
+    frame: false,
+    focusable: false,
+    x: width - 250,
+    y: height - 195,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+  notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
+  notifWindow.setAlwaysOnTop(true, "floating", 1);
+  notifWindow.setVisibleOnAllWorkspaces(true);
 }
 
 // This method will be called when Electron has finished
@@ -143,6 +166,22 @@ ipcMain.on("readyToPrint", (event, printOptions) => {
     landscape: false,
     margins: { marginType: "none" },
   });
+});
+
+ipcMain.on("orderReceived", (event, notification) => {
+  notifWindow.webContents.send("orderReceived", notification);
+  notifWindow.show();
+});
+ipcMain.on("hideNotification", () => {
+  notifWindow.hide();
+});
+
+ipcMain.on("redirectOrder", (event, notification) => {
+  if (notification.click_action) {
+    let split = notification.click_action.split("/");
+    const orderId = split[split.length - 1];
+    mainWindow.webContents.send("redirectOrder", orderId);
+  }
 });
 
 function handleSquirrelEvent() {

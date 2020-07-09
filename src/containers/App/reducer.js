@@ -7,7 +7,7 @@
  *
  */
 
-import produce from 'immer';
+import produce from "immer";
 import {
   FILE_UPLOADED,
   REMOVE_FILE,
@@ -20,24 +20,27 @@ import {
   UPLOAD_PROGRESS,
   UPLOAD_REQUEST,
   UPLOAD_REQUEST_FINISHED,
-} from './constants';
+  START_PROGRESS_LOADING,
+  STOP_PROGRESS_LOADING,
+} from "./constants";
 
 // The initial state of the App
 export const initialState = {
   loading: false,
+  progressLoading: false,
   initLoading: true,
   error: false,
   user: null,
   uploadedFile: null,
   uploadProgress: null,
   uploadStarted: false,
-  subdomain: '',
+  subdomain: "",
   multipleUploadedFiles: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const appReducer = (state = initialState, action) =>
-  produce(state, draft => {
+  produce(state, (draft) => {
     switch (action.type) {
       case START_LOADING:
         draft.loading = true;
@@ -46,7 +49,13 @@ const appReducer = (state = initialState, action) =>
       case STOP_LOADING:
         draft.loading = false;
         break;
+      case START_PROGRESS_LOADING:
+        draft.progressLoading = true;
+        break;
 
+      case STOP_PROGRESS_LOADING:
+        draft.progressLoading = false;
+        break;
       case START_INIT_LOADING:
         draft.initLoading = true;
         break;

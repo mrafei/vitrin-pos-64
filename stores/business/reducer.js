@@ -9,7 +9,7 @@
 
 import produce from "immer";
 import { SET_BUSINESS, SET_DELIVERIES } from "./constants";
-import { SET_PRINTER_OPTIONS } from "../../src/containers/OnlineOrders/constants";
+import { SET_PRINTER_OPTIONS } from "../../src/containers/App/constants";
 
 // The initial state of the App
 export const initialState = {
