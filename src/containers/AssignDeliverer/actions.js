@@ -17,10 +17,10 @@ export function defaultAction() {
   };
 }
 
-export function getFoodAdminOrders(page) {
+export function getFoodAdminOrders(page, hasDeliverer) {
   return {
     type: GET_FOOD_ADMIN_ORDERS,
-    data: page,
+    data: { page, hasDeliverer },
   };
 }
 

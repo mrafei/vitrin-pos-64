@@ -7,12 +7,10 @@ import { setSiteDomain, startLoading, stopLoading } from "../../src/containers/A
 import request from "../../utils/request";
 import { BUSINESSES_BY_OWNER_API, LOGIN_API, USER_INFO_API, VERIFY_API } from "../../utils/api";
 import { GET_BUSINESSES, LOGIN, UPDATE_PROFILE, VERIFICATION } from "./constants";
-import { toggleModal, setSnackBarMessage } from "../ui/actions";
-import { VERIFICATION_MODAL } from "../ui/constants";
+import { setSnackBarMessage } from "../ui/actions";
 import { setLoginCallBack, setToken, setUser } from "./actions";
 import { makeSelectLoginCallBack } from "./selector";
 import { getBusinessData } from "../business/saga";
-import { setPrinterOptions } from "../../src/containers/OnlineOrders/actions";
 
 export function* login(payload) {
   try {
@@ -49,7 +47,7 @@ export function* verify(action) {
       localStorage.setItem("token", token);
       Axios.defaults.headers.common.Authorization = `Token ${token}`;
       yield call(getBusinesses);
-      action.history.push("/online-orders");
+      action.history.push("/orders");
       yield put(stopLoading());
       const callBack = yield select(makeSelectLoginCallBack());
       yield call(callBack);

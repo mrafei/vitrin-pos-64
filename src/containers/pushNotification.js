@@ -52,7 +52,7 @@ export default function initPushNotification(showSnackBar, history, updateOrders
   console.log("starting service and registering a client");
   ipcRenderer.send(START_NOTIFICATION_SERVICE, senderId);
   ipcRenderer.on("redirectOrder", (event, orderId) => {
-    history.push(`/online-orders/${orderId}`);
+    history.push(`/orders/${orderId}`);
     remote.getCurrentWindow().show();
   });
 }

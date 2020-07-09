@@ -53,10 +53,8 @@ export function OnlineOrder({
   useInjectSaga({ key: "adminOrder", saga });
 
   useEffect(() => {
-    setTimeout(() => {
-      _getAdminOrder({ id: match.params.id });
-    }, 0);
-  }, [match]);
+    _getAdminOrder({ id: match.params.id });
+  }, [match.params.id]);
   useEffect(() => {
     setDeliverer(order.deliverer_name);
     setDuration(order.delivery_time ? order.delivery_time / 60 : "");
@@ -112,8 +110,10 @@ export function OnlineOrder({
         print={printOrder}
       />
       <div className="h-100 pb-4">
-        <div className="d-flex flex-1 mx-5 mt-5" style={{ height: "calc(100% - 200px)" }}>
-          <div className="u-background-melo-grey u-border-radius-8 overflow-hidden flex-1 box-shadow h-100 d-flex flex-column">
+        <div className="d-flex flex-1 container px-0" style={{ height: "calc(100% - 215px)" }}>
+          <div
+            className="u-background-melo-grey mt-5 u-border-radius-8 overflow-hidden flex-1 box-shadow h-100 d-flex flex-column"
+            style={{ height: "calc(100% - 30px)" }}>
             <div className="text-center u-fontMedium u-text-dark-grey py-2 u-background-white mb-1">
               <div className="px-3 u-text-darkest-grey u-fontWeightBold">
                 جزییات سفارش
@@ -127,17 +127,15 @@ export function OnlineOrder({
               </div>
             </div>
 
-            <div
-              className="d-flex flex-1 flex-column align-items-center overflow-auto"
-              style={{ height: "calc(100% - 49px)" }}>
+            <div className="d-flex flex-1 flex-column align-items-center overflow-auto">
               <ItemsSection order={order} />
               <DeliverySection order={order} />
-              <PriceSection order={order} />
             </div>
           </div>
-          <div>
+          <div className="overflow-auto py-3 mt-3">
+            <PriceSection order={order} />
             <div
-              className="u-relative u-background-white box-shadow u-border-radius-8 mr-4"
+              className="u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4"
               style={{ width: 395, height: "fit-content" }}>
               <div className="d-flex flex-column flex-1 p-3">
                 <div className="u-text-black u-fontWeightBold">

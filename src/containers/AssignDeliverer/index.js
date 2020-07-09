@@ -19,7 +19,12 @@ import Icon from "../../components/Icon";
 import { ICONS } from "../../../assets/images/icons";
 import { makeSelectPlugin } from "../../../stores/business/selector";
 import { makeSelectLoading } from "../App/selectors";
-
+import Select from "../../components/Select";
+const filterOptions = [
+  { id: 1, text: "همه سفارش‌ها", value: "" },
+  { id: 2, text: "سفارش جدید", value: "False" },
+  { id: 3, text: "پیک تخصیص داده شده", value: "True" },
+];
 const AssignDeliverer = function ({
   _getAdminOrders,
   orders,
@@ -35,11 +40,14 @@ const AssignDeliverer = function ({
   const [selected, setSelected] = useState([]);
   const [sendSms, setSendSms] = useState(true);
   const [deliverer, setDeliverer] = useState("");
+  const [filter, setFilter] = useState(filterOptions[1].text);
 
   const page = getQueryParams("page", location.search) || 1;
   useEffect(() => {
-    _getAdminOrders(page);
-  }, [location]);
+    const hasDeliverer = filterOptions.find((fo) => fo.text === filter).value;
+    _getAdminOrders(page, hasDeliverer);
+  }, [location, filter]);
+
   useEffect(() => {
     setSelected(orders.map(() => false));
   }, [orders]);
@@ -54,17 +62,19 @@ const AssignDeliverer = function ({
         if (isSelected) return orderIds.push(orders[index].id);
       });
       if (!orderIds.length) return;
+      const hasDeliverer = filterOptions.find((fo) => fo.text === filter).value;
       _setDeliverers({
         deliverer,
+        hasDeliverer,
         sendSms,
         orders: orderIds,
         page,
       });
     },
-    [selected, sendSms]
+    [selected, sendSms, filter]
   );
   return (
-    <div className="d-flex flex-1 mx-5 mt-5" style={{ height: "calc(100% - 180px)" }}>
+    <div className="d-flex flex-1 container px-0 mt-5" style={{ height: "calc(100% - 180px)" }}>
       <div className="u-border-radius-8 u-background-white container px-0 container-shadow overflow-hidden">
         <div
           className="header-shadow position-relative d-flex py-2 align-items-center px-4"
@@ -76,6 +86,16 @@ const AssignDeliverer = function ({
               onChange={(checked) => setSelected(orders.map(() => checked))}
               label={`defaultCheck`}
             />
+            <div className="mr-2" style={{ width: 200, marginTop: -30 }}>
+              <Select
+                inputData={{ value: filter }}
+                options={filterOptions}
+                selectOption={(f) => {
+                  history.replace("/delivery/assign");
+                  setFilter(f);
+                }}
+              />
+            </div>
             {selected.some(Boolean) && (
               <div className="mr-2 u-fontWeightBold">
                 {englishNumberToPersianNumber(selected.filter((s) => s === true).length)} سفارش
@@ -83,9 +103,9 @@ const AssignDeliverer = function ({
               </div>
             )}
           </div>
-          {selected.some((s, index) => s && orders[index].deliverer_name) && (
+          {selected.some((s, index) => s && orders[index] && orders[index].deliverer_name) && (
             <div
-              onClick={assign("")}
+              onClick={assign(null)}
               className="d-flex align-items-center u-text-primary-blue u-fontMedium u-cursor-pointer">
               <Icon icon={ICONS.TRASH} size={19} color="#168fd5" />
               حذف پیک
@@ -104,7 +124,7 @@ const AssignDeliverer = function ({
                   newSelected[index] = !selected[index];
                   setSelected(newSelected);
                 }}
-                isBold={!order.deliverer_name}
+                isBold={order.deliverer_name === null}
                 key={`order-${order.id}`}
                 order={order}
               />
@@ -173,7 +193,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    _getAdminOrders: (page) => dispatch(getFoodAdminOrders(page)),
+    _getAdminOrders: (page, hasDeliverer) => dispatch(getFoodAdminOrders(page, hasDeliverer)),
     _setDeliverers: (data) => dispatch(setDeliverers(data)),
   };
 }
