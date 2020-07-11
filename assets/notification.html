@@ -9,6 +9,20 @@
     <div
       class="position-relative u-cursor-pointer u-border-radius-8 u-background-primary-blue overflow-hidden u-text-white d-flex justify-content-center align-items-center"
     >
+      <svg
+        id="close-icon"
+        class="position-absolute right-0 top-0 p-1 z-index-2"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M14.8334 4.41784C14.7582 4.33888 14.6677 4.27602 14.5674 4.23307C14.4671 4.19012 14.3592 4.16797 14.2501 4.16797C14.141 4.16797 14.0331 4.19012 13.9328 4.23307C13.8325 4.27602 13.742 4.33888 13.6668 4.41784L9.58343 8.50118L5.5001 4.41784C5.34485 4.26571 5.13585 4.18098 4.91849 4.18208C4.70113 4.18318 4.49299 4.27001 4.3393 4.42371C4.1856 4.5774 4.09876 4.78555 4.09767 5.0029C4.09657 5.22026 4.18129 5.42927 4.33343 5.58451L8.41676 9.66784L4.33343 13.7512C4.18129 13.9064 4.09657 14.1154 4.09767 14.3328C4.09876 14.5501 4.1856 14.7583 4.3393 14.912C4.49299 15.0657 4.70113 15.1525 4.91849 15.1536C5.13585 15.1547 5.34485 15.07 5.5001 14.9178L9.58343 10.8345L13.6668 14.9178C13.7431 14.9957 13.8341 15.0577 13.9345 15.1002C14.0349 15.1427 14.1428 15.1648 14.2518 15.1654C14.3609 15.1659 14.4689 15.1449 14.5698 15.1034C14.6706 15.0619 14.7622 15.0009 14.8394 14.9238C14.9165 14.8467 14.9775 14.755 15.019 14.6542C15.0605 14.5533 15.0815 14.4453 15.081 14.3362C15.0804 14.2272 15.0583 14.1193 15.0158 14.0189C14.9733 13.9185 14.9113 13.8275 14.8334 13.7512L10.7501 9.66784L14.8334 5.58451C14.9124 5.50925 14.9753 5.41875 15.0182 5.31848C15.0612 5.21821 15.0833 5.11026 15.0833 5.00118C15.0833 4.89209 15.0612 4.78415 15.0182 4.68388C14.9753 4.58361 14.9124 4.4931 14.8334 4.41784Z"
+          fill="white"
+        />
+      </svg>
       <div class="text-center">
         <svg
           width="35"
@@ -89,14 +103,19 @@
         );
       }
       ipcRenderer.on("orderReceived", (event, notification) => {
-        console.log(notification);
         notificationStack.push(notification);
         writeContents();
       });
       document.addEventListener("click", function () {
-        ipcRenderer.send("redirectOrder", notificationStack.pop());
+        ipcRenderer.send("redirectOrder", notificationStack.shift());
         writeContents();
         if (notificationStack.length === 0) ipcRenderer.send("hideNotification");
+      });
+      document.getElementById("close-icon").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        ipcRenderer.send("hideNotification");
+        notificationStack = [];
       });
     </script>
   </body>

@@ -1,20 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-function Icon({
-  className,
-  width,
-  height,
-  size,
-  icon,
-  color,
-  onClick = () => {},
-}) {
+function Icon({ className, width, height, size, icon, color, styles: style, onClick = () => {} }) {
   const styles = {
     svg: {
-      display: 'inline-block',
-      verticalAlign: 'middle',
-      fill: 'none',
+      display: "inline-block",
+      verticalAlign: "middle",
+      fill: "none",
     },
     path: {
       fill: color,
@@ -23,14 +15,13 @@ function Icon({
 
   return (
     <svg
-      style={styles.svg}
+      style={{ ...styles.svg, ...style }}
       className={className}
       width={`${width || `${size}px`}`}
       height={`${height || `${size}px`}`}
       viewBox={`0 0 ${size || width} ${size || height}`}
-      onClick={onClick}
-    >
-      {icon.map(iconElement => {
+      onClick={onClick}>
+      {icon.map((iconElement) => {
         if (iconElement.d)
           return (
             <path
@@ -44,9 +35,7 @@ function Icon({
             <rect
               {...iconElement.rect}
               key={iconElement.key}
-              style={
-                iconElement.fill ? { fill: iconElement.fill } : styles.path
-              }
+              style={iconElement.fill ? { fill: iconElement.fill } : styles.path}
             />
           );
         if (iconElement.circle)
@@ -54,9 +43,7 @@ function Icon({
             <circle
               {...iconElement.circle}
               key={iconElement.key}
-              style={
-                iconElement.fill ? { fill: iconElement.fill } : styles.path
-              }
+              style={iconElement.fill ? { fill: iconElement.fill } : styles.path}
             />
           );
         if (iconElement.line)
@@ -65,9 +52,7 @@ function Icon({
               {...iconElement.line}
               stroke={color}
               key={iconElement.key}
-              style={
-                iconElement.fill ? { fill: iconElement.fill } : styles.path
-              }
+              style={iconElement.fill ? { fill: iconElement.fill } : styles.path}
             />
           );
         return null;
