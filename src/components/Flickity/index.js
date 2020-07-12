@@ -14,7 +14,6 @@ function Flickity({ dragging, flickityRef, ...props }) {
   useEffect(() => {
     if (flkty.current && dragging) {
       flkty.current.on('dragStart', () => {
-        console.log("#$%")
         dragging.current = true;
       });
       flkty.current.on('dragEnd', () => {

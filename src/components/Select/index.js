@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import Icon from "../Icon";
-import TextField from "@material-ui/core/TextField";
-import { ICONS } from "../../../assets/images/icons";
+import MaterialSelect from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
 const Select = ({
   options,
@@ -17,60 +18,22 @@ const Select = ({
   disabled,
   ...props
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { label, value, className, placeholder } = inputData;
-
+  const { label, value = "", className, placeholder } = inputData;
   return (
-    <>
-      {isOpen && <div className="u-absolute w-100 h-100 top-0 right-0" />}
-      <div className="u-relative" style={containerStyle}>
-        <TextField
-          variant="filled"
-          disabled={disabled}
-          style={{ background: "white", width: "100%", ...inputStyle }}
-          label={label}
-          value={value}
-          className={className}
-          placeholder={placeholder}
-          onChange={(name, v) => {
-            onChange(name, v);
-          }}
-          autoComplete="off"
-          onClick={(e) => {
-            setIsOpen(!isOpen);
-          }}
-          {...props}
-        />
-        <Icon
-          icon={ICONS.CONTROL_DOWN}
-          size={25}
-          color="#949C9F"
-          className="position-absolute left-0 u-top-50-percent u-pointer-events-none"
-        />
-        {isOpen && (
-          <div className="d-flex flex-column w-100 z-index-1000 c-input-result-search">
-            {options.map((option) => (
-              <div
-                onKeyDown={() => {}}
-                role="button"
-                tabIndex="0"
-                style={itemStyle}
-                key={option.id}
-                onClick={() => {
-                  setIsOpen(false);
-                  selectOption(option);
-                }}
-                className="d-flex flex-row align-items-center u-cursor-pointer px-2 u-text-dark-grey u-fontMedium c-input-result-search-item">
-                {!noIcon && (
-                  <Icon icon={ICONS.PLUS} size={12} color="#168fd4" className="ml-2 mr-2" />
-                )}
-                <span>{option.text}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
+    <FormControl className="w-100" style={{ marginTop: 8}}>
+      <InputLabel id="select-label">{label}</InputLabel>
+      <MaterialSelect
+        labelId="select-label"
+        className="w-100"
+        value={value}
+        onChange={(e) => selectOption(e.target.value)}>
+        {options.map((o) => (
+          <MenuItem key={o.id} value={o.text}>
+            {o.text}
+          </MenuItem>
+        ))}
+      </MaterialSelect>
+    </FormControl>
   );
 };
 Select.propTypes = {

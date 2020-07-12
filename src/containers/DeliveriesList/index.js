@@ -43,7 +43,7 @@ export function DeliveriesList({ _getDeliveries, deliverers, deliveries, locatio
   return (
     <div className="h-100 pb-4">
       <div
-        className="u-border-radius-8 container px-0 container-shadow overflow-hidden u-mt-50"
+        className="u-border-radius-8 container px-0 container-shadow overflow-hidden mt-5"
         style={{
           height: "calc(100% - 160px)",
         }}>
@@ -71,12 +71,12 @@ export function DeliveriesList({ _getDeliveries, deliverers, deliveries, locatio
         </div>
         <div
           className="u-background-white py-5 overflow-auto px-60"
-          style={{ height: "calc(100% - 120px)" }}>
+          style={{ height: "calc(100% - 109px)" }}>
           {deliveries.length ? (
             deliveries.map((order) => (
               <DelivererOrderCard
                 order={order}
-                link={`/online-orders/${order.id}`}
+                link={`/orders/${order.id}`}
                 key={`order-${order.id}`}
               />
             ))

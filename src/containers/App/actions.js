@@ -33,7 +33,10 @@ import {
   UPLOAD_SUCCESS,
   UPLOAD_FAILURE,
   UPLOAD_REQUEST_FINISHED,
-} from './constants';
+  START_PROGRESS_LOADING,
+  STOP_PROGRESS_LOADING,
+  SET_PRINTER_OPTIONS,
+} from "./constants";
 
 export function init() {
   return {
@@ -57,6 +60,26 @@ export function startLoading() {
 export function stopLoading() {
   return {
     type: STOP_LOADING,
+  };
+}
+
+export function startProgressLoading() {
+  return {
+    type: START_PROGRESS_LOADING,
+  };
+}
+
+export function stopProgressLoading() {
+  return {
+    type: STOP_PROGRESS_LOADING,
+  };
+}
+
+export function setPrinterOptions(data) {
+  localStorage.setItem("printerOptions", JSON.stringify(data));
+  return {
+    type: SET_PRINTER_OPTIONS,
+    data,
   };
 }
 
@@ -123,7 +146,7 @@ export const uploadProgress = (file, progress) => ({
   payload: progress,
   meta: { file },
 });
-export const uploadSuccess = file => ({
+export const uploadSuccess = (file) => ({
   type: UPLOAD_SUCCESS,
   meta: { file },
 });

@@ -25,9 +25,9 @@ const OnlineOrders = function ({ _getAdminOrders, adminOrders: orders, paginatio
   }, [location]);
   return (
     <div
-      className="u-border-radius-8 container px-0 container-shadow overflow-hidden u-mt-50"
+      className="u-border-radius-8 container px-0 container-shadow overflow-hidden mt-5"
       style={{
-        height: "calc(100% - 150px)",
+        height: "calc(100% - 180px)",
       }}>
       <div className="d-flex px-60 py-3">
         <span className="px-0 col-3">
@@ -40,8 +40,9 @@ const OnlineOrders = function ({ _getAdminOrders, adminOrders: orders, paginatio
         <div>
           {orders.map((order) => (
             <OrderCard
+              isBold={order.order_status === 0}
               key={`order-${order.id}`}
-              link={`/online-orders/${order.id}`}
+              link={`/orders/${order.id}`}
               order={order}
             />
           ))}

@@ -21,7 +21,7 @@ export function DeliverersList({
                                  deliverers
                                }) {
   return (<div className="h-100 pb-4">
-      <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden u-mt-50" style={{
+      <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden mt-5" style={{
         height: 'calc(100% - 150px)'
       }}>
         <div className="px-60 text-left pt-3">

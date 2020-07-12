@@ -3,11 +3,17 @@ import moment from "moment-jalaali";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-import { ellipseText, englishNumberToPersianNumber, priceFormatter } from "../../../utils/helper";
+import {
+  ellipseText,
+  englishNumberToPersianNumber,
+  noOp,
+  priceFormatter,
+} from "../../../utils/helper";
 import Icon from "../Icon";
 import { ICONS } from "../../../assets/images/icons";
+import CheckBox from "../CheckBox";
 
-function OrderCard({ order, link }) {
+function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
   const {
     final_price: totalPrice,
     user_address: userAddress,
@@ -26,7 +32,15 @@ function OrderCard({ order, link }) {
     (orderStatus === 0 && "#168FD4") || (orderStatus === 2 && "#E13F18") || "#67b977";
   return (
     <>
-      <Link to={link} className="d-flex px-0 u-cursor-pointer c-order-card overflow-hidden">
+      <Link
+        to={link}
+        onClick={(e) => {
+          if (hasCheck) {
+            e.preventDefault();
+            onSelect(selected);
+          }
+        }}
+        className="d-flex px-0 u-cursor-pointer c-order-card overflow-hidden">
         <div
           style={{
             minWidth: 4,
@@ -35,11 +49,21 @@ function OrderCard({ order, link }) {
         />
         <div
           className={`d-flex w-100 text-center py-1 ${
-            order.order_status !== 0
+            !isBold
               ? "u-background-melo-grey u-text-darkest-grey"
               : "u-background-white u-fontWeightBold u-text-black"
           }  pl-2`}>
-          <div className="d-flex px-2 align-items-center justify-content-center" style={{ width: 90 }}>
+          {hasCheck && (
+            <CheckBox
+              checked={selected}
+              onChange={noOp}
+              label={`defaultCheck${order.id}`}
+              className="mr-2"
+            />
+          )}
+          <div
+            className="d-flex px-2 align-items-center justify-content-center"
+            style={{ width: 90 }}>
             {orderDate.getMonth() === nowDate.getMonth() &&
             orderDate.getFullYear() === nowDate.getFullYear() &&
             orderDate.getDate() === nowDate.getDate() ? (

@@ -7,14 +7,14 @@ function PriceSection({ order }) {
   else if (+order.delivery_price !== 0) cost = `${priceFormatter(+order.delivery_price)}`;
 
   return (
-    <div className="w-100 py-2 u-background-white mt-1 px-3 flex-1">
-      <div className="flex-1 u-fontMedium u-fontWeightBold mb-2 u-text-black">
+    <div className="py-2 u-relative u-background-white box-shadow u-border-radius-8 mr-4">
+      <div className="flex-1 u-fontMedium u-fontWeightBold mb-2 u-text-black px-3">
         <span> مبلغ قابل پرداخت: </span>
         <span>{priceFormatter(order.final_price)}</span>
         <span className="u-font-semi-small u-fontWeightLight px-1">تومان</span>|
         {order.payment_status === 1 && <span className="u-text-green mr-1">آنلاین</span>}
         {order.payment_status === 2 && (
-          <span className="u-text-red mr-1">در محل (حضوری / کارتخوان)</span>
+          <span className="u-text-red u-fontMedium mr-1">در محل (حضوری / کارتخوان)</span>
         )}
       </div>
       <div className="d-flex flex-column px-3">

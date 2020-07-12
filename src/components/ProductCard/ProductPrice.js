@@ -4,8 +4,8 @@
  *
  */
 
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
+import React, { memo } from "react";
+import PropTypes from "prop-types";
 import {
   calculateDiscountPercent,
   englishNumberToPersianNumber,
@@ -15,30 +15,29 @@ import {
 // import styled from 'styled-components';
 
 function ProductPrice({ discountedPrice, initialPrice }) {
-  const discountPercent = calculateDiscountPercent(
-    initialPrice,
-    discountedPrice,
-  );
+  const discountPercent = calculateDiscountPercent(initialPrice, discountedPrice);
   return initialPrice - discountedPrice ? (
     <div className="c-business-card-item-info d-flex flex-row-reverse align-items-center p-2 justify-content-between">
       <div className="d-flex flex-column u-textWhite">
-        {discountPercent ? (
-          <div
-            className="c-btn c-btn-transparent-bg c-btn-discount u-font-semi-small"
-            style={{ padding: '0 2px' }}
-          >
-            ٪<span>{englishNumberToPersianNumber(discountPercent)}</span>
+        <div className="d-flex justify-content-end">
+          {priceFormatter(initialPrice) && (
+            <div className="u-font-semi-small u-text-line-through ml-3 text-right">
+              {priceFormatter(initialPrice)}
+            </div>
+          )}
+
+          <div className="d-flex flex-column u-textWhite">
+            {discountPercent ? (
+              <div
+                className="c-btn c-btn-transparent-bg c-btn-discount u-font-semi-small u-border-radius-4"
+                style={{ padding: "0 2px" }}>
+                ٪<span>{englishNumberToPersianNumber(discountPercent)}</span>
+              </div>
+            ) : null}
           </div>
-        ) : null}
-      </div>
-      <div className="d-flex flex-column u-textWhite">
-        {priceFormatter(initialPrice) && (
-          <div className="u-font-semi-small u-text-line-through ml-1 text-right">
-            {priceFormatter(initialPrice)}
-          </div>
-        )}
-        <div className="u-fontMedium u-textWhite ml-1 text-right u-fontWeightBold">
-          {priceFormatter(discountedPrice)}
+        </div>
+        <div className="u-fontMedium u-textWhite ml-1 text-right">
+          <span className="u-fontWeightBold">{priceFormatter(discountedPrice)}</span>
           <span className="u-font-semi-small"> تومان </span>
         </div>
       </div>

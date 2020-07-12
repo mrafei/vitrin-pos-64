@@ -4,76 +4,110 @@
  *
  */
 
-import React, { memo, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import AdminProductCard from "./AddNewProductCard";
 import ProductPrice from "./ProductPrice";
-import ProductDescription from "./ProductDescription";
-import RenderOrderControlPanel from "./RenderOrderControlPanel";
 import { CDN_BASE_URL } from "../../../utils/api";
-import { handleKeyDown } from "../../../utils/helper";
+import {
+  calculateDiscountPercent,
+  ellipseText,
+  englishNumberToPersianNumber,
+  handleKeyDown,
+  noOp,
+  priceFormatter,
+} from "../../../utils/helper";
+import Switch from "../Swtich";
+import pen from "../../../assets/images/pen.svg";
 const penIcon = `${CDN_BASE_URL}edit-pen-white-icn.svg`;
 
 function ProductCard({
   onClick,
   className = " mx-1 my-1 ",
-  increaseOrderItem,
-  decreaseOrderItem,
   themeColor,
   product,
-  hasOrderControlPanel,
-  isNewProductCard,
-  count,
   isEditMode,
+  _updateProduct = noOp,
+  loading,
+  isList,
 }) {
   const {
     title,
-    description,
     initial_price: initialPrice,
     discounted_price: discountedPrice,
     main_image_thumbnail_url: mainImageThumbnailUrl,
-    available,
   } = product;
-
-  const [isControlMode, toggleControlMode] = useState(false);
+  useEffect(() => {
+    setAvailable(product.available);
+  }, [product.available]);
   const [snackBar, setSnackBar] = useState(false);
-  const openOrderControlPanel = (e) => {
-    e.stopPropagation();
-    toggleControlMode(true);
-  };
-  const initialIncrement = (e) => {
-    if (increaseOrderItem) {
-      e.stopPropagation();
-      setSnackBar(true);
-      setTimeout(() => {
-        setSnackBar(false);
-      }, 2000);
-      toggleControlMode(true);
-      increaseOrderItem(product);
-    }
-  };
-  const increment = (e) => {
-    if (increaseOrderItem) {
-      e.stopPropagation();
-      increaseOrderItem(product);
-    }
-  };
-  const decrement = (e) => {
-    if (decreaseOrderItem) {
-      e.stopPropagation();
-      if (count === 1) {
-        toggleControlMode(false);
+  const [available, setAvailable] = useState(product.available);
+  const changeAvailability = useCallback(
+    (availability) => {
+      if (!loading) {
+        setAvailable(availability);
+        _updateProduct(product.id, { ...product, available: availability }, []);
       }
-      decreaseOrderItem(product);
-    }
-  };
-
-  if (isNewProductCard) {
-    return <AdminProductCard />;
-  }
+    },
+    [product, available, loading]
+  );
+  const discountPercent = calculateDiscountPercent(initialPrice, discountedPrice);
+  if (isList)
+    return (
+      <div className="d-flex text-center align-items-center mt-1 flex-1">
+        <div className="col-3 px-0 d-flex align-items-center">
+          <div className="col-2 px-0">
+            <img
+              className="u-height-36 width-36 u-border-radius-4 u-background-melo-grey"
+              style={{ boxShadow: " inset 0px 0px 4px rgba(0, 0, 0, 0.1)" }}
+              alt={`image-${product.id}`}
+              src={mainImageThumbnailUrl}
+            />
+          </div>
+          <div className="col-10 pl-0 text-right pr-3">{title}</div>
+        </div>
+        <div className="col-7 px-0 d-flex">
+          <div className="col-3 px-0">
+            <span>{priceFormatter(initialPrice)}</span>{" "}
+            <span className="u-font-semi-small">تومان</span>
+          </div>
+          <div className="col-3 px-0">
+            <span>{priceFormatter(initialPrice - discountedPrice)}</span>
+            {initialPrice - discountedPrice ? <span style={{ marginRight: 2 }}>-</span> : ""}{" "}
+            <span className="u-font-semi-small">تومان</span>
+          </div>
+          <div className="col-2 px-0 u-fontMedium">
+            ٪<span>{englishNumberToPersianNumber(discountPercent)}</span>
+          </div>
+          <div className="col-4 px-0">
+            <span>{priceFormatter(discountedPrice)}</span>{" "}
+            <span className="u-font-semi-small">تومان</span>
+          </div>
+        </div>
+        <div className="col-2 px-0 d-flex">
+          <div className="col-10 px-0">
+            <div className="d-flex justify-content-center align-items-end flex-1">
+              <span
+                className={`u-font-semi-small ml-2 u-fontWeightBold ${
+                  available ? "u-text-primary-blue" : "u-text-darkest-grey"
+                }`}>
+                {available ? "موجود" : "ناموجود"}
+              </span>
+              <Switch
+                isSwitchOn={available}
+                onColor={themeColor}
+                toggleSwitch={changeAvailability}
+              />
+            </div>
+          </div>
+          <div className="col-2 px-0">
+            <img alt="" className="mx-2 cursorPointer" src={pen} />
+          </div>
+        </div>
+      </div>
+    );
   return (
     <div
-      className={`cursorPointer u-relative c-business-card-custom m-1 ${
+      className={`cursorPointer u-relative c-business-card-custom u-background-white d-flex flex-column m-1 ${
         isEditMode ? "u-dashed-border" : ""
       } ${className}`}
       onClick={() => onClick(product)}
@@ -84,20 +118,6 @@ function ProductCard({
         className="position-relative align-self-center overflow-hidden u-border-top-left-radius-4 u-border-top-right-radius-4"
         style={{ background: "#c4c4c4" }}>
         <div className="liner-gradiant-card d-flex align-items-center p-1" />
-        {hasOrderControlPanel || isEditMode ? (
-          <RenderOrderControlPanel
-            count={count}
-            increment={increment}
-            decrement={decrement}
-            themeColor={themeColor}
-            toggleControlMode={toggleControlMode}
-            openOrderControlPanel={openOrderControlPanel}
-            initialIncrement={initialIncrement}
-            isControlMode={isControlMode}
-            isProductAvailable={available}
-            isEditMode={isEditMode}
-          />
-        ) : null}
         <img className="c-business-card-item-img" src={mainImageThumbnailUrl} alt="بهترینو" />
         <ProductPrice initialPrice={initialPrice} discountedPrice={discountedPrice} />
         <div
@@ -117,11 +137,22 @@ function ProductCard({
           به سبد خرید افزوده شد!
         </div>
       </div>
-      <div className="px-1">
-        <ProductDescription title={title} description={description} />
+      <div className="u-fontNormal px-1 u-text-black mt-1 u-fontWeightBold text-right overflow-hidden">
+        {ellipseText(title, 40)}
+      </div>
+      <div className="d-flex justify-content-between px-1 align-items-end pb-2 flex-1">
+        <span
+          className={`u-font-semi-small u-fontWeightBold ${
+            available ? "u-text-primary-blue" : "u-text-darkest-grey"
+          }`}>
+          {available ? "موجود" : "ناموجود"}
+        </span>
+        <Switch isSwitchOn={available} onColor={themeColor} toggleSwitch={changeAvailability} />
       </div>
       {isEditMode && (
-        <button type="button" className="c-btn c-product-btn-editMode u-addItem z-index-2">
+        <button
+          type="button"
+          className="c-btn c-product-btn-editMode u-border-radius-4 u-addItem z-index-2">
           <img alt="" src={penIcon} />
         </button>
       )}
@@ -137,7 +168,6 @@ ProductCard.propTypes = {
   product: PropTypes.object,
   hasOrderControlPanel: PropTypes.bool,
   themeColor: PropTypes.string,
-  isNewProductCard: PropTypes.bool,
   count: PropTypes.number,
   isEditMode: PropTypes.bool,
 };
