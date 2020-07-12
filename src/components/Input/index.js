@@ -5,23 +5,23 @@
  *
  */
 
-import React, {memo, useState} from 'react';
-import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/esm/TextField';
+import React, { memo, useState } from "react";
+import PropTypes from "prop-types";
+import TextField from "@material-ui/core/esm/TextField";
 
 function Input({
-                 className = 'direction-rtl',
-                 onChange,
-                 value,
-                 type,
-                 label,
-                 themeColor,
-                 noModal,
-                 numberOnly,
-                 style,
-                 ...props
-               }) {
-  const [assistiveText, setAssistiveText] = useState('');
+  className = "direction-rtl",
+  onChange,
+  value,
+  type,
+  label,
+  themeColor,
+  noModal,
+  numberOnly,
+  style,
+  ...props
+}) {
+  const [assistiveText, setAssistiveText] = useState("");
   return (
     <>
       <style
@@ -32,33 +32,33 @@ function Input({
           }
           .MuiFormLabel-root.Mui-focused {
             color: ${themeColor} !important;
-        `
+        `,
         }}
       />
       <div className="w-100">
-        {type === 'textarea' ? (
+        {type === "textarea" ? (
           <textarea
             className="c-input c-input-text-area mt-2"
             value={value}
-            onChange={e => onChange(e.target.value)}
+            onChange={(e) => onChange(e.target.value)}
             {...props}
           />
         ) : (
           <TextField
             InputLabelProps={{
-              style: {textAlign: 'left', direction: 'rtl'},
+              style: { textAlign: "left", direction: "rtl" },
             }}
-            inputProps={{style}}
+            inputProps={{ style }}
             fullWidth
             variant="filled"
             className={`u-fontLarge ${className}`}
             value={value}
-            onChange={e => {
+            onChange={(e) => {
               if (numberOnly) {
-                if (e.target.value.search(/[^0-9۰-۹]/g, '') !== -1)
-                  setAssistiveText('تنها مجاز به وارد کردن عدد هستید.');
-                else setAssistiveText('');
-                onChange(e.target.value.replace(/[^0-9۰-۹]/g, ''));
+                if (e.target.value.search(/[^0-9۰-۹]/g, "") !== -1)
+                  setAssistiveText("تنها مجاز به وارد کردن عدد هستید.");
+                else setAssistiveText("");
+                onChange(e.target.value.replace(/[^0-9۰-۹]/g, ""));
               } else onChange(e.target.value);
             }}
             label={label}
@@ -79,13 +79,13 @@ Input.propTypes = {
   label: PropTypes.string,
   themeColor: PropTypes.string,
   noModal: PropTypes.bool,
-  numberOnly: PropTypes.bool
+  numberOnly: PropTypes.bool,
 };
 
 Input.defaultProps = {
-  className: 'direction-rtl',
-  type: 'text',
-  themeColor: '#168FD5'
+  className: "direction-rtl",
+  type: "text",
+  themeColor: "#168FD5",
 };
 
 export default memo(Input);
