@@ -50,9 +50,7 @@ export default class ComponentToPrint extends React.Component {
             <div className="mt-1">
               <span> آدرس سفارش دهنده: </span>
               {order.user_address && (
-                <span className="u-fontWeightBold u-fontSemiLarge">
-                  {order.user_address.address}
-                </span>
+                <span className="u-fontWeightBold u-fontLarge">{order.user_address.address}</span>
               )}
             </div>
           )}
@@ -76,34 +74,60 @@ export default class ComponentToPrint extends React.Component {
         </div>
 
         {!printOptions.hideItems && (
-          <div className="u-border-bottom-dark">
-            <div className="py-1">
-              <div className="d-flex flex-row px-2 mt-1 u-fontWeightBold u-border-bottom-dark py-1">
-                <div style={{ width: 160, whiteSpace: "pre-wrap" }}>نام</div>
-                <div className="text-center" style={{ width: 80 }}>
-                  فی
+          <div>
+            <div className="pt-1">
+              <div className="d-flex flex-row px-2 mt-1 u-border-bottom-dark py-1">
+                <div
+                  style={{
+                    width: !printOptions.hideItemPrices ? 160 : 320,
+                    whiteSpace: "pre-wrap",
+                  }}>
+                  نام
                 </div>
+
                 <div className="text-center" style={{ width: 35 }}>
                   تعداد
                 </div>
 
-                <div className="text-center" style={{ width: 80 }}>
-                  قیمت کل
-                </div>
+                {!printOptions.hideItemPrices ? (
+                  <>
+                    <div className="text-center" style={{ width: 80 }}>
+                      فی
+                    </div>
+
+                    <div className="text-center" style={{ width: 80 }}>
+                      قیمت کل
+                    </div>
+                  </>
+                ) : null}
               </div>
             </div>
             {order.items.map((item) => (
-              <div className="d-flex flex-row px-2 mt-1" key={`order-item-${item.id}`}>
-                <div style={{ width: 160, whiteSpace: "pre-wrap" }}>{item.deal.title}</div>
-                <div className="text-center" style={{ width: 80 }}>
-                  {priceFormatter(item.deal.discounted_price)}
+              <div
+                className="d-flex flex-row px-2 py-1 u-border-bottom-dark"
+                key={`order-item-${item.id}`}>
+                <div
+                  className="u-fontWeightBold u-fontLarge"
+                  style={{
+                    width: !printOptions.hideItemPrices ? 160 : 320,
+                    whiteSpace: "pre-wrap",
+                  }}>
+                  {item.deal.title}
                 </div>
-                <div className="text-center" style={{ width: 35 }}>
+                <div className="text-center u-fontLarge u-fontWeightBold" style={{ width: 35 }}>
                   {englishNumberToPersianNumber(item.amount)}
                 </div>
-                <div className="text-center" style={{ width: 80 }}>
-                  {priceFormatter(item.deal.discounted_price * item.amount)}
-                </div>
+
+                {!printOptions.hideItemPrices ? (
+                  <>
+                    <div className="text-center" style={{ width: 80 }}>
+                      {priceFormatter(item.deal.discounted_price)}
+                    </div>
+                    <div className="text-center" style={{ width: 80 }}>
+                      {priceFormatter(item.deal.discounted_price * item.amount)}
+                    </div>
+                  </>
+                ) : null}
               </div>
             ))}
           </div>
@@ -129,7 +153,9 @@ export default class ComponentToPrint extends React.Component {
             </div>
             <div className="mt-1 u-fontMedium">
               <span>قابل پرداخت: </span>
-              <span className="u-fontWeightBold p-1" style={{ whiteSpace: "pre-wrap" }}>
+              <span
+                className="u-fontWeightBold px-3 py-1 u-fontLarge u-background-black u-text-white"
+                style={{ whiteSpace: "pre-wrap" }}>
                 {priceFormatter(order.final_price)} تومان
               </span>
             </div>
