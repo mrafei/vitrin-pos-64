@@ -107,13 +107,12 @@ function createWindow() {
     app.quit();
   });
   workerWindow = new BrowserWindow({
-    show: false,
     webPreferences: {
       nodeIntegration: true,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
-
+  workerWindow.hide();
   notifWindow = new BrowserWindow({
     width: 240,
     height: 135,
