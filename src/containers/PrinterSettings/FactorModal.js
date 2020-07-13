@@ -32,6 +32,7 @@ const options = [
       { id: 8, text: "جزئیات ارسال", field: "hideDetails" },
       { id: 9, text: "جزئیات آیتم‌های سفارش", field: "hideItems" },
       { id: 10, text: "مبالغ پرداختی", field: "hidePrices" },
+      { id: 11, text: "مبالغ آیتم‌های سفارش", field: "hideItemPrices" },
     ],
   },
 ];
@@ -52,6 +53,7 @@ function FactorModal({ save, _onClose, business, printOptions, index }) {
             hideDetails: false,
             hideItems: false,
             hidePrices: false,
+            hideItemPrices: false,
           },
         };
   return (
