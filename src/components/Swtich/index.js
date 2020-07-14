@@ -16,7 +16,7 @@ function Switch({ isSwitchOn, toggleSwitch, id, themeColor, onColor }) {
       <ReactSwitch
         checked={isSwitchOn}
         onChange={() => toggleSwitch(!isSwitchOn)}
-        onColor={onColor || "#747474"}
+        onColor={onColor || "#168fd5"}
         offColor="#747474"
         onHandleColor={themeColor || "#168FD4"}
         offHandleColor={themeColor || "#4F595B"}
@@ -37,7 +37,7 @@ function Switch({ isSwitchOn, toggleSwitch, id, themeColor, onColor }) {
 Switch.propTypes = {
   isSwitchOn: PropTypes.bool,
   toggleSwitch: PropTypes.func,
-  id: PropTypes.func,
+  id: PropTypes.string,
   themeColor: PropTypes.string,
   onColor: PropTypes.string,
 };

@@ -18,15 +18,20 @@ const Select = ({
   disabled,
   ...props
 }) => {
-  const { label, value = "", className, placeholder } = inputData;
+  const { label, value = "", defaultValue, className, placeholder } = inputData;
   return (
-    <FormControl className="w-100" style={{ marginTop: 8}}>
+    <FormControl className="w-100" style={{ marginTop: 8 }}>
       <InputLabel id="select-label">{label}</InputLabel>
       <MaterialSelect
         labelId="select-label"
         className="w-100"
-        value={value}
+        value={defaultValue ? defaultValue : value}
         onChange={(e) => selectOption(e.target.value)}>
+        {defaultValue && (
+          <MenuItem className="d-none" value={defaultValue}>
+            {defaultValue}
+          </MenuItem>
+        )}
         {options.map((o) => (
           <MenuItem key={o.id} value={o.text}>
             {o.text}

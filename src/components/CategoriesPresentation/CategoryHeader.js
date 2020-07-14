@@ -6,32 +6,40 @@
  *
  */
 
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import PropTypes from "prop-types";
 import pen from "../../../assets/images/pen.svg";
 import Icon from "../Icon";
 import { ICONS } from "../../../assets/images/icons";
 import { Link } from "react-router-dom";
+import CategoryModal from "../../containers/Products/CategoryModal";
 // import styled from 'styled-components';
 
-function CategoryHeader({ categoryName, onCategoryEditButtonClick, isEditMode, isList }) {
+function CategoryHeader({ categoryName, isEditMode, isList, categoryId = "" }) {
+  const [categoryModal, setCategoryModal] = useState(false);
   return (
     <div>
+      <CategoryModal
+        onClose={() => setCategoryModal(false)}
+        categoryId={categoryId}
+        isOpen={categoryModal}
+      />
       <div className="d-flex mx-1 justify-content-between u-textBlack align-items-center">
         <span className="u-fontWeightBold">
           {categoryName}
           {isEditMode && (
-            <img
-              alt=""
-              className="mx-2 cursorPointer"
-              src={pen}
-              onClick={onCategoryEditButtonClick}
+            <Icon
+              color="#168fd5"
+              size={19}
+              className="mx-1 cursorPointer"
+              icon={ICONS.PEN}
+              onClick={() => setCategoryModal(true)}
             />
           )}
         </span>
         {isList && isEditMode ? (
           <Link
-            to="/products/new"
+            to={`/products/new/${categoryId}`}
             className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3">
             <Icon icon={ICONS.PLUS} color="white" className="ml-2" size={12} />
             <span className="u-fontWeightBold u-fontMedium u-text-white">افزودن محصول جدید</span>
@@ -64,7 +72,6 @@ CategoryHeader.propTypes = {
   categoryName: PropTypes.string,
   themeColor: PropTypes.string,
   showMoreBtnOnClick: PropTypes.func,
-  onCategoryEditButtonClick: PropTypes.func,
   isEditMode: PropTypes.bool,
 };
 

@@ -438,6 +438,9 @@ input:not([type="checkbox"]) {
 .u-height-32 {
   height: 32px;
 }
+.u-height-44 {
+  height: 44px;
+}
 
 .u-height-64 {
   height: 64px;
@@ -2008,6 +2011,9 @@ h6 {
     white-space: pre-wrap;
   }
 }
+.MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.16) !important;
+}
 
 .dark-backdrop {
   .MuiBackdrop-root {
@@ -2168,4 +2174,13 @@ h6 {
 
 .react-switch-bg {
   opacity: 0.4;
+}
+
+.fit-content {
+  width: fit-content;
+  height: fit-content;
+}
+
+.cursor-default {
+  cursor: default;
 }

@@ -12,7 +12,6 @@ import {
   calculateDiscountPercent,
   ellipseText,
   englishNumberToPersianNumber,
-  handleKeyDown,
   noOp,
   priceFormatter,
 } from "../../../utils/helper";
@@ -92,14 +91,10 @@ function ProductCard({
                 }`}>
                 {available ? "موجود" : "ناموجود"}
               </span>
-              <Switch
-                isSwitchOn={available}
-                onColor={themeColor}
-                toggleSwitch={changeAvailability}
-              />
+              <Switch isSwitchOn={available} toggleSwitch={changeAvailability} />
             </div>
           </div>
-          <div className="col-2 px-0">
+          <div className="col-2 px-0" onClick={() => onClick(product)}>
             <img alt="" className="mx-2 cursorPointer" src={pen} />
           </div>
         </div>
@@ -107,13 +102,9 @@ function ProductCard({
     );
   return (
     <div
-      className={`cursorPointer u-relative c-business-card-custom u-background-white d-flex flex-column m-1 ${
+      className={`u-relative c-business-card-custom u-background-white d-flex flex-column m-1 ${
         isEditMode ? "u-dashed-border" : ""
-      } ${className}`}
-      onClick={() => onClick(product)}
-      onKeyDown={(e) => handleKeyDown(e, onClick)}
-      role="button"
-      tabIndex="0">
+      } ${className}`}>
       <div
         className="position-relative align-self-center overflow-hidden u-border-top-left-radius-4 u-border-top-right-radius-4"
         style={{ background: "#c4c4c4" }}>
@@ -147,10 +138,11 @@ function ProductCard({
           }`}>
           {available ? "موجود" : "ناموجود"}
         </span>
-        <Switch isSwitchOn={available} onColor={themeColor} toggleSwitch={changeAvailability} />
+        <Switch isSwitchOn={available} toggleSwitch={changeAvailability} />
       </div>
       {isEditMode && (
         <button
+          onClick={() => onClick(product)}
           type="button"
           className="c-btn c-product-btn-editMode u-border-radius-4 u-addItem z-index-2">
           <img alt="" src={penIcon} />

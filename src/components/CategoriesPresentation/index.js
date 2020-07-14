@@ -19,7 +19,6 @@ function CategoriesPresentation({
   abstract,
   orders = [],
   productCardOptions = {},
-  onNewProductCardClick,
   pluginBaseUrl,
   reloadOnUpdate,
   onCategoryEditButtonClick,
@@ -84,33 +83,30 @@ function CategoriesPresentation({
           <Droppable droppableId="deal_categories">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {list.map((category, index) =>
-                  category.deals.length ? (
-                    <Draggable draggableId={`${category.id}`} index={index} key={category.id}>
-                      {(_provided, _snapshot) => (
-                        <div ref={_provided.innerRef} {..._provided.draggableProps}>
-                          <CategoryPresentation
-                            onCategoryEditButtonClick={onCategoryEditButtonClick}
-                            pluginBaseUrl={pluginBaseUrl}
-                            reloadOnUpdate={reloadOnUpdate}
-                            key={`c-${category.id}`}
-                            category={category}
-                            dragHandleProps={_provided.dragHandleProps}
-                            isDragging={_snapshot.isDragging}
-                            themeColor={themeColor}
-                            history={history}
-                            abstract={abstract}
-                            productCardOptions={productCardOptions}
-                            orders={orders}
-                            isEditMode
-                            onNewProductCardClick={onNewProductCardClick}
-                            isList={isList}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ) : null
-                )}
+                {list.map((category, index) => (
+                  <Draggable draggableId={`${category.id}`} index={index} key={category.id}>
+                    {(_provided, _snapshot) => (
+                      <div ref={_provided.innerRef} {..._provided.draggableProps}>
+                        <CategoryPresentation
+                          onCategoryEditButtonClick={onCategoryEditButtonClick}
+                          pluginBaseUrl={pluginBaseUrl}
+                          reloadOnUpdate={reloadOnUpdate}
+                          key={`c-${category.id}`}
+                          category={category}
+                          dragHandleProps={_provided.dragHandleProps}
+                          isDragging={_snapshot.isDragging}
+                          themeColor={themeColor}
+                          history={history}
+                          abstract={abstract}
+                          productCardOptions={productCardOptions}
+                          orders={orders}
+                          isEditMode
+                          isList={isList}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
                 {provided.placeholder}
               </div>
             )}
@@ -128,7 +124,6 @@ CategoriesPresentation.propTypes = {
   abstract: PropTypes.bool,
   productCardOptions: PropTypes.object,
   orders: PropTypes.array,
-  onNewProductCardClick: PropTypes.func,
   pluginBaseUrl: PropTypes.string,
   reloadOnUpdate: PropTypes.bool,
   onCategoryEditButtonClick: PropTypes.func,

@@ -29,7 +29,7 @@ function ProductPrice({ discountedPrice, initialPrice }) {
           <div className="d-flex flex-column u-textWhite">
             {discountPercent ? (
               <div
-                className="c-btn c-btn-transparent-bg c-btn-discount u-font-semi-small u-border-radius-4"
+                className="c-btn-transparent-bg c-btn-discount u-font-semi-small u-border-radius-4"
                 style={{ padding: "0 2px" }}>
                 ٪<span>{englishNumberToPersianNumber(discountPercent)}</span>
               </div>

@@ -4,8 +4,8 @@
  *
  */
 
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
+import React, { memo } from "react";
+import PropTypes from "prop-types";
 import { handleKeyDown } from "../../../utils/helper";
 import { CDN_BASE_URL } from "../../../utils/api";
 // import styled from 'styled-components';
@@ -16,10 +16,9 @@ function AddNewProductCard({ onClick, className }) {
     <div
       className={`u-dashed-border cursorPointer d-flex flex-column m-1 u-relative c-business-card-custom u-background-melo-grey ${className}`}
       onClick={onClick}
-      onKeyDown={e => handleKeyDown(e, onClick)}
+      onKeyDown={(e) => handleKeyDown(e, onClick)}
       role="button"
-      tabIndex="0"
-    >
+      tabIndex="0">
       <div className="u-text-primary-blue d-flex justify-content-center align-items-center m-auto">
         <img className="ml-1" src={plusIcon} alt="" />
         محصول جدید
@@ -29,12 +28,11 @@ function AddNewProductCard({ onClick, className }) {
 }
 
 AddNewProductCard.propTypes = {
-  onClick: PropTypes.func.isRequired,
   className: PropTypes.string,
 };
 
 AddNewProductCard.defaultProps = {
-  className: '',
+  className: "",
 };
 
 export default memo(AddNewProductCard);

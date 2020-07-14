@@ -11,6 +11,7 @@ import moment from "moment-jalaali";
 import ProductCard from "../ProductCard";
 import CategoryHeader from "./CategoryHeader";
 import AddNewProductCard from "../ProductCard/AddNewProductCard";
+import { Link } from "react-router-dom";
 
 function CategoryPresentation({
   category: { deals: products, name, id },
@@ -18,8 +19,6 @@ function CategoryPresentation({
   orders = [],
   productCardOptions,
   isEditMode,
-  onCategoryEditButtonClick,
-  onNewProductCardClick = () => {},
   isDragging,
   dragHandleProps,
   isList,
@@ -60,9 +59,9 @@ function CategoryPresentation({
           <CategoryHeader
             categoryName={name}
             themeColor={themeColor}
-            onCategoryEditButtonClick={() => onCategoryEditButtonClick(id)}
             isEditMode={isEditMode}
             isList={isList}
+            categoryId={id}
           />
         </div>
       </div>
@@ -70,12 +69,9 @@ function CategoryPresentation({
         className={`justify-content-start ${!isList ? "d-flex flex-wrap py-2 px-3" : "py-1 pl-3"}`}
         style={{ paddingRight: !isList ? 0 : 39 }}>
         {isEditMode && !isList && (
-          <AddNewProductCard
-            onClick={() => {
-              localStorage.setItem("adminNewProductCategory", JSON.stringify({ name, id }));
-              onNewProductCardClick();
-            }}
-          />
+          <Link to="/products/new">
+            <AddNewProductCard />
+          </Link>
         )}
         {products.map((product, i) => {
           const {
@@ -111,8 +107,6 @@ CategoryPresentation.propTypes = {
   orders: PropTypes.array,
   pluginBaseUrl: PropTypes.string,
   isEditMode: PropTypes.bool,
-  onNewProductCardClick: PropTypes.func,
-  onCategoryEditButtonClick: PropTypes.func,
   showMoreBtnOnClick: PropTypes.func,
   isDragging: PropTypes.bool,
   dragHandleProps: PropTypes.object,

@@ -28,6 +28,7 @@ import reducer from "./reducer";
 import { useInjectSaga } from "../../../utils/injectSaga";
 import saga from "./saga";
 import { changeCategoryOrder } from "./actions";
+import CategoryModal from "./CategoryModal";
 
 export function Products({
   _getDeliveries,
@@ -35,15 +36,23 @@ export function Products({
   categories,
   _changeCategoryOrder,
   _updateProduct,
+  history,
 }) {
   useInjectReducer({ key: "products", reducer });
   useInjectSaga({ key: "products", saga });
-  const [listView, setListView] = useState(true);
+  const [listView, setListView] = useState(!localStorage.getItem("productsCardView"));
+  const [categoryModal, setCategoryModal] = useState(false);
   return (
     <div className="pb-5 overflow-auto" style={{ height: "calc(100% - 115px)" }}>
+      <CategoryModal onClose={() => setCategoryModal(false)} isOpen={categoryModal} />
       <div className="u-border-radius-8 d-flex justify-content-between u-background-white container px-0 container-shadow overflow-hidden u-mt-50 p-3">
         <div className="d-flex align-items-center">
-          <div className="d-flex u-cursor-pointer" onClick={() => setListView(true)}>
+          <div
+            className="d-flex u-cursor-pointer"
+            onClick={() => {
+              localStorage.setItem("productsCardView", "");
+              setListView(true);
+            }}>
             <Icon
               icon={ICONS.LIST_VIEW}
               className="ml-1"
@@ -57,7 +66,12 @@ export function Products({
               لیست
             </span>
           </div>
-          <div className="mr-3 d-flex u-cursor-pointer" onClick={() => setListView(false)}>
+          <div
+            className="mr-3 d-flex u-cursor-pointer"
+            onClick={() => {
+              localStorage.setItem("productsCardView", "true");
+              setListView(false);
+            }}>
             <Icon
               icon={ICONS.CARD_VIEW}
               className="ml-1"
@@ -80,7 +94,9 @@ export function Products({
             <span className="u-fontWeightBold u-fontMedium u-text-white">دیدن سایت</span>
           </div>
 
-          <div className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3">
+          <div
+            onClick={() => setCategoryModal(true)}
+            className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3">
             <Icon icon={ICONS.PLUS} color="white" className="ml-2" size={12} />
             <span className="u-fontWeightBold u-fontMedium u-text-white">
               افزودن دسته‌بندی جدید
@@ -96,18 +112,13 @@ export function Products({
         abstract
         isList={listView}
         changeDealCategoryOrder={(item, newIndex) => _changeCategoryOrder(item, newIndex)}
-        onNewProductCardClick={
-          () => {}
-          // _toggleModal(ADMIN_ADD_NEW_PRODUCT_MODAL, true)
-        }
         onCategoryEditButtonClick={(_category) => {
           // _toggleModal(ADMIN_EDIT_CATEGORY_ITEM_MODAL, true);
           // _setCategory(_category);
         }}
         productCardOptions={{
           onClick: (product) => {
-            // _toggleModal(ADMIN_EDIT_PRODUCT_MODAL, true);
-            // _setProduct(product);
+            history.push(`/products/${product.id}`);
           },
           _updateProduct,
         }}
