@@ -36,7 +36,7 @@ const OnlineOrders = function ({ _getAdminOrders, adminOrders: orders, paginatio
       </div>
       <div
         className="u-background-white px-60 py-5 overflow-auto"
-        style={{ height: "calc(100% - 98px)" }}>
+        style={{ height: "calc(100% - 99px)" }}>
         <div>
           {orders.map((order) => (
             <OrderCard

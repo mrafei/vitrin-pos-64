@@ -21,17 +21,29 @@ export default class ComponentToPrint extends React.Component {
         className="bg-white w-100 u-text-black printable px-3 u-fontVerySmall"
         style={{ minWidth: 300 }}>
         <div className="py-1 px-2 u-border-bottom-dark">
-          <div className="d-flex justify-content-between">
-            <div className="d-flex flex-column justify-content-center align-items-center">
-              {!printOptions.hideTitle && (
-                <div className="u-fontLarge u-fontWeightBold">{title}</div>
-              )}
-              <div className="mt-1">{englishNumberToPersianNumber(date)}</div>
-            </div>
+          <div className="d-flex justify-content-between align-items-center">
+            <span
+              className="d-flex px-1 py-2 flex-column justify-content-center align-items-center"
+              style={{ border: "1px solid black", height: "fit-content", borderRadius: 4 }}>
+              <span className="u-fontVerySmall">شماره فاکتور</span>
+              <span className="u-fontLarge u-fontWeightBold">
+                {englishNumberToPersianNumber(order.order_number) || "۱۰۱"}
+              </span>
+            </span>
+            {!printOptions.hideTitle && (
+              <div className="u-fontLarge text-center u-fontWeightBold" style={{ width: 160 }}>
+                {title}
+              </div>
+            )}
             {!printOptions.hideQR && <QRCode value={url} size={100} id="qr" />}
           </div>
         </div>
         <div className="d-flex flex-column justify-content-between px-3 pb-1">
+          <div className="mt-1">
+            <span>تاریخ و ساعت: </span>
+            <span className="u-fontWeightBold">{englishNumberToPersianNumber(date)}</span>
+          </div>
+
           {!printOptions.hideCustomerName && (
             <div className="mt-1">
               <span> مشترک گرامی: </span>
@@ -40,6 +52,7 @@ export default class ComponentToPrint extends React.Component {
               )}
             </div>
           )}
+
           {!printOptions.hideOrderNumber && (
             <div className="mt-1">
               <span>شماره سفارش: </span>

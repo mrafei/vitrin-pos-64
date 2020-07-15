@@ -17,17 +17,19 @@ const makeSelectPlugin = () =>
 const makeSelectPosts = () => createSelector(selectBusiness, (state) => state.business.posts);
 
 const makeSelectCategories = () =>
-  createSelector(selectBusiness, (state) => state.business.deal_categories);
+  createSelector(selectBusiness, (state) => state.business.deal_categories || []);
 const makeSelectProducts = () =>
   createSelector(selectBusiness, (state) => {
     const products = [];
-    state.business.deal_categories.map((category) => {
-      category.deals.map((product) => {
-        if (!products.filter((p) => p.title === product.title).length) products.push(product);
+    state.business &&
+      state.business.deal_categories &&
+      state.business.deal_categories.map((category) => {
+        category.deals.map((product) => {
+          if (!products.filter((p) => p.title === product.title).length) products.push(product);
+          return false;
+        });
         return false;
       });
-      return false;
-    });
     return products;
   });
 
@@ -36,10 +38,7 @@ const makeSelectCategory = (id) =>
     state.business.deal_categories.find((category) => category.id === id)
   );
 
-const makeSelectBusinessThemeColor = () =>
-  createSelector(selectBusiness, (state) =>
-    state.business ? state.business.theme_config.theme_color : null
-  );
+const makeSelectBusinessThemeColor = () => createSelector(selectBusiness, (state) => "#168fd5");
 const makeSelectBusinessFoodDemo = () => createSelector(selectBusiness, () => true);
 const makeSelectBusinessSlug = () => createSelector(selectBusiness, (state) => state.business.slug);
 
@@ -101,6 +100,9 @@ const makeSelectDeliveriesPagination = () =>
 const makeSelectPrinterOptions = () =>
   createSelector(selectBusiness, (state) => state.printerOptions);
 
+createSelector(selectBusiness, (state) => state.deliveriesPagination);
+const makeSelectBusinessAddress = () =>
+  createSelector(selectBusiness, (state) => state.business.get_vitrin_absolute_url);
 export {
   makeSelectProduct,
   makeSelectBusiness,
@@ -126,4 +128,5 @@ export {
   makeSelectDeliveries,
   makeSelectDeliveriesPagination,
   makeSelectPrinterOptions,
+  makeSelectBusinessAddress,
 };

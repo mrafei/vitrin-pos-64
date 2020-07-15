@@ -28,6 +28,8 @@ import EditDeliverer from "../EditDeliverer";
 import DeliveriesList from "../DeliveriesList";
 import PrinterSettings from "../PrinterSettings";
 import AssignDeliverer from "../AssignDeliverer";
+import Products from "../Products";
+import EditProduct from "../EditProduct";
 
 const App = function ({
   history,
@@ -86,7 +88,12 @@ const App = function ({
 
             <Route exact path="/settings/printer" component={PrinterSettings} />
 
+            <Route exact path="/products/all" component={Products} />
+            <Route exact path="/products/new/:category" component={EditProduct} />
+            <Route exact path="/products/:id" component={EditProduct} />
+
             <Redirect path="/orders" to="/orders/all" />
+            <Redirect path="/products" to="/products/all" />
             <Redirect path="/settings" to="/settings/printer" />
             <Redirect path="/delivery" to="/delivery/assign" />
             <Redirect path="/" to="/orders" />

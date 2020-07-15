@@ -1,8 +1,8 @@
 const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const BabiliPlugin = require('babili-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const SRC = path.resolve(__dirname, 'assets');
 
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
 
@@ -54,6 +54,11 @@ module.exports = {
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
         use: 'file-loader'
+      },
+      {
+        test: /\.mp3$/,
+        include: SRC,
+        loader: 'file-loader'
       },
       {
         test: /\.svg$/,

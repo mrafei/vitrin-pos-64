@@ -1,5 +1,6 @@
 import { PUSH_NOTIFICATION_API } from "../../utils/api";
 import request from "../../utils/request";
+import pristine from "../../assets/audio/pristine.mp3";
 
 export default function initPushNotification(showSnackBar, history, updateOrders, siteDomain) {
   const { ipcRenderer, remote } = require("electron");
@@ -36,7 +37,7 @@ export default function initPushNotification(showSnackBar, history, updateOrders
       console.log("display notification", serverNotificationPayload);
       updateOrders();
       ipcRenderer.send("orderReceived", serverNotificationPayload.notification);
-      const audio = new Audio(`https://hs3-cf.behtarino.com/static/pristine.mp3`);
+      const audio = new Audio(pristine);
       audio.play();
     } else {
       // payload has no body, so consider it silent (and just consider the data portion)

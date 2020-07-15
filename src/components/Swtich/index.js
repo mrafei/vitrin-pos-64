@@ -12,12 +12,12 @@ import PropTypes from "prop-types";
 
 function Switch({ isSwitchOn, toggleSwitch, id, themeColor, onColor }) {
   return (
-    <label className="d-flex u-text-dark-grey u-fontMedium u-cursor-pointer mx-2" htmlFor={id}>
+    <label className="d-flex u-text-dark-grey u-fontMedium u-cursor-pointer" htmlFor={id}>
       <ReactSwitch
         checked={isSwitchOn}
         onChange={() => toggleSwitch(!isSwitchOn)}
-        onColor={onColor || "#65BBEE"}
-        offColor="#C7C7C7"
+        onColor={onColor || "#168fd5"}
+        offColor="#747474"
         onHandleColor={themeColor || "#168FD4"}
         offHandleColor={themeColor || "#4F595B"}
         handleDiameter={20}
@@ -37,7 +37,7 @@ function Switch({ isSwitchOn, toggleSwitch, id, themeColor, onColor }) {
 Switch.propTypes = {
   isSwitchOn: PropTypes.bool,
   toggleSwitch: PropTypes.func,
-  id: PropTypes.func,
+  id: PropTypes.string,
   themeColor: PropTypes.string,
   onColor: PropTypes.string,
 };

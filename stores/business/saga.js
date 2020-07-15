@@ -58,7 +58,8 @@ import { remote } from "electron";
 
 export function* getBusinessData() {
   try {
-    yield put(startLoading());
+    yield put(startProgressLoading());
+
     const subdomain = yield select(makeSelectSubDomain());
     const {
       response: { data: business },
@@ -91,9 +92,9 @@ export function* getBusinessData() {
         })
       );
     }
-    yield put(stopLoading());
+    yield put(stopProgressLoading());
   } catch (err) {
-    yield put(stopLoading());
+    yield put(stopProgressLoading());
   }
 }
 
@@ -146,7 +147,10 @@ export function* updateBusinessWorkingHour(action) {
 }
 
 export function* createCategory(action) {
-  const { name } = action.data;
+  const {
+    data: { name },
+    history,
+  } = action;
   try {
     yield put(startLoading());
     const {
@@ -154,6 +158,7 @@ export function* createCategory(action) {
     } = yield call(request, CATEGORIES_API, action.data, "POST");
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(setSnackBarMessage(`دسته‌بندی ${name} با موفقیت اضافه شد.`, "success"));
+      yield call(history.goBack);
       yield call(getBusinessData);
     } else yield put(setSnackBarMessage(`ثبت دسته‌بندی ${name} ناموفق بود!`, "fail"));
 
@@ -165,7 +170,10 @@ export function* createCategory(action) {
 }
 
 export function* updateCategory(action) {
-  const { id, name } = action.data;
+  const {
+    data: { id, name },
+    history,
+  } = action;
   try {
     yield put(startLoading());
 
@@ -174,6 +182,7 @@ export function* updateCategory(action) {
     } = yield call(request, CATEGORIES_ITEMS_API(id), { name }, "PATCH");
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(setSnackBarMessage(`ویرایش دسته‌بندی ${name} با موفقیت انجام شد.`, "success"));
+      yield call(history.goBack);
       yield call(getBusinessData);
     } else yield put(setSnackBarMessage(`ویرایش دسته‌بندی ${name} ناموفق بود!`, "fail"));
     yield put(stopLoading());
@@ -193,7 +202,7 @@ export function* deleteCategory(action) {
     } = yield call(request, CATEGORIES_ITEMS_API(id), {}, "DELETE");
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(setSnackBarMessage(`دسته‌بندی ${name} با موفقیت حذف شد.`, "success"));
-      history.push("/admin/products");
+      yield call(history.goBack);
       yield call(getBusinessData);
     } else yield put(setSnackBarMessage(`حذف دسته‌بندی ${name} ناموفق بود!`, "fail"));
 
@@ -207,7 +216,8 @@ export function* deleteCategory(action) {
 export function* createProduct(action) {
   try {
     yield put(startLoading());
-    const { product, images } = action.data;
+    yield put(startProgressLoading());
+    const { product, images, history } = action.data;
 
     const {
       response: { meta, data: deal },
@@ -222,19 +232,24 @@ export function* createProduct(action) {
         yield call(request, DEALS_IMAGES_API, dto, "POST");
       }
       yield put(setSnackBarMessage("محصول با موفقیت اضافه شد.", "success"));
+      yield call(history.goBack);
       yield call(getBusinessData);
     } else yield put(setSnackBarMessage("ثبت محصول ناموفق بود!", "fail"));
     yield put(stopLoading());
+    yield put(stopProgressLoading());
   } catch (err) {
+    console.log(err);
     yield put(setSnackBarMessage("ثبت محصول ناموفق بود!", "fail"));
     yield put(stopLoading());
+    yield put(stopProgressLoading());
   }
 }
 
 export function* updateProduct(action) {
   try {
     yield put(startLoading());
-    const { id, product, images } = action.data;
+    yield put(startProgressLoading());
+    const { id, product, images, history } = action.data;
 
     const {
       response: { meta },
@@ -249,30 +264,38 @@ export function* updateProduct(action) {
         yield call(request, DEALS_IMAGES_API, dto, "POST");
       }
       yield put(setSnackBarMessage("ویرایش محصول با موفقیت انجام شد", "success"));
+      if (history) yield call(history.goBack);
       yield call(getBusinessData);
     } else yield put(setSnackBarMessage("ویرایش محصول ناموفق بود", "fail"));
     yield put(stopLoading());
+    yield put(stopProgressLoading());
   } catch (err) {
+    console.log(err);
     yield put(setSnackBarMessage("ویرایش محصول ناموفق بود", "fail"));
     yield put(stopLoading());
+    yield put(stopProgressLoading());
   }
 }
 
 export function* deleteProduct(action) {
   try {
+    yield put(startProgressLoading());
     yield put(startLoading());
-    const { id } = action.data;
+    const { id, history } = action.data;
     const {
       response: { meta },
     } = yield call(request, DEALS_ITEM_API(id), {}, "DELETE");
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       yield put(setSnackBarMessage("محصول مورد نظر حذف شد.", "success"));
+      yield call(history.goBack);
       yield call(getBusinessData);
     } else yield put(setSnackBarMessage("حذف محصول ناموفق بود!", "fail"));
     yield put(stopLoading());
+    yield put(stopProgressLoading());
   } catch (err) {
     yield put(setSnackBarMessage("حذف محصول ناموفق بود!", "fail"));
     yield put(stopLoading());
+    yield put(stopProgressLoading());
   }
 }
 

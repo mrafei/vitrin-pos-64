@@ -7,14 +7,14 @@ import { remote } from "electron";
 
 const routes = [
   { id: 1, disabled: false, title: "مدیریت سفارش‌ها", path: "/orders", icon: ICONS.LIST },
-  { id: 2, disabled: true, title: "مدیریت منو رستوران", path: "products", icon: ICONS.GRID },
+  { id: 2, disabled: false, title: "مدیریت منو رستوران", path: "/products", icon: ICONS.GRID },
   { id: 3, disabled: true, title: "لیست مشترکین", path: "/users", icon: ICONS.PROFILE },
   { id: 4, disabled: false, title: "مدیریت پیک‌ها", path: "/delivery", icon: ICONS.DELIVERY },
   { id: 5, disabled: false, title: "تنظیمات", path: "/settings", icon: ICONS.SETTING },
 ];
 const subRoutes = [
   [{ id: 1, title: "همه سفارش‌ها", path: "/orders/all" }],
-  [],
+  [{ id: 1, title: "همه محصولات", path: "/products/all" }],
   [],
   [
     { id: 1, title: "تخصیص پیک", path: "/delivery/assign" },

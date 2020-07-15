@@ -13,7 +13,6 @@ function Input({
   className = "direction-rtl",
   onChange,
   value,
-  type,
   label,
   themeColor,
   noModal,
@@ -36,36 +35,31 @@ function Input({
         }}
       />
       <div className="w-100">
-        {type === "textarea" ? (
-          <textarea
-            className="c-input c-input-text-area mt-2"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            {...props}
-          />
-        ) : (
-          <TextField
-            InputLabelProps={{
-              style: { textAlign: "left", direction: "rtl" },
-            }}
-            inputProps={{ style }}
-            fullWidth
-            variant="filled"
-            className={`u-fontLarge ${className}`}
-            value={value}
-            onChange={(e) => {
-              if (numberOnly) {
-                if (e.target.value.search(/[^0-9۰-۹]/g, "") !== -1)
-                  setAssistiveText("تنها مجاز به وارد کردن عدد هستید.");
-                else setAssistiveText("");
-                onChange(e.target.value.replace(/[^0-9۰-۹]/g, ""));
-              } else onChange(e.target.value);
-            }}
-            label={label}
-            {...props}
-          />
-        )}
-        <div className="u-text-red u-font-semi-small mt-1">{assistiveText}</div>
+        <TextField
+          InputLabelProps={{
+            style: { textAlign: "left", direction: "rtl" },
+          }}
+          inputProps={{ style }}
+          fullWidth
+          variant="filled"
+          className={`u-fontLarge ${className}`}
+          value={value}
+          onChange={(e) => {
+            if (numberOnly) {
+              if (e.target.value.search(/[^0-9۰-۹]/g, "") !== -1)
+                setAssistiveText("تنها مجاز به وارد کردن عدد هستید.");
+              else setAssistiveText("");
+              onChange(e.target.value.replace(/[^0-9۰-۹]/g, ""));
+            } else onChange(e.target.value);
+          }}
+          label={label}
+          {...props}
+        />
+        <div
+          className="u-text-red u-font-semi-small mt-1"
+          style={{ minHeight: numberOnly ? 18 : 0 }}>
+          {assistiveText}
+        </div>
       </div>
     </>
   );
@@ -75,7 +69,6 @@ Input.propTypes = {
   className: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
-  type: PropTypes.string,
   label: PropTypes.string,
   themeColor: PropTypes.string,
   noModal: PropTypes.bool,
@@ -84,7 +77,6 @@ Input.propTypes = {
 
 Input.defaultProps = {
   className: "direction-rtl",
-  type: "text",
   themeColor: "#168FD5",
 };
 
