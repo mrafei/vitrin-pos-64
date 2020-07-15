@@ -47,7 +47,11 @@ export function EditProduct({
     if (match.params.id) {
       const prod = products.find((p) => p.id === +match.params.id);
       if (prod) {
-        setProduct(prod);
+        setProduct({
+          ...product,
+          ...prod,
+          extra_data: { only_on_day: [], packaging_price: 0, ...prod.extra_data },
+        });
         setImages(prod.images);
       }
     }
