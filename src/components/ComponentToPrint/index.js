@@ -14,6 +14,7 @@ export default class ComponentToPrint extends React.Component {
       revised_title: title,
       get_vitrin_absolute_url: url,
       phone_zero_starts: phone,
+      total_packaging_price: packaging,
     } = business;
     const date = moment(order.submitted_at).format("jYYYY/jMM/jDD - HH:mm:ss");
     return (
@@ -156,10 +157,17 @@ export default class ComponentToPrint extends React.Component {
             <div className="mt-1">
               <span>جمع تخفیف‌ها: </span>
               <span className="u-fontWeightBold" style={{ whiteSpace: "pre-wrap" }}>
-                {priceFormatter(order.total_initial_price - order.final_price_without_delivery)}{" "}
-                تومان
+                {priceFormatter(order.total_discount)} تومان
               </span>
             </div>
+            {order.total_packaging_price ? (
+              <div className="mt-1">
+                <span>هزینه بسته‌بندی: </span>
+                <span className="u-fontWeightBold" style={{ whiteSpace: "pre-wrap" }}>
+                  {priceFormatter(order.total_packaging_price)} تومان
+                </span>
+              </div>
+            ) : null}
             <div className="mt-1">
               <span>هزینه ارسال: </span>
               <span className="u-fontWeightBold">{cost}</span>
