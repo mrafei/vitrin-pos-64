@@ -26,7 +26,7 @@ function PriceSection({ order }) {
           </span>
         </div>
         <div className="d-flex flex-row justify-content-between mt-1">
-          <span className="u-textBlack">جمع تخفیف‌ها: </span>
+          <span className="u-textBlack">تخفیف محصولات: </span>
           <span className="u-text-darkest-grey">
             {priceFormatter(order.total_discount)}
             <span className="u-fontWeightBold" style={{ paddingRight: 2, paddingLeft: 5 }}>
@@ -35,6 +35,27 @@ function PriceSection({ order }) {
             <span className="u-font-semi-small"> تومان</span>
           </span>
         </div>
+        <div className="d-flex flex-row justify-content-between mt-1">
+          <span className="u-textBlack">کد تخفیف: </span>
+          <span className="u-text-darkest-grey">
+            {priceFormatter(order.discount_code_amount)}
+            <span className="u-fontWeightBold" style={{ paddingRight: 2, paddingLeft: 5 }}>
+              {order.discount_code_amount ? "-" : null}
+            </span>
+            <span className="u-font-semi-small"> تومان</span>
+          </span>
+        </div>
+        <div className="d-flex flex-row justify-content-between mt-1">
+          <span className="u-textBlack">کیف پول: </span>
+          <span className="u-text-darkest-grey">
+            {priceFormatter(order.credit_used)}
+            <span className="u-fontWeightBold" style={{ paddingRight: 2, paddingLeft: 5 }}>
+              {order.credit_used ? "-" : null}
+            </span>
+            <span className="u-font-semi-small"> تومان</span>
+          </span>
+        </div>
+
         {order.total_packaging_price ? (
           <div className="d-flex flex-row justify-content-between mt-1">
             <span className="u-textBlack">هزینه بسته‌بندی: </span>

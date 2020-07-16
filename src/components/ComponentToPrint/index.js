@@ -14,7 +14,6 @@ export default class ComponentToPrint extends React.Component {
       revised_title: title,
       get_vitrin_absolute_url: url,
       phone_zero_starts: phone,
-      total_packaging_price: packaging,
     } = business;
     const date = moment(order.submitted_at).format("jYYYY/jMM/jDD - HH:mm:ss");
     return (
@@ -154,12 +153,30 @@ export default class ComponentToPrint extends React.Component {
                 {priceFormatter(order.total_initial_price)} تومان
               </span>
             </div>
-            <div className="mt-1">
-              <span>جمع تخفیف‌ها: </span>
-              <span className="u-fontWeightBold" style={{ whiteSpace: "pre-wrap" }}>
-                {priceFormatter(order.total_discount)} تومان
-              </span>
-            </div>
+            {order.total_discount ? (
+              <div className="mt-1">
+                <span>تخفیف محصولات: </span>
+                <span className="u-fontWeightBold" style={{ whiteSpace: "pre-wrap" }}>
+                  {priceFormatter(order.total_discount)} تومان
+                </span>
+              </div>
+            ) : null}
+            {order.discount_code_amount ? (
+              <div className="mt-1">
+                <span>کد تخفیف: </span>
+                <span className="u-fontWeightBold" style={{ whiteSpace: "pre-wrap" }}>
+                  {priceFormatter(order.discount_code_amount)} تومان
+                </span>
+              </div>
+            ) : null}
+            {order.credit_used ? (
+              <div className="mt-1">
+                <span>کیف پول: </span>
+                <span className="u-fontWeightBold" style={{ whiteSpace: "pre-wrap" }}>
+                  {priceFormatter(order.credit_used)} تومان
+                </span>
+              </div>
+            ) : null}
             {order.total_packaging_price ? (
               <div className="mt-1">
                 <span>هزینه بسته‌بندی: </span>
