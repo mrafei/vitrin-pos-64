@@ -28,9 +28,9 @@ function PriceSection({ order }) {
         <div className="d-flex flex-row justify-content-between mt-1">
           <span className="u-textBlack">جمع تخفیف‌ها: </span>
           <span className="u-text-darkest-grey">
-            {priceFormatter(order.total_initial_price - order.final_price_without_delivery)}
+            {priceFormatter(order.total_discount)}
             <span className="u-fontWeightBold" style={{ paddingRight: 2, paddingLeft: 5 }}>
-              {order.total_initial_price - order.final_price_without_delivery ? "-" : null}
+              {order.total_discount ? "-" : null}
             </span>
             <span className="u-font-semi-small"> تومان</span>
           </span>
