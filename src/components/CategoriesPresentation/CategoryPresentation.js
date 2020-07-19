@@ -43,7 +43,9 @@ function CategoryPresentation({
   const shadow = isDragging * 15 + 20;
   return (
     <div
-      className={`container u-border-radius-8 bg-white px-0 ${!isDragging && "mt-5"}`}
+      className={`container u-border-radius-8 overflow-hidden bg-white px-0 ${
+        !isDragging && "mt-5"
+      }`}
       style={{
         transition: "all 0.3s ease-in-out",
         transform: `scale(${scale})`,
@@ -66,8 +68,8 @@ function CategoryPresentation({
         </div>
       </div>
       <div
-        className={`justify-content-start ${!isList ? "d-flex flex-wrap py-2 px-3" : "py-1 pl-3"}`}
-        style={{ paddingRight: !isList ? 0 : 39 }}>
+        className={`justify-content-start py-2 ${!isList && "d-flex flex-wrap py-5"}`}
+        style={{ padding: !isList ? "0 50px" : "0 39px" }}>
         {isEditMode && !isList && (
           <Link to="/products/new">
             <AddNewProductCard />
@@ -88,7 +90,6 @@ function CategoryPresentation({
                 product={product}
                 count={productsCount[i]}
                 {...productCardOptions}
-                isEditMode={isEditMode}
               />
             );
           }

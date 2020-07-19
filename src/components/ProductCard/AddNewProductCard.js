@@ -14,7 +14,8 @@ const plusIcon = `${CDN_BASE_URL}plus-blue.svg`;
 function AddNewProductCard({ onClick, className }) {
   return (
     <div
-      className={`u-dashed-border cursorPointer d-flex flex-column m-1 u-relative c-business-card-custom u-background-melo-grey ${className}`}
+      style={{ margin: 12 }}
+      className={`u-dashed-border cursorPointer d-flex flex-column u-relative c-business-card-custom u-background-melo-grey ${className}`}
       onClick={onClick}
       onKeyDown={(e) => handleKeyDown(e, onClick)}
       role="button"

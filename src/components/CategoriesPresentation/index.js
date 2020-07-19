@@ -51,7 +51,7 @@ function CategoriesPresentation({
   return (
     <>
       <main ref={container}>
-        <div className="container u-border-radius-8 bg-white px-0 container-shadow mt-5">
+        <div className="container u-border-radius-8 overflow-hidden bg-white px-0 container-shadow mt-5">
           <div className="p-3 d-flex justify-content-between u-background-melo-grey">
             <div style={{ width: 24 }} />
             <div className="w-100">
@@ -63,10 +63,8 @@ function CategoriesPresentation({
             </div>
           </div>
           <div
-            style={{ paddingRight: !isList ? 0 : 39 }}
-            className={`justify-content-start u-background-light-grey ${
-              !isList ? "d-flex flex-wrap py-2 px-3" : "py-1 pl-3"
-            }`}>
+            className={`justify-content-start py-2 ${!isList && "d-flex flex-wrap py-5"}`}
+            style={{ padding: !isList ? "0 50px" : "0 39px" }}>
             {unavailableProducts.map((product, i) => (
               <ProductCard
                 key={`c-unavailable-p-${product.id}`}
@@ -74,7 +72,6 @@ function CategoriesPresentation({
                 product={product}
                 {...productCardOptions}
                 isList={isList}
-                isEditMode
               />
             ))}
           </div>

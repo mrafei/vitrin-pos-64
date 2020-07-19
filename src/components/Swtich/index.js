@@ -12,7 +12,12 @@ import PropTypes from "prop-types";
 
 function Switch({ isSwitchOn, toggleSwitch, id, themeColor, onColor }) {
   return (
-    <label className="d-flex u-text-dark-grey u-fontMedium u-cursor-pointer" htmlFor={id}>
+    <label
+      className="d-flex u-text-dark-grey u-fontMedium u-cursor-pointer"
+      htmlFor={id}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}>
       <ReactSwitch
         checked={isSwitchOn}
         onChange={() => toggleSwitch(!isSwitchOn)}

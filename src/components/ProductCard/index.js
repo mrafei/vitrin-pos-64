@@ -19,16 +19,7 @@ import Switch from "../Swtich";
 import pen from "../../../assets/images/pen.svg";
 const penIcon = `${CDN_BASE_URL}edit-pen-white-icn.svg`;
 
-function ProductCard({
-  onClick,
-  className = " mx-1 my-1 ",
-  themeColor,
-  product,
-  isEditMode,
-  _updateProduct = noOp,
-  loading,
-  isList,
-}) {
+function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, loading, isList }) {
   const {
     title,
     initial_price: initialPrice,
@@ -52,7 +43,9 @@ function ProductCard({
   const discountPercent = calculateDiscountPercent(initialPrice, discountedPrice);
   if (isList)
     return (
-      <div className="d-flex text-center align-items-center mt-1 flex-1">
+      <div
+        onClick={() => onClick(product)}
+        className="d-flex u-cursor-pointer text-center align-items-center mt-1 flex-1 mx-1 my-2">
         <div className="col-3 px-0 d-flex align-items-center">
           <div className="col-2 px-0">
             <img
@@ -62,7 +55,11 @@ function ProductCard({
               src={mainImageThumbnailUrl}
             />
           </div>
-          <div className="col-10 pl-0 text-right pr-3">{title}</div>
+          <div
+            className="d-flex align-items-center col-10 pl-0 text-right pr-3"
+            style={{ minHeight: 48 }}>
+            {title}
+          </div>
         </div>
         <div className="col-7 px-0 d-flex">
           <div className="col-3 px-0">
@@ -86,6 +83,7 @@ function ProductCard({
           <div className="col-10 px-0">
             <div className="d-flex justify-content-center align-items-end flex-1">
               <span
+                style={{ width: 40 }}
                 className={`u-font-semi-small ml-2 u-fontWeightBold ${
                   available ? "u-text-primary-blue" : "u-text-darkest-grey"
                 }`}>
@@ -102,9 +100,9 @@ function ProductCard({
     );
   return (
     <div
-      className={`u-relative c-business-card-custom u-background-white d-flex flex-column m-1 ${
-        isEditMode ? "u-dashed-border" : ""
-      } ${className}`}>
+      onClick={() => onClick(product)}
+      style={{ margin: 12 }}
+      className="u-relative u-cursor-pointer c-business-card-custom u-background-white d-flex flex-column u-dashed-border">
       <div
         className="position-relative align-self-center overflow-hidden u-border-top-left-radius-4 u-border-top-right-radius-4"
         style={{ background: "#c4c4c4" }}>
@@ -133,6 +131,7 @@ function ProductCard({
       </div>
       <div className="d-flex justify-content-between px-1 align-items-end pb-2 flex-1">
         <span
+          style={{ width: 40 }}
           className={`u-font-semi-small u-fontWeightBold ${
             available ? "u-text-primary-blue" : "u-text-darkest-grey"
           }`}>
@@ -140,14 +139,11 @@ function ProductCard({
         </span>
         <Switch isSwitchOn={available} toggleSwitch={changeAvailability} />
       </div>
-      {isEditMode && (
-        <button
-          onClick={() => onClick(product)}
-          type="button"
-          className="c-btn c-product-btn-editMode u-border-radius-4 u-addItem z-index-2">
-          <img alt="" src={penIcon} />
-        </button>
-      )}
+      <button
+        type="button"
+        className="c-btn c-product-btn-editMode u-border-radius-4 u-addItem z-index-2">
+        <img alt="" src={penIcon} />
+      </button>
     </div>
   );
 }
@@ -161,7 +157,6 @@ ProductCard.propTypes = {
   hasOrderControlPanel: PropTypes.bool,
   themeColor: PropTypes.string,
   count: PropTypes.number,
-  isEditMode: PropTypes.bool,
 };
 
 export default memo(ProductCard);
