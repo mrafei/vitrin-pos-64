@@ -12,13 +12,11 @@ import drilldown from 'highcharts/modules/drilldown';
 import exportData from 'highcharts/modules/export-data';
 import HighchartsExporting from 'highcharts/modules/exporting';
 import TimeSeriesChart from '../../components/TimeSeriesChart/index';
-import Icon from '../../components/Icon';
 import { getAnalyticsData } from './actions';
 import { makeSelectAnalyticsData } from './selectors';
 import StackedColumnChart from '../../components/StackedColumnChart';
 import DrilldownChart from '../../components/DrilldownChart';
 import { makeSelectLoading } from '../App/selectors';
-import { ICONS } from '../../../assets/images/icons';
 import { englishNumberToPersianNumber } from '../../../utils/helper';
 import { setChartOptions } from '../../../utils/chartUtils';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -31,12 +29,7 @@ HighchartsExporting(Highcharts);
 exportData(Highcharts);
 setChartOptions(Highcharts);
 
-function AdminFoodAnalytics({
-  loading,
-  history,
-  _getFoodAnalyticsData,
-  analyticsData,
-}) {
+function AdminFoodAnalytics({ loading, _getFoodAnalyticsData, analyticsData }) {
   useInjectReducer({ key: 'Analytics', reducer });
   useInjectSaga({ key: 'Analytics', saga });
   useEffect(() => {
@@ -44,7 +37,6 @@ function AdminFoodAnalytics({
       _getFoodAnalyticsData();
     }, 0);
   }, []);
-  console.log(analyticsData);
   if (analyticsData) {
     const {
       approved_orders: approvedOrders,
