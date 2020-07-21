@@ -143,7 +143,11 @@ export default class ComponentToPrint extends React.Component {
             {order.items.map((item) => (
               <>
                 <div
-                  className="d-flex flex-row px-2 py-1 u-border-bottom-dark"
+                  className={`d-flex flex-row px-2 ${
+                    item.deal.extra_items && item.deal.extra_items.length
+                      ? 'pt-1'
+                      : 'u-border-bottom-dark py-1'
+                  }`}
                   key={`order-item-${item.id}`}
                 >
                   <div
@@ -178,11 +182,11 @@ export default class ComponentToPrint extends React.Component {
                 {item.deal.extra_items && item.deal.extra_items.length
                   ? item.deal.extra_items.map((_item) => (
                       <div
-                        className="d-flex flex-row px-2 py-1 u-border-bottom-dark"
+                        className="d-flex flex-row px-2 pb-1 u-border-bottom-dark"
                         key={`order-item-${_item.id}`}
                       >
                         <div
-                          className="u-fontWeightBold u-fontLarge"
+                          className=""
                           style={{
                             width: !printOptions.hideItemPrices ? 160 : 320,
                             whiteSpace: 'pre-wrap',
@@ -190,11 +194,18 @@ export default class ComponentToPrint extends React.Component {
                         >
                           {_item.title}
                         </div>
-
+                        <div className="text-center" style={{ width: 35 }}>
+                          {englishNumberToPersianNumber(1)}
+                        </div>
                         {!printOptions.hideItemPrices ? (
-                          <div className="text-center" style={{ width: 80 }}>
-                            {priceFormatter(_item.price)}
-                          </div>
+                          <>
+                            <div className="text-center" style={{ width: 80 }}>
+                              {priceFormatter(_item.price)}
+                            </div>
+                            <div className="text-center" style={{ width: 80 }}>
+                              {priceFormatter(_item.price)}
+                            </div>
+                          </>
                         ) : null}
                       </div>
                     ))
