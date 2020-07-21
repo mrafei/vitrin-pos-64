@@ -13,7 +13,13 @@ function ItemsSection({ order }) {
       {order.items.map((item) => (
         <div
           key={`order-item-${item.id}`}
-          className="d-flex align-items-center flex-row justify-content-between mt-2 px-3"
+          className="d-flex flex-row justify-content-between mt-2 px-3"
+          style={{
+            alignItems:
+              item.deal.extra_items && item.deal.extra_items.length
+                ? 'start'
+                : 'center',
+          }}
         >
           <div className="wrapper--img-order">
             <img
@@ -32,15 +38,16 @@ function ItemsSection({ order }) {
                 __html: item.deal.description,
               }}
             />
-            {order.deal.extra_items && order.deal.extra_items.length ? (
+            {item.deal.extra_items && item.deal.extra_items.length ? (
               <ul
-                className="py-1 d-flex flex-column justify-content-center align-items-center"
-                style={{ fontSize: 12, borderBottom: '1px solid #eee' }}
+                className="d-flex flex-column justify-content-center align-items-center"
+                style={{ fontSize: 12 }}
               >
                 {item.deal.extra_items.map((_item) => (
                   <li className="d-flex justify-content-between align-items-center w-100">
-                    <div>{_item.title}</div>
-                    <div>{priceFormatter(_item.price)} تومان</div>
+                    <div className="u-fontVerySmall u-text-darkest-grey ">
+                      - {_item.title}
+                    </div>
                   </li>
                 ))}
               </ul>
