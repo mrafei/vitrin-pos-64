@@ -14,7 +14,7 @@ function ProductPriceSection({ product, setProduct }) {
   const [hasDiscount, setHasDiscount] = useState(false);
   const discount = isPercent
     ? Math.round(((price - discountedPrice) / price) * 100)
-    : price - discountedPrice;
+    : Math.round(price - discountedPrice);
   useEffect(() => {
     setHasDiscount(product.initial_price > product.discounted_price);
   }, [product.id]);
