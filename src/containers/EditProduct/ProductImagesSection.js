@@ -22,7 +22,7 @@ function ProductImagesSection({
     }
   };
   return (
-    <div className="d-flex w-100 mt-4">
+    <div className="d-flex w-100">
       <input
         className="d-none"
         ref={myFiles}

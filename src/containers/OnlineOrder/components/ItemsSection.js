@@ -1,14 +1,26 @@
-import React from "react";
-import { englishNumberToPersianNumber, priceFormatter } from "../../../../utils/helper";
+import React from 'react';
+import {
+  englishNumberToPersianNumber,
+  priceFormatter,
+} from '../../../../utils/helper';
 
 function ItemsSection({ order }) {
   return (
     <div className="w-100 py-2 u-background-white px-3">
-      <div className="flex-1 u-fontWeightBold mb-2 u-text-black">آیتم‌های سفارش</div>
+      <div className="flex-1 u-fontWeightBold mb-2 u-text-black">
+        آیتم‌های سفارش
+      </div>
       {order.items.map((item) => (
         <div
           key={`order-item-${item.id}`}
-          className="d-flex align-items-center flex-row justify-content-between mt-2 px-3">
+          className="d-flex flex-row justify-content-between mt-2 px-3"
+          style={{
+            alignItems:
+              item.deal.extra_items && item.deal.extra_items.length
+                ? 'start'
+                : 'center',
+          }}
+        >
           <div className="wrapper--img-order">
             <img
               alt={item.deal.title}
@@ -17,13 +29,29 @@ function ItemsSection({ order }) {
             />
           </div>
           <div className="flex-1 d-flex flex-column justify-content-center">
-            <div className="u-fontNormal u-textBlack u-fontWeightBold">{item.deal.title}</div>
+            <div className="u-fontNormal u-textBlack u-fontWeightBold">
+              {item.deal.title}
+            </div>
             <div
               className="u-fontVerySmall u-text-darkest-grey mt-1 overflow-hidden u-max-height-18"
               dangerouslySetInnerHTML={{
                 __html: item.deal.description,
               }}
             />
+            {item.deal.extra_items && item.deal.extra_items.length ? (
+              <ul
+                className="d-flex flex-column justify-content-center align-items-center"
+                style={{ fontSize: 12 }}
+              >
+                {item.deal.extra_items.map((_item) => (
+                  <li className="d-flex justify-content-between align-items-center w-100">
+                    <div className="u-fontVerySmall u-text-darkest-grey ">
+                      - {_item.title}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
           <div className="u-text-darkest-grey order--item u-border-medium-grey align-items-center u-no-wrap">
             <div>{englishNumberToPersianNumber(item.amount)}</div>
@@ -31,7 +59,8 @@ function ItemsSection({ order }) {
           </div>
           <div
             className="u-no-wrap d-flex flex-column justify-content-center"
-            style={{ width: 100 }}>
+            style={{ width: 100 }}
+          >
             {item.deal.discounted_price !== item.deal.initial_price && (
               <div className="u-fontSemiSmall u-text-darkest-grey u-text-line-through">
                 {priceFormatter(item.deal.initial_price)}

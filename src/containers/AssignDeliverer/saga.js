@@ -66,8 +66,6 @@ export function* setDeliverers(action) {
     }
     yield put(stopLoading());
   } catch (err) {
-    console.log("ASD");
-
     yield put(setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail"));
     yield put(stopLoading());
   }

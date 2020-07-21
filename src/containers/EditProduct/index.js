@@ -92,7 +92,7 @@ export function EditProduct({
         <div
           className="u-background-white mt-4 u-border-radius-8 overflow-hidden flex-1 box-shadow d-flex flex-column"
           style={{ height: "calc(100% - 30px)" }}>
-          <div className="d-flex px-4 flex-1 flex-column align-items-center overflow-auto">
+          <div className="d-flex px-4 py-5 flex-1 flex-column align-items-center overflow-auto">
             <ProductImagesSection
               _removeFile={_removeFile}
               uploadedFiles={uploadedFiles}
