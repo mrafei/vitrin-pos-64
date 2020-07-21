@@ -95,12 +95,14 @@ function AdminFoodAnalytics({ loading, _getFoodAnalyticsData, analyticsData }) {
       <main style={{ height: 'calc(100% - 64px)', overflow: 'auto' }}>
         <div className="flex-1 d-flex bg-light-grey align-items-center flex-wrap p-4">
           <div
-            className="bg-white mt-1"
+            className="bg-white m-2"
             style={{
               padding: '15px 20px 40px',
-              flex: '1 0 50%',
+              flex: '1 0 45%',
               maxWidth: 650,
               height: 450,
+              boxShadow: '0px 0px 20px rgba(79, 89, 91, 0.1)',
+              borderRadius: '8px',
             }}
           >
             {approvedOrders.length ||
@@ -134,12 +136,14 @@ function AdminFoodAnalytics({ loading, _getFoodAnalyticsData, analyticsData }) {
             )}
           </div>
           <div
-            className="bg-white mt-1"
+            className="bg-white m-2"
             style={{
               padding: '15px 20px 40px',
-              flex: '1 0 50%',
+              flex: '1 0 45%',
               maxWidth: 650,
               height: 450,
+              boxShadow: '0px 0px 20px rgba(79, 89, 91, 0.1)',
+              borderRadius: '8px',
             }}
           >
             {earnings.length ? (
@@ -168,12 +172,14 @@ function AdminFoodAnalytics({ loading, _getFoodAnalyticsData, analyticsData }) {
             )}
           </div>
           <div
-            className="bg-white mt-1"
+            className="bg-white m-2"
             style={{
               padding: '15px 20px 40px',
-              flex: '1 0 50%',
+              flex: '1 0 45%',
               maxWidth: 650,
               height: 450,
+              boxShadow: '0px 0px 20px rgba(79, 89, 91, 0.1)',
+              borderRadius: '8px',
             }}
           >
             {orderItemsSeriesData.length ? (
@@ -201,12 +207,14 @@ function AdminFoodAnalytics({ loading, _getFoodAnalyticsData, analyticsData }) {
             )}
           </div>
           <div
-            className="bg-white mt-1"
+            className="bg-white m-2"
             style={{
               padding: '15px 20px 40px',
-              flex: '1 0 50%',
+              flex: '1 0 45%',
               maxWidth: 650,
               height: 450,
+              boxShadow: '0px 0px 20px rgba(79, 89, 91, 0.1)',
+              borderRadius: '8px',
             }}
           >
             {averageEarnings.length ? (
