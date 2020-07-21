@@ -11,6 +11,7 @@ const routes = [
   { id: 3, disabled: true, title: "لیست مشترکین", path: "/users", icon: ICONS.PROFILE },
   { id: 4, disabled: false, title: "مدیریت پیک‌ها", path: "/delivery", icon: ICONS.DELIVERY },
   { id: 5, disabled: false, title: "تنظیمات", path: "/settings", icon: ICONS.SETTING },
+  { id: 6, disabled: false, title: "تحلیل‌ها", path: "/analytics", icon: ICONS.ANALYTICS },
 ];
 const subRoutes = [
   [{ id: 1, title: "همه سفارش‌ها", path: "/orders/all" }],
@@ -26,6 +27,7 @@ const subRoutes = [
     },
   ],
   [{ id: 1, title: "تنظیمات چاپگر", path: "settings/printer", icon: ICONS.PRINT }],
+  [],
 ];
 
 function Layout({ children, location, title, loading }) {
