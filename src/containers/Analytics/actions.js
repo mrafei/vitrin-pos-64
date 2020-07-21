@@ -17,9 +17,10 @@ export function defaultAction() {
   };
 }
 
-export function getAnalyticsData() {
+export function getAnalyticsData(data) {
   return {
     type: GET_ANALYTICS_DATA,
+    data,
   };
 }
 
