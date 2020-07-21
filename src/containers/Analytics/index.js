@@ -24,19 +24,23 @@ import { useInjectReducer } from '../../../utils/injectReducer';
 import { useInjectSaga } from '../../../utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
+import { makeSelectBusinessId } from '../../../stores/business/selector';
 drilldown(Highcharts);
 HighchartsExporting(Highcharts);
 exportData(Highcharts);
 setChartOptions(Highcharts);
 
-function AdminFoodAnalytics({ loading, _getFoodAnalyticsData, analyticsData }) {
+function AdminFoodAnalytics({
+  loading,
+  _getFoodAnalyticsData,
+  analyticsData,
+  businessId,
+}) {
   useInjectReducer({ key: 'Analytics', reducer });
   useInjectSaga({ key: 'Analytics', saga });
   useEffect(() => {
-    setTimeout(() => {
-      _getFoodAnalyticsData();
-    }, 0);
-  }, []);
+    if (businessId) _getFoodAnalyticsData(businessId);
+  }, [businessId]);
   if (analyticsData) {
     const {
       approved_orders: approvedOrders,
@@ -250,11 +254,13 @@ AdminFoodAnalytics.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   analyticsData: makeSelectAnalyticsData(),
+  businessId: makeSelectBusinessId(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    _getFoodAnalyticsData: () => dispatch(getAnalyticsData()),
+    _getFoodAnalyticsData: (businessId) =>
+      dispatch(getAnalyticsData(businessId)),
   };
 }
 
