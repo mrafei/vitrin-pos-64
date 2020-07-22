@@ -189,7 +189,10 @@ function Layout({ children, loading, location, title, history }) {
         }}
         className={classes.content}
       >
-        <div className="d-flex u-background-white u-height-64 align-items-center justify-content-between position-relative z-index-2">
+        <div
+          style={{ borderBottom: '1px solid #F0F1F6' }}
+          className="d-flex u-background-white u-height-64 align-items-center justify-content-between position-relative z-index-2"
+        >
           <div
             onClick={() => remote.getCurrentWindow().reload()}
             className="d-flex mr-4 px-3 py-2 u-border-radius-8 u-cursor-pointer"
