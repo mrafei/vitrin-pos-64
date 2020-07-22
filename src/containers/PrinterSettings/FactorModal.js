@@ -115,12 +115,7 @@ function FactorModal({ save, _onClose, business, printOptions, index }) {
                   { deal: { title: 'محصول ۲' } },
                 ],
               }}
-              business={{
-                ...business,
-                phone_zero_starts: printOptions.phone,
-                get_vitrin_absolute_url: printOptions.website,
-                revised_title: printOptions.title,
-              }}
+              business={business}
             />
           </div>
         </div>

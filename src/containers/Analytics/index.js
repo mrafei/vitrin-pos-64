@@ -96,149 +96,147 @@ function AdminFoodAnalytics({
       });
     });
     return (
-      <main style={{ height: 'calc(100% - 64px)', overflow: 'auto' }}>
-        <div className="flex-1 d-flex bg-light-grey align-items-center flex-wrap p-4">
-          <div
-            className="bg-white mt-1"
-            style={{
-              padding: '15px 20px 40px',
-              flex: '1 0 50%',
-              maxWidth: 650,
-              height: 450,
-            }}
-          >
-            {approvedOrders.length ||
-            cancelledOrders.length ||
-            receivedOrders.length ? (
-              <StackedColumnChart
-                data={[
-                  receivedOrdersData,
-                  cancelledOrdersData,
-                  approvedOrdersData,
-                ]}
-                title="تعداد سفارش‌های دریافتی"
-                colors={['#168fd5', '#E13F18', '#67b977']}
-                displaySum
-                loading={loading}
-              />
-            ) : loading ? (
-              <div
-                className="d-flex justify-content-center align-items-center w-100"
-                style={{ marginTop: 225 }}
-              >
-                در حال تولید نمودار...
-              </div>
-            ) : (
-              <div
-                className="d-flex justify-content-center align-items-center w-100"
-                style={{ marginTop: 225 }}
-              >
-                داده‌ی کافی برای نمایش نمودار وجود ندارد.
-              </div>
-            )}
-          </div>
-          <div
-            className="bg-white mt-1"
-            style={{
-              padding: '15px 20px 40px',
-              flex: '1 0 50%',
-              maxWidth: 650,
-              height: 450,
-            }}
-          >
-            {earnings.length ? (
-              <TimeSeriesChart
-                data={earningsData}
-                title="فروش روزانه"
-                colors={['#168fd5']}
-                isEarnings
-                displaySum
-                loading={loading}
-              />
-            ) : loading ? (
-              <div
-                className="d-flex justify-content-center align-items-center w-100"
-                style={{ marginTop: 225 }}
-              >
-                در حال تولید نمودار...
-              </div>
-            ) : (
-              <div
-                className="d-flex justify-content-center align-items-center w-100"
-                style={{ marginTop: 225 }}
-              >
-                داده‌ی کافی برای نمایش نمودار وجود ندارد.
-              </div>
-            )}
-          </div>
-          <div
-            className="bg-white mt-1"
-            style={{
-              padding: '15px 20px 40px',
-              flex: '1 0 50%',
-              maxWidth: 650,
-              height: 450,
-            }}
-          >
-            {orderItemsSeriesData.length ? (
-              <DrilldownChart
-                data={orderItemsData}
-                drilldownData={{ series: orderItemsCountData }}
-                title="اقلام فروخته شده"
-                loading={loading}
-                displaySum
-              />
-            ) : loading ? (
-              <div
-                className="d-flex justify-content-center align-items-center w-100"
-                style={{ marginTop: 225 }}
-              >
-                در حال تولید نمودار...
-              </div>
-            ) : (
-              <div
-                className="d-flex justify-content-center align-items-center w-100"
-                style={{ marginTop: 225 }}
-              >
-                داده‌ی کافی برای نمایش نمودار وجود ندارد.
-              </div>
-            )}
-          </div>
-          <div
-            className="bg-white mt-1"
-            style={{
-              padding: '15px 20px 40px',
-              flex: '1 0 50%',
-              maxWidth: 650,
-              height: 450,
-            }}
-          >
-            {averageEarnings.length ? (
-              <TimeSeriesChart
-                data={averageEarningsData}
-                title="متوسط ارزش هر سفارش"
-                colors={['#673ab7']}
-                isEarnings
-                loading={loading}
-              />
-            ) : loading ? (
-              <div
-                className="d-flex justify-content-center align-items-center w-100"
-                style={{ marginTop: 225 }}
-              >
-                در حال تولید نمودار...
-              </div>
-            ) : (
-              <div
-                className="d-flex justify-content-center align-items-center w-100"
-                style={{ marginTop: 225 }}
-              >
-                داده‌ی کافی برای نمایش نمودار وجود ندارد.
-              </div>
-            )}
-          </div>
+      <div className="flex-1 d-flex bg-light-grey align-items-center flex-wrap p-4">
+        <div
+          className="bg-white mt-1"
+          style={{
+            padding: '15px 20px 40px',
+            flex: '1 0 50%',
+            maxWidth: 650,
+            height: 450,
+          }}
+        >
+          {approvedOrders.length ||
+          cancelledOrders.length ||
+          receivedOrders.length ? (
+            <StackedColumnChart
+              data={[
+                receivedOrdersData,
+                cancelledOrdersData,
+                approvedOrdersData,
+              ]}
+              title="تعداد سفارش‌های دریافتی"
+              colors={['#168fd5', '#E13F18', '#67b977']}
+              displaySum
+              loading={loading}
+            />
+          ) : loading ? (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ marginTop: 225 }}
+            >
+              در حال تولید نمودار...
+            </div>
+          ) : (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ marginTop: 225 }}
+            >
+              داده‌ی کافی برای نمایش نمودار وجود ندارد.
+            </div>
+          )}
         </div>
-      </main>
+        <div
+          className="bg-white mt-1"
+          style={{
+            padding: '15px 20px 40px',
+            flex: '1 0 50%',
+            maxWidth: 650,
+            height: 450,
+          }}
+        >
+          {earnings.length ? (
+            <TimeSeriesChart
+              data={earningsData}
+              title="فروش روزانه"
+              colors={['#168fd5']}
+              isEarnings
+              displaySum
+              loading={loading}
+            />
+          ) : loading ? (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ marginTop: 225 }}
+            >
+              در حال تولید نمودار...
+            </div>
+          ) : (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ marginTop: 225 }}
+            >
+              داده‌ی کافی برای نمایش نمودار وجود ندارد.
+            </div>
+          )}
+        </div>
+        <div
+          className="bg-white mt-1"
+          style={{
+            padding: '15px 20px 40px',
+            flex: '1 0 50%',
+            maxWidth: 650,
+            height: 450,
+          }}
+        >
+          {orderItemsSeriesData.length ? (
+            <DrilldownChart
+              data={orderItemsData}
+              drilldownData={{ series: orderItemsCountData }}
+              title="اقلام فروخته شده"
+              loading={loading}
+              displaySum
+            />
+          ) : loading ? (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ marginTop: 225 }}
+            >
+              در حال تولید نمودار...
+            </div>
+          ) : (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ marginTop: 225 }}
+            >
+              داده‌ی کافی برای نمایش نمودار وجود ندارد.
+            </div>
+          )}
+        </div>
+        <div
+          className="bg-white mt-1"
+          style={{
+            padding: '15px 20px 40px',
+            flex: '1 0 50%',
+            maxWidth: 650,
+            height: 450,
+          }}
+        >
+          {averageEarnings.length ? (
+            <TimeSeriesChart
+              data={averageEarningsData}
+              title="متوسط ارزش هر سفارش"
+              colors={['#673ab7']}
+              isEarnings
+              loading={loading}
+            />
+          ) : loading ? (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ marginTop: 225 }}
+            >
+              در حال تولید نمودار...
+            </div>
+          ) : (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ marginTop: 225 }}
+            >
+              داده‌ی کافی برای نمایش نمودار وجود ندارد.
+            </div>
+          )}
+        </div>
+      </div>
     );
   }
   return <LoadingIndicator />;
