@@ -1,133 +1,240 @@
-import React, { memo } from "react";
-import { NavLink } from "react-router-dom";
-import Icon from "../Icon";
-import { ICONS } from "../../../assets/images/icons";
-import logo from "../../../assets/images/vitrin-blue.png";
-import { remote } from "electron";
+import React, { memo } from 'react';
+import { withRouter } from 'react-router-dom';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Icon from '../Icon';
+import { ICONS } from '../../../assets/images/icons';
+import MenuItem from './MenuItem';
+import logo from '../../../assets/images/vitrin-blue.png';
+import { remote } from 'electron';
 
+const drawerWidth = 250;
+const drawerClosedWidth = 64;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    width: '100%',
+  },
+
+  menuButton: {
+    marginRight: 36,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: 'hidden',
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: drawerClosedWidth,
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+  },
+}));
 const routes = [
-  { id: 1, disabled: false, title: "مدیریت سفارش‌ها", path: "/orders", icon: ICONS.LIST },
-  { id: 2, disabled: false, title: "مدیریت منو رستوران", path: "/products", icon: ICONS.GRID },
-  { id: 3, disabled: true, title: "لیست مشترکین", path: "/users", icon: ICONS.PROFILE },
-  { id: 4, disabled: false, title: "مدیریت پیک‌ها", path: "/delivery", icon: ICONS.DELIVERY },
-  { id: 5, disabled: false, title: "تنظیمات", path: "/settings", icon: ICONS.SETTING },
-  { id: 6, disabled: false, title: "تحلیل‌ها", path: "/analytics", icon: ICONS.ANALYTICS },
+  {
+    id: 1,
+    disabled: false,
+    title: 'مدیریت سفارش‌ها',
+    path: '/orders',
+    icon: ICONS.LIST,
+  },
+  {
+    id: 2,
+    disabled: false,
+    title: 'مدیریت منو رستوران',
+    path: '/products',
+    icon: ICONS.GRID,
+  },
+  // {
+  //   id: 3,
+  //   disabled: true,
+  //   title: 'لیست مشترکین',
+  //   path: '/users',
+  //   icon: ICONS.PROFILE,
+  // },
+  {
+    id: 4,
+    disabled: false,
+    title: 'مدیریت پیک‌ها',
+    path: '/delivery',
+    icon: ICONS.DELIVERY,
+  },
+  {
+    id: 5,
+    disabled: false,
+    title: 'تنظیمات',
+    path: '/settings',
+    icon: ICONS.SETTING,
+  },
+  {
+    id: 6,
+    disabled: false,
+    title: 'تحلیل‌ها',
+    path: '/analytics',
+    icon: ICONS.ANALYTICS,
+  },
 ];
 const subRoutes = [
-  [{ id: 1, title: "همه سفارش‌ها", path: "/orders/all" }],
-  [{ id: 1, title: "همه محصولات", path: "/products/all" }],
-  [],
+  [{ id: 1, title: 'همه سفارش‌ها', path: '/orders/all', icon: ICONS.ITEMS }],
+  [{ id: 1, title: 'همه محصولات', path: '/products/all', icon: ICONS.ITEMS }],
+  // [],
   [
-    { id: 1, title: "تخصیص پیک", path: "/delivery/assign" },
-    { id: 2, title: "لیست پیک‌ها", path: "/delivery/deliverers" },
+    { id: 1, title: 'تخصیص پیک', path: '/delivery/assign', icon: ICONS.ITEMS },
+    {
+      id: 2,
+      title: 'لیست پیک‌ها',
+      path: '/delivery/deliverers',
+      icon: ICONS.ITEMS,
+    },
     {
       id: 3,
-      title: "لیست تحویل‌ها",
-      path: "/delivery/deliveries",
+      title: 'لیست تحویل‌ها',
+      path: '/delivery/deliveries',
+      icon: ICONS.ITEMS,
     },
   ],
-  [{ id: 1, title: "تنظیمات چاپگر", path: "settings/printer", icon: ICONS.PRINT }],
+  [
+    {
+      id: 1,
+      title: 'تنظیمات چاپگر',
+      path: '/settings/printer',
+      icon: ICONS.PRINT,
+    },
+  ],
   [],
 ];
+function Layout({ children, loading, location, title, history }) {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
 
-function Layout({ children, location, title, loading }) {
-  if (location.pathname === "/login") return children;
-  const activeRouteIndex = routes.findIndex((route) => location.pathname.includes(route.path));
   return (
-    <div className="w-100 overflow-hidden">
-      <div
-        className="d-flex u-background-white u-height-64 align-items-center position-relative z-index-2"
-        style={
-          activeRouteIndex > -1 && subRoutes[activeRouteIndex].length
-            ? { borderBottom: "1px solid #F0F1F6" }
-            : {
-                boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
-                borderRadius: "0px 0px 8px 8px",
-              }
-        }>
-        <div className="d-flex flex-1">
-          {routes.map((route) => {
-            const isActive = location.pathname.includes(route.path);
-            if (!route.disabled)
-              // return <div style={{opacity: 0.5}} className="pr-4 py-1" key={`menu-link-${route.id}`}>
-              //   <Icon icon={route.icon} size={24} color={isActive ? '#168fd5' : '#4F595B'} className="ml-1"/>
-              //   <span className="u-text-darkest-grey">{route.title}</span>
-              // </div>
-              return (
-                <NavLink
-                  to={route.path}
-                  key={`menu-link-${route.id}`}
-                  className="d-flex align-items-center pr-4 py-1">
-                  <Icon
-                    icon={route.icon}
-                    size={24}
-                    color={isActive ? "#168fd5" : "#4F595B"}
-                    className="ml-1"
-                  />
-                  <span
-                    className={
-                      isActive ? "u-text-primary-blue u-fontWeightBold" : "u-text-darkest-grey"
-                    }>
-                    {route.title}
-                  </span>
-                </NavLink>
-              );
-          })}
-        </div>
-
-        <div className="px-3 u-fontWeightBold">{title}</div>
-        <div style={{ width: 1, background: "#C8CBD0", height: "calc(100% - 30px)" }} />
-        <div className="u-height-36">
-          <img className="mr-5 ml-2" src={logo} style={{ height: 29, width: 76 }} />
-        </div>
-        <Icon
-          icon={ICONS.REFRESH}
-          size={36}
-          color="#65BBEE"
-          className="ml-5 u-cursor-pointer"
-          onClick={() => {
-            remote.getCurrentWindow().reload();
-          }}
-        />
-      </div>
-      {activeRouteIndex > -1 && subRoutes[activeRouteIndex].length ? (
+    <div className={classes.root}>
+      <Drawer
+        anchor="right"
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+      >
+        <List className="d-flex flex-1 flex-column">
+          {routes.map((route, index) => (
+            <MenuItem
+              open={open}
+              setOpen={setOpen}
+              key={route.path}
+              route={route}
+              subRoutes={subRoutes[index]}
+              history={history}
+            />
+          ))}
+        </List>
+        <ListItem button key={title} onClick={() => setOpen(!open)}>
+          <ListItemIcon>
+            <div style={open ? {} : { transform: 'rotate(180deg)' }}>
+              <Icon icon={ICONS.SWIPE} size={24} color="#4F595B" />
+            </div>
+          </ListItemIcon>
+          <ListItemText className="text-right" primary="بستن منو" />
+        </ListItem>
+      </Drawer>
+      <main
+        style={{
+          width: `calc(100% - ${
+            open ? drawerWidth + 'px' : drawerClosedWidth + 'px'
+          })`,
+        }}
+        className={classes.content}
+      >
         <div
-          className="d-flex flex-1 u-background-white py-1 position-relative"
-          style={{
-            boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
-            zIndex: 1,
-            borderRadius:
-              activeRouteIndex > -1 && subRoutes[activeRouteIndex].length ? "" : "0px 0px 8px 8px",
-          }}>
-          {subRoutes[activeRouteIndex].map((route) => {
-            const isActive = location.pathname.includes(route.path);
-            return (
-              <NavLink to={route.path} key={`menu-link-${route.id}`} className="pr-4 py-1">
-                <span
-                  className={
-                    isActive ? "u-text-primary-blue u-fontWeightBold" : "u-text-darkest-grey"
-                  }>
-                  {route.title}
-                </span>
-              </NavLink>
-            );
-          })}
-        </div>
-      ) : null}
-      {loading ? (
-        <div className="overflow-hidden" style={{ height: 6 }}>
-          <div className="progress">
-            <div className="line" />
-            <div className="subline inc" />
-            <div className="subline dec" />
+          style={{ borderBottom: '1px solid #F0F1F6' }}
+          className="d-flex u-background-white u-height-64 align-items-center justify-content-between position-relative z-index-2"
+        >
+          <div
+            onClick={() => remote.getCurrentWindow().reload()}
+            className="d-flex mr-4 px-3 py-2 u-border-radius-8 u-cursor-pointer"
+            style={{ boxShadow: '0px 0px 20px rgba(79, 89, 91, 0.1)' }}
+          >
+            <span className="u-text-primary-blue">به‌روزرسانی</span>
+            <Icon icon={ICONS.SPINNER} size={24} color="#168fd5" />
+          </div>
+          <div className="d-flex align-items-center h-100">
+            <div className="px-3 u-fontWeightBold u-text-primary-blue">
+              {title}
+            </div>
+            <div
+              style={{
+                width: 4,
+                borderRadius: 3,
+                background: '#168fd5',
+                height: 'calc(100% - 30px)',
+              }}
+            />
+            <img
+              className="mx-4"
+              src={logo}
+              style={{ height: 25, width: 70 }}
+            />
           </div>
         </div>
-      ) : (
-        <div style={{ height: 6, width: "100%" }} />
-      )}
-      {children}
+        {loading ? (
+          <div className="overflow-hidden" style={{ height: 6 }}>
+            <div className="progress">
+              <div className="line" />
+              <div className="subline inc" />
+              <div className="subline dec" />
+            </div>
+          </div>
+        ) : (
+          <div style={{ height: 6, width: '100%' }} />
+        )}
+        <div className="p-4 h-100 overflow-auto">{children}</div>
+      </main>
     </div>
   );
 }
 
-export default memo(Layout);
+export default memo(withRouter(Layout));

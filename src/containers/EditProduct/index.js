@@ -1,32 +1,32 @@
-import React, { memo, useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
-import { compose } from "redux";
-import { createStructuredSelector } from "reselect";
-import { connect } from "react-redux";
+import React, { memo, useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 
-import Icon from "../../components/Icon";
-import { ICONS } from "../../../assets/images/icons";
-import { makeSelectLoading, makeSelectUploadedFiles } from "../App/selectors";
+import Icon from '../../components/Icon';
+import { ICONS } from '../../../assets/images/icons';
+import { makeSelectLoading, makeSelectUploadedFiles } from '../App/selectors';
 import {
   makeSelectBusiness,
   makeSelectBusinessThemeColor,
   makeSelectCategories,
   makeSelectProducts,
-} from "../../../stores/business/selector";
-import ProductPriceSection from "./ProductPriceSection";
-import Input from "../../components/Input";
-import Select from "../../components/Select";
-import { getWeekDay, getWeekDays, handleKeyDown } from "../../../utils/helper";
-import RichText from "../../components/RichText";
+} from '../../../stores/business/selector';
+import ProductPriceSection from './ProductPriceSection';
+import Input from '../../components/Input';
+import Select from '../../components/Select';
+import { getWeekDay, getWeekDays, handleKeyDown } from '../../../utils/helper';
+import RichText from '../../components/RichText';
 import {
   createProduct,
   deleteImageFromProduct,
   deleteProduct,
   updateProduct,
-} from "../../../stores/business/actions";
-import SeoSection from "./SeoSection";
-import { clearUploadedFiles, removeFile, uploadFile } from "../App/actions";
-import ProductImagesSection from "./ProductImagesSection";
+} from '../../../stores/business/actions';
+import SeoSection from './SeoSection';
+import { clearUploadedFiles, removeFile, uploadFile } from '../App/actions';
+import ProductImagesSection from './ProductImagesSection';
 
 export function EditProduct({
   match,
@@ -50,20 +50,25 @@ export function EditProduct({
         setProduct({
           ...product,
           ...prod,
-          extra_data: { only_on_day: [], packaging_price: 0, ...prod.extra_data },
+          extra_data: {
+            only_on_day: [],
+            packaging_price: 0,
+            ...prod.extra_data,
+          },
         });
         setImages(prod.images);
       }
     }
-    if (match.params.category) setProduct({ ...product, categories: [+match.params.category] });
+    if (match.params.category)
+      setProduct({ ...product, categories: [+match.params.category] });
   }, [match.params.id, products]);
   useEffect(() => {
     return cleanUploads;
   }, []);
   const [isDialogBoxOpen, setDialogBox] = useState(false);
   const [product, setProduct] = useState({
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     initial_price: 0,
     discounted_price: 0,
     available: true,
@@ -74,10 +79,10 @@ export function EditProduct({
     },
   });
   const [productImages, setImages] = useState([]);
-  const [categoryError, setCategoryError] = useState("");
+  const [categoryError, setCategoryError] = useState('');
   return (
-    <div className="h-100 pb-4">
-      <div className="px-3 u-background-white justify-content-between align-items-center mt-4 container u-height-44 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
+    <div>
+      <div className="px-3 u-background-white justify-content-between align-items-center container u-height-44 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
         <Icon
           className="c-modal-header-close float-right"
           icon={ICONS.CLOSE}
@@ -88,10 +93,11 @@ export function EditProduct({
         <span>ویرایش محصول</span>
         <div style={{ height: 25, width: 25 }} />
       </div>
-      <div className="d-flex flex-1 container px-0" style={{ height: "calc(100% - 230px)" }}>
-        <div
-          className="u-background-white mt-4 u-border-radius-8 overflow-hidden flex-1 box-shadow d-flex flex-column"
-          style={{ height: "calc(100% - 30px)" }}>
+      <div
+        className="d-flex flex-1 container px-0"
+        style={{ height: 'calc(100% - 230px)' }}
+      >
+        <div className="u-background-white mt-4 u-border-radius-8 overflow-hidden flex-1 box-shadow d-flex flex-column">
           <div className="d-flex px-4 py-5 flex-1 flex-column align-items-center overflow-auto">
             <ProductImagesSection
               _removeFile={_removeFile}
@@ -112,21 +118,28 @@ export function EditProduct({
                 <RichText
                   placeholder="توضیحات محصول (اختیاری)"
                   value={product.description}
-                  onChange={(description) => setProduct({ ...product, description })}
+                  onChange={(description) =>
+                    setProduct({ ...product, description })
+                  }
                 />
               )}
             </div>
 
             <div className="w-100">
               <Select
-                inputData={{ defaultValue: "افزودن دسته‌بندی" }}
+                inputData={{ defaultValue: 'افزودن دسته‌بندی' }}
                 selectOption={(categoryName) => {
-                  setCategoryError("");
+                  setCategoryError('');
                   const id = categories.find((c) => c.name === categoryName).id;
-                  setProduct({ ...product, categories: [...product.categories, id] });
+                  setProduct({
+                    ...product,
+                    categories: [...product.categories, id],
+                  });
                 }}
                 options={categories
-                  .filter((c) => !product.categories.find((cat) => cat === c.id))
+                  .filter(
+                    (c) => !product.categories.find((cat) => cat === c.id),
+                  )
                   .map((c) => ({ ...c, text: c.name }))}
               />
               <div className="d-flex mt-2">
@@ -134,16 +147,21 @@ export function EditProduct({
                   ? product.categories.map((c) => (
                       <div
                         key={`category-${c}`}
-                        className="d-flex justify-content-center align-items-center u-background-light-grey u-text-primary-blue category-item pl-2 pr-1 m-1">
+                        className="d-flex justify-content-center align-items-center u-background-light-grey u-text-primary-blue category-item pl-2 pr-1 m-1"
+                      >
                         <div
                           onClick={() => {
                             const index = product.categories.indexOf(c);
                             const newCategories = [...product.categories];
                             newCategories.splice(index, 1);
-                            setProduct({ ...product, categories: newCategories });
+                            setProduct({
+                              ...product,
+                              categories: newCategories,
+                            });
                           }}
                           className="u-border-radius-50-percent u-background-primary-blue ml-1 d-flex"
-                          style={{ height: 15, width: 15 }}>
+                          style={{ height: 15, width: 15 }}
+                        >
                           <Icon
                             className="u-cursor-pointer"
                             icon={ICONS.CLOSE}
@@ -160,7 +178,9 @@ export function EditProduct({
               </div>
               <div className="u-text-red">{categoryError}</div>
               <Select
-                inputData={{ defaultValue: "فقط موجود در روزهای خاص (غذای روز)" }}
+                inputData={{
+                  defaultValue: 'فقط موجود در روزهای خاص (غذای روز)',
+                }}
                 selectOption={(day) => {
                   const id = getWeekDays.find((c) => getWeekDay(c) === day);
                   setProduct({
@@ -172,14 +192,18 @@ export function EditProduct({
                   });
                 }}
                 options={getWeekDays
-                  .filter((d) => !product.extra_data.only_on_day.find((day) => day === d))
+                  .filter(
+                    (d) =>
+                      !product.extra_data.only_on_day.find((day) => day === d),
+                  )
                   .map((d) => ({ id: d, text: getWeekDay(d) }))}
               />
               <div className="d-flex mt-2">
                 {product.extra_data.only_on_day.map((d) => (
                   <div
                     key={`day-${d}`}
-                    className="d-flex justify-content-center align-items-center u-background-light-grey u-text-primary-blue category-item pl-2 pr-1 m-1">
+                    className="d-flex justify-content-center align-items-center u-background-light-grey u-text-primary-blue category-item pl-2 pr-1 m-1"
+                  >
                     <div
                       onClick={() => {
                         const index = product.extra_data.only_on_day.indexOf(d);
@@ -187,11 +211,15 @@ export function EditProduct({
                         newDays.splice(index, 1);
                         setProduct({
                           ...product,
-                          extra_data: { ...product.extra_data, only_on_day: newDays },
+                          extra_data: {
+                            ...product.extra_data,
+                            only_on_day: newDays,
+                          },
                         });
                       }}
                       className="u-border-radius-50-percent u-background-primary-blue ml-1 d-flex"
-                      style={{ height: 15, width: 15 }}>
+                      style={{ height: 15, width: 15 }}
+                    >
                       <Icon
                         className="u-cursor-pointer"
                         icon={ICONS.CLOSE}
@@ -223,13 +251,22 @@ export function EditProduct({
           tabIndex="0"
           onClick={() => {
             if (!product.categories.length) {
-              setCategoryError("لطفا دسته‌بندی انتخاب کنید.");
+              setCategoryError('لطفا دسته‌بندی انتخاب کنید.');
               return;
             }
-            if (product.id) _updateProduct(product.id, product, uploadedFiles, history);
+            if (product.id)
+              _updateProduct(product.id, product, uploadedFiles, history);
             else _createProduct(product, uploadedFiles, history);
-          }}>
-          <Icon icon={ICONS.SAVE} size={24} width={20} height={20} color="white" className="ml-1" />
+          }}
+        >
+          <Icon
+            icon={ICONS.SAVE}
+            size={24}
+            width={20}
+            height={20}
+            color="white"
+            className="ml-1"
+          />
           تایید و ذخیره
         </button>
         {product.id && (
@@ -240,8 +277,14 @@ export function EditProduct({
             tabIndex="0"
             onClick={() => {
               setDialogBox(true);
-            }}>
-            <Icon icon={ICONS.TRASH} size={19} color="#168fd5" className="ml-1" />
+            }}
+          >
+            <Icon
+              icon={ICONS.TRASH}
+              size={19}
+              color="#168fd5"
+              className="ml-1"
+            />
             حذف محصول
           </button>
         )}
@@ -258,7 +301,8 @@ export function EditProduct({
                 onClick={() => {
                   _deleteProduct(product.id, history);
                   setDialogBox(false);
-                }}>
+                }}
+              >
                 حذف
               </span>
               <span
@@ -266,7 +310,8 @@ export function EditProduct({
                 onClick={() => setDialogBox(false)}
                 onKeyDown={(e) => handleKeyDown(e, () => setDialogBox(false))}
                 role="button"
-                tabIndex="0">
+                tabIndex="0"
+              >
                 بستن
               </span>
             </div>
@@ -288,12 +333,15 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    _createProduct: (product, images, history) => dispatch(createProduct(product, images, history)),
-    _deleteProduct: (productId, history) => dispatch(deleteProduct(productId, history)),
+    _createProduct: (product, images, history) =>
+      dispatch(createProduct(product, images, history)),
+    _deleteProduct: (productId, history) =>
+      dispatch(deleteProduct(productId, history)),
     _updateProduct: (productId, product, images, history) =>
       dispatch(updateProduct(productId, product, images, history)),
     cleanUploads: () => dispatch(clearUploadedFiles()),
-    _uploadFile: (files, folderName) => dispatch(uploadFile({ files, folderName })),
+    _uploadFile: (files, folderName) =>
+      dispatch(uploadFile({ files, folderName })),
     _removeFile: (index) => dispatch(removeFile(index)),
     _deleteProductImage: (imageId) => dispatch(deleteImageFromProduct(imageId)),
   };

@@ -72,7 +72,7 @@ const TimeSeriesChart = ({
 TimeSeriesChart.propTypes = {
   data: PropTypes.object,
   title: PropTypes.string,
-  colors: PropTypes.object,
+  colors: PropTypes.array,
   isEarnings: PropTypes.bool,
   displaySum: PropTypes.bool,
 };

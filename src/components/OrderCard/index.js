@@ -29,7 +29,7 @@ function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
   );
   const nowDate = new Date();
   const backgroundColor =
-    (orderStatus === 0 && "#168FD4") || (orderStatus === 2 && "#E13F18") || "#67b977";
+    (orderStatus === 0 && "#168fd5") || (orderStatus === 2 && "#E13F18") || "#67b977";
   return (
     <>
       <Link
@@ -108,7 +108,7 @@ function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
           </span>
           <div style={{ width: 30 }}>
             {order.deliverer_name && (
-              <Icon icon={ICONS.DELIVERY} size={24} width={18} height={18} color="#67B977" />
+              <Icon icon={ICONS.DELIVERY} size={18} color="#67B977" />
             )}
           </div>
         </div>

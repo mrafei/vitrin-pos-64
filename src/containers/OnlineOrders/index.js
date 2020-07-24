@@ -35,12 +35,7 @@ const OnlineOrders = function ({
     _getAdminOrders(page);
   }, [location]);
   return (
-    <div
-      className="u-border-radius-8 container px-0 container-shadow overflow-hidden mt-5"
-      style={{
-        height: 'calc(100% - 180px)',
-      }}
-    >
+    <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden flex-1">
       <div className="d-flex px-60 py-3">
         <span className="px-0 col-3">
           تعداد کل: {englishNumberToPersianNumber(pagination.count)}

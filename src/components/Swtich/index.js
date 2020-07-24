@@ -23,7 +23,7 @@ function Switch({ isSwitchOn, toggleSwitch, id, themeColor, onColor }) {
         onChange={() => toggleSwitch(!isSwitchOn)}
         onColor={onColor || "#168fd5"}
         offColor="#747474"
-        onHandleColor={themeColor || "#168FD4"}
+        onHandleColor={themeColor || "#168FD5"}
         offHandleColor={themeColor || "#4F595B"}
         handleDiameter={20}
         uncheckedIcon={false}

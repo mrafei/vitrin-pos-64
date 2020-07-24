@@ -27,7 +27,7 @@ function DelivererOrderCard({order, link}) {
     'YYYY-MM-DD'
   );
   const backgroundColor =
-    (orderStatus === 0 && '#168FD4') ||
+    (orderStatus === 0 && '#168fd5') ||
     (orderStatus === 2 && '#E13F18') ||
     '#67b977';
   return (

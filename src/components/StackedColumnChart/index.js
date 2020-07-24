@@ -49,9 +49,9 @@ const StackedColumnChart = ({
 };
 
 StackedColumnChart.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
   title: PropTypes.string,
-  colors: PropTypes.object,
+  colors: PropTypes.array,
   isEarnings: PropTypes.bool,
   displaySum: PropTypes.bool,
 };
