@@ -46,7 +46,7 @@
     "package": "npm run build",
     "postpackage": "electron-packager ./ --asar --overwrite --platform=win32 --arch=ia32 --out=build --icon=assets/icon.ico",
     "create-installer-win": "node createinstaller.js",
-    "postinstall": "electron-rebuild -f -w sqlite3",
+    "postinstall": "electron-rebuild --arch=ia32 -f -w sqlite3",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:css": "stylelint app/**/*.js",
     "lint:eslint": "eslint",
