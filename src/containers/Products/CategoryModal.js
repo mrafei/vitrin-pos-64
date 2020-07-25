@@ -152,7 +152,7 @@ function CategoryModal({
               onClick={() => {
                 setDialogBox(true);
               }}>
-              <Icon icon={ICONS.TRASH} size={19} color="#168fd5" className="ml-1" />
+              <Icon icon={ICONS.TRASH} size={19} color="#0050FF" className="ml-1" />
               حذف دسته‌بندی
             </button>
           )}

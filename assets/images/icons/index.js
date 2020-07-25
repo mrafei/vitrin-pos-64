@@ -160,7 +160,7 @@ export const ICONS = {
         cy: '14.042',
         r: '12',
       },
-      fill: '#168FD5',
+      fill: '#0050FF',
     },
     {
       key: 'plus-round-2',

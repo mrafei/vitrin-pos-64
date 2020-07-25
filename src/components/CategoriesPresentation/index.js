@@ -14,7 +14,7 @@ import ProductCard from "../ProductCard";
 
 function CategoriesPresentation({
   categories,
-  themeColor = "#168fd5",
+  themeColor = "#0050FF",
   history,
   abstract,
   orders = [],

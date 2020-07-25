@@ -162,7 +162,7 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
                 onClick={() => setModal(index)}
               >
                 پیش‌نمایش و تنظیم اطلاعات روی فیش
-                <Icon icon={ICONS.CHEVRON} color="#168fd5" size={24} />
+                <Icon icon={ICONS.CHEVRON} color="#0050FF" size={24} />
               </div>
             </div>
           ))}

@@ -49,7 +49,7 @@ function Login({ _login, loading, _verify, history }) {
               styles={{ top: 25 }}
               icon={ICONS.SPINNER}
               size={24}
-              color="#168fd5"
+              color="#0050FF"
               className="position-absolute z-index-2 spinning"
             />
           )}

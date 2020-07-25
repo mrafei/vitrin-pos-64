@@ -118,7 +118,7 @@ export const fonts = () => [
 ];
 
 export const colorsList = [
-  '#168FD5',
+  '#0050FF',
   '#74B9FF',
   '#1289A7',
   '#1B1464',
@@ -136,4 +136,4 @@ export const colorsList = [
   '#6F1E51',
 ];
 
-export const DEFAULT_THEME_COLOR = '#168fd5';
+export const DEFAULT_THEME_COLOR = '#0050FF';

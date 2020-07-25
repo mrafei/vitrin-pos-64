@@ -282,7 +282,7 @@ export function EditProduct({
             <Icon
               icon={ICONS.TRASH}
               size={19}
-              color="#168fd5"
+              color="#0050FF"
               className="ml-1"
             />
             حذف محصول
