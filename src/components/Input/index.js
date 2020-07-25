@@ -77,7 +77,7 @@ Input.propTypes = {
 
 Input.defaultProps = {
   className: "direction-rtl",
-  themeColor: "#168FD5",
+  themeColor: "#0050FF",
 };
 
 export default memo(Input);

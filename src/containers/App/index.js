@@ -148,7 +148,7 @@ const App = function ({
           } ${snackBarMessage.type === 'fail' && 'snackbar-fail'}`,
         }}
         ContentProps={{
-          style: { backgroundColor: '#168fd5' },
+          style: { backgroundColor: '#0050FF' },
         }}
         open={!!snackBarMessage.message}
         onClose={() => _setSnackBarMessage('', snackBarMessage.type)}

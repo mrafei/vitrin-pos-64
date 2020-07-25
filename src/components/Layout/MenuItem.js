@@ -34,7 +34,7 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
             icon={route.icon}
             size={18}
             styles={{ marginRight: -10 }}
-            color={isActive ? '#168fd5' : '#949C9F'}
+            color={isActive ? '#0050FF' : '#949C9F'}
           />
         </ListItemIcon>
         <ListItemText
@@ -105,7 +105,7 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
                 <Icon
                   icon={subRoute.icon}
                   size={18}
-                  color={active ? '#168fd5' : '#949C9F'}
+                  color={active ? '#0050FF' : '#949C9F'}
                   styles={{ marginRight: -10 }}
                 />
               </ListItemIcon>

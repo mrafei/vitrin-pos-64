@@ -384,6 +384,22 @@ const getDistance = (x1, y1, x2, y2) =>
 function validatePhone(number) {
   return /^[0][9]\d{9}$/.test(number);
 }
+
+function amplifyMedia(mediaElem, multiplier) {
+  var context = new (window.AudioContext || window.webkitAudioContext),
+    result = {
+      context: context,
+      source: context.createMediaElementSource(mediaElem),
+      gain: context.createGain(),
+      media: mediaElem,
+      amplify: function(multiplier) { result.gain.gain.value = multiplier; },
+      getAmpLevel: function() { return result.gain.gain.value; }
+    };
+  result.source.connect(result.gain);
+  result.gain.connect(context.destination);
+  result.amplify(multiplier);
+  return result;
+}
 export {
   getCountDown,
   noOp,
@@ -420,4 +436,5 @@ export {
   getDistance,
   getWeekDays,
   validatePhone,
+  amplifyMedia,
 };

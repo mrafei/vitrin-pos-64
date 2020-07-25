@@ -344,7 +344,7 @@ export function getBaseChartOptions(
         textAlign: 'right',
       },
       menuItemHoverStyle: {
-        background: '#168fd5',
+        background: '#0050FF',
         color: 'white',
       },
     },

@@ -21,9 +21,9 @@ function Switch({ isSwitchOn, toggleSwitch, id, themeColor, onColor }) {
       <ReactSwitch
         checked={isSwitchOn}
         onChange={() => toggleSwitch(!isSwitchOn)}
-        onColor={onColor || "#168fd5"}
+        onColor={onColor || "#0050FF"}
         offColor="#747474"
-        onHandleColor={themeColor || "#168FD5"}
+        onHandleColor={themeColor || "#0050FF"}
         offHandleColor={themeColor || "#4F595B"}
         handleDiameter={20}
         uncheckedIcon={false}

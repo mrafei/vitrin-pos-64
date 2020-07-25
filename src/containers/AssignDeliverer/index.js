@@ -121,7 +121,7 @@ const AssignDeliverer = function ({
               onClick={assign(null)}
               className="d-flex align-items-center u-text-primary-blue u-fontMedium u-cursor-pointer"
             >
-              <Icon icon={ICONS.TRASH} size={19} color="#168fd5" />
+              <Icon icon={ICONS.TRASH} size={19} color="#0050FF" />
               حذف پیک
             </div>
           )}
@@ -173,7 +173,7 @@ const AssignDeliverer = function ({
                 لیست تحویل‌ها
                 <Icon
                   icon={ICONS.CHEVRON}
-                  color="#168fd5"
+                  color="#0050FF"
                   size={24}
                   className="mr-1"
                 />

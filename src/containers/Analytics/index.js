@@ -118,7 +118,7 @@ function AdminFoodAnalytics({
                     approvedOrdersData,
                   ]}
                   title="تعداد سفارش‌های دریافتی"
-                  colors={['#168fd5', '#E13F18', '#67b977']}
+                  colors={['#0050FF', '#E13F18', '#67b977']}
                   displaySum
                   loading={loading}
                 />
@@ -153,7 +153,7 @@ function AdminFoodAnalytics({
                 <TimeSeriesChart
                   data={earningsData}
                   title="فروش روزانه"
-                  colors={['#168fd5']}
+                  colors={['#0050FF']}
                   isEarnings
                   displaySum
                   loading={loading}

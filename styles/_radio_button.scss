@@ -31,7 +31,7 @@
   /* When the radio button is checked, add a blue background */
   input:checked ~ .checkmark {
     background-color: #fff;
-    border: 1px solid #168fd5;
+    border: 1px solid #0050FF;
   }
 
   /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -53,6 +53,6 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: #168fd5;
+    background: #0050FF;
   }
 }

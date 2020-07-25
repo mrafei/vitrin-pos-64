@@ -29,7 +29,7 @@ function CategoryHeader({ categoryName, isEditMode, isList, categoryId = "" }) {
           {categoryName}
           {isEditMode && (
             <Icon
-              color="#168fd5"
+              color="#0050FF"
               size={19}
               className="mx-1 cursorPointer"
               icon={ICONS.PEN}

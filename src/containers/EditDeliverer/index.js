@@ -87,7 +87,7 @@ export function EditDeliverer({
           />
           <button
             className="c-btn w-auto d-flex justify-content-center align-items-center mx-2 u-text-primary-blue px-5 u-background-white"
-            style={{ border: '2px solid #168FD5', boxShadow: 'none' }}
+            style={{ border: '2px solid #0050FF', boxShadow: 'none' }}
             type="button"
             tabIndex="0"
             onClick={history.goBack}

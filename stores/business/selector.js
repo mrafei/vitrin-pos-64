@@ -38,7 +38,7 @@ const makeSelectCategory = (id) =>
     state.business.deal_categories.find((category) => category.id === id)
   );
 
-const makeSelectBusinessThemeColor = () => createSelector(selectBusiness, (state) => "#168fd5");
+const makeSelectBusinessThemeColor = () => createSelector(selectBusiness, (state) => "#0050FF");
 const makeSelectBusinessFoodDemo = () => createSelector(selectBusiness, () => true);
 const makeSelectBusinessSlug = () => createSelector(selectBusiness, (state) => state.business.slug);
 

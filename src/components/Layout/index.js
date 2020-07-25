@@ -146,41 +146,43 @@ function Layout({ children, loading, location, title, history }) {
 
   return (
     <div className={classes.root}>
-      <Drawer
-        anchor="right"
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
+      {location.pathname !== '/login' && (
+        <Drawer
+          anchor="right"
+          variant="permanent"
+          className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <List className="d-flex flex-1 flex-column">
-          {routes.map((route, index) => (
-            <MenuItem
-              open={open}
-              setOpen={setOpen}
-              key={route.path}
-              route={route}
-              subRoutes={subRoutes[index]}
-              history={history}
-            />
-          ))}
-        </List>
-        <ListItem button key={title} onClick={() => setOpen(!open)}>
-          <ListItemIcon>
-            <div style={open ? {} : { transform: 'rotate(180deg)' }}>
-              <Icon icon={ICONS.SWIPE} size={24} color="#4F595B" />
-            </div>
-          </ListItemIcon>
-          <ListItemText className="text-right" primary="بستن منو" />
-        </ListItem>
-      </Drawer>
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+          }}
+        >
+          <List className="d-flex flex-1 flex-column">
+            {routes.map((route, index) => (
+              <MenuItem
+                open={open}
+                setOpen={setOpen}
+                key={route.path}
+                route={route}
+                subRoutes={subRoutes[index]}
+                history={history}
+              />
+            ))}
+          </List>
+          <ListItem button key={title} onClick={() => setOpen(!open)}>
+            <ListItemIcon>
+              <div style={open ? {} : { transform: 'rotate(180deg)' }}>
+                <Icon icon={ICONS.SWIPE} size={24} color="#4F595B" />
+              </div>
+            </ListItemIcon>
+            <ListItemText className="text-right" primary="بستن منو" />
+          </ListItem>
+        </Drawer>
+      )}
       <main
         style={{
           width: `calc(100% - ${
@@ -199,7 +201,7 @@ function Layout({ children, loading, location, title, history }) {
             style={{ boxShadow: '0px 0px 20px rgba(79, 89, 91, 0.1)' }}
           >
             <span className="u-text-primary-blue">به‌روزرسانی</span>
-            <Icon icon={ICONS.SPINNER} size={24} color="#168fd5" />
+            <Icon icon={ICONS.SPINNER} size={24} color="#0050FF" />
           </div>
           <div className="d-flex align-items-center h-100">
             <div className="px-3 u-fontWeightBold u-text-primary-blue">
@@ -209,11 +211,12 @@ function Layout({ children, loading, location, title, history }) {
               style={{
                 width: 4,
                 borderRadius: 3,
-                background: '#168fd5',
+                background: '#0050FF',
                 height: 'calc(100% - 30px)',
               }}
             />
             <img
+              alt="logo"
               className="mx-4"
               src={logo}
               style={{ height: 25, width: 70 }}

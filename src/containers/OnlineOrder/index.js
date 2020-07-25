@@ -236,7 +236,7 @@ export function OnlineOrder({
 
               <button
                 className="d-flex justify-content-center u-border-radius-8 align-items-center c-btn-primary u-fontSemiSmall mx-2 u-text-primary-blue u-background-white"
-                style={{ border: '1px solid #168FD5' }}
+                style={{ border: '1px solid #0050FF' }}
                 disabled={loading}
                 type="button"
                 tabIndex="0"

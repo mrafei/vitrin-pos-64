@@ -43,7 +43,7 @@ function Pagination({ location, pagination }) {
             <div
               className="u-border-radius-4 px-2"
               style={{
-                backgroundColor: p + 1 === +page ? "#168fd5" : "white",
+                backgroundColor: p + 1 === +page ? "#0050FF" : "white",
                 fontWeight: p + 1 === +page ? "bold" : "normal",
                 color: p + 1 === +page ? "white" : "#4F595B",
               }}>

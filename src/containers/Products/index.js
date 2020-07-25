@@ -63,7 +63,7 @@ export function Products({
               icon={ICONS.LIST_VIEW}
               className="ml-1"
               size={24}
-              color={listView ? '#168fd5' : '#4F595B'}
+              color={listView ? '#0050FF' : '#4F595B'}
             />
             <span
               className={`${
@@ -86,7 +86,7 @@ export function Products({
               icon={ICONS.CARD_VIEW}
               className="ml-1"
               size={24}
-              color={!listView ? '#168fd5' : '#4F595B'}
+              color={!listView ? '#0050FF' : '#4F595B'}
             />
             <span
               className={`${
