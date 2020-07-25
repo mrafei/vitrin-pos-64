@@ -39,7 +39,7 @@ export default function initPushNotification(showSnackBar, history, updateOrders
       updateOrders();
       ipcRenderer.send("orderReceived", serverNotificationPayload.notification);
       const audio = new Audio(pristine);
-      amplifyMedia(audio, 10);
+      amplifyMedia(audio, 50);
       audio.play();
     } else {
       // payload has no body, so consider it silent (and just consider the data portion)
