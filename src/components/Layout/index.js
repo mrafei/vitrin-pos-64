@@ -196,7 +196,13 @@ function Layout({ children, loading, location, title, history }) {
           className="d-flex u-background-white u-height-64 align-items-center justify-content-between position-relative z-index-2"
         >
           <div
-            onClick={() => remote.getCurrentWindow().reload()}
+            onClick={() => {
+              const pathname = history.location.pathname;
+              history.push({ pathname: '/empty' });
+              setTimeout(() => {
+                history.replace({ pathname });
+              }, 0);
+            }}
             className="d-flex mr-4 px-3 py-2 u-border-radius-8 u-cursor-pointer"
             style={{ boxShadow: '0px 0px 20px rgba(79, 89, 91, 0.1)' }}
           >

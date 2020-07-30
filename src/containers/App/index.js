@@ -91,6 +91,7 @@ const App = function ({
           loading={progressLoading}
         >
           <Switch>
+            <Route exact path="/empty" component={LoadingIndicator} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/analytics" component={Analytics} />
 
