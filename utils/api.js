@@ -62,8 +62,8 @@ export const USER_ORDERS_API = (plugin) =>
   `${BASE_URL}${plugin}_orders/by_business_by_user/`;
 export const USER_ORDERS_ITEMS_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/`;
-export const BUSINESS_ORDERS_API = (plugin, page, pageSize) =>
-  `${BASE_URL}${plugin}_orders/by_business_site_domain/?page=${page}&page_size=${pageSize}`;
+export const BUSINESS_ORDERS_API = (plugin) =>
+  `${BASE_URL}${plugin}_orders/by_business_site_domain/`;
 export const BUSINESS_ORDERS_SORTED_BY_DELIVERER_API = (
   plugin,
   page,
@@ -141,3 +141,5 @@ export const GET_BUSINESS_REVIEWS_API = (slug) =>
   `${BASE_URL}businesses/${slug}/reviews/`;
 export const GET_BUSINESS_REVIEW_API = (id) => `${BASE_URL}reviews/${id}/`;
 export const SUGGEST_EDIT_API = `${BASE_URL}business_edits/`;
+
+export const REPORTS_API = `${BASE_URL}food_orders/report/`;

@@ -126,7 +126,7 @@ export function OnlineOrder({
                   icon={ICONS.CLOSE}
                   size={25}
                   onClick={history.goBack}
-                  color="#949c9f"
+                  color="#98a9b1"
                 />
               </div>
             </div>
@@ -137,6 +137,21 @@ export function OnlineOrder({
             </div>
           </div>
           <div className="overflow-auto py-3 mt-3" style={{ width: 400 }}>
+            <div
+              className="p-3 u-relative u-background-white box-shadow u-border-radius-8 mr-4"
+              style={{ height: 'fit-content' }}
+            >
+              <span className="u-textBlack u-fontWeightBold">
+                جزئیات ارسال:
+              </span>
+              <span
+                className="u-text-darkest-grey pr-1"
+                style={{ whiteSpace: 'pre-wrap' }}
+              >
+                {(order && order.description) || 'ندارد'}
+              </span>
+            </div>
+
             <PriceSection order={order} />
             <div
               className="u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4"
@@ -147,7 +162,7 @@ export function OnlineOrder({
                   <Icon
                     icon={ICONS.TIME}
                     size={24}
-                    color="black"
+                    color="#001e2d"
                     className="ml-2"
                   />
                   حداکثر زمان آماده‌سازی و ارسال
@@ -179,7 +194,7 @@ export function OnlineOrder({
                     <Icon
                       icon={ICONS.DELIVERY}
                       size={18}
-                      color="black"
+                      color="#001e2d"
                       className="ml-2"
                     />
                     پیک‌ها
@@ -264,7 +279,7 @@ export function OnlineOrder({
           {order.order_status === 1 || order.order_status === 3 ? (
             <div
               className="text-center u-text-green mx-2 u-border-radius-8 d-flex justify-content-center align-items-center"
-              style={{ width: '200%', border: '1px solid #67b977' }}
+              style={{ width: '200%', border: '1px solid #00c896' }}
             >
               سفارش با موفقیت تایید شد.
             </div>
@@ -272,7 +287,7 @@ export function OnlineOrder({
           {order.order_status === 2 ? (
             <div
               className="text-center u-text-red mx-2 u-border-radius-8 d-flex justify-content-center align-items-center"
-              style={{ width: '200%', border: '1px solid #E13F18' }}
+              style={{ width: '200%', border: '1px solid #ff0038' }}
             >
               سفارش لغو شد.
             </div>
@@ -289,7 +304,7 @@ export function OnlineOrder({
               <Icon
                 icon={ICONS.PHONE}
                 className="ml-1"
-                color="#65BBEE"
+                color="#00bef0"
                 size={24}
               />
               تماس با مشتری
@@ -306,7 +321,6 @@ const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   business: makeSelectBusiness(),
   pluginData: makeSelectPlugin(),
-  printOptions: makeSelectPrinterOptions(),
 });
 
 function mapDispatchToProps(dispatch) {

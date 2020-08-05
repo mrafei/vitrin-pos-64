@@ -51,7 +51,7 @@ function CategoryModal({
           <div className="u-relative">
             <Icon
               size={25}
-              color={"#C8CBD0"}
+              color={"#ccd4d7"}
               icon={ICONS.CLOSE}
               onClick={onClose}
               className="u-cursor-pointer u-absolute right-0"

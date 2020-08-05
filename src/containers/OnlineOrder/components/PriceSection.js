@@ -7,7 +7,7 @@ function PriceSection({ order }) {
   else if (+order.delivery_price !== 0) cost = `${priceFormatter(+order.delivery_price)}`;
 
   return (
-    <div className="py-2 u-relative u-background-white box-shadow u-border-radius-8 mr-4">
+    <div className="py-2 u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4">
       <div className="flex-1 u-fontMedium u-fontWeightBold mb-2 u-text-black px-3">
         <span> مبلغ قابل پرداخت: </span>
         <span>{priceFormatter(order.final_price)}</span>

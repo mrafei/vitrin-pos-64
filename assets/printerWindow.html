@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet" href="./printStyle.css" type="text/css"/>
-</head>
-<body>
-<script>
-  const ipcRenderer = require("electron").ipcRenderer;
-  const QRious = require('qrious');
-  ipcRenderer.on("print", (event, content, url, printOptions) => {
-    document.write(
-      `<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link rel="stylesheet" href="./printStyle.css" type="text/css" />
+  </head>
+  <body>
+    <script>
+      const ipcRenderer = require('electron').ipcRenderer;
+      const QRious = require('qrious');
+      ipcRenderer.on('print', (event, content, url, printOptions) => {
+        document.write(
+          `<html lang="en">
         <head>
           <meta charset="UTF-8">
           <title>Title</title>
@@ -20,16 +20,18 @@
         <body>
         ${content}
         </body>
-        </html>`);
-    (function () {
-      new QRious({
-        element: document.getElementById('qr'),
-        value: url
+        </html>`,
+        );
+        (function () {
+          if (document.getElementById('qr'))
+            new QRious({
+              element: document.getElementById('qr'),
+              value: url,
+            });
+        })();
+        ipcRenderer.send('readyToPrint', printOptions);
+        document.close();
       });
-    })();
-    ipcRenderer.send("readyToPrint", printOptions);
-    document.close();
-  });
-</script>
-</body>
+    </script>
+  </body>
 </html>

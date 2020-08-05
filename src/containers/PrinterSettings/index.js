@@ -106,7 +106,7 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
                   size={19}
                   width={24}
                   height={24}
-                  color="#949c9f"
+                  color="#98a9b1"
                 />
               </div>
               <div className="col-6">

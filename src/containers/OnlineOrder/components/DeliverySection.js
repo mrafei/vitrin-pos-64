@@ -75,12 +75,6 @@ function DeliverySection({order}) {
               <span className="u-text-darkest-grey">{order.user_address.address}</span>
             ) : null}
           </div>
-          <div className="mt-2">
-            <span className="u-textBlack">جزئیات ارسال:</span>
-            <span className="u-text-darkest-grey pr-1" style={{ whiteSpace: "pre-wrap" }}>
-              {(order && order.description) || "ندارد"}
-            </span>
-          </div>
         </div>
         <Map options={mapOptions} />
       </div>

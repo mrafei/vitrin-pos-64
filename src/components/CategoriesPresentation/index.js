@@ -51,7 +51,7 @@ function CategoriesPresentation({
   return (
     <>
       <main ref={container}>
-        <div className="container u-border-radius-8 overflow-hidden bg-white px-0 container-shadow mt-5">
+        <div className="container u-border-radius-8 overflow-hidden u-background-light-grey px-0 container-shadow mt-5">
           <div className="p-3 d-flex justify-content-between u-background-melo-grey">
             <div style={{ width: 24 }} />
             <div className="w-100">

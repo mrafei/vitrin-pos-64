@@ -36,13 +36,13 @@ const OnlineOrders = function ({
   }, [location]);
   return (
     <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden flex-1">
-      <div className="d-flex px-60 py-3">
+      <div className="d-flex px-5 py-3">
         <span className="px-0 col-3">
           تعداد کل: {englishNumberToPersianNumber(pagination.count)}
         </span>
       </div>
       <div
-        className="u-background-white px-60 py-5 overflow-auto"
+        className="u-background-white p-5 overflow-auto"
         style={{ height: 'calc(100% - 99px)' }}
       >
         <div>

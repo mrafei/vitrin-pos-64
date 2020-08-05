@@ -23,7 +23,7 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
           paddingLeft: 23,
           paddingRight: 23,
           width: 'calc(100% - 20px)',
-          backgroundColor: isActive ? '#F0F1F6' : '',
+          backgroundColor: isActive ? '#f0f2f3' : '',
           borderRadius: 8,
         }}
         key={route.title}
@@ -34,7 +34,7 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
             icon={route.icon}
             size={18}
             styles={{ marginRight: -10 }}
-            color={isActive ? '#0050FF' : '#949C9F'}
+            color={isActive ? '#0050FF' : '#98a9b1'}
           />
         </ListItemIcon>
         <ListItemText
@@ -61,7 +61,7 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
           <Icon
             icon={route.icon}
             size={18}
-            color={isActive ? '#4F595B' : '#949C9F'}
+            color={isActive ? '#667e8a' : '#98a9b1'}
           />
         </ListItemIcon>
         <ListItemText
@@ -71,7 +71,7 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
         <Icon
           icon={ICONS.CHEVRON}
           size={24}
-          color={isActive ? '#4F595B' : '#949C9F'}
+          color={isActive ? '#667e8a' : '#98a9b1'}
           styles={{
             transition: 'all 300ms linear',
             transform: collapse ? 'rotate(90deg)' : 'rotate(-90deg)',
@@ -93,7 +93,7 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
               className="mx-2"
               style={{
                 width: 'calc(100% - 20px)',
-                backgroundColor: active ? '#F0F1F6' : '',
+                backgroundColor: active ? '#f0f2f3' : '',
                 borderRadius: 8,
                 paddingLeft: 23,
                 paddingRight: 23,
@@ -105,7 +105,7 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
                 <Icon
                   icon={subRoute.icon}
                   size={18}
-                  color={active ? '#0050FF' : '#949C9F'}
+                  color={active ? '#0050FF' : '#98a9b1'}
                   styles={{ marginRight: -10 }}
                 />
               </ListItemIcon>

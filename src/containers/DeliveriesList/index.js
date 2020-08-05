@@ -48,7 +48,7 @@ export function DeliveriesList({
   };
   return (
     <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden">
-      <div className="d-flex text-center px-60 py-3">
+      <div className="d-flex text-center px-5 py-3">
         <Flickity
           dragging={dragging}
           className="w-100"
@@ -71,7 +71,7 @@ export function DeliveriesList({
           ))}
         </Flickity>
       </div>
-      <div className="u-background-white py-5 px-60">
+      <div className="u-background-white p-5">
         {deliveries.length ? (
           deliveries.map((order) => (
             <DelivererOrderCard

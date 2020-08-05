@@ -22,7 +22,7 @@ function Pagination({ location, pagination }) {
             to={`${location.pathname}?${pagination.next.split("?")[1] || "page=1"}`}
             className="u-text-primary-blue d-flex justify-content-center align-items-center">
             <div style={{ transform: "rotate(180deg)" }}>
-              <Icon icon={ICONS.CHEVRON} color="#4F595B" size={24} />
+              <Icon icon={ICONS.CHEVRON} color="#667e8a" size={24} />
             </div>
           </Link>
         )}
@@ -45,7 +45,7 @@ function Pagination({ location, pagination }) {
               style={{
                 backgroundColor: p + 1 === +page ? "#0050FF" : "white",
                 fontWeight: p + 1 === +page ? "bold" : "normal",
-                color: p + 1 === +page ? "white" : "#4F595B",
+                color: p + 1 === +page ? "white" : "#667e8a",
               }}>
               {englishNumberToPersianNumber(p + 1)}
             </div>
@@ -65,7 +65,7 @@ function Pagination({ location, pagination }) {
           <Link
             to={`${location.pathname}?${pagination.previous.split("?")[1] || "page=1"}`}
             className="u-text-primary-blue d-flex justify-content-center align-items-center">
-            <Icon icon={ICONS.CHEVRON} color="#4F595B" size={24} />
+            <Icon icon={ICONS.CHEVRON} color="#667e8a" size={24} />
           </Link>
         )}
       </div>

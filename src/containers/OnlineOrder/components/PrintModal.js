@@ -11,7 +11,7 @@ function PrintModal({ isOpen, accept, print, _onClose }) {
           onClick={_onClose}
           size={25}
           icon={ICONS.CLOSE}
-          color="#C8CBD0"
+          color="#ccd4d7"
           className="u-cursor-pointer u-absolute u-top-0 right-0 m-3"
         />
 

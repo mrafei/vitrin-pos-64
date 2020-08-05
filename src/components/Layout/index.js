@@ -106,8 +106,8 @@ const routes = [
   {
     id: 6,
     disabled: false,
-    title: 'تحلیل‌ها',
-    path: '/analytics',
+    title: 'گزارش‌ها',
+    path: '/reports',
     icon: ICONS.ANALYTICS,
   },
 ];
@@ -138,7 +138,20 @@ const subRoutes = [
       icon: ICONS.PRINT,
     },
   ],
-  [],
+  [
+    {
+      id: 1,
+      title: 'گزارش کلی',
+      path: '/reports/analytics',
+      icon: ICONS.ITEMS,
+    },
+    {
+      id: 2,
+      title: 'گزارش سفارش‌ها',
+      path: '/reports/orders',
+      icon: ICONS.ITEMS,
+    },
+  ],
 ];
 function Layout({ children, loading, location, title, history }) {
   const classes = useStyles();
@@ -176,7 +189,7 @@ function Layout({ children, loading, location, title, history }) {
           <ListItem button key={title} onClick={() => setOpen(!open)}>
             <ListItemIcon>
               <div style={open ? {} : { transform: 'rotate(180deg)' }}>
-                <Icon icon={ICONS.SWIPE} size={24} color="#4F595B" />
+                <Icon icon={ICONS.SWIPE} size={24} color="#667e8a" />
               </div>
             </ListItemIcon>
             <ListItemText className="text-right" primary="بستن منو" />
@@ -192,7 +205,7 @@ function Layout({ children, loading, location, title, history }) {
         className={classes.content}
       >
         <div
-          style={{ borderBottom: '1px solid #F0F1F6' }}
+          style={{ borderBottom: '1px solid #f0f2f3' }}
           className="d-flex u-background-white u-height-64 align-items-center justify-content-between position-relative z-index-2"
         >
           <div
@@ -240,7 +253,7 @@ function Layout({ children, loading, location, title, history }) {
         ) : (
           <div style={{ height: 6, width: '100%' }} />
         )}
-        <div className="p-4 h-100 overflow-auto">{children}</div>
+        <div className="d-flex flex-column p-4 h-100 overflow-auto">{children}</div>
       </main>
     </div>
   );

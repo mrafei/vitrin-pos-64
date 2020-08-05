@@ -118,7 +118,7 @@ function AdminFoodAnalytics({
                     approvedOrdersData,
                   ]}
                   title="تعداد سفارش‌های دریافتی"
-                  colors={['#0050FF', '#E13F18', '#67b977']}
+                  colors={['#0050FF', '#ff0038', '#00c896']}
                   displaySum
                   loading={loading}
                 />

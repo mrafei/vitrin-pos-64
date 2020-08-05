@@ -28,8 +28,8 @@ function DelivererOrderCard({order, link}) {
   );
   const backgroundColor =
     (orderStatus === 0 && '#0050FF') ||
-    (orderStatus === 2 && '#E13F18') ||
-    '#67b977';
+    (orderStatus === 2 && '#ff0038') ||
+    '#00c896';
   return (
     <>
       <Link

@@ -1,12 +1,12 @@
 @font-face {
-  font-family: "IranSans";
-  src: url("./fonts/IRANSansWeb.ttf") format("truetype"),
-    url("./fonts/IRANSansWeb.woff") format("woff");
+  font-family: 'IranSans';
+  src: url('./fonts/IRANSansWeb.ttf') format('truetype'),
+    url('./fonts/IRANSansWeb.woff') format('woff');
   font-weight: normal;
   font-display: swap;
 }
 body {
-  font-family: "IranSans", serif !important;
+  font-family: 'IranSans', serif !important;
   direction: rtl;
   text-align: right !important;
   overflow-x: hidden;
@@ -38,7 +38,10 @@ body {
   padding-top: 5px;
   padding-bottom: 5px;
 }
-
+.py-4 {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 .px-2 {
   padding-right: 10px;
   padding-left: 10px;
@@ -109,4 +112,20 @@ body {
 
 .p-1 {
   padding: 5px;
+}
+.p-3 {
+  padding: 15px;
+}
+.u-border-black {
+  border: 1px solid black;
+}
+.u-borderTop {
+  border-top: 1px solid #ccd4d7;
+}
+.u-border-radius-8 {
+  border-radius: 8px;
+}
+
+.u-height-64 {
+  height: 64px;
 }
