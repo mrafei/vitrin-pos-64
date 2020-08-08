@@ -10,7 +10,11 @@ import {
   makeSelectFoodAdminOrdersPagination,
   makeSelectOrdersReport,
 } from "./selectors";
-import { getFoodAdminOrders, getOrdersReport } from "./actions";
+import {
+  getFoodAdminOrders,
+  getOrdersReport,
+  setOrdersReport,
+} from "./actions";
 
 import reducer from "./reducer";
 import saga from "./saga";
@@ -39,6 +43,7 @@ const OrdersReport = function ({
   business,
   printOptions,
   _getOrdersReport,
+  _setOrdersReport,
   report,
 }) {
   useInjectReducer({ key: "ordersReport", reducer });
@@ -80,7 +85,10 @@ const OrdersReport = function ({
       <FactorModal
         business={business}
         open={modalOpen}
-        _onClose={() => setModalOpen(false)}
+        _onClose={() => {
+          setModalOpen(false);
+          _setOrdersReport({});
+        }}
         printers={printOptions.printers}
         report={report}
         date={{
@@ -191,6 +199,7 @@ function mapDispatchToProps(dispatch) {
   return {
     _getAdminOrders: (params) => dispatch(getFoodAdminOrders(params)),
     _getOrdersReport: (params) => dispatch(getOrdersReport(params)),
+    _setOrdersReport: (params) => dispatch(setOrdersReport(params)),
   };
 }
 

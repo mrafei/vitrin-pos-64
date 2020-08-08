@@ -17,13 +17,7 @@ function FactorModal({ _onClose, open, business, printers, report, date }) {
     online_stats: online = {},
     total_stats: total = {},
   } = report;
-  useEffect(() => {
-    if (!open)
-      setPrinterOptions({
-        title: 'اطلاعات روی فیش',
-        sections: [],
-      });
-  }, [open]);
+
   useEffect(() => {
     setPrinterOptions({
       title: 'اطلاعات روی فیش',

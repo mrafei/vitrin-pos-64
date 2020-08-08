@@ -43,45 +43,36 @@ function PriceSection({ order }) {
             <span className="u-font-semi-small"> تومان</span>
           </span>
         </div>
-        <div className="d-flex flex-row justify-content-between mt-1">
-          <span className="u-textBlack">کد تخفیف: </span>
-          <span className="u-text-darkest-grey">
-            {priceFormatter(order.discount_code_amount)}
-            <span
-              className="u-fontWeightBold"
-              style={{ paddingRight: 2, paddingLeft: 5 }}
-            >
-              {order.discount_code_amount ? "-" : null}
+        {order.gift_credit_used ? (
+          <div className="d-flex flex-row justify-content-between mt-1">
+            <span className="u-textBlack">اعتبار هدیه: </span>
+            <span className="u-text-darkest-grey">
+              {priceFormatter(order.gift_credit_used)}
+              <span
+                className="u-fontWeightBold"
+                style={{ paddingRight: 2, paddingLeft: 5 }}
+              >
+                -
+              </span>
+              <span className="u-font-semi-small"> تومان</span>
             </span>
-            <span className="u-font-semi-small"> تومان</span>
-          </span>
-        </div>
-        <div className="d-flex flex-row justify-content-between mt-1">
-          <span className="u-textBlack">اعتبار هدیه: </span>
-          <span className="u-text-darkest-grey">
-            {priceFormatter(order.gift_credit_used)}
-            <span
-              className="u-fontWeightBold"
-              style={{ paddingRight: 2, paddingLeft: 5 }}
-            >
-              {order.gift_credit_used ? "-" : null}
+          </div>
+        ) : null}
+        {order.discount_code_amount ? (
+          <div className="d-flex flex-row justify-content-between mt-1">
+            <span className="u-textBlack">کد تخفیف: </span>
+            <span className="u-text-darkest-grey">
+              {priceFormatter(order.discount_code_amount)}
+              <span
+                className="u-fontWeightBold"
+                style={{ paddingRight: 2, paddingLeft: 5 }}
+              >
+                -
+              </span>
+              <span className="u-font-semi-small"> تومان</span>
             </span>
-            <span className="u-font-semi-small"> تومان</span>
-          </span>
-        </div>
-        <div className="d-flex flex-row justify-content-between mt-1">
-          <span className="u-textBlack">کیف پول: </span>
-          <span className="u-text-darkest-grey">
-            {priceFormatter(order.credit_used)}
-            <span
-              className="u-fontWeightBold"
-              style={{ paddingRight: 2, paddingLeft: 5 }}
-            >
-              {order.credit_used ? "-" : null}
-            </span>
-            <span className="u-font-semi-small"> تومان</span>
-          </span>
-        </div>
+          </div>
+        ) : null}
 
         {order.total_packaging_price ? (
           <div className="d-flex flex-row justify-content-between mt-1">
