@@ -232,7 +232,22 @@ export default class ComponentToPrint extends React.Component {
                   className="u-fontWeightBold"
                   style={{ whiteSpace: 'pre-wrap' }}
                 >
-                  {priceFormatter(order.total_discount)} تومان
+                  {priceFormatter(order.total_discount)}
+                  <span style={{ marginRight: 2 }}>-</span>
+                  <span className="mr-1">تومان</span>
+                </span>
+              </div>
+            ) : null}
+            {order.gift_credit_used ? (
+              <div className="mt-1">
+                <span>اعتبار هدیه : </span>
+                <span
+                  className="u-fontWeightBold"
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
+                  {priceFormatter(order.gift_credit_used)}
+                  <span style={{ marginRight: 2 }}>-</span>
+                  <span className="mr-1">تومان</span>
                 </span>
               </div>
             ) : null}
@@ -243,18 +258,9 @@ export default class ComponentToPrint extends React.Component {
                   className="u-fontWeightBold"
                   style={{ whiteSpace: 'pre-wrap' }}
                 >
-                  {priceFormatter(order.discount_code_amount)} تومان
-                </span>
-              </div>
-            ) : null}
-            {order.credit_used ? (
-              <div className="mt-1">
-                <span>کیف پول: </span>
-                <span
-                  className="u-fontWeightBold"
-                  style={{ whiteSpace: 'pre-wrap' }}
-                >
-                  {priceFormatter(order.credit_used)} تومان
+                  {priceFormatter(order.discount_code_amount)}
+                  <span style={{ marginRight: 2 }}>-</span>
+                  <span className="mr-1">تومان</span>
                 </span>
               </div>
             ) : null}
