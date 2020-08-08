@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Icon from '../Icon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import { Collapse } from 'react-collapse';
-import { ICONS } from '../../../assets/images/icons';
+import React, { useEffect, useState } from "react";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import Icon from "../Icon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from "@material-ui/core/ListItem";
+import { Collapse } from "react-collapse";
+import { ICONS } from "../../../assets/images/icons";
 
 function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
   const isActive = history.location.pathname.includes(route.path);
   const [collapse, setCollapse] = useState(
-    history.location.pathname.includes(route.path),
+    history.location.pathname.includes(route.path)
   );
   useEffect(() => {
     if (!open) setCollapse(false);
@@ -22,8 +22,8 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
         style={{
           paddingLeft: 23,
           paddingRight: 23,
-          width: 'calc(100% - 20px)',
-          backgroundColor: isActive ? '#f0f2f3' : '',
+          width: "calc(100% - 20px)",
+          backgroundColor: isActive ? "#f0f2f3" : "",
           borderRadius: 8,
         }}
         key={route.title}
@@ -34,11 +34,11 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
             icon={route.icon}
             size={18}
             styles={{ marginRight: -10 }}
-            color={isActive ? '#0050FF' : '#98a9b1'}
+            color={isActive ? "#0050FF" : "#98a9b1"}
           />
         </ListItemIcon>
         <ListItemText
-          className={`text-right ${!isActive && 'u-text-dark-grey'}`}
+          className={`text-right ${!isActive && "u-text-dark-grey"}`}
           primary={route.title}
         />
       </ListItem>
@@ -61,28 +61,28 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
           <Icon
             icon={route.icon}
             size={18}
-            color={isActive ? '#667e8a' : '#98a9b1'}
+            color={isActive ? "#667e8a" : "#98a9b1"}
           />
         </ListItemIcon>
         <ListItemText
-          className={`text-right ${!isActive && 'u-text-dark-grey'}`}
+          className={`text-right ${!isActive && "u-text-dark-grey"}`}
           primary={route.title}
         />
         <Icon
           icon={ICONS.CHEVRON}
           size={24}
-          color={isActive ? '#667e8a' : '#98a9b1'}
+          color={isActive ? "#667e8a" : "#98a9b1"}
           styles={{
-            transition: 'all 300ms linear',
-            transform: collapse ? 'rotate(90deg)' : 'rotate(-90deg)',
+            transition: "all 300ms linear",
+            transform: collapse ? "rotate(90deg)" : "rotate(-90deg)",
           }}
         />
       </ListItem>
       <Collapse
         isOpened={collapse}
         theme={{
-          collapse: 'ReactCollapse--collapse',
-          content: 'ReactCollapse--content pt-1 pb-2',
+          collapse: "ReactCollapse--collapse",
+          content: "ReactCollapse--content pt-1 pb-2",
         }}
       >
         {subRoutes.map((subRoute) => {
@@ -92,8 +92,8 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
               button
               className="mx-2"
               style={{
-                width: 'calc(100% - 20px)',
-                backgroundColor: active ? '#f0f2f3' : '',
+                width: "calc(100% - 20px)",
+                backgroundColor: active ? "#f0f2f3" : "",
                 borderRadius: 8,
                 paddingLeft: 23,
                 paddingRight: 23,
@@ -105,13 +105,13 @@ function MenuItem({ route = {}, subRoutes = [], history, setOpen, open }) {
                 <Icon
                   icon={subRoute.icon}
                   size={18}
-                  color={active ? '#0050FF' : '#98a9b1'}
+                  color={active ? "#0050FF" : "#98a9b1"}
                   styles={{ marginRight: -10 }}
                 />
               </ListItemIcon>
               <ListItemText
                 className={`text-right ${
-                  active ? 'u-text-primary-blue' : 'u-text-dark-grey'
+                  active ? "u-text-primary-blue" : "u-text-dark-grey"
                 }`}
                 primary={subRoute.title}
               />

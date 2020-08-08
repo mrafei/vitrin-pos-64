@@ -247,6 +247,17 @@ export default class ComponentToPrint extends React.Component {
                 </span>
               </div>
             ) : null}
+            {order.gift_credit_used ? (
+              <div className="mt-1">
+                <span>اعتبار هدیه: </span>
+                <span
+                  className="u-fontWeightBold"
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
+                  {priceFormatter(order.gift_credit_used)} تومان
+                </span>
+              </div>
+            ) : null}
             {order.credit_used ? (
               <div className="mt-1">
                 <span>کیف پول: </span>

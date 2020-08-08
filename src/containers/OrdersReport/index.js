@@ -1,35 +1,35 @@
-import '../../../styles/_main.scss';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { createStructuredSelector } from 'reselect';
-import { useInjectReducer } from '../../../utils/injectReducer';
-import { useInjectSaga } from '../../../utils/injectSaga';
+import "../../../styles/_main.scss";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { createStructuredSelector } from "reselect";
+import { useInjectReducer } from "../../../utils/injectReducer";
+import { useInjectSaga } from "../../../utils/injectSaga";
 import {
   makeSelectFoodAdminOrders,
   makeSelectFoodAdminOrdersPagination,
   makeSelectOrdersReport,
-} from './selectors';
-import { getFoodAdminOrders, getOrdersReport } from './actions';
+} from "./selectors";
+import { getFoodAdminOrders, getOrdersReport } from "./actions";
 
-import reducer from './reducer';
-import saga from './saga';
-import { connect } from 'react-redux';
-import OrderCard from '../../components/OrderCard';
+import reducer from "./reducer";
+import saga from "./saga";
+import { connect } from "react-redux";
+import OrderCard from "../../components/OrderCard";
 import {
   englishNumberToPersianNumber,
   getQueryParams,
-} from '../../../utils/helper';
-import Pagination from '../../components/Pagination';
-import Icon from '../../components/Icon';
-import { ICONS } from '../../../assets/images/icons';
-import FactorModal from './components/FactorModal';
+} from "../../../utils/helper";
+import Pagination from "../../components/Pagination";
+import Icon from "../../components/Icon";
+import { ICONS } from "../../../assets/images/icons";
+import FactorModal from "./components/FactorModal";
 import {
   makeSelectBusiness,
   makeSelectPrinterOptions,
-} from '../../../stores/business/selector';
-import CalenderModal from './components/CalenderModal';
-import moment from 'moment-jalaali';
+} from "../../../stores/business/selector";
+import CalenderModal from "./components/CalenderModal";
+import moment from "moment-jalaali";
 
 const OrdersReport = function ({
   _getAdminOrders,
@@ -41,17 +41,17 @@ const OrdersReport = function ({
   _getOrdersReport,
   report,
 }) {
-  useInjectReducer({ key: 'ordersReport', reducer });
-  useInjectSaga({ key: 'ordersReport', saga });
+  useInjectReducer({ key: "ordersReport", reducer });
+  useInjectSaga({ key: "ordersReport", saga });
 
   const [modalOpen, setModalOpen] = useState(false);
   const [toCalenderOpen, setToCalenderOpen] = useState(false);
   const [fromCalenderOpen, setFromCalenderOpen] = useState(false);
-  const [query, setQuery] = useState({ to: '', from: '' });
+  const [query, setQuery] = useState({ to: "", from: "" });
 
-  const page = getQueryParams('page', location.search) || 1;
-  const toTime = moment(query.to, 'jYYYY/jMM/jDD').format('YYYY-MM-DD');
-  const fromTime = moment(query.from, 'jYYYY/jMM/jDD').format('YYYY-MM-DD');
+  const page = getQueryParams("page", location.search) || 1;
+  const toTime = moment(query.to, "jYYYY/jMM/jDD").format("YYYY-MM-DD");
+  const fromTime = moment(query.from, "jYYYY/jMM/jDD").format("YYYY-MM-DD");
 
   useEffect(() => {
     submit();
@@ -59,8 +59,10 @@ const OrdersReport = function ({
 
   const submit = useCallback(() => {
     const params = { page };
-    if (query.to) params.to = toTime;
-    if (query.from) params.from = fromTime;
+    if (query) {
+      if (query.to) params.to = toTime;
+      if (query.from) params.from = fromTime;
+    }
     _getAdminOrders(params);
   }, [query, location]);
   return (
@@ -82,10 +84,10 @@ const OrdersReport = function ({
         printers={printOptions.printers}
         report={report}
         date={{
-          to: query.to ? englishNumberToPersianNumber(query.to) : '--/--/--',
+          to: query.to ? englishNumberToPersianNumber(query.to) : "--/--/--",
           from: query.from
             ? englishNumberToPersianNumber(query.from)
-            : '--/--/--',
+            : "--/--/--",
         }}
       />
       <div className="u-border-radius-8 d-flex justify-content-between align-items-center u-background-white container px-0 container-shadow overflow-hidden mt-5 px-5 py-3">
@@ -96,7 +98,7 @@ const OrdersReport = function ({
           >
             از تاریخ
             <span className="mr-2">
-              {query.from ? englishNumberToPersianNumber(query.from) : '----'}
+              {query.from ? englishNumberToPersianNumber(query.from) : "----"}
             </span>
             <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#001e2d" />
           </div>
@@ -106,7 +108,7 @@ const OrdersReport = function ({
           >
             تا تاریخ
             <span className="mr-2">
-              {query.to ? englishNumberToPersianNumber(query.to) : '----'}
+              {query.to ? englishNumberToPersianNumber(query.to) : "----"}
             </span>
             <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#001e2d" />
           </div>
@@ -158,7 +160,7 @@ const OrdersReport = function ({
         </div>
         <div
           className="u-background-white p-5 overflow-auto"
-          style={{ height: 'calc(100% - 99px)' }}
+          style={{ height: "calc(100% - 99px)" }}
         >
           <div>
             {orders.map((order) => (

@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   englishNumberToPersianNumber,
   priceFormatter,
-} from '../../../../utils/helper';
+} from "../../../../utils/helper";
 
 export default class ReportPrintComponent extends React.Component {
   render() {
@@ -18,14 +18,14 @@ export default class ReportPrintComponent extends React.Component {
             className="u-border-radius-8 text-center u-border-black p-3"
             style={{ minWidth: 105 }}
           >
-            {printOptions.date.from}
+            {printOptions.date && printOptions.date.from}
           </span>
           <span>{business.revised_title}</span>
           <span
             className="u-border-radius-8 text-center u-border-black p-3"
             style={{ minWidth: 105 }}
           >
-            {printOptions.date.to}
+            {printOptions.date && printOptions.date.to}
           </span>
         </div>
         <div className="d-flex flex-column justify-content-between px-3 pb-1">
@@ -35,7 +35,7 @@ export default class ReportPrintComponent extends React.Component {
                 <div
                   style={{
                     width: 100,
-                    whiteSpace: 'pre-wrap',
+                    whiteSpace: "pre-wrap",
                   }}
                 />
 
@@ -58,8 +58,8 @@ export default class ReportPrintComponent extends React.Component {
                   <div
                     className={`d-flex flex-row px-2 py-1 align-items-center u-height-64 ${
                       item.roundBorder
-                        ? 'u-border-radius-8 u-border-black'
-                        : 'u-borderTop'
+                        ? "u-border-radius-8 u-border-black"
+                        : "u-borderTop"
                     }`}
                     key={`order-item-${item.id}`}
                   >
@@ -67,7 +67,7 @@ export default class ReportPrintComponent extends React.Component {
                       className="u-fontWeightBold u-fontLarge text-center"
                       style={{
                         width: 100,
-                        whiteSpace: 'pre-wrap',
+                        whiteSpace: "pre-wrap",
                       }}
                     >
                       {item.text}

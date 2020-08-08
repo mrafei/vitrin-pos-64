@@ -10,6 +10,7 @@ import {
   SET_FOOD_ADMIN_ORDER,
   ACCEPT_FOOD_ORDER,
   CANCEL_FOOD_ORDER,
+  REQUEST_ALOPEYK,
 } from "./constants";
 
 export function defaultAction() {
@@ -24,7 +25,12 @@ export function getFoodAdminOrder(data) {
     data,
   };
 }
-
+export function requestAlopeyk(order_id) {
+  return {
+    type: REQUEST_ALOPEYK,
+    data: { order_id },
+  };
+}
 export function setFoodAdminOrder(data) {
   return {
     type: SET_FOOD_ADMIN_ORDER,
