@@ -1,12 +1,12 @@
 .material-input {
-  border-bottom: 1px solid #949c9f;
-  color: #4f595b;
+  border-bottom: 1px solid #98a9b1;
+  color: #667e8a;
   font-size: 14px;
   padding: 8px;
   cursor: pointer;
 
   &::placeholder {
-    color: #949c9f;
+    color: #98a9b1;
   }
 }
 
@@ -21,7 +21,7 @@
 }
 
 .MuiInput-underline:after {
-  border-bottom: 2px solid $primary-blue !important;
+  border-bottom: 2px solid $ocean-I !important;
 }
 .MuiSelect-select:focus {
   background-color: transparent !important;
@@ -58,13 +58,13 @@
 }
 
 .MuiFilledInput-underline:after {
-  border-bottom: 2px solid $primary-blue !important;
+  border-bottom: 2px solid $ocean-I !important;
 }
 .MuiMenuItem-root {
   font-family: "IranSans", serif !important;
 }
 .MuiFormLabel-root.Mui-focused {
-  color: $primary-blue !important;
+  color: $ocean-I !important;
 }
 
 .calendar-no-box-shadow {

@@ -45,12 +45,12 @@ export function Products({
   );
   const [categoryModal, setCategoryModal] = useState(false);
   return (
-    <div className="pb-5 overflow-auto">
+    <div className="pb-5">
       <CategoryModal
         onClose={() => setCategoryModal(false)}
         isOpen={categoryModal}
       />
-      <div className="u-border-radius-8 d-flex justify-content-between u-background-white container px-0 container-shadow overflow-hidden u-mt-50 p-3">
+      <div className="u-border-radius-8 d-flex justify-content-between u-background-white container px-0 container-shadow overflow-hidden mt-5 p-3">
         <div className="d-flex align-items-center">
           <div
             className="d-flex u-cursor-pointer"
@@ -63,7 +63,7 @@ export function Products({
               icon={ICONS.LIST_VIEW}
               className="ml-1"
               size={24}
-              color={listView ? '#0050FF' : '#4F595B'}
+              color={listView ? '#0050FF' : '#667e8a'}
             />
             <span
               className={`${
@@ -86,7 +86,7 @@ export function Products({
               icon={ICONS.CARD_VIEW}
               className="ml-1"
               size={24}
-              color={!listView ? '#0050FF' : '#4F595B'}
+              color={!listView ? '#0050FF' : '#667e8a'}
             />
             <span
               className={`${
@@ -102,7 +102,7 @@ export function Products({
         <div className="d-flex">
           <div
             onClick={() => shell.openExternal(address)}
-            className="ml-2 u-cursor-pointer u-background-dark-red u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"
+            className="ml-2 u-cursor-pointer u-background-green u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"
           >
             <Icon
               icon={ICONS.WEBSITE}

@@ -81,21 +81,21 @@ export function EditProduct({
   const [productImages, setImages] = useState([]);
   const [categoryError, setCategoryError] = useState('');
   return (
-    <div>
+    <>
       <div className="px-3 u-background-white justify-content-between align-items-center container u-height-44 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
         <Icon
           className="c-modal-header-close float-right"
           icon={ICONS.CLOSE}
           size={25}
           onClick={history.goBack}
-          color="#4F595B"
+          color="#667e8a"
         />
         <span>ویرایش محصول</span>
         <div style={{ height: 25, width: 25 }} />
       </div>
       <div
         className="d-flex flex-1 container px-0"
-        style={{ height: 'calc(100% - 230px)' }}
+        style={{ height: 'calc(100% - 110px)' }}
       >
         <div className="u-background-white mt-4 u-border-radius-8 overflow-hidden flex-1 box-shadow d-flex flex-column">
           <div className="d-flex px-4 py-5 flex-1 flex-column align-items-center overflow-auto">
@@ -114,15 +114,13 @@ export function EditProduct({
               onChange={(title) => setProduct({ ...product, title })}
             />
             <div className="mt-5 w-100">
-              {product.id && (
-                <RichText
-                  placeholder="توضیحات محصول (اختیاری)"
-                  value={product.description}
-                  onChange={(description) =>
-                    setProduct({ ...product, description })
-                  }
-                />
-              )}
+              <RichText
+                placeholder="توضیحات محصول (اختیاری)"
+                value={product.description}
+                onChange={(description) =>
+                  setProduct({ ...product, description })
+                }
+              />
             </div>
 
             <div className="w-100">
@@ -318,7 +316,7 @@ export function EditProduct({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

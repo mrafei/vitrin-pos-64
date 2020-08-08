@@ -19,7 +19,7 @@ import { englishNumberToPersianNumber } from '../../../utils/helper';
 export function DeliverersList({ _getBusiness, deliverers }) {
   return (
     <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden">
-      <div className="px-60 text-left pt-3">
+      <div className="px-5 text-left pt-3">
         <Link
           to="/delivery/deliverers/new"
           className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"
@@ -30,13 +30,13 @@ export function DeliverersList({ _getBusiness, deliverers }) {
           </span>
         </Link>
       </div>
-      <div className="d-flex text-center px-60 py-3 u-fontWeightBold">
+      <div className="d-flex text-center px-5 py-3 u-fontWeightBold">
         <span className="px-0 col-1">ردیف</span>
         <span className="px-0 col-6">نام پیک</span>
         <span className="px-0 col-5">شماره همراه</span>
       </div>
       <div
-        className="u-background-white pt-5 u-pb-80 overflow-auto px-60"
+        className="u-background-white pt-5 u-pb-80 overflow-auto px-5"
         style={{ height: 'calc(100% - 54px)' }}
       >
         {deliverers.map((deliverer, index) => (

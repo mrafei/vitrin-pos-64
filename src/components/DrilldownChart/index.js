@@ -63,7 +63,7 @@ const DrilldownChart = ({
           enabled: true,
           useHTML: true,
           style: {
-            color: 'black',
+            color: '#001e2d',
           },
         },
       },
@@ -72,11 +72,11 @@ const DrilldownChart = ({
     drilldown: {
       activeDataLabelStyle: {
         textDecoration: 'none',
-        color: 'black',
+        color: '#001e2d',
       },
       activeAxisLabelStyle: {
         textDecoration: 'none',
-        color: 'black',
+        color: '#001e2d',
       },
       ...drilldownData,
     },

@@ -33,6 +33,7 @@ import AssignDeliverer from '../AssignDeliverer';
 import Products from '../Products';
 import EditProduct from '../EditProduct';
 import Analytics from '../Analytics';
+import OrdersReport from "../OrdersReport";
 
 const App = function ({
   history,
@@ -91,8 +92,10 @@ const App = function ({
           loading={progressLoading}
         >
           <Switch>
+            <Route exact path="/empty" component={LoadingIndicator} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/analytics" component={Analytics} />
+            <Route exact path="/reports/analytics" component={Analytics} />
+            <Route exact path="/reports/orders" component={OrdersReport} />
 
             <Route exact path="/orders/all" component={OnlineOrders} />
             <Route exact path="/orders/:id" component={OnlineOrder} />
@@ -133,6 +136,7 @@ const App = function ({
             <Redirect path="/products" to="/products/all" />
             <Redirect path="/settings" to="/settings/printer" />
             <Redirect path="/delivery" to="/delivery/assign" />
+            <Redirect path="/reports" to="/reports/analytics" />
             <Redirect path="/" to="/orders" />
           </Switch>
         </Layout>

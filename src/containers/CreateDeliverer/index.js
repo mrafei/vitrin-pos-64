@@ -47,13 +47,13 @@ export function CreateDeliverer({
             icon={ICONS.CLOSE}
             size={25}
             onClick={history.goBack}
-            color="#949c9f"
+            color="#98a9b1"
           />
         </div>
       </div>
       <div className="d-flex flex-1 u-background-white px-5 flex-column">
         <div className="d-flex pt-3 u-text-black u-fontWeightBold">
-          <Icon icon={ICONS.PROFILE} size={24} color="black" className="ml-1" />
+          <Icon icon={ICONS.PROFILE} size={24} color="#001e2d" className="ml-1" />
           مشخصات اصلی
         </div>
 

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 export const CDN_BASE_URL =
-  'https://hs3-cf.behtarino.com/static/images/behtarino-web/';
-const BASE_URL = 'https://api.behtarino.com/api/v1/';
+  "https://hs3-cf.behtarino.com/static/images/behtarino-web/";
+const BASE_URL = "https://api.behtarino.com/api/v1/";
 
 export const EMAIL_API = `${BASE_URL}send_custom_email/`;
 export const FILE_SERVER_URL_API = `${BASE_URL}get_minio_url/`;
@@ -62,12 +62,12 @@ export const USER_ORDERS_API = (plugin) =>
   `${BASE_URL}${plugin}_orders/by_business_by_user/`;
 export const USER_ORDERS_ITEMS_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/`;
-export const BUSINESS_ORDERS_API = (plugin, page, pageSize) =>
-  `${BASE_URL}${plugin}_orders/by_business_site_domain/?page=${page}&page_size=${pageSize}`;
+export const BUSINESS_ORDERS_API = (plugin) =>
+  `${BASE_URL}${plugin}_orders/by_business_site_domain/`;
 export const BUSINESS_ORDERS_SORTED_BY_DELIVERER_API = (
   plugin,
   page,
-  pageSize,
+  pageSize
 ) =>
   `${BASE_URL}${plugin}_orders/by_business_site_domain_deliverer_sort/?page=${page}&page_size=${pageSize}&orders_status=1&orders_status=3`;
 
@@ -93,6 +93,8 @@ export const ORDER_DELIVERER_API = (id, plugin) =>
 
 export const ORDERS_LIST_DELIVERER_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/set_orders_list_deliverer/`;
+export const REQUEST_ALOPEYK_API = (id, plugin) =>
+  `${BASE_URL}${plugin}_orders/${id}/apply_for_alopeyk/`;
 
 // Plugins API
 export const PLUGIN_TRIAL_API = (slug) =>
@@ -141,3 +143,5 @@ export const GET_BUSINESS_REVIEWS_API = (slug) =>
   `${BASE_URL}businesses/${slug}/reviews/`;
 export const GET_BUSINESS_REVIEW_API = (id) => `${BASE_URL}reviews/${id}/`;
 export const SUGGEST_EDIT_API = `${BASE_URL}business_edits/`;
+
+export const REPORTS_API = `${BASE_URL}food_orders/report/`;

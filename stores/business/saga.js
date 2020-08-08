@@ -67,7 +67,9 @@ export function* getBusinessData() {
     yield put(closeModals());
     yield put(setBusiness(business));
     if (localStorage.getItem("printerOptions"))
-      yield put(setPrinterOptions(JSON.parse(localStorage.getItem("printerOptions"))));
+      yield put(
+        setPrinterOptions(JSON.parse(localStorage.getItem("printerOptions")))
+      );
     else {
       const defaultPrinter = remote
         .getCurrentWebContents()
@@ -107,13 +109,23 @@ export function* updateBusiness(action) {
       response: { meta },
     } = yield call(request, BUSINESS_BY_SLUG_API(slug), action.data, "PATCH");
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      yield put(setSnackBarMessage(successMessage || "تغییرات شما با موفقیت ذخیره شد.", "success"));
+      yield put(
+        setSnackBarMessage(
+          successMessage || "تغییرات شما با موفقیت ذخیره شد.",
+          "success"
+        )
+      );
       yield call(getBusinessData);
-    } else yield put(setSnackBarMessage(failMessage || "ثبت تغییرات ناموفق بود!", "fail"));
+    } else
+      yield put(
+        setSnackBarMessage(failMessage || "ثبت تغییرات ناموفق بود!", "fail")
+      );
 
     yield put(stopLoading());
   } catch (err) {
-    yield put(setSnackBarMessage(failMessage || "ثبت تغییرات ناموفق بود!", "fail"));
+    yield put(
+      setSnackBarMessage(failMessage || "ثبت تغییرات ناموفق بود!", "fail")
+    );
     yield put(stopLoading());
   }
 }
@@ -157,10 +169,15 @@ export function* createCategory(action) {
       response: { meta },
     } = yield call(request, CATEGORIES_API, action.data, "POST");
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      yield put(setSnackBarMessage(`دسته‌بندی ${name} با موفقیت اضافه شد.`, "success"));
+      yield put(
+        setSnackBarMessage(`دسته‌بندی ${name} با موفقیت اضافه شد.`, "success")
+      );
       yield call(history.goBack);
       yield call(getBusinessData);
-    } else yield put(setSnackBarMessage(`ثبت دسته‌بندی ${name} ناموفق بود!`, "fail"));
+    } else
+      yield put(
+        setSnackBarMessage(`ثبت دسته‌بندی ${name} ناموفق بود!`, "fail")
+      );
 
     yield put(stopLoading());
   } catch (err) {
@@ -181,13 +198,23 @@ export function* updateCategory(action) {
       response: { meta },
     } = yield call(request, CATEGORIES_ITEMS_API(id), { name }, "PATCH");
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      yield put(setSnackBarMessage(`ویرایش دسته‌بندی ${name} با موفقیت انجام شد.`, "success"));
+      yield put(
+        setSnackBarMessage(
+          `ویرایش دسته‌بندی ${name} با موفقیت انجام شد.`,
+          "success"
+        )
+      );
       yield call(history.goBack);
       yield call(getBusinessData);
-    } else yield put(setSnackBarMessage(`ویرایش دسته‌بندی ${name} ناموفق بود!`, "fail"));
+    } else
+      yield put(
+        setSnackBarMessage(`ویرایش دسته‌بندی ${name} ناموفق بود!`, "fail")
+      );
     yield put(stopLoading());
   } catch (err) {
-    yield put(setSnackBarMessage(`ویرایش دسته‌بندی ${name} ناموفق بود!`, "fail"));
+    yield put(
+      setSnackBarMessage(`ویرایش دسته‌بندی ${name} ناموفق بود!`, "fail")
+    );
     yield put(stopLoading());
   }
 }
@@ -201,10 +228,15 @@ export function* deleteCategory(action) {
       response: { meta },
     } = yield call(request, CATEGORIES_ITEMS_API(id), {}, "DELETE");
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      yield put(setSnackBarMessage(`دسته‌بندی ${name} با موفقیت حذف شد.`, "success"));
+      yield put(
+        setSnackBarMessage(`دسته‌بندی ${name} با موفقیت حذف شد.`, "success")
+      );
       yield call(history.goBack);
       yield call(getBusinessData);
-    } else yield put(setSnackBarMessage(`حذف دسته‌بندی ${name} ناموفق بود!`, "fail"));
+    } else
+      yield put(
+        setSnackBarMessage(`حذف دسته‌بندی ${name} ناموفق بود!`, "fail")
+      );
 
     yield put(stopLoading());
   } catch (err) {
@@ -263,7 +295,9 @@ export function* updateProduct(action) {
         };
         yield call(request, DEALS_IMAGES_API, dto, "POST");
       }
-      yield put(setSnackBarMessage("ویرایش محصول با موفقیت انجام شد", "success"));
+      yield put(
+        setSnackBarMessage("ویرایش محصول با موفقیت انجام شد", "success")
+      );
       if (history) yield call(history.goBack);
       yield call(getBusinessData);
     } else yield put(setSnackBarMessage("ویرایش محصول ناموفق بود", "fail"));
@@ -363,7 +397,9 @@ export function* updatePost(action) {
       response: { meta },
     } = yield call(
       request,
-      action.postType === "image" ? POST_IMAGES_ITEM_API(post.id) : POST_VIDEOS_ITEM_API(post.id),
+      action.postType === "image"
+        ? POST_IMAGES_ITEM_API(post.id)
+        : POST_VIDEOS_ITEM_API(post.id),
       post,
       "PATCH"
     );
@@ -387,7 +423,9 @@ export function* deletePost(action) {
       response: { meta },
     } = yield call(
       request,
-      action.postType === "image" ? POST_IMAGES_ITEM_API(id) : POST_VIDEOS_ITEM_API(id),
+      action.postType === "image"
+        ? POST_IMAGES_ITEM_API(id)
+        : POST_VIDEOS_ITEM_API(id),
       {},
       "DELETE"
     );
@@ -435,7 +473,9 @@ export function* updateSection(action) {
     const business = yield select(makeSelectBusiness());
     const { sections_skeleton: sections } = themeConfig;
     const { data: updatedSection } = action;
-    const sectionIndex = sections.findIndex((s) => s.name === updatedSection.name);
+    const sectionIndex = sections.findIndex(
+      (s) => s.name === updatedSection.name
+    );
     sections.splice(sectionIndex, 1, updatedSection);
     const {
       response: { meta, data },
@@ -466,7 +506,12 @@ export function* updateSection(action) {
 export function* suggestEdit(action) {
   try {
     const business = yield select(makeSelectBusiness());
-    yield call(request, SUGGEST_EDIT_API, { business: business.id, ...action.data }, "POST");
+    yield call(
+      request,
+      SUGGEST_EDIT_API,
+      { business: business.id, ...action.data },
+      "POST"
+    );
   } catch (err) {
     // console.log(err);
   }

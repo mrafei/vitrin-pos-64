@@ -24,7 +24,7 @@ function Switch({ isSwitchOn, toggleSwitch, id, themeColor, onColor }) {
         onColor={onColor || "#0050FF"}
         offColor="#747474"
         onHandleColor={themeColor || "#0050FF"}
-        offHandleColor={themeColor || "#4F595B"}
+        offHandleColor={themeColor || "#667e8a"}
         handleDiameter={20}
         uncheckedIcon={false}
         checkedIcon={false}

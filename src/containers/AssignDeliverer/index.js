@@ -89,7 +89,7 @@ const AssignDeliverer = function ({
           style={{ marginRight: -10 }}
         >
           <div className="d-flex flex-1 align-items-center">
-            <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#949C9F" />
+            <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#98a9b1" />
             <CheckBox
               checked={selected.length && selected.every(Boolean)}
               onChange={(checked) => setSelected(orders.map(() => checked))}
@@ -161,23 +161,12 @@ const AssignDeliverer = function ({
                 <Icon
                   icon={ICONS.DELIVERY}
                   size={18}
-                  color="black"
+                  color="#001e2d"
                   className="ml-2"
                 />
                 پیک‌ها
               </div>
-              <div
-                className="u-text-primary-blue u-fontWeightBold u-cursor-pointer"
-                onClick={() => history.push('/delivery/deliveries')}
-              >
-                لیست تحویل‌ها
-                <Icon
-                  icon={ICONS.CHEVRON}
-                  color="#0050FF"
-                  size={24}
-                  className="mr-1"
-                />
-              </div>
+              <div />
             </div>
             {selected.some(Boolean) && (
               <div className="u-text-black mt-3">
