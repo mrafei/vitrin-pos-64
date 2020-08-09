@@ -94,7 +94,7 @@ function FactorModal({ _onClose, open, business, printers, report, date }) {
         return;
       }
     }
-  }, [business, report]);
+  }, [business, report, printerOptions]);
   return (
     <Modal isOpen={open} onClose={_onClose}>
       <div
