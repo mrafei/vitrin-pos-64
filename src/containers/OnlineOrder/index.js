@@ -70,6 +70,7 @@ export function OnlineOrder({
     setDuration(order.delivery_time ? order.delivery_time / 60 : "");
   }, [order]);
   const printOrder = useCallback(() => {
+    console.log(printOptions)
     printOptions.printers.map((p, index) => {
       if (p.isActive)
         setTimeout(
@@ -381,6 +382,7 @@ const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   business: makeSelectBusiness(),
   pluginData: makeSelectPlugin(),
+  printOptions: makeSelectPrinterOptions(),
 });
 
 function mapDispatchToProps(dispatch) {
