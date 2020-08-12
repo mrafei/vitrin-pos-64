@@ -158,7 +158,7 @@ export function OnlineOrder({
                     <button
                       onClick={() =>
                         shell.openExternal(
-                          `https://sandbox-tracking.alopeyk.com/#/${order.alopeyk_token}`
+                          `https://tracking.alopeyk.com/#/${order.alopeyk_token}`
                         )
                       }
                       className="p-3 d-flex aling-items-center"
