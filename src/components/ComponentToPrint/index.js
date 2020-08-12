@@ -20,6 +20,20 @@ export default class ComponentToPrint extends React.Component {
       phone_zero_starts: phone,
     } = business;
     const date = moment(order.submitted_at).format("jYYYY/jMM/jDD - HH:mm:ss");
+    const sortedItems = [...order.items];
+    sortedItems.sort((a, b) => {
+      let firstTotal = a.deal.discounted_price;
+      let secondTotal = b.deal.discounted_price;
+      if (a.deal.extra_items)
+        for (let i = 0; i < a.deal.extra_items.length; i += 1)
+          firstTotal += a.deal.extra_items[i].price;
+      if (b.deal.extra_items)
+        for (let j = 0; j < b.deal.extra_items.length; j += 1)
+          secondTotal += b.deal.extra_items[j].price;
+      if (firstTotal > secondTotal) return -1;
+      if (firstTotal < secondTotal) return 1;
+      return 0;
+    });
     return (
       <div
         className="bg-white w-100 u-text-black printable px-3 u-fontVerySmall"
@@ -140,7 +154,7 @@ export default class ComponentToPrint extends React.Component {
                 ) : null}
               </div>
             </div>
-            {order.items.map((item) => (
+            {sortedItems.map((item) => (
               <>
                 <div
                   className={`d-flex flex-row px-2 ${
