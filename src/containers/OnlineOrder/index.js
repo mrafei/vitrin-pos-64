@@ -70,6 +70,7 @@ export function OnlineOrder({
     setDuration(order.delivery_time ? order.delivery_time / 60 : "");
   }, [order]);
   const printOrder = useCallback(() => {
+    console.log(printOptions)
     printOptions.printers.map((p, index) => {
       if (p.isActive)
         setTimeout(
@@ -157,7 +158,7 @@ export function OnlineOrder({
                     <button
                       onClick={() =>
                         shell.openExternal(
-                          `https://sandbox-tracking.alopeyk.com/#/${order.alopeyk_token}`
+                          `https://tracking.alopeyk.com/#/${order.alopeyk_token}`
                         )
                       }
                       className="p-3 d-flex aling-items-center"
@@ -381,6 +382,7 @@ const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
   business: makeSelectBusiness(),
   pluginData: makeSelectPlugin(),
+  printOptions: makeSelectPrinterOptions(),
 });
 
 function mapDispatchToProps(dispatch) {
