@@ -34,6 +34,7 @@ import {
 } from "../../../stores/business/selector";
 import CalenderModal from "./components/CalenderModal";
 import moment from "moment-jalaali";
+import { setSnackBarMessage } from "../../../stores/ui/actions";
 
 const OrdersReport = function ({
   _getAdminOrders,
@@ -70,6 +71,9 @@ const OrdersReport = function ({
     }
     _getAdminOrders(params);
   }, [query, location]);
+  useEffect(() => {
+    submit();
+  }, [query]);
   return (
     <>
       <CalenderModal
@@ -145,7 +149,7 @@ const OrdersReport = function ({
             </span>
           </div>
 
-          <div
+          {/* <div
             onClick={submit}
             className="u-cursor-pointer u-background-primary-blue u-border-radius-8 d-inline-flex justify-content-center align-items-center p-2"
           >
@@ -156,15 +160,15 @@ const OrdersReport = function ({
               width={24}
               height={24}
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
       <div className="u-border-radius-8 mt-4 container px-0 container-shadow overflow-hidden flex-1">
         <div className="d-flex px-5 py-3">
-          <span className="px-0 col-3">
+          {/* <span className="px-0 col-3">
             تعداد کل: {englishNumberToPersianNumber(pagination.count)}
-          </span>
+          </span> */}
         </div>
         <div
           className="u-background-white p-5 overflow-auto"
@@ -197,6 +201,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    _setSnackBarMessage: (message, status) =>
+      dispatch(setSnackBarMessage(message, status)),
     _getAdminOrders: (params) => dispatch(getFoodAdminOrders(params)),
     _getOrdersReport: (params) => dispatch(getOrdersReport(params)),
     _setOrdersReport: (params) => dispatch(setOrdersReport(params)),
