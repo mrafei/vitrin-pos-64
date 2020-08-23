@@ -303,7 +303,11 @@ export default class ComponentToPrint extends React.Component {
               </span>
             </div>
             <span className="u-fontWeightBold mt-2">
-              {order.payment_status === 1 ? "آنلاین" : "نقدی"}
+              {order.final_price === 0
+                ? "اعتبار هدیه"
+                : order.payment_status === 1
+                ? "آنلاین"
+                : "نقدی"}
             </span>
           </div>
         )}

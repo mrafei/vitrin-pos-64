@@ -24,12 +24,16 @@ function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
   } = order;
   const orderDate = new Date(createdAt);
   const orderTime = moment(
-    `${orderDate.getFullYear()}-${orderDate.getMonth() + 1}-${orderDate.getDate()}`,
+    `${orderDate.getFullYear()}-${
+      orderDate.getMonth() + 1
+    }-${orderDate.getDate()}`,
     "YYYY-MM-DD"
   );
   const nowDate = new Date();
   const backgroundColor =
-    (orderStatus === 0 && "#0050FF") || (orderStatus === 2 && "#ff0038") || "#00c896";
+    (orderStatus === 0 && "#0050FF") ||
+    (orderStatus === 2 && "#ff0038") ||
+    "#00c896";
   return (
     <>
       <Link
@@ -40,7 +44,8 @@ function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
             onSelect(selected);
           }
         }}
-        className="d-flex px-0 u-cursor-pointer c-order-card overflow-hidden">
+        className="d-flex px-0 u-cursor-pointer c-order-card overflow-hidden"
+      >
         <div
           style={{
             minWidth: 4,
@@ -52,7 +57,8 @@ function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
             !isBold
               ? "u-background-melo-grey u-text-darkest-grey"
               : "u-background-white u-fontWeightBold u-text-black"
-          }  pl-2`}>
+          }  pl-2`}
+        >
           {hasCheck && (
             <CheckBox
               checked={selected}
@@ -63,19 +69,24 @@ function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
           )}
           <div
             className="d-flex px-2 align-items-center justify-content-center"
-            style={{ width: 90 }}>
+            style={{ width: 90 }}
+          >
             {orderDate.getMonth() === nowDate.getMonth() &&
             orderDate.getFullYear() === nowDate.getFullYear() &&
             orderDate.getDate() === nowDate.getDate() ? (
               <span>
                 {englishNumberToPersianNumber(
-                  `${`0${orderDate.getHours()}`.slice(-2)}:${`0${orderDate.getMinutes()}`.slice(
+                  `${`0${orderDate.getHours()}`.slice(
                     -2
-                  )}`
+                  )}:${`0${orderDate.getMinutes()}`.slice(-2)}`
                 )}
               </span>
             ) : (
-              <span>{englishNumberToPersianNumber(orderTime.format("jYYYY/jMM/jDD"))}</span>
+              <span>
+                {englishNumberToPersianNumber(
+                  orderTime.format("jYYYY/jMM/jDD")
+                )}
+              </span>
             )}
           </div>
 
@@ -88,21 +99,33 @@ function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
 
           <span
             className="u-text-ellipse mx-2 text-right flex-1 position-relative"
-            style={{ width: 500 }}>
+            style={{ width: 500 }}
+          >
             {deliveryOnSite ? "تحویل در محل رستوران" : userAddress.address}
           </span>
-          {paymentStatus === 1 && (
-            <span className="mr-1 text-right" style={{ width: 40 }}>
-              آنلاین
-            </span>
-          )}
-          {paymentStatus === 2 && (
-            <span className="mr-1 text-right" style={{ width: 40 }}>
-              نقدی
-            </span>
+          {order.final_price === 0 ? (
+            <div className="d-flex" style={{ width: 35 }}>
+              <span className="u-text-green mr-1">اعتبار هدیه</span>
+            </div>
+          ) : (
+            <>
+              {paymentStatus === 1 && (
+                <span className="mr-1 text-right" style={{ width: 40 }}>
+                  آنلاین
+                </span>
+              )}
+              {paymentStatus === 2 && (
+                <span className="mr-1 text-right" style={{ width: 40 }}>
+                  نقدی
+                </span>
+              )}
+            </>
           )}
 
-          <span className="px-2 u-no-wrap u-text-ellipse" style={{ width: 110 }}>
+          <span
+            className="px-2 u-no-wrap u-text-ellipse"
+            style={{ width: 110 }}
+          >
             {englishNumberToPersianNumber(priceFormatter(totalPrice))}
             <span className="u-font-semi-small"> تومان</span>
           </span>
