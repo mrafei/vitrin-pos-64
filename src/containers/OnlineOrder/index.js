@@ -70,7 +70,6 @@ export function OnlineOrder({
     setDuration(order.delivery_time ? order.delivery_time / 60 : "");
   }, [order]);
   const printOrder = useCallback(() => {
-    console.log(printOptions)
     printOptions.printers.map((p, index) => {
       if (p.isActive)
         setTimeout(

@@ -162,7 +162,6 @@ function Layout({
   changeBusiness,
   businesses,
 }) {
-  console.log(businesses);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 

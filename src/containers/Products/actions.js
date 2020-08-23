@@ -4,7 +4,12 @@
  *
  */
 
-import { DEFAULT_ACTION, CHANGE_CATEGORY_ORDER, SET_GROUP_DISCOUNT } from "./constants";
+import {
+  DEFAULT_ACTION,
+  CHANGE_CATEGORY_ORDER,
+  SET_GROUP_DISCOUNT,
+  SET_GROUP_PACKAGING_PRICE,
+} from "./constants";
 
 export function defaultAction() {
   return {
@@ -29,5 +34,12 @@ export function setGroupDiscount(percent, id) {
       percent,
       id,
     },
+  };
+}
+
+export function setGroupPackagingPrice(id, amount) {
+  return {
+    type: SET_GROUP_PACKAGING_PRICE,
+    data: { id, amount },
   };
 }
