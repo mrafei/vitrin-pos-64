@@ -177,6 +177,7 @@ const OrdersReport = function ({
           <div>
             {orders.map((order) => (
               <OrderCard
+                businessTitle={business.revised_title}
                 isBold={order.order_status === 0}
                 key={`order-${order.id}`}
                 link={`/orders/${order.id}`}

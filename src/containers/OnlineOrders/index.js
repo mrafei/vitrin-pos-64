@@ -15,17 +15,16 @@ import reducer from "./reducer";
 import saga from "./saga";
 import { connect } from "react-redux";
 import OrderCard from "../../components/OrderCard";
-import {
-  englishNumberToPersianNumber,
-  getQueryParams,
-} from "../../../utils/helper";
+import { getQueryParams } from "../../../utils/helper";
 import Pagination from "../../components/Pagination";
+import { makeSelectBusinessTitle } from "../../../stores/business/selector";
 
 const OnlineOrders = function ({
   _getAdminOrders,
   adminOrders: orders,
   pagination,
   location,
+  businessTitle,
 }) {
   useInjectReducer({ key: "adminOrders", reducer });
   useInjectSaga({ key: "adminOrders", saga });
@@ -48,6 +47,7 @@ const OnlineOrders = function ({
         <div>
           {orders.map((order) => (
             <OrderCard
+              businessTitle={businessTitle}
               isBold={order.order_status === 0}
               key={`order-${order.id}`}
               link={`/orders/${order.id}`}
@@ -64,6 +64,7 @@ const OnlineOrders = function ({
 const mapStateToProps = createStructuredSelector({
   adminOrders: makeSelectFoodAdminOrders(),
   pagination: makeSelectFoodAdminOrdersPagination(),
+  businessTitle: makeSelectBusinessTitle(),
 });
 
 function mapDispatchToProps(dispatch) {

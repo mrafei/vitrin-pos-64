@@ -94,10 +94,14 @@ export default class ComponentToPrint extends React.Component {
             <div className="mt-1">
               <span className="u-textBlack"> آدرس سفارش دهنده: </span>
               {order.delivery_on_site && (
-                <span className="u-fontWeightBold u-fontLarge">تحویل در محل رستوران</span>
+                <span className="u-fontWeightBold u-fontLarge">
+                  تحویل در محل {business.revised_title}
+                </span>
               )}
               {order.user_address && !order.delivery_on_site ? (
-                <span className="u-fontWeightBold u-fontLarge">{order.user_address.address}</span>
+                <span className="u-fontWeightBold u-fontLarge">
+                  {order.user_address.address}
+                </span>
               ) : null}
             </div>
           )}

@@ -78,7 +78,7 @@ const routes = [
   {
     id: 2,
     disabled: false,
-    title: "مدیریت منو رستوران",
+    title: "مدیریت منو محصولات",
     path: "/products",
     icon: ICONS.GRID,
   },
@@ -233,22 +233,11 @@ function Layout({
           <div className="d-flex align-items-center h-100">
             <select
               className="px-3 u-fontWeightBold u-text-primary-blue"
-              options={businesses.map((business) => ({
-                ...business,
-                text: business.title,
-              }))}
               onChange={(e) => changeBusiness(e.target.value)}
             >
-              <option
-                className="u-fontWeightBold u-text-primary-blue"
-                id="default"
-                disabled
-                selected
-              >
-                {title}
-              </option>
               {businesses.map((business) => (
                 <option
+                  key={`business-${business.slug}`}
                   className="u-fontWeightBold u-text-primary-blue"
                   id="default"
                   value={business.site_domain}

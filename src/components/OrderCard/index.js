@@ -13,7 +13,15 @@ import Icon from "../Icon";
 import { ICONS } from "../../../assets/images/icons";
 import CheckBox from "../CheckBox";
 
-function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
+function OrderCard({
+  order,
+  link,
+  isBold,
+  hasCheck,
+  selected,
+  onSelect,
+  businessTitle,
+}) {
   const {
     final_price: totalPrice,
     user_address: userAddress,
@@ -101,7 +109,9 @@ function OrderCard({ order, link, isBold, hasCheck, selected, onSelect }) {
             className="u-text-ellipse mx-2 text-right flex-1 position-relative"
             style={{ width: 500 }}
           >
-            {deliveryOnSite ? "تحویل در محل رستوران" : userAddress.address}
+            {deliveryOnSite
+              ? `تحویل در محل ${businessTitle}`
+              : userAddress.address}
           </span>
           {order.final_price === 0 ? (
             <div className="d-flex" style={{ width: 35 }}>

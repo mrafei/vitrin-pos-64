@@ -7,17 +7,30 @@ import { initialState } from "./reducer";
 
 const selectBusiness = (state) => state.business || initialState;
 
-const makeSelectBusiness = () => createSelector(selectBusiness, (state) => state.business);
+const makeSelectBusiness = () =>
+  createSelector(selectBusiness, (state) => state.business);
 
 const makeSelectPlugin = () =>
-  createSelector(selectBusiness, (state) =>
-    state.business.plugins_config ? state.business.plugins_config.food : {}
-  );
+  createSelector(selectBusiness, (state) => {
+    if (state.business.plugins_config) {
+      if (state.business.plugins_config.food)
+        return state.business.plugins_config.food;
+      if (state.business.plugins_config.shopping)
+        return state.business.plugins_config.shopping;
+      if (state.business.plugins_config.ecommerce)
+        return state.business.plugins_config.ecommerce;
+    }
+    return {};
+  });
 
-const makeSelectPosts = () => createSelector(selectBusiness, (state) => state.business.posts);
+const makeSelectPosts = () =>
+  createSelector(selectBusiness, (state) => state.business.posts);
 
 const makeSelectCategories = () =>
-  createSelector(selectBusiness, (state) => state.business.deal_categories || []);
+  createSelector(
+    selectBusiness,
+    (state) => state.business.deal_categories || []
+  );
 const makeSelectProducts = () =>
   createSelector(selectBusiness, (state) => {
     const products = [];
@@ -25,7 +38,8 @@ const makeSelectProducts = () =>
       state.business.deal_categories &&
       state.business.deal_categories.map((category) => {
         category.deals.map((product) => {
-          if (!products.filter((p) => p.title === product.title).length) products.push(product);
+          if (!products.filter((p) => p.title === product.title).length)
+            products.push(product);
           return false;
         });
         return false;
@@ -38,9 +52,12 @@ const makeSelectCategory = (id) =>
     state.business.deal_categories.find((category) => category.id === id)
   );
 
-const makeSelectBusinessThemeColor = () => createSelector(selectBusiness, (state) => "#0050FF");
-const makeSelectBusinessFoodDemo = () => createSelector(selectBusiness, () => true);
-const makeSelectBusinessSlug = () => createSelector(selectBusiness, (state) => state.business.slug);
+const makeSelectBusinessThemeColor = () =>
+  createSelector(selectBusiness, (state) => "#0050FF");
+const makeSelectBusinessFoodDemo = () =>
+  createSelector(selectBusiness, () => true);
+const makeSelectBusinessSlug = () =>
+  createSelector(selectBusiness, (state) => state.business.slug);
 
 const makeSelectBusinessSiteDomain = () =>
   createSelector(selectBusiness, (state) => state.business.site_domain);
@@ -57,13 +74,15 @@ const makeSelectBusinessLocation = () =>
     longitude: state.business.longitude,
   }));
 
-const makeSelectBusinessId = () => createSelector(selectBusiness, (state) => state.business.id);
+const makeSelectBusinessId = () =>
+  createSelector(selectBusiness, (state) => state.business.id);
 
 const makeSelectBusinessCallToActionKeyword = () =>
   createSelector(
     selectBusiness,
     (state) =>
-      state.business.theme_config.menu_keyword_for_vitrin || state.business.menu_keyword_for_vitrin
+      state.business.theme_config.menu_keyword_for_vitrin ||
+      state.business.menu_keyword_for_vitrin
   );
 
 const makeSelectBusinessThemeConfig = () =>
@@ -76,12 +95,16 @@ const makeSelectBusinessWorkingHours = () =>
   createSelector(selectBusiness, (state) => state.business.work_hours);
 
 const makeSelectPost = (id) =>
-  createSelector(selectBusiness, (state) => state.business.posts.find((post) => post.id === id));
+  createSelector(selectBusiness, (state) =>
+    state.business.posts.find((post) => post.id === id)
+  );
 
 const makeSelectProduct = (id) =>
   createSelector(selectBusiness, (state) =>
     state.business.deal_categories.find((category) =>
-      category.deals.find((product) => product.id === id).deals.find((product) => product.id === id)
+      category.deals
+        .find((product) => product.id === id)
+        .deals.find((product) => product.id === id)
     )
   );
 const makeSelectDeliverers = () =>
@@ -94,7 +117,8 @@ const makeSelectDeliverers = () =>
         state.business.plugins_config.food.data.deliverers) ||
       []
   );
-const makeSelectDeliveries = () => createSelector(selectBusiness, (state) => state.deliveries);
+const makeSelectDeliveries = () =>
+  createSelector(selectBusiness, (state) => state.deliveries);
 const makeSelectDeliveriesPagination = () =>
   createSelector(selectBusiness, (state) => state.deliveriesPagination);
 const makeSelectPrinterOptions = () =>
@@ -102,7 +126,10 @@ const makeSelectPrinterOptions = () =>
 
 createSelector(selectBusiness, (state) => state.deliveriesPagination);
 const makeSelectBusinessAddress = () =>
-  createSelector(selectBusiness, (state) => state.business.get_vitrin_absolute_url);
+  createSelector(
+    selectBusiness,
+    (state) => state.business.get_vitrin_absolute_url
+  );
 export {
   makeSelectProduct,
   makeSelectBusiness,
