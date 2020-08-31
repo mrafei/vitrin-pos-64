@@ -1,32 +1,35 @@
-import '../../../styles/_main.scss';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { createStructuredSelector } from 'reselect';
-import { useInjectReducer } from '../../../utils/injectReducer';
-import { useInjectSaga } from '../../../utils/injectSaga';
-import { makeSelectOrders, makeSelectOrdersPagination } from './selectors';
-import { getFoodAdminOrders, setDeliverers } from './actions';
+import "../../../styles/_main.scss";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { createStructuredSelector } from "reselect";
+import { useInjectReducer } from "../../../utils/injectReducer";
+import { useInjectSaga } from "../../../utils/injectSaga";
+import { makeSelectOrders, makeSelectOrdersPagination } from "./selectors";
+import { getFoodAdminOrders, setDeliverers } from "./actions";
 
-import reducer from './reducer';
-import saga from './saga';
-import { connect } from 'react-redux';
-import OrderCard from '../../components/OrderCard';
+import reducer from "./reducer";
+import saga from "./saga";
+import { connect } from "react-redux";
+import OrderCard from "../../components/OrderCard";
 import {
   englishNumberToPersianNumber,
   getQueryParams,
-} from '../../../utils/helper';
-import Pagination from '../../components/Pagination';
-import CheckBox from '../../components/CheckBox';
-import Icon from '../../components/Icon';
-import { ICONS } from '../../../assets/images/icons';
-import { makeSelectPlugin } from '../../../stores/business/selector';
-import { makeSelectLoading } from '../App/selectors';
-import Select from '../../components/Select';
+} from "../../../utils/helper";
+import Pagination from "../../components/Pagination";
+import CheckBox from "../../components/CheckBox";
+import Icon from "../../components/Icon";
+import { ICONS } from "../../../assets/images/icons";
+import {
+  makeSelectBusinessTitle,
+  makeSelectPlugin,
+} from "../../../stores/business/selector";
+import { makeSelectLoading } from "../App/selectors";
+import Select from "../../components/Select";
 const filterOptions = [
-  { id: 1, text: 'همه سفارش‌ها', value: '' },
-  { id: 2, text: 'سفارش جدید', value: 'False' },
-  { id: 3, text: 'پیک تخصیص داده شده', value: 'True' },
+  { id: 1, text: "همه سفارش‌ها", value: "" },
+  { id: 2, text: "سفارش جدید", value: "False" },
+  { id: 3, text: "پیک تخصیص داده شده", value: "True" },
 ];
 const AssignDeliverer = function ({
   _getAdminOrders,
@@ -37,15 +40,16 @@ const AssignDeliverer = function ({
   _setDeliverers,
   loading,
   history,
+  businessTitle,
 }) {
-  useInjectReducer({ key: 'assignDeliverer', reducer });
-  useInjectSaga({ key: 'assignDeliverer', saga });
+  useInjectReducer({ key: "assignDeliverer", reducer });
+  useInjectSaga({ key: "assignDeliverer", saga });
   const [selected, setSelected] = useState([]);
   const [sendSms, setSendSms] = useState(true);
-  const [deliverer, setDeliverer] = useState('');
+  const [deliverer, setDeliverer] = useState("");
   const [filter, setFilter] = useState(filterOptions[1].text);
 
-  const page = getQueryParams('page', location.search) || 1;
+  const page = getQueryParams("page", location.search) || 1;
   useEffect(() => {
     const hasDeliverer = filterOptions.find((fo) => fo.text === filter).value;
     _getAdminOrders(page, hasDeliverer);
@@ -76,12 +80,12 @@ const AssignDeliverer = function ({
         page,
       });
     },
-    [selected, sendSms, filter],
+    [selected, sendSms, filter]
   );
   return (
     <div
       className="d-flex flex-1 container px-0"
-      style={{ height: 'calc(100% - 30px)' }}
+      style={{ height: "calc(100% - 30px)" }}
     >
       <div className="u-border-radius-8 u-background-white container px-0 container-shadow overflow-hidden">
         <div
@@ -100,7 +104,7 @@ const AssignDeliverer = function ({
                 inputData={{ value: filter }}
                 options={filterOptions}
                 selectOption={(f) => {
-                  history.replace('/delivery/assign');
+                  history.replace("/delivery/assign");
                   setFilter(f);
                 }}
               />
@@ -108,14 +112,14 @@ const AssignDeliverer = function ({
             {selected.some(Boolean) && (
               <div className="mr-2 u-fontWeightBold">
                 {englishNumberToPersianNumber(
-                  selected.filter((s) => s === true).length,
-                )}{' '}
+                  selected.filter((s) => s === true).length
+                )}{" "}
                 سفارش انتخاب شده ...
               </div>
             )}
           </div>
           {selected.some(
-            (s, index) => s && orders[index] && orders[index].deliverer_name,
+            (s, index) => s && orders[index] && orders[index].deliverer_name
           ) && (
             <div
               onClick={assign(null)}
@@ -128,12 +132,13 @@ const AssignDeliverer = function ({
         </div>
         <div
           className="py-2 overflow-auto px-4"
-          style={{ height: 'calc(100% - 90px)' }}
+          style={{ height: "calc(100% - 90px)" }}
         >
           <div>
             {orders.map((order, index) => (
               <OrderCard
                 hasCheck
+                businessTitle={businessTitle}
                 link="#"
                 selected={selected[index] || false}
                 onSelect={() => {
@@ -187,8 +192,8 @@ const AssignDeliverer = function ({
                 <div
                   className={`d-flex py-2 px-3 u-fontWeightBold u-border-radius-8 u-cursor-pointer ${
                     loading && deliverer === d.name
-                      ? 'u-background-primary-blue u-text-white'
-                      : 'u-background-melo-grey u-text-darkest-grey'
+                      ? "u-background-primary-blue u-text-white"
+                      : "u-background-melo-grey u-text-darkest-grey"
                   }`}
                   style={{ marginTop: 2 }}
                   onClick={assign(d.name)}
@@ -210,6 +215,7 @@ const mapStateToProps = createStructuredSelector({
   pluginData: makeSelectPlugin(),
   pagination: makeSelectOrdersPagination(),
   loading: makeSelectLoading(),
+  businessTitle: makeSelectBusinessTitle(),
 });
 
 function mapDispatchToProps(dispatch) {

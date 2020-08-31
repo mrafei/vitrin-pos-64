@@ -30,7 +30,7 @@ html {
   -webkit-text-size-adjust: 100%; // 4
   -ms-text-size-adjust: 100%; // 4
   -ms-overflow-style: scrollbar; // 5
-  -webkit-tap-highlight-color: rgba(0,0,0,0); // 6
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // 6
   font-size: $font-size-html;
 }
 
@@ -43,9 +43,20 @@ html {
 
 // stylelint-disable selector-list-comma-newline-after
 // Shim for "new" HTML5 structural elements to display correctly (IE10, older browsers)
-article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
+article,
+aside,
+dialog,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
   display: block;
 }
+
 // stylelint-enable selector-list-comma-newline-after
 
 // Body
@@ -118,7 +129,8 @@ p {
 // 4. Duplicate behavior to the data-* attribute for our tooltip plugin
 
 abbr[title],
-abbr[data-original-title] { // 4
+abbr[data-original-title] {
+  // 4
   text-decoration: underline; // 2
   text-decoration: underline dotted; // 2
   cursor: help; // 3
@@ -167,6 +179,7 @@ b,
 strong {
   font-weight: bolder; // Add the correct font weight in Chrome, Edge, and Safari
 }
+
 // stylelint-enable font-weight-notation
 
 small {
@@ -186,8 +199,13 @@ sup {
   vertical-align: baseline;
 }
 
-sub { bottom: -.25em; }
-sup { top: -.5em; }
+sub {
+  bottom: -.25em;
+}
+
+sup {
+  top: -.5em;
+}
 
 
 //
@@ -240,6 +258,7 @@ samp {
   font-family: monospace, monospace; // Correct the inheritance and scaling of font size in all browsers.
   font-size: 1em; // Correct the odd `em` font sizing in all browsers.
 }
+
 // stylelint-enable font-family-no-duplicate-names
 
 pre {
@@ -351,6 +370,7 @@ button:focus {
   //outline: 5px auto -webkit-focus-ring-color;
 }
 
+
 input,
 button,
 select,
@@ -361,6 +381,7 @@ textarea {
   border: none;
   outline: none;
   background: none;
+  font: inherit;
 }
 
 button,
@@ -377,7 +398,8 @@ select {
 //    controls in Android 4.
 // 2. Correct the inability to style clickable types in iOS and Safari.
 button,
-html [type="button"], // 1
+html [type="button"],
+// 1
 [type="reset"],
 [type="submit"] {
   -webkit-appearance: button; // 2

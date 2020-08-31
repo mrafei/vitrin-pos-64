@@ -92,12 +92,17 @@ export default class ComponentToPrint extends React.Component {
           )}
           {!printOptions.hideCustomerAddress && (
             <div className="mt-1">
-              <span> آدرس سفارش دهنده: </span>
-              {order.user_address && (
+              <span className="u-textBlack"> آدرس سفارش دهنده: </span>
+              {order.delivery_on_site && (
+                <span className="u-fontWeightBold u-fontLarge">
+                  تحویل در محل {business.revised_title}
+                </span>
+              )}
+              {order.user_address && !order.delivery_on_site ? (
                 <span className="u-fontWeightBold u-fontLarge">
                   {order.user_address.address}
                 </span>
-              )}
+              ) : null}
             </div>
           )}
           {!printOptions.hideCustomerPhone && (
@@ -303,7 +308,11 @@ export default class ComponentToPrint extends React.Component {
               </span>
             </div>
             <span className="u-fontWeightBold mt-2">
-              {order.payment_status === 1 ? "آنلاین" : "نقدی"}
+              {order.final_price === 0
+                ? "اعتبار هدیه"
+                : order.payment_status === 1
+                ? "آنلاین"
+                : "نقدی"}
             </span>
           </div>
         )}

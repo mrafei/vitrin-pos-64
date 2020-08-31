@@ -11,6 +11,7 @@ import Icon from "../Icon";
 import { ICONS } from "../../../assets/images/icons";
 import MenuItem from "./MenuItem";
 import logo from "../../../assets/images/vitrin-blue.png";
+import Select from "../Select";
 
 const drawerWidth = 250;
 const drawerClosedWidth = 64;
@@ -77,7 +78,7 @@ const routes = [
   {
     id: 2,
     disabled: false,
-    title: "مدیریت منو رستوران",
+    title: "مدیریت منو محصولات",
     path: "/products",
     icon: ICONS.GRID,
   },
@@ -152,7 +153,15 @@ const subRoutes = [
     },
   ],
 ];
-function Layout({ children, loading, location, title, history }) {
+function Layout({
+  children,
+  loading,
+  location,
+  title,
+  history,
+  changeBusiness,
+  businesses,
+}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -222,9 +231,21 @@ function Layout({ children, loading, location, title, history }) {
             <Icon icon={ICONS.SPINNER} size={24} color="#0050FF" />
           </div>
           <div className="d-flex align-items-center h-100">
-            <div className="px-3 u-fontWeightBold u-text-primary-blue">
-              {title}
-            </div>
+            <select
+              className="px-3 u-fontWeightBold u-text-primary-blue"
+              onChange={(e) => changeBusiness(e.target.value)}
+            >
+              {businesses.map((business) => (
+                <option
+                  key={`business-${business.slug}`}
+                  className="u-fontWeightBold u-text-primary-blue"
+                  id="default"
+                  value={business.site_domain}
+                >
+                  {business.title}
+                </option>
+              ))}
+            </select>
             <div
               style={{
                 width: 4,

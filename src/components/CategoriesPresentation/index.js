@@ -48,42 +48,97 @@ function CategoriesPresentation({
           unavailableProducts.push(d);
       });
   });
+  const discountedProducts = [];
+  list.map((c) => {
+    c &&
+      c.deals &&
+      c.deals.map((d) => {
+        if (
+          d.initial_price - d.discounted_price &&
+          !discountedProducts.some((up) => up.id === d.id)
+        ) {
+          discountedProducts.push(d);
+        }
+      });
+  });
   return (
     <>
       <main ref={container}>
-        <div className="container u-border-radius-8 overflow-hidden u-background-light-grey px-0 container-shadow mt-5">
-          <div className="p-3 d-flex justify-content-between u-background-melo-grey">
-            <div style={{ width: 24 }} />
-            <div className="w-100">
-              <CategoryHeader
-                categoryName="محصول‌های ناموجود"
-                themeColor={themeColor}
-                isList={isList}
-              />
+        {unavailableProducts.length ? (
+          <div className="container u-border-radius-8 overflow-hidden u-background-light-grey px-0 container-shadow mt-5">
+            <div className="p-3 d-flex justify-content-between u-background-melo-grey">
+              <div style={{ width: 24 }} />
+              <div className="w-100">
+                <CategoryHeader
+                  categoryName="محصول‌های ناموجود"
+                  themeColor={themeColor}
+                  isList={isList}
+                />
+              </div>
+            </div>
+            <div
+              className={`justify-content-start py-2 ${
+                !isList && "d-flex flex-wrap py-5"
+              }`}
+              style={{ padding: !isList ? "0 50px" : "0 39px" }}
+            >
+              {unavailableProducts.map((product, i) => (
+                <ProductCard
+                  key={`c-unavailable-p-${product.id}`}
+                  themeColor={themeColor}
+                  product={product}
+                  {...productCardOptions}
+                  isList={isList}
+                />
+              ))}
             </div>
           </div>
-          <div
-            className={`justify-content-start py-2 ${!isList && "d-flex flex-wrap py-5"}`}
-            style={{ padding: !isList ? "0 50px" : "0 39px" }}>
-            {unavailableProducts.map((product, i) => (
-              <ProductCard
-                key={`c-unavailable-p-${product.id}`}
-                themeColor={themeColor}
-                product={product}
-                {...productCardOptions}
-                isList={isList}
-              />
-            ))}
+        ) : null}
+        {discountedProducts.length ? (
+          <div className="container u-border-radius-8 overflow-hidden u-background-light-grey px-0 container-shadow mt-5">
+            <div className="p-3 d-flex justify-content-between u-background-melo-grey">
+              <div style={{ width: 24 }} />
+              <div className="w-100">
+                <CategoryHeader
+                  categoryName="محصول‌های دارای تخفیف"
+                  themeColor={themeColor}
+                  isList={isList}
+                />
+              </div>
+            </div>
+            <div
+              className={`justify-content-start py-2 ${
+                !isList && "d-flex flex-wrap py-5"
+              }`}
+              style={{ padding: !isList ? "0 50px" : "0 39px" }}
+            >
+              {discountedProducts.map((product, i) => (
+                <ProductCard
+                  key={`c-unavailable-p-${product.id}`}
+                  themeColor={themeColor}
+                  product={product}
+                  {...productCardOptions}
+                  isList={isList}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="deal_categories">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {list.map((category, index) => (
-                  <Draggable draggableId={`${category.id}`} index={index} key={category.id}>
+                  <Draggable
+                    draggableId={`${category.id}`}
+                    index={index}
+                    key={category.id}
+                  >
                     {(_provided, _snapshot) => (
-                      <div ref={_provided.innerRef} {..._provided.draggableProps}>
+                      <div
+                        ref={_provided.innerRef}
+                        {..._provided.draggableProps}
+                      >
                         <CategoryPresentation
                           onCategoryEditButtonClick={onCategoryEditButtonClick}
                           pluginBaseUrl={pluginBaseUrl}

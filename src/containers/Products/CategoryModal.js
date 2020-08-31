@@ -11,10 +11,17 @@ import {
   persianToEnglishNumber,
 } from "../../../utils/helper";
 import Input from "../../components/Input";
-import { makeSelectBusinessId, makeSelectCategories } from "../../../stores/business/selector";
+import {
+  makeSelectBusinessId,
+  makeSelectCategories,
+} from "../../../stores/business/selector";
 import { makeSelectLoading } from "../App/selectors";
-import { createCategory, deleteCategory, updateCategory } from "../../../stores/business/actions";
-import { setGroupDiscount } from "./actions";
+import {
+  createCategory,
+  deleteCategory,
+  updateCategory,
+} from "../../../stores/business/actions";
+import { setGroupDiscount, setGroupPackagingPrice } from "./actions";
 import Icon from "../../components/Icon";
 import { ICONS } from "../../../assets/images/icons";
 import { PrimaryButton } from "../../components/Button";
@@ -31,14 +38,17 @@ function CategoryModal({
   categoryId,
   _createCategory,
   businessId,
+  _setGroupPackagingPrice,
 }) {
   const [isDialogBoxOpen, setDialogBox] = useState(false);
   const [categoryName, setCategoryName] = useState("");
   const [percent, setPercent] = useState(0);
+  const [amount, setAmount] = useState(0);
 
   const [category, setCategory] = useState(null);
   useEffect(() => {
-    const category = categories && categories.find((_c) => _c.id === +categoryId);
+    const category =
+      categories && categories.find((_c) => _c.id === +categoryId);
     if (category) {
       setCategory(category);
       setCategoryName(category.name);
@@ -72,7 +82,8 @@ function CategoryModal({
                   onClick={() => {
                     setDialogBox(false);
                     _deleteCategory(category, { goBack: onClose });
-                  }}>
+                  }}
+                >
                   حذف
                 </span>
                 <span
@@ -80,7 +91,8 @@ function CategoryModal({
                   onClick={() => setDialogBox(false)}
                   onKeyDown={(e) => handleKeyDown(e, () => setDialogBox(false))}
                   role="button"
-                  tabIndex="0">
+                  tabIndex="0"
+                >
                   بستن
                 </span>
               </div>
@@ -99,6 +111,27 @@ function CategoryModal({
               />
             </div>
           </div>
+          {categoryId && (
+            <div className="px-3 mt-3">
+              <div className="mt-1 d-flex justify-content-between align-items-center">
+                <Input
+                  value={amount ? amount : ""}
+                  onChange={(value) => setAmount(value)}
+                  label="هزینه بسته‌بندی گروهی"
+                  placeholder="تخفیف به تومان مثلا: ۵۰۰۰ تومان"
+                />
+                <PrimaryButton
+                  style={{ width: 100, marginRight: 10 }}
+                  text="اعمال"
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                  onClick={() => {
+                    _setGroupPackagingPrice(category.id, amount);
+                  }}
+                />
+              </div>
+            </div>
+          )}
           {categoryId && (
             <div className="px-3 mt-3">
               <div className="mt-1 d-flex justify-content-between align-items-center">
@@ -130,9 +163,12 @@ function CategoryModal({
             className="d-flex container-shadow fit-content px-4 py-2 justify-content-center u-border-radius-8 align-items-center c-btn-primary u-fontSemiSmall u-text-white u-background-primary-blue"
             disabled={isLoading}
             onClick={() => {
-              if (categoryId) _updateCategory(category, categoryName, { goBack: onClose });
-              else _createCategory(categoryName, businessId, { goBack: onClose });
-            }}>
+              if (categoryId)
+                _updateCategory(category, categoryName, { goBack: onClose });
+              else
+                _createCategory(categoryName, businessId, { goBack: onClose });
+            }}
+          >
             <Icon
               icon={ICONS.SAVE}
               size={24}
@@ -151,8 +187,14 @@ function CategoryModal({
               tabIndex="0"
               onClick={() => {
                 setDialogBox(true);
-              }}>
-              <Icon icon={ICONS.TRASH} size={19} color="#0050FF" className="ml-1" />
+              }}
+            >
+              <Icon
+                icon={ICONS.TRASH}
+                size={19}
+                color="#0050FF"
+                className="ml-1"
+              />
               حذف دسته‌بندی
             </button>
           )}
@@ -171,6 +213,8 @@ CategoryModal.propTypes = {
   categories: PropTypes.array,
   _deleteCategory: PropTypes.func,
   _setGroupDiscount: PropTypes.func,
+  _setGroupPackagingPrice: PropTypes.func,
+  _createCategory: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -183,8 +227,11 @@ function mapDispatchToProps(dispatch) {
   return {
     _updateCategory: (category, name, history) =>
       dispatch(updateCategory(category.id, name, history)),
-    _deleteCategory: (category, history) => dispatch(deleteCategory(category, history)),
+    _deleteCategory: (category, history) =>
+      dispatch(deleteCategory(category, history)),
     _setGroupDiscount: (percent, id) => dispatch(setGroupDiscount(percent, id)),
+    _setGroupPackagingPrice: (id, amount) =>
+      dispatch(setGroupPackagingPrice(id, amount)),
     _createCategory: (category, businessId, history) =>
       dispatch(createCategory(category, businessId, history)),
   };

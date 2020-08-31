@@ -13,13 +13,19 @@ function PriceSection({ order }) {
         <span> مبلغ قابل پرداخت: </span>
         <span>{priceFormatter(order.final_price)}</span>
         <span className="u-font-semi-small u-fontWeightLight px-1">تومان</span>|
-        {order.payment_status === 1 && (
-          <span className="u-text-green mr-1">آنلاین</span>
-        )}
-        {order.payment_status === 2 && (
-          <span className="u-text-red u-fontMedium mr-1">
-            در محل (حضوری / کارتخوان)
-          </span>
+        {order.final_price === 0 ? (
+          <span className="u-text-green mr-1">اعتبار هدیه</span>
+        ) : (
+          <>
+            {order.payment_status === 1 && (
+              <span className="u-text-green mr-1">آنلاین</span>
+            )}
+            {order.payment_status === 2 && (
+              <span className="u-text-red u-fontMedium mr-1">
+                در محل (حضوری / کارتخوان)
+              </span>
+            )}
+          </>
         )}
       </div>
       <div className="d-flex flex-column px-3">

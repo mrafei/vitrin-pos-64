@@ -145,3 +145,5 @@ export const GET_BUSINESS_REVIEW_API = (id) => `${BASE_URL}reviews/${id}/`;
 export const SUGGEST_EDIT_API = `${BASE_URL}business_edits/`;
 
 export const REPORTS_API = `${BASE_URL}food_orders/report/`;
+export const GROUP_PACKAGING_PRICE_ON_DEALS_API = id =>
+  `${BASE_URL}deal_categories/${id}/group_packaging_price_on_deals/`;

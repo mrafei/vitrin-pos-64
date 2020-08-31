@@ -7,24 +7,26 @@
  *
  */
 
-import produce from 'immer';
+import produce from "immer";
 import {
   SET_USER,
   SET_ADMIN,
   SET_TOKEN,
   SET_LOGIN_CALLBACK,
-} from './constants';
+  SET_BUSINESSES,
+} from "./constants";
 
 // The initial state of the App
 export const initialState = {
   user: null,
   token: null,
+  businesses: null,
   loginCallBack: () => {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const appReducer = (state = initialState, action) =>
-  produce(state, draft => {
+  produce(state, (draft) => {
     switch (action.type) {
       case SET_USER:
         draft.user = action.data;
@@ -37,6 +39,9 @@ const appReducer = (state = initialState, action) =>
         break;
       case SET_LOGIN_CALLBACK:
         draft.loginCallBack = action.data;
+        break;
+      case SET_BUSINESSES:
+        draft.businesses = action.data;
         break;
     }
   });
