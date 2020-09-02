@@ -235,16 +235,17 @@ function Layout({
               className="px-3 u-fontWeightBold u-text-primary-blue"
               onChange={(e) => changeBusiness(e.target.value)}
             >
-              {businesses.map((business) => (
-                <option
-                  key={`business-${business.slug}`}
-                  className="u-fontWeightBold u-text-primary-blue"
-                  id="default"
-                  value={business.site_domain}
-                >
-                  {business.title}
-                </option>
-              ))}
+              {businesses &&
+                businesses.map((business) => (
+                  <option
+                    key={`business-${business.slug}`}
+                    className="u-fontWeightBold u-text-primary-blue"
+                    id="default"
+                    value={business.site_domain}
+                  >
+                    {business.title}
+                  </option>
+                ))}
             </select>
             <div
               style={{
