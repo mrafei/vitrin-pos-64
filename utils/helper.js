@@ -3,7 +3,11 @@ import { useState } from "react";
 import videoExtensions from "video-extensions";
 import imageExtensions from "image-extensions";
 import moment from "moment-jalaali";
-import { DEFAULT_THEME_COLOR, defaultSections, FONT_1 } from "./themeConfig/constants";
+import {
+  DEFAULT_THEME_COLOR,
+  defaultSections,
+  FONT_1,
+} from "./themeConfig/constants";
 
 function getWeekDay(dayId) {
   if (!dayId) return null;
@@ -63,7 +67,8 @@ function devideArraysIntoGroups(arr = [], devideTo) {
 
 function englishNumberToPersianNumber(num) {
   const id = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-  if (num && num.toString()) return num.toString().replace(/[0-9]/g, (w) => id[+w]);
+  if (num && num.toString())
+    return num.toString().replace(/[0-9]/g, (w) => id[+w]);
   return "۰";
 }
 
@@ -73,14 +78,20 @@ function addCommaToPrice(num) {
 }
 
 function calculateDiscountPercent(initialPrice, discountedPrice) {
-  const discountPercent = ((initialPrice - discountedPrice) / initialPrice) * 100;
-  return discountPercent % 1 > 0 ? Math.round(discountPercent) : discountPercent;
+  const discountPercent =
+    ((initialPrice - discountedPrice) / initialPrice) * 100;
+  return discountPercent % 1 > 0
+    ? Math.round(discountPercent)
+    : discountPercent;
 }
 
-const priceFormatter = (price) => englishNumberToPersianNumber(addCommaToPrice(price));
+const priceFormatter = (price) =>
+  englishNumberToPersianNumber(addCommaToPrice(price));
 
 const ellipseText = (text, length) =>
-  text && text.length > length ? `${text.toString().substr(0, length)}...` : text;
+  text && text.length > length
+    ? `${text.toString().substr(0, length)}...`
+    : text;
 
 function getCountDown(duration) {
   const timer = duration;
@@ -126,7 +137,9 @@ function wazeNavigate(latitude, longitude) {
 const isNumber = (value) => /^\d+$/.test(value);
 const isPhoneNumber = (phoneNumber) =>
   phoneNumber
-    ? phoneNumber.toString().length === 11 && Number(phoneNumber[0]) === 0 && isNumber(phoneNumber)
+    ? phoneNumber.toString().length === 11 &&
+      Number(phoneNumber[0]) === 0 &&
+      isNumber(phoneNumber)
     : false;
 
 const getFileExtention = (filename) => filename.split(".").pop();
@@ -148,8 +161,11 @@ function generateTimeRange(minuteInterval) {
     const hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
     const mm = tt % 60; // getting minutes of the hour in 0-55 format
     const hour =
-      hh % 24 >= 10 ? (hh % 24).toString().slice(-2) : `0${(hh % 24).toString().slice(-2)}`;
-    const minute = mm >= 10 ? mm.toString().slice(-2) : `0${mm.toString().slice(-2)}`;
+      hh % 24 >= 10
+        ? (hh % 24).toString().slice(-2)
+        : `0${(hh % 24).toString().slice(-2)}`;
+    const minute =
+      mm >= 10 ? mm.toString().slice(-2) : `0${mm.toString().slice(-2)}`;
     if (tt === 24 * 60)
       times[i] = {
         value: `23:59`,
@@ -196,12 +212,36 @@ function removeSecondsFromDateString(date) {
 function noOp() {}
 
 function persianToEnglishNumber(number) {
-  const persianNumbers = [/۰/g, /۱/g, /۲/g, /۳/g, /۴/g, /۵/g, /۶/g, /۷/g, /۸/g, /۹/g];
-  const arabicNumbers = [/٠/g, /١/g, /٢/g, /٣/g, /٤/g, /٥/g, /٦/g, /٧/g, /٨/g, /٩/g];
+  const persianNumbers = [
+    /۰/g,
+    /۱/g,
+    /۲/g,
+    /۳/g,
+    /۴/g,
+    /۵/g,
+    /۶/g,
+    /۷/g,
+    /۸/g,
+    /۹/g,
+  ];
+  const arabicNumbers = [
+    /٠/g,
+    /١/g,
+    /٢/g,
+    /٣/g,
+    /٤/g,
+    /٥/g,
+    /٦/g,
+    /٧/g,
+    /٨/g,
+    /٩/g,
+  ];
   if (typeof number === "string") {
     for (let i = 0; i < 10; i += 1) {
       // eslint-disable-next-line no-param-reassign
-      number = number.replace(persianNumbers[i], i).replace(arabicNumbers[i], i);
+      number = number
+        .replace(persianNumbers[i], i)
+        .replace(arabicNumbers[i], i);
     }
   }
   return number;
@@ -212,7 +252,8 @@ const businessSerializer = (_business) => ({
   posts: [],
   theme_config: {
     ..._business.theme_config,
-    sections_skeleton: _business.theme_config.sections_skeleton || defaultSections(),
+    sections_skeleton:
+      _business.theme_config.sections_skeleton || defaultSections(),
     font: _business.theme_config.font || FONT_1,
     theme_color: _business.theme_config.theme_color || DEFAULT_THEME_COLOR,
   },
@@ -276,7 +317,8 @@ function useCustomForm(form) {
   return [_form, setFormValue];
 }
 
-const validateDomain = (domain) => /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]$/.test(domain);
+const validateDomain = (domain) =>
+  /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]$/.test(domain);
 
 function isBusinessOpenNow(workingHours) {
   const nowDate = moment();
@@ -380,25 +422,42 @@ function getWorkingDayStart(workingHours) {
   return getNextWorkingDayStart(workingHours);
 }
 const getDistance = (x1, y1, x2, y2) =>
-  Math.sqrt((parseFloat(x1) - parseFloat(x2)) ** 2 + (parseFloat(y1) - parseFloat(y2)) ** 2);
+  Math.sqrt(
+    (parseFloat(x1) - parseFloat(x2)) ** 2 +
+      (parseFloat(y1) - parseFloat(y2)) ** 2
+  );
 function validatePhone(number) {
   return /^[0][9]\d{9}$/.test(number);
 }
 
 function amplifyMedia(mediaElem, multiplier) {
-  var context = new (window.AudioContext || window.webkitAudioContext),
+  var context = new (window.AudioContext || window.webkitAudioContext)(),
     result = {
       context: context,
       source: context.createMediaElementSource(mediaElem),
       gain: context.createGain(),
       media: mediaElem,
-      amplify: function(multiplier) { result.gain.gain.value = multiplier; },
-      getAmpLevel: function() { return result.gain.gain.value; }
+      amplify: function (multiplier) {
+        result.gain.gain.value = multiplier;
+      },
+      getAmpLevel: function () {
+        return result.gain.gain.value;
+      },
     };
   result.source.connect(result.gain);
   result.gain.connect(context.destination);
   result.amplify(multiplier);
   return result;
+}
+function deliveryTimeFormatter(deliveryTime) {
+  const fromTime = moment.unix(deliveryTime.from_time);
+  const date = englishNumberToPersianNumber(fromTime.jDate());
+  const month = getMonthName(fromTime.jMonth());
+  const weekDay = getWeekDay(fromTime.isoWeekday());
+  const toTime = moment.unix(deliveryTime.to_time).format("HH:mm");
+  return `${weekDay} ${date} ${month} بازه ${englishNumberToPersianNumber(
+    fromTime.format("HH:mm")
+  )} تا ${englishNumberToPersianNumber(toTime)}`;
 }
 export {
   getCountDown,
@@ -437,4 +496,5 @@ export {
   getWeekDays,
   validatePhone,
   amplifyMedia,
+  deliveryTimeFormatter,
 };

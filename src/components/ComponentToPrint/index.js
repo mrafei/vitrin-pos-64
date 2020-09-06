@@ -298,6 +298,17 @@ export default class ComponentToPrint extends React.Component {
               <span>هزینه ارسال: </span>
               <span className="u-fontWeightBold">{cost}</span>
             </div>
+            {order.taxing_price ? (
+              <div className="mt-1">
+                <span>مالیات بر ارزش افزوده: </span>
+                <span
+                  className="u-fontWeightBold"
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
+                {priceFormatter(order.taxing_price)} تومان
+              </span>
+              </div>
+            ) : null}
             <div className="mt-1 u-fontMedium">
               <span>قابل پرداخت: </span>
               <span

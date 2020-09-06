@@ -1,36 +1,39 @@
-import React from 'react';
-import Map from '../../../components/Map';
-import { englishNumberToPersianNumber } from "../../../../utils/helper";
+import React from "react";
+import Map from "../../../components/Map";
+import { deliveryTimeFormatter, englishNumberToPersianNumber } from "../../../../utils/helper";
 import moment from "moment-jalaali";
 
-function DeliverySection({order}) {
+function DeliverySection({ order }) {
   const mapOptions = {
     height: 150,
     width: 150,
     center: {
       longitude: order.user_address ? order.user_address.longitude : null,
-      latitude: order.user_address ? order.user_address.latitude : null
+      latitude: order.user_address ? order.user_address.latitude : null,
     },
     markers: [
       {
         longitude: order.user_address ? order.user_address.longitude : null,
         latitude: order.user_address ? order.user_address.latitude : null,
-        singleMarker: true
-      }
+        singleMarker: true,
+      },
     ],
     style: {
       margin: 0,
-    }
+    },
   };
   const orderDate = new Date(order.submitted_at);
   const orderTime = moment(
-    `${orderDate.getFullYear()}-${orderDate.getMonth() +
-    1}-${orderDate.getDate()}`,
-    'YYYY-MM-DD'
+    `${orderDate.getFullYear()}-${
+      orderDate.getMonth() + 1
+    }-${orderDate.getDate()}`,
+    "YYYY-MM-DD"
   );
   return (
     <div className="w-100 flex-1 py-2 u-background-white mt-1 px-3">
-      <div className="flex-1 u-fontWeightBold mb-2 u-text-black">جزئیات ارسال</div>
+      <div className="flex-1 u-fontWeightBold mb-2 u-text-black">
+        جزئیات ارسال
+      </div>
       <div className="d-flex justify-content-between flex-wrap px-3">
         <div className="ml-4 mb-2" style={{ maxWidth: "70%" }}>
           <div className="mt-1">
@@ -44,12 +47,12 @@ function DeliverySection({order}) {
                 )}
               </span>
               <div
-                style={{width: 2, height: 15}}
+                style={{ width: 2, height: 15 }}
                 className="mx-2 u-background-dark-grey"
               />
               <span>
                 {englishNumberToPersianNumber(
-                  orderTime.format('jYYYY/jMM/jDD')
+                  orderTime.format("jYYYY/jMM/jDD")
                 )}
               </span>
             </span>
@@ -57,13 +60,17 @@ function DeliverySection({order}) {
           <div className="mt-2">
             <span className="u-textBlack">شماره تماس: </span>
             {order.user_address && (
-              <span className="u-text-darkest-grey">{englishNumberToPersianNumber(order.user_address.phone)}</span>
+              <span className="u-text-darkest-grey">
+                {englishNumberToPersianNumber(order.user_address.phone)}
+              </span>
             )}
           </div>
           <div className="mt-2">
             <span className="u-textBlack"> نام سفارش دهنده: </span>
             {order.user_address && (
-              <span className="u-text-darkest-grey">{order.user_address.name}</span>
+              <span className="u-text-darkest-grey">
+                {order.user_address.name}
+              </span>
             )}
           </div>
           <div className="mt-2">
@@ -72,15 +79,24 @@ function DeliverySection({order}) {
               <span className="u-text-darkest-grey">تحویل در محل رستوران</span>
             )}
             {order.user_address && !order.delivery_on_site ? (
-              <span className="u-text-darkest-grey">{order.user_address.address}</span>
+              <span className="u-text-darkest-grey">
+                {order.user_address.address}
+              </span>
             ) : null}
           </div>
+          {order.delivery_interval ? (
+            <div className="mt-2">
+              <span className="u-textBlack">زمان ارسال: </span>
+              <span className="mr-1">
+                {deliveryTimeFormatter(order.delivery_interval)}
+              </span>
+            </div>
+          ) : null}
         </div>
         <Map options={mapOptions} />
       </div>
     </div>
   );
-
 }
 
 export default DeliverySection;

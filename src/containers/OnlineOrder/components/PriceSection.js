@@ -98,6 +98,15 @@ function PriceSection({ order }) {
             )}
           </span>
         </div>
+        {order.taxing_price ? (
+          <div className="d-flex flex-row justify-content-between mt-1">
+            <span className="u-textBlack">مالیات بر ارزش افزوده: </span>
+            <span className="u-text-darkest-grey">
+              {priceFormatter(order.taxing_price)}
+              <span className="u-font-semi-small"> تومان</span>
+            </span>
+          </div>
+        ) : null}
       </div>
     </div>
   );
