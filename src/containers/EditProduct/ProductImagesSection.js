@@ -23,15 +23,15 @@ function ProductImagesSection({
   };
   return (
     <div className="d-flex w-100">
-      <input
-        className="d-none"
-        ref={myFiles}
-        type="file"
-        multiple
-        onChange={() => {
-          _uploadFile(myFiles.current.files, "business_deals_images");
-        }}
-      />
+        <input
+          className="d-none"
+          ref={myFiles}
+          type="file"
+          multiple
+          onChange={() => {
+            _uploadFile(myFiles.current.files, "business_deals_images");
+          }}
+        />
       <AddNewItemSection
         className="m-1 deal-image flex-column-reverse align-items-center justify-content-center p-2 u-border-radius-4"
         title="عکس"

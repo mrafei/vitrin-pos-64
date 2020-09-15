@@ -38,6 +38,7 @@ import Analytics from "../Analytics";
 import OrdersReport from "../OrdersReport";
 import { setSiteDomain } from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
+import UploadCustomers from "../UploadCustomers";
 
 const App = function ({
   history,
@@ -143,7 +144,10 @@ const App = function ({
             />
             <Route exact path="/products/:id" component={EditProduct} />
 
+            <Route exact path="/users/upload" component={UploadCustomers} />
+
             <Redirect path="/orders" to="/orders/all" />
+            <Redirect path="/users" to="/users/upload" />
             <Redirect path="/products" to="/products/all" />
             <Redirect path="/settings" to="/settings/printer" />
             <Redirect path="/delivery" to="/delivery/assign" />
