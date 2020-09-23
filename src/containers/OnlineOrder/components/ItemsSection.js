@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
 import {
+  copyToClipboard,
   englishNumberToPersianNumber,
   priceFormatter,
-} from '../../../../utils/helper';
+} from "../../../../utils/helper";
 
 function ItemsSection({ order }) {
   return (
@@ -12,13 +13,13 @@ function ItemsSection({ order }) {
       </div>
       {order.items.map((item) => (
         <div
-          key={`order-item-${item.id}`}
+          key={`order-item-${item.deal.id}`}
           className="d-flex flex-row justify-content-between mt-2 px-3"
           style={{
             alignItems:
               item.deal.extra_items && item.deal.extra_items.length
-                ? 'start'
-                : 'center',
+                ? "start"
+                : "center",
           }}
         >
           <div className="wrapper--img-order">
@@ -29,10 +30,14 @@ function ItemsSection({ order }) {
             />
           </div>
           <div className="flex-1 d-flex flex-column justify-content-center">
-            <div className="u-fontNormal u-textBlack u-fontWeightBold">
+            <div
+              onDoubleClick={copyToClipboard}
+              className="u-fontNormal u-textBlack u-fontWeightBold"
+            >
               {item.deal.title}
             </div>
             <div
+              onDoubleClick={copyToClipboard}
               className="u-fontVerySmall u-text-darkest-grey mt-1 overflow-hidden u-max-height-18"
               dangerouslySetInnerHTML={{
                 __html: item.deal.description,

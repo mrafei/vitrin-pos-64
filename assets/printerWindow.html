@@ -7,9 +7,10 @@
   </head>
   <body>
     <script>
-      const ipcRenderer = require('electron').ipcRenderer;
-      const QRious = require('qrious');
-      ipcRenderer.on('print', (event, content, url, printOptions) => {
+      const ipcRenderer = require("electron").ipcRenderer;
+      const remote = require("electron").remote;
+      const QRious = require("qrious");
+      ipcRenderer.on("print", (event, content, url, printOptions) => {
         document.write(
           `<html lang="en">
         <head>
@@ -20,17 +21,37 @@
         <body>
         ${content}
         </body>
-        </html>`,
+        </html>`
         );
         (function () {
-          if (document.getElementById('qr'))
+          if (document.getElementById("qr"))
             new QRious({
-              element: document.getElementById('qr'),
+              element: document.getElementById("qr"),
               value: url,
             });
         })();
-        ipcRenderer.send('readyToPrint', printOptions);
-        document.close();
+        remote.getCurrentWebContents().print(
+          {
+            silent: true,
+            deviceName: printOptions.device,
+            copies: printOptions.copies,
+            landscape: false,
+            margins: { marginType: "none" },
+          },
+          (status, message) => {
+            if (!status) {
+              console.log("HI");
+              ipcRenderer.send(
+                "sentryError",
+                `message: ${message},\n
+                business: ${url},\n
+                device: ${printOptions.device},`
+              );
+            }
+            event.sender.send("printFinished");
+            document.close();
+          }
+        );
       });
     </script>
   </body>
