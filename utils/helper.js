@@ -459,6 +459,13 @@ function deliveryTimeFormatter(deliveryTime) {
     fromTime.format("HH:mm")
   )} تا ${englishNumberToPersianNumber(toTime)}`;
 }
+function copyToClipboard(event) {
+  let range = document.createRange();
+  range.selectNode(event.target);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  document.execCommand("copy");
+}
 export {
   getCountDown,
   noOp,
@@ -497,4 +504,5 @@ export {
   validatePhone,
   amplifyMedia,
   deliveryTimeFormatter,
+  copyToClipboard,
 };

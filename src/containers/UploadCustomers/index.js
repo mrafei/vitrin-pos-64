@@ -25,12 +25,7 @@ function UploadCustomers({
         کسب‌وکار: ${businessTitle}\n
         فایل آپلود شده:‌ ${uploadedFile.url}
         `,
-        recipients: [
-          "pooya.mosaddegh72@gmail.com",
-          "mirhadiradi@gmail.com",
-          "behtarinocom@gmail.com",
-          "sa.mirafzali@gmail.com",
-        ],
+        recipients: ["behtarinocom@gmail.com", "sa.mirafzali@gmail.com"],
       });
   }, [uploadedFile]);
   return (

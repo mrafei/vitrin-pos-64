@@ -1,6 +1,10 @@
 import React from "react";
 import Map from "../../../components/Map";
-import { deliveryTimeFormatter, englishNumberToPersianNumber } from "../../../../utils/helper";
+import {
+  copyToClipboard,
+  deliveryTimeFormatter,
+  englishNumberToPersianNumber,
+} from "../../../../utils/helper";
 import moment from "moment-jalaali";
 
 function DeliverySection({ order }) {
@@ -60,7 +64,10 @@ function DeliverySection({ order }) {
           <div className="mt-2">
             <span className="u-textBlack">شماره تماس: </span>
             {order.user_address && (
-              <span className="u-text-darkest-grey">
+              <span
+                className="u-text-darkest-grey"
+                onDoubleClick={copyToClipboard}
+              >
                 {englishNumberToPersianNumber(order.user_address.phone)}
               </span>
             )}
@@ -68,7 +75,10 @@ function DeliverySection({ order }) {
           <div className="mt-2">
             <span className="u-textBlack"> نام سفارش دهنده: </span>
             {order.user_address && (
-              <span className="u-text-darkest-grey">
+              <span
+                onDoubleClick={copyToClipboard}
+                className="u-text-darkest-grey"
+              >
                 {order.user_address.name}
               </span>
             )}
@@ -79,7 +89,10 @@ function DeliverySection({ order }) {
               <span className="u-text-darkest-grey">تحویل در محل رستوران</span>
             )}
             {order.user_address && !order.delivery_on_site ? (
-              <span className="u-text-darkest-grey">
+              <span
+                className="u-text-darkest-grey"
+                onDoubleClick={copyToClipboard}
+              >
                 {order.user_address.address}
               </span>
             ) : null}
@@ -87,7 +100,7 @@ function DeliverySection({ order }) {
           {order.delivery_interval ? (
             <div className="mt-2">
               <span className="u-textBlack">زمان ارسال: </span>
-              <span className="mr-1">
+              <span className="mr-1" onDoubleClick={copyToClipboard}>
                 {deliveryTimeFormatter(order.delivery_interval)}
               </span>
             </div>

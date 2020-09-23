@@ -7,8 +7,13 @@ const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const url = require("url");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
+const Sentry = require("@sentry/electron");
+
 require("update-electron-app")();
 
+Sentry.init({
+  dsn: "https://f10f2a0b0cb94dc6bfb819be6171641a@sentry.hamravesh.com/91",
+});
 if (require("electron-squirrel-startup")) app.quit();
 
 if (handleSquirrelEvent()) {
@@ -30,7 +35,10 @@ let dev = false;
 //   dev = true
 // }
 
-if (process.env.NODE_ENV !== undefined && process.env.NODE_ENV === "development") {
+if (
+  process.env.NODE_ENV !== undefined &&
+  process.env.NODE_ENV === "development"
+) {
   dev = true;
 }
 
@@ -92,6 +100,7 @@ function createWindow() {
         console.log("Error loading React DevTools: ", err)
       );
       mainWindow.webContents.openDevTools();
+      workerWindow.webContents.openDevTools();
     }
   });
   setupPushReceiver(mainWindow.webContents);
@@ -155,18 +164,13 @@ app.on("activate", () => {
 
 ipcMain.on("print", (event, content, url, printOptions) => {
   workerWindow.webContents.send("print", content, url, printOptions);
-});
-
-ipcMain.on("readyToPrint", (event, printOptions) => {
-  workerWindow.webContents.print({
-    silent: true,
-    deviceName: printOptions.device,
-    copies: printOptions.copies,
-    landscape: false,
-    margins: { marginType: "none" },
+  ipcMain.once("printFinished", () => {
+    event.returnValue = "result";
   });
 });
-
+ipcMain.on("sentryError", (event, errorMessage) => {
+  Sentry.captureException(errorMessage);
+});
 ipcMain.on("orderReceived", (event, notification) => {
   notifWindow.webContents.send("orderReceived", notification);
   notifWindow.show();

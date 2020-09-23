@@ -71,23 +71,20 @@ export function OnlineOrder({
   }, [order]);
   const printOrder = useCallback(() => {
     printOptions.printers.map((p, index) => {
-      if (p.isActive)
-        setTimeout(
-          () =>
-            ipcRenderer.send(
-              "print",
-              renderToString(
-                <ComponentToPrint
-                  printOptions={printOptions.printers[index].factor}
-                  order={order}
-                  business={business}
-                />
-              ),
-              business.get_vitrin_absolute_url,
-              printOptions.printers[index]
-            ),
-          (index + 1) * 500
+      if (p.isActive) {
+        ipcRenderer.sendSync(
+          "print",
+          renderToString(
+            <ComponentToPrint
+              printOptions={printOptions.printers[index].factor}
+              order={order}
+              business={business}
+            />
+          ),
+          business.get_vitrin_absolute_url,
+          printOptions.printers[index]
         );
+      }
     });
   }, [printOptions, business, order]);
   const [duration, setDuration] = useState("");

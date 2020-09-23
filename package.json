@@ -1,7 +1,7 @@
 {
   "name": "vitrin-pos",
   "productName": "vitrin-pos",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Application for vitrin POS",
   "license": "Vitrin",
   "private": false,
@@ -55,6 +55,7 @@
     "lint:staged": "lint-staged"
   },
   "dependencies": {
+    "@sentry/electron": "^0.17.3",
     "babel-eslint": "^10.1.0",
     "clsx": "^1.1.1",
     "draft-js": "^0.11.6",
