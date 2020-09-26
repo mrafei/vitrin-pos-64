@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import { useState } from "react";
+import { clipboard } from "electron";
 import videoExtensions from "video-extensions";
 import imageExtensions from "image-extensions";
 import moment from "moment-jalaali";
@@ -460,11 +461,7 @@ function deliveryTimeFormatter(deliveryTime) {
   )} تا ${englishNumberToPersianNumber(toTime)}`;
 }
 function copyToClipboard(event) {
-  let range = document.createRange();
-  range.selectNode(event.target);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
-  document.execCommand("copy");
+  clipboard.writeText(event.target.innerText);
 }
 export {
   getCountDown,
