@@ -84,7 +84,8 @@
     "reselect": "^4.0.0",
     "sass-loader": "^8.0.2",
     "sqlite3": "^4.2.0",
-    "update-electron-app": "^1.5.0"
+    "update-electron-app": "^1.5.0",
+    "electron-devtools-installer": "^3.0.0"
   },
   "devDependencies": {
     "@babel/cli": "7.4.3",
@@ -121,7 +122,6 @@
     "css-loader": "^3.5.3",
     "dotenv-webpack": "^1.8.0",
     "electron": "^9.0.0",
-    "electron-devtools-installer": "^3.0.0",
     "electron-packager": "^14.2.1",
     "electron-rebuild": "^1.11.0",
     "electron-serve": "^1.0.0",

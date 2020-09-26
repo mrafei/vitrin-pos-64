@@ -39,6 +39,7 @@ import OrdersReport from "../OrdersReport";
 import { setSiteDomain } from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
 import UploadCustomers from "../UploadCustomers";
+import { remote } from "electron";
 
 const App = function ({
   history,
