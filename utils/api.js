@@ -48,7 +48,7 @@ export const DEALS_IMAGES_ITEM_API = (id) => `${BASE_URL}deals/images/${id}/`;
 export const CATEGORIES_API = `${BASE_URL}deal_categories/`;
 export const CATEGORIES_ITEMS_API = (id) => `${BASE_URL}deal_categories/${id}/`;
 export const CATEGORIES_ITEMS_CHANGE_ORDER_API = (id) =>
-  `${BASE_URL}deal_categories/${id}/change_order_by_business`;
+  `${BASE_URL}deal_categories/${id}/change_order_by_business/`;
 export const GROUP_DISCOUNT_ON_DEALS = (id) =>
   `${BASE_URL}deal_categories/${id}/group_discount_on_deals`;
 export const BUSINESS_CATEGORIES_API = () =>

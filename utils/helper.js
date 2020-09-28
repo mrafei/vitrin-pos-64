@@ -3,6 +3,8 @@ import { useState } from "react";
 import { clipboard } from "electron";
 import videoExtensions from "video-extensions";
 import imageExtensions from "image-extensions";
+import iconv from "iconv-lite";
+
 import moment from "moment-jalaali";
 import {
   DEFAULT_THEME_COLOR,
@@ -460,8 +462,35 @@ function deliveryTimeFormatter(deliveryTime) {
     fromTime.format("HH:mm")
   )} تا ${englishNumberToPersianNumber(toTime)}`;
 }
+function persianToArabicCharacters(input) {
+  const persianCharacters = [/ی/g, /ک/g];
+  const arabicCharacters = ["ي", "ك"];
+  if (typeof input === "string") {
+    for (let i = 0; i < 10; i += 1) {
+      input = input.replace(persianCharacters[i], arabicCharacters[i]);
+    }
+  }
+  return input;
+}
 function copyToClipboard(event) {
-  clipboard.writeText(event.target.innerText);
+  let range = document.createRange();
+  range.selectNode(event.target);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+
+  clipboard.writeText(
+    iconv.decode(
+      Buffer.from(
+        iconv.encode(
+          persianToEnglishNumber(
+            persianToArabicCharacters(event.target.innerText)
+          ),
+          "win1256"
+        )
+      ),
+      "latin1"
+    )
+  );
 }
 export {
   getCountDown,
@@ -502,4 +531,5 @@ export {
   amplifyMedia,
   deliveryTimeFormatter,
   copyToClipboard,
+  persianToArabicCharacters,
 };
