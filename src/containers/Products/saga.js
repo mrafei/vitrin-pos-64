@@ -2,14 +2,18 @@
 import { call, put, takeLatest } from "@redux-saga/core/effects";
 
 import request from "../../../utils/request";
-import { CHANGE_CATEGORY_ORDER, SET_GROUP_DISCOUNT, SET_GROUP_PACKAGING_PRICE } from "./constants";
+import {
+  CHANGE_CATEGORY_ORDER,
+  SET_GROUP_DISCOUNT,
+  SET_GROUP_PACKAGING_PRICE,
+} from "./constants";
 import {
   CATEGORIES_ITEMS_CHANGE_ORDER_API,
   GROUP_DISCOUNT_ON_DEALS,
   GROUP_PACKAGING_PRICE_ON_DEALS_API,
 } from "../../../utils/api";
 import { startLoading, stopLoading } from "../App/actions";
-import { closeModals, setSnackBarMessage } from "../../../stores/ui/actions";
+import { setSnackBarMessage } from "../../../stores/ui/actions";
 import { getBusinessData } from "../../../stores/business/saga";
 
 export function* changeCategoryOrderFunc({ data: { id, newIndex } }) {
@@ -56,22 +60,19 @@ export function* setGroupPackagingPriceFunc({ data: { amount, id } }) {
       {
         amount: +amount,
       },
-      'PATCH',
+      "PATCH"
     );
     yield put(
-      setSnackBarMessage(
-        'هزینه بسته‌بندی گروهی با موفقیت اعمال شد.',
-        'success',
-      ),
+      setSnackBarMessage("هزینه بسته‌بندی گروهی با موفقیت اعمال شد.", "success")
     );
     yield put(stopLoading());
     yield call(getBusinessData);
   } catch (err) {
     yield put(
       setSnackBarMessage(
-        'اعمال هزینه بسته‌بندی گروهی موفقیت آمیز نبود!',
-        'fail',
-      ),
+        "اعمال هزینه بسته‌بندی گروهی موفقیت آمیز نبود!",
+        "fail"
+      )
     );
     yield put(stopLoading());
   }

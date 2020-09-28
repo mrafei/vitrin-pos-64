@@ -10,6 +10,7 @@
 import produce from "immer";
 import { SET_BUSINESS, SET_DELIVERIES } from "./constants";
 import { SET_PRINTER_OPTIONS } from "../../src/containers/App/constants";
+import { CHANGE_CATEGORY_ORDER } from "../../src/containers/Products/constants";
 
 // The initial state of the App
 export const initialState = {
@@ -38,6 +39,17 @@ const appReducer = (state = initialState, action) =>
       case SET_PRINTER_OPTIONS:
         draft.printerOptions = action.data;
         break;
+      case CHANGE_CATEGORY_ORDER:
+        draft.business.deal_categories.splice(
+          action.data.newIndex,
+          0,
+          draft.business.deal_categories.splice(
+            draft.business.deal_categories.findIndex(
+              (c) => c.id === action.data.id
+            ),
+            1
+          )[0]
+        );
     }
   });
 
