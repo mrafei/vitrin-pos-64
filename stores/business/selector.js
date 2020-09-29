@@ -13,10 +13,10 @@ const makeSelectBusiness = () =>
 const makeSelectPlugin = () =>
   createSelector(selectBusiness, (state) => {
     if (state.business.plugins_config) {
-      if (state.business.plugins_config.food)
-        return state.business.plugins_config.food;
       if (state.business.plugins_config.shopping)
         return state.business.plugins_config.shopping;
+      if (state.business.plugins_config.food)
+        return state.business.plugins_config.food;
       if (state.business.plugins_config.ecommerce)
         return state.business.plugins_config.ecommerce;
     }
@@ -112,9 +112,9 @@ const makeSelectDeliverers = () =>
     selectBusiness,
     (state) =>
       (state.business.plugins_config &&
-        state.business.plugins_config.food &&
-        state.business.plugins_config.food.data &&
-        state.business.plugins_config.food.data.deliverers) ||
+        state.business.plugins_config.shopping &&
+        state.business.plugins_config.shopping.data &&
+        state.business.plugins_config.shopping.data.deliverers) ||
       []
   );
 const makeSelectDeliveries = () =>

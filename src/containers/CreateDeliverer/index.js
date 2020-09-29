@@ -26,7 +26,7 @@ export function CreateDeliverer({
   const [phone, setPhone] = useState("");
   const addDeliverer = useCallback(() => {
     const deliverers = pluginData.data.deliverers || [];
-    _setPluginData("food", {
+    _setPluginData("shopping", {
       ...pluginData.data,
       deliverers: [...deliverers, { name, phone }],
     });
