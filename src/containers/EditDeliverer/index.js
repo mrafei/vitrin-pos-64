@@ -1,19 +1,19 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { makeSelectPlugin } from '../../../stores/business/selector';
-import { getBusiness, setPluginData } from '../../../stores/business/actions';
-import Input from '../../components/Input';
-import Icon from '../../components/Icon';
-import { ICONS } from '../../../assets/images/icons';
-import { PrimaryButton } from '../../components/Button';
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
+import { makeSelectPlugin } from "../../../stores/business/selector";
+import { getBusiness, setPluginData } from "../../../stores/business/actions";
+import Input from "../../components/Input";
+import Icon from "../../components/Icon";
+import { ICONS } from "../../../assets/images/icons";
+import { PrimaryButton } from "../../components/Button";
 import {
   englishNumberToPersianNumber,
   persianToEnglishNumber,
-} from '../../../utils/helper';
-import { makeSelectLoading } from '../App/selectors';
+} from "../../../utils/helper";
+import { makeSelectLoading } from "../App/selectors";
 
 export function EditDeliverer({
   _getBusiness,
@@ -29,23 +29,23 @@ export function EditDeliverer({
       setPhone(pluginData.data.deliverers[match.params.id].phone);
     }
   }, [pluginData]);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const addDeliverer = useCallback(() => {
     let deliverers = [...pluginData.data.deliverers];
     deliverers[match.params.id] = { name, phone };
-    _setPluginData('food', { ...pluginData.data, deliverers });
+    _setPluginData("shopping", { ...pluginData.data, deliverers });
   }, [pluginData, name, phone]);
   return (
     <div
       className="u-border-radius-8 container px-0 container-shadow overflow-hidden mt-5 d-flex flex-column flex-1"
       style={{
-        height: 'calc(100% - 150px)',
+        height: "calc(100% - 150px)",
       }}
     >
       <div className="text-center u-fontMedium u-text-dark-grey py-2 u-background-white mb-1">
         <div className="px-3 u-text-darkest-grey u-fontWeightBold">
-          <div style={{ height: 25, float: 'left', width: 25 }} />
+          <div style={{ height: 25, float: "left", width: 25 }} />
           افزودن پیک
           <Icon
             className="c-modal-header-close float-right"
@@ -58,7 +58,12 @@ export function EditDeliverer({
       </div>
       <div className="d-flex flex-1 u-background-white px-5 flex-column">
         <div className="d-flex pt-3 u-text-black u-fontWeightBold">
-          <Icon icon={ICONS.PROFILE} size={24} color="#001e2d" className="ml-1" />
+          <Icon
+            icon={ICONS.PROFILE}
+            size={24}
+            color="#001e2d"
+            className="ml-1"
+          />
           مشخصات اصلی
         </div>
 
@@ -73,7 +78,7 @@ export function EditDeliverer({
             onChange={(value) => setPhone(persianToEnglishNumber(value))}
             numberOnly
             className="col-10 mt-4"
-            value={phone ? englishNumberToPersianNumber(phone) : ''}
+            value={phone ? englishNumberToPersianNumber(phone) : ""}
             label="موبایل"
           />
         </div>
@@ -87,7 +92,7 @@ export function EditDeliverer({
           />
           <button
             className="c-btn w-auto d-flex justify-content-center align-items-center mx-2 u-text-primary-blue px-5 u-background-white"
-            style={{ border: '2px solid #0050FF', boxShadow: 'none' }}
+            style={{ border: "2px solid #0050FF", boxShadow: "none" }}
             type="button"
             tabIndex="0"
             onClick={history.goBack}
@@ -113,9 +118,9 @@ function mapDispatchToProps(dispatch) {
         setPluginData(
           pluginName,
           data,
-          'ویرایش پیک با موفقیت انجام شد.',
-          'در ویرایش پیک خطایی رخ داده است!',
-        ),
+          "ویرایش پیک با موفقیت انجام شد.",
+          "در ویرایش پیک خطایی رخ داده است!"
+        )
       ),
   };
 }
