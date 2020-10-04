@@ -11,7 +11,6 @@ import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 const { shell } = require("electron");
-import qs from "qs";
 import Button from "@material-ui/core/esm/Button";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 
@@ -35,10 +34,12 @@ import {
   makeSelectFilteredDeals,
   makeSelectFilteredDealsPagination,
   makeSelectUnavailableDeals,
+  makeSelectUnavailableDealsPagination,
 } from "./selectors";
 import { updateProduct } from "../../../stores/business/actions";
 import Switch from "../../components/Swtich";
 import { reloadPage } from "../../../stores/ui/actions";
+import { getQueryParams } from "../../../utils/helper";
 
 export function Products({
   address,
@@ -53,6 +54,7 @@ export function Products({
   _getUnavailableDeals,
   unavailableDeals,
   reload,
+  unavailableDealsPagination,
 }) {
   useInjectReducer({ key: "products", reducer });
   useInjectSaga({ key: "products", saga });
@@ -70,9 +72,22 @@ export function Products({
   useEffect(() => {
     const _categories = [];
     if (id !== "all") _categories.push(id);
-    _getDeals({ categories: _categories, filters });
-    _getUnavailableDeals({ categories: _categories, filters });
-  }, [filters, history.location.pathname]);
+    _getDeals({
+      categories: _categories,
+      filters: {
+        ...filters,
+        page: +getQueryParams("page", history.location.search) || 1,
+      },
+    });
+    _getUnavailableDeals({
+      categories: _categories,
+      filters: {
+        ...filters,
+        page: +getQueryParams("unavailable_page", history.location.search) || 1,
+        page_size: 10,
+      },
+    });
+  }, [filters, `${history.location.pathname}${history.location.search}`]);
   return (
     <div className="pb-5">
       <CategoryModal
@@ -131,6 +146,9 @@ export function Products({
           </div>
           <div className="d-flex align-items-center">
             <TextField
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) setFilters({ search: search || null });
+              }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -221,6 +239,8 @@ export function Products({
               _updateProduct,
               _updateCallback: reload,
             }}
+            keyword="unavailable_page"
+            pagination={unavailableDealsPagination}
           />
         ) : null
       ) : (
@@ -258,6 +278,7 @@ const mapStateToProps = createStructuredSelector({
   deals: makeSelectFilteredDeals(),
   unavailableDeals: makeSelectUnavailableDeals(),
   pagination: makeSelectFilteredDealsPagination(),
+  unavailableDealsPagination: makeSelectUnavailableDealsPagination(),
 });
 
 function mapDispatchToProps(dispatch) {

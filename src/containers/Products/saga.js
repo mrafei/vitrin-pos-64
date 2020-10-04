@@ -33,6 +33,8 @@ export function* changeCategoryOrderFunc({ data: { id, newIndex } }) {
   }
 }
 export function* getFilteredDeals(action) {
+  yield put(setDeals(null, {}));
+
   const categories = action.data.categories.reduce(
     (str, category) => `${str}&category_id=${category}`,
     ""
@@ -61,6 +63,8 @@ export function* getFilteredDeals(action) {
   }
 }
 export function* getUnavailableDeals(action) {
+  yield put(setUnavailableDeals(null, {}));
+
   const categories = action.data.categories.reduce(
     (str, category) => `${str}&category_id=${category}`,
     ""
@@ -73,17 +77,15 @@ export function* getUnavailableDeals(action) {
     } = action.data.categories.length
       ? yield call(request, DEALS_ITEMS_API(categories), {
           available: false,
-          page_size: 50,
           ...action.data.filters,
         })
       : yield call(request, ALL_DEALS_API(slug), {
           available: false,
-          page_size: 50,
           ...action.data.filters,
         });
 
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      const pagesCount = Math.ceil(pagination.count / 24);
+      const pagesCount = Math.ceil(pagination.count / 10);
 
       yield put(setUnavailableDeals(data, { ...pagination, pagesCount }));
     }

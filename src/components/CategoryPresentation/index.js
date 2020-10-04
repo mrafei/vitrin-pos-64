@@ -21,6 +21,7 @@ function CategoryPresentation({
   pagination,
   history,
   backgroundColor = "white",
+  keyword,
 }) {
   return (
     <div className="mt-5 container-shadow container u-border-radius-8 overflow-hidden bg-white px-0">
@@ -56,7 +57,12 @@ function CategoryPresentation({
           />
         ))}
       </div>
-      <Pagination pagination={pagination} location={history.location} />
+      <Pagination
+        pagination={pagination}
+        location={history.location}
+        keyword={keyword}
+        style={{ backgroundColor }}
+      />
     </div>
   );
 }

@@ -342,7 +342,15 @@ export function* getProductSaga(action) {
     } = yield call(request, DEALS_ITEM_API(id), {}, "GET");
 
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      yield put(setDeal(data));
+      yield put(
+        setDeal({
+          ...data,
+          extra_data: {
+            ...data.extra_data,
+            only_on_day: data.extra_data.only_on_day || [],
+          },
+        })
+      );
     }
 
     yield put(stopLoading());

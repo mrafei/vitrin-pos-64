@@ -1,28 +1,41 @@
 /* eslint-disable indent */
 import React, { memo } from "react";
+import qs from "qs";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Icon from "../Icon";
-import {
-  englishNumberToPersianNumber,
-  getQueryParams,
-} from "../../../utils/helper";
+import { englishNumberToPersianNumber } from "../../../utils/helper";
 import { ICONS } from "../../../assets/images/icons";
 
-function Pagination({ location, pagination }) {
+function Pagination({
+  location,
+  pagination,
+  keyword = "page",
+  style = { backgroundColor: "white" },
+}) {
   if (!pagination) return null;
-  const page = +getQueryParams("page", location.search) || 1;
+  const queries = qs.parse(location.search, { ignoreQueryPrefix: true });
+  const page = +queries[keyword] || 1;
   const pages = pagination.pagesCount
     ? Array.from(Array(pagination.pagesCount).keys())
         .slice(Math.max(page - 3, 0), Math.min(page + 2, pagination.pagesCount))
         .reverse()
     : [];
   return (
-    <div className="d-flex justify-content-center align-items-center u-background-white py-2">
+    <div
+      className="d-flex justify-content-center align-items-center u-background-white py-2"
+      style={style}
+    >
       <div style={{ width: 24 }}>
         {pagination.next && (
           <Link
-            to={`${location.pathname}?page=${page + 1}`}
+            to={`${location.pathname}?${qs.stringify(
+              { ...queries, [keyword]: page + 1 },
+              {
+                skipNulls: true,
+                encodeValuesOnly: true,
+              }
+            )}`}
             className="u-text-primary-blue d-flex justify-content-center align-items-center"
           >
             <div style={{ transform: "rotate(180deg)" }}>
@@ -38,11 +51,21 @@ function Pagination({ location, pagination }) {
           </div>
         )}
         {pages.map((p) => (
-          <Link key={`page-${p}`} to={`${location.pathname}?page=${p + 1}`}>
+          <Link
+            key={`page-${p}`}
+            to={`${location.pathname}?${qs.stringify(
+              { ...queries, [keyword]: p + 1 },
+              {
+                skipNulls: true,
+                encodeValuesOnly: true,
+              }
+            )}`}
+          >
             <div
               className="u-border-radius-4 px-2"
               style={{
-                backgroundColor: p + 1 === +page ? "#0050FF" : "white",
+                backgroundColor:
+                  p + 1 === +page ? "#0050FF" : style.backgroundColor,
                 fontWeight: p + 1 === +page ? "bold" : "normal",
                 color: p + 1 === +page ? "white" : "#667e8a",
               }}
@@ -54,7 +77,16 @@ function Pagination({ location, pagination }) {
         {pages[pages.length - 1] > 0 && (
           <div className="d-flex align-items-center">
             <span>...</span>
-            <Link to={`${location.pathname}?page=${1}`} className="px-2">
+            <Link
+              to={`${location.pathname}?${qs.stringify(
+                { ...queries, [keyword]: 1 },
+                {
+                  skipNulls: true,
+                  encodeValuesOnly: true,
+                }
+              )}`}
+              className="px-2"
+            >
               <div className="u-border-radius-50-percent u-text-darkest-grey">
                 ۱
               </div>
@@ -65,9 +97,13 @@ function Pagination({ location, pagination }) {
       <div style={{ width: 24 }}>
         {pagination.previous && (
           <Link
-            to={`${location.pathname}?${
-              pagination.previous.split("?")[1] || "page=1"
-            }`}
+            to={`${location.pathname}?${qs.stringify(
+              { ...queries, [keyword]: page - 1 },
+              {
+                skipNulls: true,
+                encodeValuesOnly: true,
+              }
+            )}`}
             className="u-text-primary-blue d-flex justify-content-center align-items-center"
           >
             <Icon icon={ICONS.CHEVRON} color="#667e8a" size={24} />
