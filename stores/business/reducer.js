@@ -64,12 +64,6 @@ const appReducer = (state = initialState, action) =>
             ),
             1
           );
-          console.log(
-            draft.business.deal_categories.findIndex(
-              (c) => category.id === c.id
-            ),
-            draft.business.deal_categories
-          );
         }
 
         break;

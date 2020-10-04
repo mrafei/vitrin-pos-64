@@ -183,48 +183,44 @@ export function EditProduct({
                 options={getWeekDays
                   .filter(
                     (d) =>
-                      product.extra_data.only_on_day &&
                       !product.extra_data.only_on_day.find((day) => day === d)
                   )
                   .map((d) => ({ id: d, text: getWeekDay(d) }))}
               />
               <div className="d-flex mt-2">
-                {product.extra_data.only_on_day &&
-                  product.extra_data.only_on_day.map((d) => (
+                {product.extra_data.only_on_day.map((d) => (
+                  <div
+                    key={`day-${d}`}
+                    className="d-flex justify-content-center align-items-center u-background-light-grey u-text-primary-blue category-item pl-2 pr-1 m-1"
+                  >
                     <div
-                      key={`day-${d}`}
-                      className="d-flex justify-content-center align-items-center u-background-light-grey u-text-primary-blue category-item pl-2 pr-1 m-1"
+                      onClick={() => {
+                        const index = product.extra_data.only_on_day.indexOf(d);
+                        const newDays = [...product.extra_data.only_on_day];
+                        newDays.splice(index, 1);
+                        setProduct({
+                          ...product,
+                          extra_data: {
+                            ...product.extra_data,
+                            only_on_day: newDays,
+                          },
+                        });
+                      }}
+                      className="u-border-radius-50-percent u-background-primary-blue ml-1 d-flex"
+                      style={{ height: 15, width: 15 }}
                     >
-                      <div
-                        onClick={() => {
-                          const index = product.extra_data.only_on_day.indexOf(
-                            d
-                          );
-                          const newDays = [...product.extra_data.only_on_day];
-                          newDays.splice(index, 1);
-                          setProduct({
-                            ...product,
-                            extra_data: {
-                              ...product.extra_data,
-                              only_on_day: newDays,
-                            },
-                          });
-                        }}
-                        className="u-border-radius-50-percent u-background-primary-blue ml-1 d-flex"
-                        style={{ height: 15, width: 15 }}
-                      >
-                        <Icon
-                          className="u-cursor-pointer"
-                          icon={ICONS.CLOSE}
-                          height={15}
-                          width={15}
-                          size={25}
-                          color="white"
-                        />
-                      </div>
-                      {getWeekDay(d)}
+                      <Icon
+                        className="u-cursor-pointer"
+                        icon={ICONS.CLOSE}
+                        height={15}
+                        width={15}
+                        size={25}
+                        color="white"
+                      />
                     </div>
-                  ))}
+                    {getWeekDay(d)}
+                  </div>
+                ))}
               </div>
             </div>
           </div>

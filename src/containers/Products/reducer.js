@@ -25,7 +25,6 @@ const adminReducer = (state = initialState, action) =>
       case DEFAULT_ACTION:
         break;
       case SET_DEALS:
-        console.log(action.data)
         draft.filteredDeals = action.data;
         draft.filteredDealsPagination = action.pagination;
         break;
