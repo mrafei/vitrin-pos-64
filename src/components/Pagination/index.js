@@ -10,21 +10,19 @@ import {
 import { ICONS } from "../../../assets/images/icons";
 
 function Pagination({ location, pagination }) {
+  if (!pagination) return null;
   const page = +getQueryParams("page", location.search) || 1;
   const pages = pagination.pagesCount
     ? Array.from(Array(pagination.pagesCount).keys())
         .slice(Math.max(page - 3, 0), Math.min(page + 2, pagination.pagesCount))
         .reverse()
     : [];
-
   return (
     <div className="d-flex justify-content-center align-items-center u-background-white py-2">
       <div style={{ width: 24 }}>
         {pagination.next && (
           <Link
-            to={`${location.pathname}?${
-              pagination.next.split("?")[1] || "page=1"
-            }`}
+            to={`${location.pathname}?page=${page + 1}`}
             className="u-text-primary-blue d-flex justify-content-center align-items-center"
           >
             <div style={{ transform: "rotate(180deg)" }}>
@@ -36,11 +34,6 @@ function Pagination({ location, pagination }) {
       <div className="d-flex justify-content-center align-items-center">
         {pages[0] + 1 < pagination.pagesCount && (
           <div className="d-flex align-items-center">
-            {/* <Link to={`${location.pathname}?page=${pagination.pagesCount}`} className="px-2">
-              <div className="u-border-radius-50-percent u-text-darkest-grey">
-                {englishNumberToPersianNumber(pagination.pagesCount)}
-              </div>
-            </Link> */}
             <span>...</span>
           </div>
         )}

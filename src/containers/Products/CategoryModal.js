@@ -21,10 +21,8 @@ import {
   deleteCategory,
   updateCategory,
 } from "../../../stores/business/actions";
-import { setGroupDiscount, setGroupPackagingPrice } from "./actions";
 import Icon from "../../components/Icon";
 import { ICONS } from "../../../assets/images/icons";
-import { PrimaryButton } from "../../components/Button";
 
 function CategoryModal({
   isOpen,
@@ -34,11 +32,9 @@ function CategoryModal({
   history,
   categories,
   _deleteCategory,
-  _setGroupDiscount,
   categoryId,
   _createCategory,
   businessId,
-  _setGroupPackagingPrice,
 }) {
   const [isDialogBoxOpen, setDialogBox] = useState(false);
   const [categoryName, setCategoryName] = useState("");
@@ -81,7 +77,12 @@ function CategoryModal({
                   className="u-text-primary-blue cursorPointer u-fontMedium"
                   onClick={() => {
                     setDialogBox(false);
-                    _deleteCategory(category, { goBack: onClose });
+                    _deleteCategory(category, {
+                      goBack: () => {
+                        onClose();
+                        history.replace("/categories");
+                      },
+                    });
                   }}
                 >
                   حذف
@@ -112,49 +113,42 @@ function CategoryModal({
             </div>
           </div>
           {categoryId && (
-            <div className="px-3 mt-3">
-              <div className="mt-1 d-flex justify-content-between align-items-center">
-                <Input
-                  value={amount ? amount : ""}
-                  onChange={(value) => setAmount(value)}
-                  label="هزینه بسته‌بندی گروهی"
-                  placeholder="تخفیف به تومان مثلا: ۵۰۰۰ تومان"
-                />
-                <PrimaryButton
-                  style={{ width: 100, marginRight: 10 }}
-                  text="اعمال"
-                  disabled={isLoading}
-                  isLoading={isLoading}
-                  onClick={() => {
-                    _setGroupPackagingPrice(category.id, amount);
-                  }}
-                />
+            <>
+              <div className="px-3 mt-3">
+                <span className="u-text-darkest-grey">
+                  هزینه بسته‌بندی گروهی
+                </span>
+                <div className="mt-1 d-flex justify-content-between align-items-center">
+                  <Input
+                    numberOnly
+                    value={amount ? englishNumberToPersianNumber(amount) : ""}
+                    onChange={(value) =>
+                      setAmount(persianToEnglishNumber(value))
+                    }
+                    placeholder="هزینه بسته‌بندی به تومان مثلا: ۵۰۰۰"
+                  />
+                </div>
               </div>
-            </div>
-          )}
-          {categoryId && (
-            <div className="px-3 mt-3">
-              <div className="mt-1 d-flex justify-content-between align-items-center">
-                <Input
-                  numberOnly
-                  value={percent ? englishNumberToPersianNumber(percent) : ""}
-                  onChange={(value) => {
-                    if (persianToEnglishNumber(value) <= 100)
-                      setPercent(persianToEnglishNumber(value));
-                  }}
-                  label="تخفیف به درصد"
-                />
-                <PrimaryButton
-                  style={{ width: 100, marginRight: 10 }}
-                  text="اعمال"
-                  disabled={isLoading}
-                  isLoading={isLoading}
-                  onClick={() => {
-                    _setGroupDiscount(percent, category.id);
-                  }}
-                />
+              <div className="px-3 mt-3">
+                <span className="u-text-darkest-grey">
+                  تخفیف گروهی روی تمامی محصولات این دسته‌بندی
+                </span>
+                <div className="mt-1 d-flex justify-content-between align-items-center">
+                  <Input
+                    numberOnly
+                    value={percent ? englishNumberToPersianNumber(percent) : ""}
+                    onChange={(value) => {
+                      if (
+                        persianToEnglishNumber(value) <= 100 &&
+                        persianToEnglishNumber(value) >= 0
+                      )
+                        setPercent(persianToEnglishNumber(value));
+                    }}
+                    placeholder="تخفیف به درصد مثلا: ۵"
+                  />
+                </div>
               </div>
-            </div>
+            </>
           )}
         </div>
 
@@ -164,7 +158,7 @@ function CategoryModal({
             disabled={isLoading}
             onClick={() => {
               if (categoryId)
-                _updateCategory(category, categoryName, { goBack: onClose });
+                _updateCategory(category.id, categoryName, amount, percent);
               else
                 _createCategory(categoryName, businessId, { goBack: onClose });
             }}
@@ -212,8 +206,6 @@ CategoryModal.propTypes = {
   history: PropTypes.object,
   categories: PropTypes.array,
   _deleteCategory: PropTypes.func,
-  _setGroupDiscount: PropTypes.func,
-  _setGroupPackagingPrice: PropTypes.func,
   _createCategory: PropTypes.func,
 };
 
@@ -225,13 +217,12 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    _updateCategory: (category, name, history) =>
-      dispatch(updateCategory(category.id, name, history)),
+    _updateCategory: (categoryId, categoryName, packagingPrice, discount) =>
+      dispatch(
+        updateCategory(categoryId, categoryName, packagingPrice, discount)
+      ),
     _deleteCategory: (category, history) =>
       dispatch(deleteCategory(category, history)),
-    _setGroupDiscount: (percent, id) => dispatch(setGroupDiscount(percent, id)),
-    _setGroupPackagingPrice: (id, amount) =>
-      dispatch(setGroupPackagingPrice(id, amount)),
     _createCategory: (category, businessId, history) =>
       dispatch(createCategory(category, businessId, history)),
   };

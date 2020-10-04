@@ -3,6 +3,7 @@ import { ImageCompressor } from "image-compressor";
 
 import userSaga from "../../../stores/user/saga";
 import businessSaga from "../../../stores/business/saga";
+import uiSaga from "../../../stores/ui/saga";
 import transactionSaga from "../../../stores/transaction/saga";
 import { createUploadFileChannel } from "./createFileUploadChannel";
 
@@ -145,6 +146,7 @@ export default function* generalSaga() {
   yield all([
     ...userSaga,
     ...businessSaga,
+    ...uiSaga,
     ...transactionSaga,
     takeLatest(SEND_EMAIL, sendEmail),
     takeLatest(UPLOAD_FILE, uploadFiles),

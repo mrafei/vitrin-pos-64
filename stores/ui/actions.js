@@ -9,7 +9,14 @@ import {
   SET_SNACK_BAR_MESSAGE,
   SET_UI_SHELF,
   SET_UI_ADDRESS,
-} from './constants';
+  RELOAD_PAGE,
+} from "./constants";
+
+export function reloadPage() {
+  return {
+    type: RELOAD_PAGE,
+  };
+}
 
 export function setUiShelf(id) {
   return {

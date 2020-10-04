@@ -130,6 +130,9 @@ const makeSelectBusinessAddress = () =>
     selectBusiness,
     (state) => state.business.get_vitrin_absolute_url
   );
+const makeSelectDeal = () =>
+  createSelector(selectBusiness, (state) => state.deal);
+
 export {
   makeSelectProduct,
   makeSelectBusiness,
@@ -156,4 +159,5 @@ export {
   makeSelectDeliveriesPagination,
   makeSelectPrinterOptions,
   makeSelectBusinessAddress,
+  makeSelectDeal,
 };

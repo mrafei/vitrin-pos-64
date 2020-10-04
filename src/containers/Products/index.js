@@ -5,167 +5,268 @@
  *
  */
 
-import React, { memo, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-const { shell } = require('electron');
+import React, { memo, useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
+const { shell } = require("electron");
+import qs from "qs";
+import Button from "@material-ui/core/esm/Button";
+import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 
 import {
   makeSelectBusinessAddress,
   makeSelectCategories,
-  makeSelectDeliverers,
-  makeSelectDeliveries,
-  makeSelectDeliveriesPagination,
-} from '../../../stores/business/selector';
-import { getDeliveries, updateProduct } from '../../../stores/business/actions';
-import Icon from '../../components/Icon';
-import { ICONS } from '../../../assets/images/icons';
-import CategoriesPresentation from '../../components/CategoriesPresentation';
-import { useInjectReducer } from '../../../utils/injectReducer';
-import reducer from './reducer';
-import { useInjectSaga } from '../../../utils/injectSaga';
-import saga from './saga';
-import { changeCategoryOrder } from './actions';
-import CategoryModal from './CategoryModal';
+} from "../../../stores/business/selector";
+import TextField from "@material-ui/core/esm/TextField";
+import Icon from "../../components/Icon";
+import { ICONS } from "../../../assets/images/icons";
+import { useInjectReducer } from "../../../utils/injectReducer";
+import reducer from "./reducer";
+import { useInjectSaga } from "../../../utils/injectSaga";
+import saga from "./saga";
+import { getDeals, getUnavailableDeals } from "./actions";
+import CategoryModal from "./CategoryModal";
+import CategoriesList from "../../components/CategoriesList";
+import CategoryPresentation from "../../components/CategoryPresentation";
+import LoadingIndicator from "../../components/LoadingIndicator";
+import {
+  makeSelectFilteredDeals,
+  makeSelectFilteredDealsPagination,
+  makeSelectUnavailableDeals,
+} from "./selectors";
+import { updateProduct } from "../../../stores/business/actions";
+import Switch from "../../components/Swtich";
+import { reloadPage } from "../../../stores/ui/actions";
 
 export function Products({
-  _getDeliveries,
   address,
   categories,
   _changeCategoryOrder,
   _updateProduct,
   history,
+  deals,
+  pagination,
+  _getDeals,
+  match: { params },
+  _getUnavailableDeals,
+  unavailableDeals,
+  reload,
 }) {
-  useInjectReducer({ key: 'products', reducer });
-  useInjectSaga({ key: 'products', saga });
+  useInjectReducer({ key: "products", reducer });
+  useInjectSaga({ key: "products", saga });
   const [listView, setListView] = useState(
-    !localStorage.getItem('productsCardView'),
+    !localStorage.getItem("productsCardView")
   );
+  const [search, setSearch] = useState("");
   const [categoryModal, setCategoryModal] = useState(false);
+  const [filters, setFilters] = useState({});
+  const { id } = params;
+  const category = categories.find((c) => c.id === +id) || {
+    id: "all",
+    name: "همه محصولات",
+  };
+  useEffect(() => {
+    const _categories = [];
+    if (id !== "all") _categories.push(id);
+    _getDeals({ categories: _categories, filters });
+    _getUnavailableDeals({ categories: _categories, filters });
+  }, [filters, history.location.pathname]);
   return (
     <div className="pb-5">
       <CategoryModal
         onClose={() => setCategoryModal(false)}
         isOpen={categoryModal}
       />
-      <div className="u-border-radius-8 d-flex justify-content-between u-background-white container px-0 container-shadow overflow-hidden mt-5 p-3">
-        <div className="d-flex align-items-center">
-          <div
-            className="d-flex u-cursor-pointer"
-            onClick={() => {
-              localStorage.setItem('productsCardView', '');
-              setListView(true);
-            }}
-          >
-            <Icon
-              icon={ICONS.LIST_VIEW}
-              className="ml-1"
-              size={24}
-              color={listView ? '#0050FF' : '#667e8a'}
-            />
-            <span
-              className={`${
-                listView
-                  ? 'u-fontWeightBold u-text-primary-blue'
-                  : 'u-text-darkest-grey'
-              }`}
+      <div className="u-border-radius-8 u-background-white container px-0 container-shadow overflow-hidden mt-5 p-3">
+        <div className="d-flex justify-content-between">
+          <div className="d-flex align-items-center">
+            <div
+              className="d-flex u-cursor-pointer"
+              onClick={() => {
+                localStorage.setItem("productsCardView", "");
+                setListView(true);
+              }}
             >
-              لیست
-            </span>
-          </div>
-          <div
-            className="mr-3 d-flex u-cursor-pointer"
-            onClick={() => {
-              localStorage.setItem('productsCardView', 'true');
-              setListView(false);
-            }}
-          >
-            <Icon
-              icon={ICONS.CARD_VIEW}
-              className="ml-1"
-              size={24}
-              color={!listView ? '#0050FF' : '#667e8a'}
-            />
-            <span
-              className={`${
-                !listView
-                  ? 'u-fontWeightBold u-text-primary-blue'
-                  : 'u-text-darkest-grey'
-              }`}
+              <Icon
+                icon={ICONS.LIST_VIEW}
+                className="ml-1"
+                size={24}
+                color={listView ? "#0050FF" : "#667e8a"}
+              />
+              <span
+                className={`${
+                  listView
+                    ? "u-fontWeightBold u-text-primary-blue"
+                    : "u-text-darkest-grey"
+                }`}
+              >
+                لیست
+              </span>
+            </div>
+            <div
+              className="mr-3 d-flex u-cursor-pointer"
+              onClick={() => {
+                localStorage.setItem("productsCardView", "true");
+                setListView(false);
+              }}
             >
-              کارت
-            </span>
+              <Icon
+                icon={ICONS.CARD_VIEW}
+                className="ml-1"
+                size={24}
+                color={!listView ? "#0050FF" : "#667e8a"}
+              />
+              <span
+                className={`${
+                  !listView
+                    ? "u-fontWeightBold u-text-primary-blue"
+                    : "u-text-darkest-grey"
+                }`}
+              >
+                کارت
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="d-flex">
-          <div
-            onClick={() => shell.openExternal(address)}
-            className="ml-2 u-cursor-pointer u-background-green u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"
-          >
-            <Icon
-              icon={ICONS.WEBSITE}
-              color="white"
-              className="ml-2"
-              size={18}
+          <div className="d-flex align-items-center">
+            <TextField
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
-            <span className="u-fontWeightBold u-fontMedium u-text-white">
-              دیدن سایت
-            </span>
+            <Button
+              onClick={() => {
+                setFilters({ ...filters, search: search || null });
+              }}
+              variant="contained"
+              className="mr-3 px-1"
+              disableElevation
+              style={{ minWidth: 36 }}
+            >
+              <SearchRoundedIcon style={{ color: "white" }} />
+            </Button>
           </div>
+          <div className="d-flex">
+            <div
+              onClick={() => shell.openExternal(address)}
+              className="ml-2 u-cursor-pointer u-background-green u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"
+            >
+              <Icon
+                icon={ICONS.WEBSITE}
+                color="white"
+                className="ml-2"
+                size={18}
+              />
+              <span className="u-fontWeightBold u-fontMedium u-text-white">
+                دیدن سایت
+              </span>
+            </div>
 
-          <div
-            onClick={() => setCategoryModal(true)}
-            className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"
-          >
-            <Icon icon={ICONS.PLUS} color="white" className="ml-2" size={12} />
-            <span className="u-fontWeightBold u-fontMedium u-text-white">
-              افزودن دسته‌بندی جدید
-            </span>
+            <div
+              onClick={() => setCategoryModal(true)}
+              className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"
+            >
+              <Icon
+                icon={ICONS.PLUS}
+                color="white"
+                className="ml-2"
+                size={12}
+              />
+              <span className="u-fontWeightBold u-fontMedium u-text-white">
+                افزودن دسته‌بندی جدید
+              </span>
+            </div>
           </div>
         </div>
+        <div className="d-flex align-items-center my-1">
+          <div className="d-flex align-items-center">
+            <Switch
+              isSwitchOn={filters.is_discounted}
+              toggleSwitch={(is_discounted) => {
+                history.replace(
+                  setFilters({
+                    ...filters,
+                    is_discounted: Boolean(is_discounted) || null,
+                  })
+                );
+              }}
+            />
+            <div className="mr-2">فقط محصولات تخفیف‌دار</div>
+          </div>
+        </div>
+        <CategoriesList
+          categories={categories}
+          selectedId={id}
+          onItemClick={(category) => {
+            if (category) history.push(`/categories/${category.id}`);
+            else history.push(`/categories`);
+          }}
+        />
       </div>
-      <CategoriesPresentation
-        history={history}
-        categories={categories}
-        pluginBaseUrl="/admin"
-        isEditMode
-        abstract
-        isList={listView}
-        changeDealCategoryOrder={(item, newIndex) =>
-          _changeCategoryOrder(item, newIndex)
-        }
-        onCategoryEditButtonClick={(_category) => {
-          // _toggleModal(ADMIN_EDIT_CATEGORY_ITEM_MODAL, true);
-          // _setCategory(_category);
-        }}
-        productCardOptions={{
-          onClick: (product) => {
-            history.push(`/products/${product.id}`);
-          },
-          _updateProduct,
-        }}
-      />
+      {category && unavailableDeals ? (
+        unavailableDeals.length ? (
+          <CategoryPresentation
+            backgroundColor="#E0E5E8"
+            category={{ name: "محصولات ناموجود", deals: unavailableDeals }}
+            history={history}
+            categories={categories}
+            themeColor="#0050ff"
+            isList={listView}
+            onCategoryEditButtonClick={(_category) => {}}
+            onNewProductCardClick={() =>
+              history.push(`/products/new/${category.id}`)
+            }
+            productCardOptions={{
+              onClick: (product) => history.push(`/products/${product.id}`),
+              _updateProduct,
+              _updateCallback: reload,
+            }}
+          />
+        ) : null
+      ) : (
+        <LoadingIndicator />
+      )}
+      {category && deals ? (
+        <CategoryPresentation
+          pagination={pagination}
+          category={{ ...category, deals }}
+          history={history}
+          categories={categories}
+          themeColor="#0050ff"
+          isEditMode={category.id !== "all"}
+          isList={listView}
+          onCategoryEditButtonClick={(_category) => {}}
+          onNewProductCardClick={() =>
+            history.push(`/products/new/${category.id}`)
+          }
+          productCardOptions={{
+            onClick: (product) => history.push(`/products/${product.id}`),
+            _updateProduct,
+            _updateCallback: reload,
+          }}
+        />
+      ) : (
+        <LoadingIndicator />
+      )}
     </div>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
   address: makeSelectBusinessAddress(),
-  deliverers: makeSelectDeliverers(),
-  deliveries: makeSelectDeliveries(),
-  pagination: makeSelectDeliveriesPagination(),
   categories: makeSelectCategories(),
+  deals: makeSelectFilteredDeals(),
+  unavailableDeals: makeSelectUnavailableDeals(),
+  pagination: makeSelectFilteredDealsPagination(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    _getDeliveries: (name, page) => dispatch(getDeliveries(name, page)),
-    _changeCategoryOrder: (id, newIndex) =>
-      dispatch(changeCategoryOrder(id, newIndex)),
-    _updateProduct: (productId, product, uploadedFiles) =>
-      dispatch(updateProduct(productId, product, uploadedFiles)),
+    _getDeals: (data) => dispatch(getDeals(data)),
+    reload: () => dispatch(reloadPage()),
+    _getUnavailableDeals: (data) => dispatch(getUnavailableDeals(data)),
+    _updateProduct: (productId, product, uploadedFiles, callback) =>
+      dispatch(updateProduct(productId, product, uploadedFiles, callback)),
   };
 }
 

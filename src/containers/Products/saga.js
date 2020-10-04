@@ -1,20 +1,20 @@
 /* eslint-disable no-console */
-import { call, put, takeLatest } from "@redux-saga/core/effects";
+import { call, put, takeLatest, select } from "@redux-saga/core/effects";
 
 import request from "../../../utils/request";
 import {
   CHANGE_CATEGORY_ORDER,
-  SET_GROUP_DISCOUNT,
-  SET_GROUP_PACKAGING_PRICE,
+  GET_DEALS,
+  GET_UNAVAILABLE_DEALS,
 } from "./constants";
 import {
+  ALL_DEALS_API,
   CATEGORIES_ITEMS_CHANGE_ORDER_API,
-  GROUP_DISCOUNT_ON_DEALS,
-  GROUP_PACKAGING_PRICE_ON_DEALS_API,
+  DEALS_ITEMS_API,
 } from "../../../utils/api";
 import { startLoading, stopLoading } from "../App/actions";
-import { setSnackBarMessage } from "../../../stores/ui/actions";
-import { getBusinessData } from "../../../stores/business/saga";
+import { makeSelectBusinessSlug } from "../../../stores/business/selector";
+import { setDeals, setUnavailableDeals } from "./actions";
 
 export function* changeCategoryOrderFunc({ data: { id, newIndex } }) {
   try {
@@ -32,53 +32,69 @@ export function* changeCategoryOrderFunc({ data: { id, newIndex } }) {
     yield put(stopLoading());
   }
 }
-export function* setGroupDiscountFunc({ data: { percent, id } }) {
+export function* getFilteredDeals(action) {
+  const categories = action.data.categories.reduce(
+    (str, category) => `${str}&category_id=${category}`,
+    ""
+  );
+  const slug = yield select(makeSelectBusinessSlug());
   try {
     yield put(startLoading());
-    yield call(
-      request,
-      GROUP_DISCOUNT_ON_DEALS(id),
-      {
-        percent: +percent,
-      },
-      "PATCH"
-    );
-    yield put(setSnackBarMessage("تخفیف با موفقیت اعمال شد.", "success"));
+    const {
+      response: { meta, data, pagination },
+    } = action.data.categories.length
+      ? yield call(request, DEALS_ITEMS_API(categories), {
+          ...action.data.filters,
+        })
+      : yield call(request, ALL_DEALS_API(slug), {
+          ...action.data.filters,
+        });
+    if (meta.status_code >= 200 && meta.status_code <= 300) {
+      const pagesCount = Math.ceil(pagination.count / 24);
+
+      yield put(setDeals(data, { ...pagination, pagesCount }));
+    }
     yield put(stopLoading());
-    yield call(getBusinessData);
   } catch (err) {
-    yield put(setSnackBarMessage("اعمال تخفیف موفقیت آمیز نبود!", "fail"));
+    console.log(err);
     yield put(stopLoading());
   }
 }
-export function* setGroupPackagingPriceFunc({ data: { amount, id } }) {
+export function* getUnavailableDeals(action) {
+  const categories = action.data.categories.reduce(
+    (str, category) => `${str}&category_id=${category}`,
+    ""
+  );
+  const slug = yield select(makeSelectBusinessSlug());
   try {
     yield put(startLoading());
-    yield call(
-      request,
-      GROUP_PACKAGING_PRICE_ON_DEALS_API(id),
-      {
-        amount: +amount,
-      },
-      "PATCH"
-    );
-    yield put(
-      setSnackBarMessage("هزینه بسته‌بندی گروهی با موفقیت اعمال شد.", "success")
-    );
+    const {
+      response: { meta, data, pagination },
+    } = action.data.categories.length
+      ? yield call(request, DEALS_ITEMS_API(categories), {
+          available: false,
+          page_size: 50,
+          ...action.data.filters,
+        })
+      : yield call(request, ALL_DEALS_API(slug), {
+          available: false,
+          page_size: 50,
+          ...action.data.filters,
+        });
+
+    if (meta.status_code >= 200 && meta.status_code <= 300) {
+      const pagesCount = Math.ceil(pagination.count / 24);
+
+      yield put(setUnavailableDeals(data, { ...pagination, pagesCount }));
+    }
     yield put(stopLoading());
-    yield call(getBusinessData);
   } catch (err) {
-    yield put(
-      setSnackBarMessage(
-        "اعمال هزینه بسته‌بندی گروهی موفقیت آمیز نبود!",
-        "fail"
-      )
-    );
+    console.log(err);
     yield put(stopLoading());
   }
 }
 export default function* adminPanelAppSaga() {
   yield takeLatest(CHANGE_CATEGORY_ORDER, changeCategoryOrderFunc);
-  yield takeLatest(SET_GROUP_DISCOUNT, setGroupDiscountFunc);
-  yield takeLatest(SET_GROUP_PACKAGING_PRICE, setGroupPackagingPriceFunc);
+  yield takeLatest(GET_DEALS, getFilteredDeals);
+  yield takeLatest(GET_UNAVAILABLE_DEALS, getUnavailableDeals);
 }

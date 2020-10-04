@@ -250,18 +250,20 @@ function persianToEnglishNumber(number) {
   return number;
 }
 
-const businessSerializer = (_business) => ({
-  ..._business,
-  posts: [],
-  theme_config: {
-    ..._business.theme_config,
-    sections_skeleton:
-      _business.theme_config.sections_skeleton || defaultSections(),
-    font: _business.theme_config.font || FONT_1,
-    theme_color: _business.theme_config.theme_color || DEFAULT_THEME_COLOR,
-  },
-  work_hours: correctWorkHoursFormat(_business.working_hours),
-});
+const businessSerializer = (_business) => {
+  return {
+    ..._business,
+    posts: [],
+    theme_config: {
+      ..._business.theme_config,
+      sections_skeleton:
+        _business.theme_config.sections_skeleton || defaultSections(),
+      font: _business.theme_config.font || FONT_1,
+      theme_color: _business.theme_config.theme_color || DEFAULT_THEME_COLOR,
+    },
+    work_hours: correctWorkHoursFormat(_business.working_hours),
+  };
+};
 
 function getQueryParams(query, url) {
   const urlParams = new URLSearchParams(url);

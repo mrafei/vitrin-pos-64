@@ -9,7 +9,7 @@
  *
  */
 
-import produce from 'immer';
+import produce from "immer";
 import {
   TOGGLE_MODAL,
   CLOSE_MODALS,
@@ -57,7 +57,7 @@ import {
   ECOMMERCE_PRODUCT_MODAL,
   FOOD_PRODUCT_MODAL,
   SET_UI_ADDRESS,
-} from './constants';
+} from "./constants";
 
 // The initial state of the App
 export const initialState = {
@@ -110,7 +110,7 @@ export const initialState = {
 };
 /* eslint-disable default-case, no-param-reassign */
 const appReducer = (state = initialState, action) =>
-  produce(state, draft => {
+  produce(state, (draft) => {
     switch (action.type) {
       case SET_UI_SHELF:
         draft.shelf = action.data.id;
