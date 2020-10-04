@@ -72,8 +72,8 @@
 }
 
 .calendar-custom-today-day {
-  color: #0050FF !important;
-  border: 1px solid #0050FF !important;
+  color: #0050ff !important;
+  border: 1px solid #0050ff !important;
 }
 
 .calendar-custom-today-day::after {
@@ -91,5 +91,5 @@ input[type="number"] {
 }
 
 .MuiFilledInput-root {
-  background-color: white !important;
+  background-color: $vanilla !important;
 }

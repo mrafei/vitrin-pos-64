@@ -19,7 +19,15 @@ import Switch from "../Swtich";
 import pen from "../../../assets/images/pen.svg";
 const penIcon = `${CDN_BASE_URL}edit-pen-white-icn.svg`;
 
-function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, loading, isList }) {
+function ProductCard({
+  onClick,
+  themeColor,
+  product,
+  _updateProduct = noOp,
+  _updateCallback = noOp,
+  loading,
+  isList,
+}) {
   const {
     title,
     initial_price: initialPrice,
@@ -35,17 +43,26 @@ function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, load
     (availability) => {
       if (!loading) {
         setAvailable(availability);
-        _updateProduct(product.id, { ...product, available: availability }, []);
+        _updateProduct(
+          product.id,
+          { ...product, available: availability },
+          [],
+          _updateCallback
+        );
       }
     },
     [product, available, loading]
   );
-  const discountPercent = calculateDiscountPercent(initialPrice, discountedPrice);
+  const discountPercent = calculateDiscountPercent(
+    initialPrice,
+    discountedPrice
+  );
   if (isList)
     return (
       <div
         onClick={() => onClick(product)}
-        className="d-flex u-cursor-pointer text-center align-items-center mt-1 flex-1 mx-1 my-2">
+        className="d-flex u-cursor-pointer text-center align-items-center mt-1 flex-1 mx-1 my-2"
+      >
         <div className="col-3 px-0 d-flex align-items-center">
           <div className="col-2 px-0">
             <img
@@ -57,7 +74,8 @@ function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, load
           </div>
           <div
             className="d-flex align-items-center col-10 pl-0 text-right pr-3"
-            style={{ minHeight: 48 }}>
+            style={{ minHeight: 48 }}
+          >
             {title}
           </div>
         </div>
@@ -68,7 +86,11 @@ function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, load
           </div>
           <div className="col-3 px-0">
             <span>{priceFormatter(initialPrice - discountedPrice)}</span>
-            {initialPrice - discountedPrice ? <span style={{ marginRight: 2 }}>-</span> : ""}{" "}
+            {initialPrice - discountedPrice ? (
+              <span style={{ marginRight: 2 }}>-</span>
+            ) : (
+              ""
+            )}{" "}
             <span className="u-font-semi-small">تومان</span>
           </div>
           <div className="col-2 px-0 u-fontMedium">
@@ -86,10 +108,14 @@ function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, load
                 style={{ width: 40 }}
                 className={`u-font-semi-small ml-2 u-fontWeightBold ${
                   available ? "u-text-primary-blue" : "u-text-darkest-grey"
-                }`}>
+                }`}
+              >
                 {available ? "موجود" : "ناموجود"}
               </span>
-              <Switch isSwitchOn={available} toggleSwitch={changeAvailability} />
+              <Switch
+                isSwitchOn={available}
+                toggleSwitch={changeAvailability}
+              />
             </div>
           </div>
           <div className="col-2 px-0" onClick={() => onClick(product)}>
@@ -102,13 +128,22 @@ function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, load
     <div
       onClick={() => onClick(product)}
       style={{ margin: 12 }}
-      className="u-relative u-cursor-pointer c-business-card-custom u-background-white d-flex flex-column u-dashed-border">
+      className="u-relative u-cursor-pointer c-business-card-custom u-background-white d-flex flex-column u-dashed-border"
+    >
       <div
         className="position-relative align-self-center overflow-hidden u-border-top-left-radius-4 u-border-top-right-radius-4"
-        style={{ background: "#c4c4c4" }}>
+        style={{ background: "#c4c4c4" }}
+      >
         <div className="liner-gradiant-card d-flex align-items-center p-1" />
-        <img className="c-business-card-item-img" src={mainImageThumbnailUrl} alt="بهترینو" />
-        <ProductPrice initialPrice={initialPrice} discountedPrice={discountedPrice} />
+        <img
+          className="c-business-card-item-img"
+          src={mainImageThumbnailUrl}
+          alt="بهترینو"
+        />
+        <ProductPrice
+          initialPrice={initialPrice}
+          discountedPrice={discountedPrice}
+        />
         <div
           tabIndex="0"
           role="button"
@@ -122,7 +157,8 @@ function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, load
           style={{
             backgroundColor: themeColor,
             transform: `translateY(${snackBar ? 0 : "50px"})`,
-          }}>
+          }}
+        >
           به سبد خرید افزوده شد!
         </div>
       </div>
@@ -134,14 +170,16 @@ function ProductCard({ onClick, themeColor, product, _updateProduct = noOp, load
           style={{ width: 40 }}
           className={`u-font-semi-small u-fontWeightBold ${
             available ? "u-text-primary-blue" : "u-text-darkest-grey"
-          }`}>
+          }`}
+        >
           {available ? "موجود" : "ناموجود"}
         </span>
         <Switch isSwitchOn={available} toggleSwitch={changeAvailability} />
       </div>
       <button
         type="button"
-        className="c-btn c-product-btn-editMode u-border-radius-4 u-addItem z-index-2">
+        className="c-btn c-product-btn-editMode u-border-radius-4 u-addItem z-index-2"
+      >
         <img alt="" src={penIcon} />
       </button>
     </div>
@@ -156,7 +194,6 @@ ProductCard.propTypes = {
   product: PropTypes.object,
   hasOrderControlPanel: PropTypes.bool,
   themeColor: PropTypes.string,
-  count: PropTypes.number,
 };
 
 export default memo(ProductCard);

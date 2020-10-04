@@ -8,9 +8,13 @@
  */
 
 import produce from "immer";
-import { SET_BUSINESS, SET_DELIVERIES } from "./constants";
+import {
+  APPLY_CATEGORY,
+  SET_BUSINESS,
+  SET_DEAL,
+  SET_DELIVERIES,
+} from "./constants";
 import { SET_PRINTER_OPTIONS } from "../../src/containers/App/constants";
-import { CHANGE_CATEGORY_ORDER } from "../../src/containers/Products/constants";
 
 // The initial state of the App
 export const initialState = {
@@ -23,6 +27,7 @@ export const initialState = {
     phone: "",
     printers: [],
   },
+  deal: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -39,17 +44,38 @@ const appReducer = (state = initialState, action) =>
       case SET_PRINTER_OPTIONS:
         draft.printerOptions = action.data;
         break;
-      case CHANGE_CATEGORY_ORDER:
-        draft.business.deal_categories.splice(
-          action.data.newIndex,
-          0,
+      case APPLY_CATEGORY:
+        const { category, actionType } = action.data;
+        if (actionType === "create")
+          draft.business.deal_categories = [
+            ...draft.business.deal_categories,
+            category,
+          ];
+        if (actionType === "update") {
+          let categoryIndex = draft.business.deal_categories.findIndex(
+            (c) => category.id === c.id
+          );
+          draft.business.deal_categories[categoryIndex] = category;
+        }
+        if (actionType === "delete") {
           draft.business.deal_categories.splice(
             draft.business.deal_categories.findIndex(
-              (c) => c.id === action.data.id
+              (c) => category.id === c.id
             ),
             1
-          )[0]
-        );
+          );
+          console.log(
+            draft.business.deal_categories.findIndex(
+              (c) => category.id === c.id
+            ),
+            draft.business.deal_categories
+          );
+        }
+
+        break;
+      case SET_DEAL:
+        draft.deal = action.data;
+        break;
     }
   });
 

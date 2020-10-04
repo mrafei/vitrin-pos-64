@@ -79,7 +79,7 @@ const routes = [
     id: 2,
     disabled: false,
     title: "مدیریت منو محصولات",
-    path: "/products",
+    path: "/categories",
     icon: ICONS.GRID,
   },
   {
@@ -113,7 +113,7 @@ const routes = [
 ];
 const subRoutes = [
   [{ id: 1, title: "همه سفارش‌ها", path: "/orders/all", icon: ICONS.ITEMS }],
-  [{ id: 1, title: "همه محصولات", path: "/products/all", icon: ICONS.ITEMS }],
+  [{ id: 1, title: "همه محصولات", path: "/categories/all", icon: ICONS.ITEMS }],
   [
     {
       id: 1,
@@ -168,6 +168,7 @@ function Layout({
   history,
   changeBusiness,
   businesses,
+  reload,
 }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -224,13 +225,7 @@ function Layout({
           className="d-flex u-background-white u-height-64 align-items-center justify-content-between position-relative z-index-2"
         >
           <div
-            onClick={() => {
-              const pathname = history.location.pathname;
-              history.push({ pathname: "/empty" });
-              setTimeout(() => {
-                history.replace({ pathname });
-              }, 0);
-            }}
+            onClick={reload}
             className="d-flex mr-4 px-3 py-2 u-border-radius-8 u-cursor-pointer"
             style={{ boxShadow: "0px 0px 20px rgba(79, 89, 91, 0.1)" }}
           >

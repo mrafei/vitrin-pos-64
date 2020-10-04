@@ -30,16 +30,8 @@ function UploadCustomers({
   }, [uploadedFile]);
   return (
     <>
-      <div className="px-3 u-background-white justify-content-between align-items-center container u-height-44 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
-        <Icon
-          className="c-modal-header-close float-right"
-          icon={ICONS.CLOSE}
-          size={25}
-          onClick={history.goBack}
-          color="#667e8a"
-        />
+      <div className="px-3 u-background-white justify-content-center align-items-center container u-height-44 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
         <span>آپلود فایل مشتریان</span>
-        <div style={{ height: 25, width: 25 }} />
       </div>
       <div
         className="d-flex flex-1 container px-0"

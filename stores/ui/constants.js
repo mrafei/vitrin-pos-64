@@ -85,3 +85,5 @@ export const ADMIN_ORDER_NOTIFICATIONS_MODAL =
 
 // snackbar
 export const SET_SNACK_BAR_MESSAGE = 'TOGGLE_SNACK_BAR';
+
+export const RELOAD_PAGE = 'store/ui/RELOAD_PAGE';

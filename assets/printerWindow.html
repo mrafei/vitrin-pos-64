@@ -40,7 +40,6 @@
           },
           (status, message) => {
             if (!status) {
-              console.log("HI");
               ipcRenderer.send(
                 "sentryError",
                 `message: ${message},\n

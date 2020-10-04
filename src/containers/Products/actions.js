@@ -7,8 +7,10 @@
 import {
   DEFAULT_ACTION,
   CHANGE_CATEGORY_ORDER,
-  SET_GROUP_DISCOUNT,
-  SET_GROUP_PACKAGING_PRICE,
+  SET_DEALS,
+  GET_DEALS,
+  GET_UNAVAILABLE_DEALS,
+  SET_UNAVAILABLE_DEALS,
 } from "./constants";
 
 export function defaultAction() {
@@ -27,19 +29,29 @@ export function changeCategoryOrder(id, newIndex) {
   };
 }
 
-export function setGroupDiscount(percent, id) {
+export function getDeals(data) {
   return {
-    type: SET_GROUP_DISCOUNT,
-    data: {
-      percent,
-      id,
-    },
+    type: GET_DEALS,
+    data,
   };
 }
-
-export function setGroupPackagingPrice(id, amount) {
+export function setDeals(data, pagination) {
   return {
-    type: SET_GROUP_PACKAGING_PRICE,
-    data: { id, amount },
+    type: SET_DEALS,
+    data,
+    pagination,
+  };
+}
+export function getUnavailableDeals(data) {
+  return {
+    type: GET_UNAVAILABLE_DEALS,
+    data,
+  };
+}
+export function setUnavailableDeals(data, pagination) {
+  return {
+    type: SET_UNAVAILABLE_DEALS,
+    data,
+    pagination,
   };
 }

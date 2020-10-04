@@ -21,7 +21,7 @@ import Layout from "../../components/Layout";
 import OnlineOrder from "../OnlineOrder";
 import { makeSelectProgressLoading, makeSelectSubDomain } from "./selectors";
 import LoadingIndicator from "../../components/LoadingIndicator";
-import { setSnackBarMessage } from "../../../stores/ui/actions";
+import { reloadPage, setSnackBarMessage } from "../../../stores/ui/actions";
 import { makeSelectSnackBarMessage } from "../../../stores/ui/selector";
 import initPushNotification from "../pushNotification";
 import { getFoodAdminOrders } from "../OnlineOrders/actions";
@@ -39,7 +39,6 @@ import OrdersReport from "../OrdersReport";
 import { setSiteDomain } from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
 import UploadCustomers from "../UploadCustomers";
-import { remote } from "electron";
 
 const App = function ({
   history,
@@ -54,6 +53,7 @@ const App = function ({
   _setSiteDomain,
   businesses,
   _getBusiness,
+  reload,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
@@ -85,7 +85,7 @@ const App = function ({
     }
   }, [siteDomain]);
 
-  if (!siteDomain && location.pathname !== "/login")
+  if ((!siteDomain || !businessTitle) && location.pathname !== "/login")
     return (
       <div
         style={{ height: "100vh" }}
@@ -98,6 +98,7 @@ const App = function ({
     <>
       <div className="u-height-100vh w-100 u-background-melo-grey d-flex h-100">
         <Layout
+          reload={reload}
           location={location}
           title={businessTitle}
           loading={progressLoading}
@@ -136,8 +137,7 @@ const App = function ({
             />
 
             <Route exact path="/settings/printer" component={PrinterSettings} />
-
-            <Route exact path="/products/all" component={Products} />
+            <Route exact path="/categories/:id" component={Products} />
             <Route
               exact
               path="/products/new/:category"
@@ -149,7 +149,7 @@ const App = function ({
 
             <Redirect path="/orders" to="/orders/all" />
             <Redirect path="/users" to="/users/upload" />
-            <Redirect path="/products" to="/products/all" />
+            <Redirect path="/categories" to="/categories/all" />
             <Redirect path="/settings" to="/settings/printer" />
             <Redirect path="/delivery" to="/delivery/assign" />
             <Redirect path="/reports" to="/reports/analytics" />
@@ -195,6 +195,7 @@ function mapDispatchToProps(dispatch) {
     _getAdminOrders: () => dispatch(getFoodAdminOrders(1)),
     _setSnackBarMessage: (message, type) =>
       dispatch(setSnackBarMessage(message, type)),
+    reload: () => dispatch(reloadPage()),
   };
 }
 
