@@ -11,7 +11,6 @@ import Icon from "../Icon";
 import { ICONS } from "../../../assets/images/icons";
 import MenuItem from "./MenuItem";
 import logo from "../../../assets/images/vitrin-blue.png";
-import Select from "../Select";
 
 const drawerWidth = 250;
 const drawerClosedWidth = 64;

@@ -8,6 +8,8 @@ import { createStructuredSelector } from "reselect";
 import Snackbar from "@material-ui/core/esm/Snackbar";
 import { connect } from "react-redux";
 import Axios from "axios";
+import { remote } from "electron";
+
 import { useInjectReducer } from "../../../utils/injectReducer";
 import { useInjectSaga } from "../../../utils/injectSaga";
 import reducer from "./reducer";
@@ -69,6 +71,9 @@ const App = function ({
         delete Axios.defaults.headers.common.Authorization;
         localStorage.clear();
         history.push("/login");
+      }
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "I") {
+        remote.getCurrentWebContents().openDevTools();
       }
     });
   }, []);

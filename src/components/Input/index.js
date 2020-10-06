@@ -56,8 +56,7 @@ function Input({
           {...props}
         />
         <div
-          className="u-text-red u-font-semi-small mt-1"
-          style={{ minHeight: numberOnly ? 18 : 0 }}>
+          className="u-text-red u-font-semi-small mt-1">
           {assistiveText}
         </div>
       </div>
