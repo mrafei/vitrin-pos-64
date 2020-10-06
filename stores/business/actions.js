@@ -63,17 +63,29 @@ export function deleteCategory(data, history) {
   };
 }
 
-export function createProduct(product, images, history) {
+export function createProduct(product, images, extraItems, history) {
   return {
     type: CREATE_PRODUCT,
-    data: { product, images, history },
+    data: { product, images, extraItems, history },
   };
 }
 
-export function updateProduct(productId, product, uploadedFiles, callback) {
+export function updateProduct(
+  productId,
+  product,
+  uploadedFiles,
+  extraItems,
+  callback
+) {
   return {
     type: UPDATE_PRODUCT,
-    data: { id: productId, product, images: uploadedFiles, callback },
+    data: {
+      id: productId,
+      product,
+      images: uploadedFiles,
+      extraItems,
+      callback,
+    },
   };
 }
 

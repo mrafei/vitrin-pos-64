@@ -6,23 +6,40 @@
 
 import React, { memo } from "react";
 import PropTypes from "prop-types";
-import { CDN_BASE_URL } from "../../../utils/api";
+import Add from "@material-ui/icons/Add";
+import useTheme from "@material-ui/core/styles/useTheme";
+import Button from "@material-ui/core/esm/Button";
+
 import { handleKeyDown } from "../../../utils/helper";
 
-const plusIcon = `${CDN_BASE_URL}plus-blue.svg`;
-
-function AddNewItemSection({ className = "py-2 px-3", title, description, onClick }) {
+function AddNewItemSection({
+  className = "py-2 px-3",
+  title,
+  description,
+  onClick,
+  color,
+  ...props
+}) {
+  const theme = useTheme();
   return (
-    <div
-      className={`d-flex flex-column u-addItem cursorPointer u-border-radius-4 ${className}`}
+    <Button
+      className={`d-flex w-100 flex-column justify-content-center cursorPointer u-font-semi-small u-border-radius-4 ${className}`}
+      style={{
+        border: `1px dashed ${color || "#0050ff"}`,
+        color: color || "#0050ff",
+      }}
       onClick={onClick}
       onKeyDown={(e) => handleKeyDown(e, onClick)}
       role="button"
-      tabIndex="0">
-      <div className="u-text-dark-grey">{description}</div>
-      <span className="u-text-primary-light-blue mt-1">{title}</span>
-      <img src={plusIcon} alt="" />
-    </div>
+      tabIndex="0"
+      {...props}
+    >
+      <div className="d-flex align-items-center">
+        <div style={{ color }}>{description}</div>
+        <Add fontSize="small" className="ml-1" />
+        {title}
+      </div>
+    </Button>
   );
 }
 
@@ -30,7 +47,9 @@ AddNewItemSection.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
+  color: PropTypes.string,
+  align: PropTypes.string,
 };
 
 export default memo(AddNewItemSection);

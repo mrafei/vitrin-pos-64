@@ -38,6 +38,9 @@ export const DEALS_ITEMS_API = (categories) =>
   `${BASE_URL}deals/?${categories}`;
 export const ALL_DEALS_API = (businessSlug) =>
   `${BASE_URL}deals/by_business/?business_slug=${businessSlug}`;
+export const DEALS_EXTRA_ITEMS_ITEM_API = id =>
+  `${BASE_URL}deals/extra_items/${id}/`;
+export const DEALS_EXTRA_ITEMS_API = `${BASE_URL}deals/extra_items/`;
 
 export const BUSINESS_ORDERS_SORTED_BY_DELIVERER_API = (
   plugin,

@@ -19,6 +19,8 @@ import {
   BUSINESS_LIGHT_BY_SITE_DOMAIN_API,
   GROUP_PACKAGING_PRICE_ON_DEALS_API,
   GROUP_DISCOUNT_ON_DEALS,
+  DEALS_EXTRA_ITEMS_ITEM_API,
+  DEALS_EXTRA_ITEMS_API,
 } from "../../utils/api";
 import {
   CREATE_CATEGORY,
@@ -223,7 +225,7 @@ export function* updateProduct(action) {
   try {
     yield put(startLoading());
     yield put(startProgressLoading());
-    const { id, product, images, callback } = action.data;
+    const { id, product, images, callback, extraItems } = action.data;
 
     const {
       response: { meta },
@@ -236,6 +238,37 @@ export function* updateProduct(action) {
           deal: id,
         };
         yield call(request, DEALS_IMAGES_API, dto, "POST");
+      }
+      for (let item = 0; item < extraItems.length; item += 1) {
+        const { title, price, id: _id, deals } = extraItems[item];
+        if (!_id) {
+          yield call(
+            request,
+            DEALS_EXTRA_ITEMS_API,
+            { title, price, deals: [id] },
+            "POST"
+          );
+        } else {
+          yield call(
+            request,
+            DEALS_EXTRA_ITEMS_ITEM_API(_id),
+            { title, price, deals: [...deals, id] },
+            "PATCH"
+          );
+        }
+      }
+      for (let item = 0; item < product.extra_items.length; item += 1) {
+        const { id: _id, deals } = product.extra_items[item];
+        if (!extraItems.map((i) => i.id || null).includes(_id)) {
+          yield call(
+            request,
+            DEALS_EXTRA_ITEMS_ITEM_API(_id),
+            {
+              deals: deals.filter((deal) => deal !== id),
+            },
+            "PATCH"
+          );
+        }
       }
       yield put(
         setSnackBarMessage("ویرایش محصول با موفقیت انجام شد", "success")
