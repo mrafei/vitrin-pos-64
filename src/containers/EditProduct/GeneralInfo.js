@@ -45,7 +45,6 @@ export default function GeneralInfo({
     }
   };
   const [isCollapseOpen, openCollapse] = useState(true);
-
   return (
     <div className="my-3 px-3">
       <Paper
@@ -181,12 +180,14 @@ export default function GeneralInfo({
             <div className="u-text-red">{error}</div>
           </div>
           <div className="my-3 px-3">
-            <RichText
-              placeholder="درباره این آیتم بیشتر بنویسید..."
-              label="توضیحات محصول"
-              value={description}
-              onChange={setDescription}
-            />
+            {description !== null && (
+              <RichText
+                placeholder="درباره این آیتم بیشتر بنویسید..."
+                label="توضیحات محصول"
+                value={description}
+                onChange={setDescription}
+              />
+            )}
           </div>
         </Collapse>
       </Paper>

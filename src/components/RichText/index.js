@@ -22,7 +22,6 @@ class RichText extends React.Component {
   constructor(props) {
     super(props);
     const contentState = stateFromHTML(props.value || "");
-
     this.state = {
       editorState: EditorState.createWithContent(contentState),
     };
@@ -50,7 +49,11 @@ class RichText extends React.Component {
 
   _mapKeyToEditorCommand(e) {
     if (e.keyCode === 9) {
-      const newEditorState = RichUtils.onTab(e, this.state.editorState, 4 /* maxDepth */);
+      const newEditorState = RichUtils.onTab(
+        e,
+        this.state.editorState,
+        4 /* maxDepth */
+      );
       if (newEditorState !== this.state.editorState) {
         this.onChange(newEditorState);
       }
@@ -64,7 +67,9 @@ class RichText extends React.Component {
   }
 
   _toggleInlineStyle(inlineStyle) {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
+    this.onChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
+    );
   }
 
   render() {
@@ -79,33 +84,38 @@ class RichText extends React.Component {
     }
 
     return (
-      <>
-        <div className="RichEditor-root">
-          {this.props.label && <div className="my-2">{this.props.label}</div>}
-          <div className="d-flex RichEditor-header justify-content-center align-items-center bg-light-grey p-1">
-            <InlineStyleControls editorState={editorState} onToggle={this.toggleInlineStyle} />
-            <BlockStyleControls editorState={editorState} onToggle={this.toggleBlockType} />
-          </div>
-          <div
-            className={className}
-            onClick={this.focus}
-            onKeyDown={(e) => handleKeyDown(e, this.focus)}
-            role="button"
-            tabIndex="0">
-            <Editor
-              blockStyleFn={getBlockStyle}
-              customStyleMap={styleMap}
-              editorState={editorState}
-              handleKeyCommand={this.handleKeyCommand}
-              keyBindingFn={this.mapKeyToEditorCommand}
-              onChange={this.onChange}
-              placeholder={this.props.placeholder}
-              ref="editor"
-              spellCheck
-            />
-          </div>
+      <div className="RichEditor-root">
+        {this.props.label && <div className="my-2">{this.props.label}</div>}
+        <div className="d-flex RichEditor-header justify-content-center align-items-center bg-light-grey p-1">
+          <InlineStyleControls
+            editorState={editorState}
+            onToggle={this.toggleInlineStyle}
+          />
+          <BlockStyleControls
+            editorState={editorState}
+            onToggle={this.toggleBlockType}
+          />
         </div>
-      </>
+        <div
+          className={className}
+          onClick={this.focus}
+          onKeyDown={(e) => handleKeyDown(e, this.focus)}
+          role="button"
+          tabIndex="0"
+        >
+          <Editor
+            blockStyleFn={getBlockStyle}
+            customStyleMap={styleMap}
+            editorState={editorState}
+            handleKeyCommand={this.handleKeyCommand}
+            keyBindingFn={this.mapKeyToEditorCommand}
+            onChange={this.onChange}
+            placeholder={this.props.placeholder}
+            ref="editor"
+            spellCheck
+          />
+        </div>
+      </div>
     );
   }
 }

@@ -61,7 +61,7 @@ export function EditProduct({
     return () => {
       cleanUploads();
       _setDeal({
-        description: "",
+        description: null,
         title: "",
         discounted_price: 0,
         initial_price: 0,
@@ -73,15 +73,15 @@ export function EditProduct({
           only_on_day: [],
           packaging_price: 0,
           info_table: [],
-          complementary: "",
+          complementary: null,
         },
       });
     };
   }, [match.params.id]);
   const [form, setForm] = useCustomForm({
     title: "",
-    description: "",
-    complementary: "",
+    description: null,
+    complementary: null,
     price: "",
     discountAmount: "",
     discountPercent: "",
@@ -140,8 +140,8 @@ export function EditProduct({
     setProductExtraItems(extraItems || []);
     setForm({
       title: title || "",
-      description: description || "",
-      complementary: complementary || "",
+      description: description,
+      complementary: complementary,
       price: initialPrice,
       finalPrice: discountedPrice,
       priority: priority || priority === 0 ? priority : 100,
