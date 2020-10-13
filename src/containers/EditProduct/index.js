@@ -61,7 +61,7 @@ export function EditProduct({
     return () => {
       cleanUploads();
       _setDeal({
-        description: null,
+        description: undefined,
         title: "",
         discounted_price: 0,
         initial_price: 0,
@@ -73,15 +73,15 @@ export function EditProduct({
           only_on_day: [],
           packaging_price: 0,
           info_table: [],
-          complementary: null,
+          complementary: undefined,
         },
       });
     };
   }, [match.params.id]);
   const [form, setForm] = useCustomForm({
     title: "",
-    description: null,
-    complementary: null,
+    description: undefined,
+    complementary: undefined,
     price: "",
     discountAmount: "",
     discountPercent: "",
