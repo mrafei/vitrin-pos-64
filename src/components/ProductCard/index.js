@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ProductPrice from "./ProductPrice";
 import { CDN_BASE_URL } from "../../../utils/api";
@@ -13,10 +13,12 @@ import {
   ellipseText,
   englishNumberToPersianNumber,
   noOp,
+  persianToEnglishNumber,
   priceFormatter,
 } from "../../../utils/helper";
 import Switch from "../Swtich";
 import pen from "../../../assets/images/pen.svg";
+import Input from "../Input";
 const penIcon = `${CDN_BASE_URL}edit-pen-white-icn.svg`;
 
 function ProductCard({
@@ -28,42 +30,36 @@ function ProductCard({
   loading,
   isList,
 }) {
+  const [snackBar, setSnackBar] = useState(false);
+  const [updatedProduct, setUpdatedProduct] = useState({ ...product });
   const {
     title,
     initial_price: initialPrice,
     discounted_price: discountedPrice,
     main_image_thumbnail_url: mainImageThumbnailUrl,
-  } = product;
+    extra_data: { inventory_count: inventoryCount },
+  } = updatedProduct;
+  const submit = (p) => {
+    if (!loading && updatedProduct.id) {
+      _updateProduct(
+        updatedProduct.id,
+        p || updatedProduct,
+        [],
+        [],
+        _updateCallback
+      );
+    }
+  };
   useEffect(() => {
-    setAvailable(product.available);
-  }, [product.available]);
-  const [snackBar, setSnackBar] = useState(false);
-  const [available, setAvailable] = useState(product.available);
-  const changeAvailability = useCallback(
-    (availability) => {
-      if (!loading) {
-        setAvailable(availability);
-        _updateProduct(
-          product.id,
-          { ...product, available: availability },
-          [],
-          _updateCallback
-        );
-      }
-    },
-    [product, available, loading]
-  );
-  const discountPercent = calculateDiscountPercent(
-    initialPrice,
-    discountedPrice
-  );
+    setUpdatedProduct({ ...product });
+  }, [product.id]);
   if (isList)
     return (
-      <div
-        onClick={() => onClick(product)}
-        className="d-flex u-cursor-pointer text-center align-items-center mt-1 flex-1 mx-1 my-2"
-      >
-        <div className="col-3 px-0 d-flex align-items-center">
+      <div className="d-flex text-center align-items-center mt-1 flex-1 mx-1 my-2">
+        <div
+          onClick={() => onClick(product)}
+          className="col-2 px-0 d-flex align-items-center u-cursor-pointer"
+        >
           <div className="col-2 px-0">
             <img
               className="u-height-36 width-36 u-border-radius-4 u-background-melo-grey"
@@ -79,26 +75,103 @@ function ProductCard({
             {title}
           </div>
         </div>
-        <div className="col-7 px-0 d-flex">
+        <div className="col-8 px-0 d-flex align-items-center">
           <div className="col-3 px-0">
-            <span>{priceFormatter(initialPrice)}</span>{" "}
-            <span className="u-font-semi-small">تومان</span>
+            <Input
+              editOnDoubleClick
+              style={{ textAlign: "center" }}
+              variant="standard"
+              onChange={(price) =>
+                setUpdatedProduct({
+                  ...updatedProduct,
+                  initial_price: price
+                    ? parseInt(persianToEnglishNumber(price))
+                    : 0,
+                })
+              }
+              onBlur={() => {
+                if (initialPrice !== product.initial_price) submit();
+              }}
+              numberOnly
+              value={englishNumberToPersianNumber(initialPrice)}
+            />
           </div>
           <div className="col-3 px-0">
-            <span>{priceFormatter(initialPrice - discountedPrice)}</span>
-            {initialPrice - discountedPrice ? (
-              <span style={{ marginRight: 2 }}>-</span>
-            ) : (
-              ""
-            )}{" "}
-            <span className="u-font-semi-small">تومان</span>
+            <Input
+              editOnDoubleClick
+              style={{ textAlign: "center" }}
+              variant="standard"
+              onChange={(discountAmount) =>
+                setUpdatedProduct({
+                  ...updatedProduct,
+                  discounted_price:
+                    initialPrice - persianToEnglishNumber(discountAmount),
+                })
+              }
+              onBlur={() => {
+                if (discountedPrice !== product.discounted_price) submit();
+              }}
+              numberOnly
+              value={englishNumberToPersianNumber(
+                initialPrice - discountedPrice
+              )}
+            />
           </div>
           <div className="col-2 px-0 u-fontMedium">
-            ٪<span>{englishNumberToPersianNumber(discountPercent)}</span>
+            <Input
+              editOnDoubleClick
+              style={{ textAlign: "center" }}
+              variant="standard"
+              onChange={(value) =>
+                setUpdatedProduct({
+                  ...updatedProduct,
+                  discounted_price:
+                    initialPrice * (1 - persianToEnglishNumber(value) / 100),
+                })
+              }
+              onBlur={() => {
+                if (discountedPrice !== product.discounted_price) submit();
+              }}
+              numberOnly
+              value={englishNumberToPersianNumber(
+                calculateDiscountPercent(initialPrice, discountedPrice)
+              )}
+            />
           </div>
-          <div className="col-4 px-0">
-            <span>{priceFormatter(discountedPrice)}</span>{" "}
-            <span className="u-font-semi-small">تومان</span>
+          <div className="col-3 px-0">
+            <span>{priceFormatter(Math.round(discountedPrice))}</span>
+          </div>
+          <div className="col-1 px-0">
+            <Input
+              placeholder="نامحدود"
+              editOnDoubleClick
+              style={{ textAlign: "center" }}
+              variant="standard"
+              onChange={(value) =>
+                setUpdatedProduct({
+                  ...updatedProduct,
+                  extra_data: {
+                    inventory_count:
+                      value === ""
+                        ? null
+                        : parseInt(persianToEnglishNumber(value)),
+                  },
+                })
+              }
+              onBlur={() => {
+                if (inventoryCount !== product.extra_data.inventory_count)
+                  submit({
+                    ...updatedProduct,
+                    available: updatedProduct.available && inventoryCount !== 0,
+                  });
+              }}
+              numberOnly
+              value={
+                inventoryCount || inventoryCount === 0
+                  ? englishNumberToPersianNumber(inventoryCount)
+                  : ""
+              }
+            />
           </div>
         </div>
         <div className="col-2 px-0 d-flex">
@@ -107,14 +180,26 @@ function ProductCard({
               <span
                 style={{ width: 40 }}
                 className={`u-font-semi-small ml-2 u-fontWeightBold ${
-                  available ? "u-text-primary-blue" : "u-text-darkest-grey"
+                  updatedProduct.available
+                    ? "u-text-primary-blue"
+                    : "u-text-darkest-grey"
                 }`}
               >
-                {available ? "موجود" : "ناموجود"}
+                {updatedProduct.available ? "موجود" : "ناموجود"}
               </span>
               <Switch
-                isSwitchOn={available}
-                toggleSwitch={changeAvailability}
+                isSwitchOn={updatedProduct.available}
+                toggleSwitch={(available) => {
+                  setUpdatedProduct({ ...updatedProduct, available });
+                  submit({
+                    ...updatedProduct,
+                    available,
+                    extra_data: {
+                      inventory_count:
+                        !available || inventoryCount ? inventoryCount : null,
+                    },
+                  });
+                }}
               />
             </div>
           </div>
@@ -169,12 +254,20 @@ function ProductCard({
         <span
           style={{ width: 40 }}
           className={`u-font-semi-small u-fontWeightBold ${
-            available ? "u-text-primary-blue" : "u-text-darkest-grey"
+            updatedProduct.available
+              ? "u-text-primary-blue"
+              : "u-text-darkest-grey"
           }`}
         >
-          {available ? "موجود" : "ناموجود"}
+          {updatedProduct.available ? "موجود" : "ناموجود"}
         </span>
-        <Switch isSwitchOn={available} toggleSwitch={changeAvailability} />
+        <Switch
+          isSwitchOn={updatedProduct.available}
+          toggleSwitch={(available) => {
+            setUpdatedProduct({ ...updatedProduct, available });
+            submit({ ...updatedProduct, available });
+          }}
+        />
       </div>
       <button
         type="button"
