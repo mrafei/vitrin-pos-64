@@ -49,7 +49,7 @@ export default function ExtraDescriptionSection({
           }}
         >
           <div className="px-3 pb-3 w-100">
-            {complementary !== null && (
+            {complementary !== undefined && (
               <RichText
                 placeholder="درباره این آیتم بیشتر بنویسید..."
                 label=""

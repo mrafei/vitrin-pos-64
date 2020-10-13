@@ -26,7 +26,6 @@ function ProductCard({
   themeColor,
   product,
   _updateProduct = noOp,
-  _updateCallback = noOp,
   loading,
   isList,
 }) {
@@ -41,13 +40,7 @@ function ProductCard({
   } = updatedProduct;
   const submit = (p) => {
     if (!loading && updatedProduct.id) {
-      _updateProduct(
-        updatedProduct.id,
-        p || updatedProduct,
-        [],
-        [],
-        _updateCallback
-      );
+      _updateProduct(updatedProduct.id, p || updatedProduct, [], []);
     }
   };
   useEffect(() => {
@@ -156,14 +149,14 @@ function ProductCard({
                         ? null
                         : parseInt(persianToEnglishNumber(value)),
                   },
+                  available:
+                    updatedProduct.available &&
+                    parseInt(persianToEnglishNumber(value)) !== 0,
                 })
               }
               onBlur={() => {
                 if (inventoryCount !== product.extra_data.inventory_count)
-                  submit({
-                    ...updatedProduct,
-                    available: updatedProduct.available && inventoryCount !== 0,
-                  });
+                  submit();
               }}
               numberOnly
               value={
@@ -190,7 +183,14 @@ function ProductCard({
               <Switch
                 isSwitchOn={updatedProduct.available}
                 toggleSwitch={(available) => {
-                  setUpdatedProduct({ ...updatedProduct, available });
+                  setUpdatedProduct({
+                    ...updatedProduct,
+                    available,
+                    extra_data: {
+                      inventory_count:
+                        !available || inventoryCount ? inventoryCount : null,
+                    },
+                  });
                   submit({
                     ...updatedProduct,
                     available,

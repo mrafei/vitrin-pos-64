@@ -28,7 +28,7 @@ export const initialState = {
     printers: [],
   },
   deal: {
-    description: null,
+    description: undefined,
     title: "",
     discounted_price: 0,
     initial_price: 0,
@@ -40,7 +40,7 @@ export const initialState = {
       only_on_day: [],
       packaging_price: 0,
       info_table: [],
-      complementary: null,
+      complementary: undefined,
     },
   },
 };

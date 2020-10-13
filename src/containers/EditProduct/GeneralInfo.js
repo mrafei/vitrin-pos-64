@@ -180,7 +180,7 @@ export default function GeneralInfo({
             <div className="u-text-red">{error}</div>
           </div>
           <div className="my-3 px-3">
-            {description !== null && (
+            {description !== undefined && (
               <RichText
                 placeholder="درباره این آیتم بیشتر بنویسید..."
                 label="توضیحات محصول"
