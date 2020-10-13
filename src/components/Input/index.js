@@ -5,22 +5,32 @@
  *
  */
 
-import React, { memo, useState } from "react";
+import React, { memo, useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/esm/TextField";
+import { noOp } from "../../../utils/helper";
 
 function Input({
   className = "direction-rtl",
-  onChange,
+  onChange = noOp,
   value,
   label,
   themeColor,
   noModal,
   numberOnly,
   style,
+  variant = "filled",
+  editOnDoubleClick = false,
+  onDoubleClick = noOp,
+  onBlur = noOp,
   ...props
 }) {
   const [assistiveText, setAssistiveText] = useState("");
+  const [editable, setEditable] = useState(false);
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (editable) inputRef.current.focus();
+  }, [editable]);
   return (
     <>
       <style
@@ -41,7 +51,7 @@ function Input({
           }}
           inputProps={{ style }}
           fullWidth
-          variant="filled"
+          variant={variant}
           className={`u-fontLarge ${className}`}
           value={value}
           onChange={(e) => {
@@ -52,13 +62,21 @@ function Input({
               onChange(e.target.value.replace(/[^0-9۰-۹]/g, ""));
             } else onChange(e.target.value);
           }}
+          inputRef={inputRef}
           label={label}
+          onDoubleClick={(e) => {
+            if (editOnDoubleClick) setEditable(true);
+
+            onDoubleClick(e);
+          }}
+          onBlur={(e) => {
+            if (editOnDoubleClick) setEditable(false);
+            onBlur(e);
+          }}
+          disabled={props.disabled || (editOnDoubleClick && !editable)}
           {...props}
         />
-        <div
-          className="u-text-red u-font-semi-small mt-1">
-          {assistiveText}
-        </div>
+        <div className="u-text-red u-font-semi-small mt-1">{assistiveText}</div>
       </div>
     </>
   );
@@ -72,6 +90,7 @@ Input.propTypes = {
   themeColor: PropTypes.string,
   noModal: PropTypes.bool,
   numberOnly: PropTypes.bool,
+  editOnDoubleClick: PropTypes.bool,
 };
 
 Input.defaultProps = {

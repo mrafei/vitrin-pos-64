@@ -38,7 +38,6 @@ import {
 } from "./selectors";
 import { updateProduct } from "../../../stores/business/actions";
 import Switch from "../../components/Swtich";
-import { reloadPage } from "../../../stores/ui/actions";
 import { getQueryParams } from "../../../utils/helper";
 
 export function Products({
@@ -53,7 +52,6 @@ export function Products({
   match: { params },
   _getUnavailableDeals,
   unavailableDeals,
-  reload,
   unavailableDealsPagination,
 }) {
   useInjectReducer({ key: "products", reducer });
@@ -69,7 +67,7 @@ export function Products({
     id: "all",
     name: "همه محصولات",
   };
-  useEffect(() => {
+  const reload = () => {
     const _categories = [];
     if (id !== "all") _categories.push(id);
     _getDeals({
@@ -87,7 +85,11 @@ export function Products({
         page_size: 10,
       },
     });
-  }, [filters, `${history.location.pathname}${history.location.search}`]);
+  };
+  useEffect(reload, [
+    filters,
+    `${history.location.pathname}${history.location.search}`,
+  ]);
   return (
     <div className="pb-5">
       <CategoryModal
@@ -284,10 +286,11 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     _getDeals: (data) => dispatch(getDeals(data)),
-    reload: () => dispatch(reloadPage()),
     _getUnavailableDeals: (data) => dispatch(getUnavailableDeals(data)),
-    _updateProduct: (productId, product, uploadedFiles, callback) =>
-      dispatch(updateProduct(productId, product, uploadedFiles, callback)),
+    _updateProduct: (productId, product, uploadedFiles, extraItems, callback) =>
+      dispatch(
+        updateProduct(productId, product, uploadedFiles, extraItems, callback)
+      ),
   };
 }
 

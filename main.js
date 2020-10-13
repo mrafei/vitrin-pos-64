@@ -131,6 +131,7 @@ function createWindow() {
     focusable: false,
     x: width - 250,
     y: height - 195,
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
     },

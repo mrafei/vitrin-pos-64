@@ -93,3 +93,6 @@ input[type="number"] {
 .MuiFilledInput-root {
   background-color: $vanilla !important;
 }
+.MuiInput-underline.Mui-disabled:before {
+  border-style: none !important;
+}
