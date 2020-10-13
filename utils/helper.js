@@ -81,11 +81,10 @@ function addCommaToPrice(num) {
 }
 
 function calculateDiscountPercent(initialPrice, discountedPrice) {
+  if (initialPrice === 0 && discountedPrice === 0) return 0;
   const discountPercent =
     ((initialPrice - discountedPrice) / initialPrice) * 100;
-  return discountPercent % 1 > 0
-    ? Math.round(discountPercent)
-    : discountPercent;
+  return discountPercent % 1 > 0 ? Math.round(discountPercent) : 0;
 }
 
 const priceFormatter = (price) =>
