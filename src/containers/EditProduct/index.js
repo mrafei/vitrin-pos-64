@@ -140,8 +140,8 @@ export function EditProduct({
     setProductExtraItems(extraItems || []);
     setForm({
       title: title || "",
-      description: description,
-      complementary: complementary,
+      description: match.params.id ? description : "",
+      complementary: match.params.id ? complementary : "",
       price: initialPrice,
       finalPrice: discountedPrice,
       priority: priority || priority === 0 ? priority : 100,
