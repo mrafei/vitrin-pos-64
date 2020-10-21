@@ -214,7 +214,7 @@ export default class ComponentToPrint extends React.Component {
                           {_item.title}
                         </div>
                         <div className="text-center" style={{ width: 35 }}>
-                          {englishNumberToPersianNumber(1)}
+                          {englishNumberToPersianNumber(item.amount)}
                         </div>
                         {!printOptions.hideItemPrices ? (
                           <>
@@ -222,7 +222,7 @@ export default class ComponentToPrint extends React.Component {
                               {priceFormatter(_item.price)}
                             </div>
                             <div className="text-center" style={{ width: 80 }}>
-                              {priceFormatter(_item.price)}
+                              {priceFormatter(_item.price * item.amount)}
                             </div>
                           </>
                         ) : null}

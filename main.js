@@ -132,13 +132,17 @@ function createWindow() {
     x: width - 250,
     y: height - 195,
     alwaysOnTop: true,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
+  app.dock.hide();
   notifWindow.setAlwaysOnTop(true, "floating", 1);
   notifWindow.setVisibleOnAllWorkspaces(true);
+  notifWindow.setFullScreenable(false);
+  notifWindow.maximize()
 }
 
 // This method will be called when Electron has finished
