@@ -58,6 +58,14 @@ function FactorModal({ _onClose, open, business, printers, report, date }) {
         },
         {
           id: 5,
+          online: online.total_taxing_price,
+          cash: cash.total_taxing_price,
+          total: total.total_taxing_price,
+          text: "مالیات",
+          show: true,
+        },
+        {
+          id: 6,
           online: online.total_actual_sales_without_delivery,
           cash: cash.total_actual_sales_without_delivery,
           total: total.total_actual_sales_without_delivery,
@@ -65,7 +73,7 @@ function FactorModal({ _onClose, open, business, printers, report, date }) {
           show: true,
         },
         {
-          id: 6,
+          id: 7,
           online: online.total_actual_sales_with_delivery,
           cash: cash.total_actual_sales_with_delivery,
           total: total.total_actual_sales_with_delivery,
