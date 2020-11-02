@@ -43,7 +43,7 @@ function CategoryPresentation({
         style={{ padding: !isList ? "0 50px" : "0 39px", backgroundColor }}
       >
         {isEditMode && !isList && (
-          <Link to="/products/new">
+          <Link to={`/products/new/${id}`}>
             <AddNewProductCard />
           </Link>
         )}
