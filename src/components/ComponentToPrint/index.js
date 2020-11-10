@@ -9,7 +9,10 @@ import QRCode from "qrcode.react";
 
 export default class ComponentToPrint extends React.Component {
   render() {
-    const { order, business, printOptions = {} } = this.props;
+    const { order, business, printOptions = {}, size } = this.props;
+
+    console.log(size);
+    const isLarge = size === "۸ سانتی‌متری";
     let cost = "رایگان";
     if (+order.delivery_price === 999999) cost = "خارج از محدوده ارسال";
     else if (+order.delivery_price !== 0)
@@ -36,8 +39,12 @@ export default class ComponentToPrint extends React.Component {
     });
     return (
       <div
-        className="bg-white w-100 u-text-black printable px-3 u-fontVerySmall"
-        style={{ minWidth: 300 }}
+        className="bg-white u-text-black w-100 printable px-3"
+        style={{
+          width: isLarge ? "100%" : "calc(100% - 60px)",
+          minWidth: 300,
+          fontSize: isLarge ? 14 : 12,
+        }}
       >
         <div className="py-1 px-2 u-border-bottom-dark">
           <div className="d-flex justify-content-between align-items-center">
@@ -49,15 +56,23 @@ export default class ComponentToPrint extends React.Component {
                 borderRadius: 4,
               }}
             >
-              <span className="u-fontVerySmall">شماره فاکتور</span>
-              <span className="u-fontLarge u-fontWeightBold">
+              <span
+                className="text-center"
+                style={{ fontSize: isLarge ? 12 : 10, whiteSpace: "nowrap" }}
+              >
+                شماره فاکتور
+              </span>
+              <span
+                style={{ fontSize: isLarge ? 18 : 16 }}
+                className="u-fontWeightBold"
+              >
                 {englishNumberToPersianNumber(order.order_number) || "۱۰۱"}
               </span>
             </span>
             {!printOptions.hideTitle && (
               <div
-                className="u-fontLarge text-center u-fontWeightBold"
-                style={{ width: 160 }}
+                className="text-center u-fontWeightBold"
+                style={{ width: 160, fontSize: isLarge ? 18 : 16 }}
               >
                 {title}
               </div>
@@ -94,12 +109,18 @@ export default class ComponentToPrint extends React.Component {
             <div className="mt-1">
               <span className="u-textBlack"> آدرس سفارش دهنده: </span>
               {order.delivery_on_site && (
-                <span className="u-fontWeightBold u-fontLarge">
+                <span
+                  style={{ fontSize: isLarge ? 18 : 16 }}
+                  className="u-fontWeightBold"
+                >
                   تحویل در محل {business.revised_title}
                 </span>
               )}
               {order.user_address && !order.delivery_on_site ? (
-                <span className="u-fontWeightBold u-fontLarge">
+                <span
+                  style={{ fontSize: isLarge ? 18 : 16 }}
+                  className="u-fontWeightBold"
+                >
                   {order.user_address.address}
                 </span>
               ) : null}
@@ -170,8 +191,9 @@ export default class ComponentToPrint extends React.Component {
                   key={`order-item-${item.id}`}
                 >
                   <div
-                    className="u-fontWeightBold u-fontLarge"
+                    className="u-fontWeightBold"
                     style={{
+                      fontSize: isLarge ? 18 : 16,
                       width: !printOptions.hideItemPrices ? 160 : 320,
                       whiteSpace: "pre-wrap",
                     }}
@@ -179,8 +201,8 @@ export default class ComponentToPrint extends React.Component {
                     {item.deal.title}
                   </div>
                   <div
-                    className="text-center u-fontLarge u-fontWeightBold"
-                    style={{ width: 35 }}
+                    className="text-center u-fontWeightBold"
+                    style={{ fontSize: isLarge ? 18 : 16, width: 35 }}
                   >
                     {englishNumberToPersianNumber(item.amount)}
                   </div>
@@ -303,13 +325,13 @@ export default class ComponentToPrint extends React.Component {
                 <span>مالیات بر ارزش افزوده: </span>
                 <span
                   className="u-fontWeightBold"
-                  style={{ whiteSpace: 'pre-wrap' }}
+                  style={{ whiteSpace: "pre-wrap" }}
                 >
-                {priceFormatter(order.taxing_price)} تومان
-              </span>
+                  {priceFormatter(order.taxing_price)} تومان
+                </span>
               </div>
             ) : null}
-            <div className="mt-1 u-fontMedium">
+            <div className="mt-1">
               <span>قابل پرداخت: </span>
               <span
                 className="u-fontWeightBold px-3 py-1 u-fontLarge u-background-black u-text-white"

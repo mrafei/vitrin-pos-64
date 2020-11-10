@@ -158,7 +158,7 @@ function FactorModal({ _onClose, open, business, printers, report, date }) {
               </button>
             </div>
             <div
-              className="u-border-radius-8 overflow-hidden"
+              className="u-border-radius-8 overflow-hidden d-flex justify-content-center"
               style={{ boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)" }}
             >
               <ReportPrintComponent

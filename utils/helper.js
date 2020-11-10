@@ -84,7 +84,9 @@ function calculateDiscountPercent(initialPrice, discountedPrice) {
   if (initialPrice === 0 && discountedPrice === 0) return 0;
   const discountPercent =
     ((initialPrice - discountedPrice) / initialPrice) * 100;
-  return discountPercent % 1 > 0 ? Math.round(discountPercent) : 0;
+  return discountPercent % 1 > 0
+    ? Math.round(discountPercent)
+    : discountPercent;
 }
 
 const priceFormatter = (price) =>
@@ -478,7 +480,6 @@ function copyToClipboard(event) {
   range.selectNode(event.target);
   window.getSelection().removeAllRanges();
   window.getSelection().addRange(range);
-
   clipboard.writeText(
     iconv.decode(
       Buffer.from(
@@ -486,10 +487,10 @@ function copyToClipboard(event) {
           persianToEnglishNumber(
             persianToArabicCharacters(event.target.innerText)
           ),
-          "win1256"
+          localStorage.getItem("initialEncoding") || "win1256"
         )
       ),
-      "latin1"
+      localStorage.getItem("targeteEncoding") || "latin1"
     )
   );
 }

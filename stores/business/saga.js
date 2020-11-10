@@ -239,35 +239,37 @@ export function* updateProduct(action) {
         };
         yield call(request, DEALS_IMAGES_API, dto, "POST");
       }
-      for (let item = 0; item < extraItems.length; item += 1) {
-        const { title, price, id: _id, deals } = extraItems[item];
-        if (!_id) {
-          yield call(
-            request,
-            DEALS_EXTRA_ITEMS_API,
-            { title, price, deals: [id] },
-            "POST"
-          );
-        } else {
-          yield call(
-            request,
-            DEALS_EXTRA_ITEMS_ITEM_API(_id),
-            { title, price, deals: [...deals, id] },
-            "PATCH"
-          );
+      if (extraItems) {
+        for (let item = 0; item < extraItems.length; item += 1) {
+          const { title, price, id: _id, deals } = extraItems[item];
+          if (!_id) {
+            yield call(
+              request,
+              DEALS_EXTRA_ITEMS_API,
+              { title, price, deals: [id] },
+              "POST"
+            );
+          } else {
+            yield call(
+              request,
+              DEALS_EXTRA_ITEMS_ITEM_API(_id),
+              { title, price, deals: [...deals, id] },
+              "PATCH"
+            );
+          }
         }
-      }
-      for (let item = 0; item < product.extra_items.length; item += 1) {
-        const { id: _id, deals } = product.extra_items[item];
-        if (!extraItems.map((i) => i.id || null).includes(_id)) {
-          yield call(
-            request,
-            DEALS_EXTRA_ITEMS_ITEM_API(_id),
-            {
-              deals: deals.filter((deal) => deal !== id),
-            },
-            "PATCH"
-          );
+        for (let item = 0; item < product.extra_items.length; item += 1) {
+          const { id: _id, deals } = product.extra_items[item];
+          if (!extraItems.map((i) => i.id || null).includes(_id)) {
+            yield call(
+              request,
+              DEALS_EXTRA_ITEMS_ITEM_API(_id),
+              {
+                deals: deals.filter((deal) => deal !== id),
+              },
+              "PATCH"
+            );
+          }
         }
       }
       yield put(
@@ -380,6 +382,7 @@ export function* getProductSaga(action) {
           ...data,
           extra_data: {
             ...data.extra_data,
+            complementary: data.extra_data.complementary || "",
             only_on_day: data.extra_data.only_on_day || [],
           },
         })

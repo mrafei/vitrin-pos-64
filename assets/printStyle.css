@@ -13,25 +13,13 @@ body {
   -webkit-print-color-adjust: exact;
 }
 
-.w-100 {
-  width: 100%;
-}
-
 .bg-white {
   background-color: white !important;
-}
-
-.u-text-black {
-  color: black !important;
 }
 
 .px-3 {
   padding-right: 15px;
   padding-left: 15px;
-}
-
-.u-fontVerySmall {
-  font-size: 14px;
 }
 
 .py-1 {
@@ -72,12 +60,7 @@ body {
 .align-items-center {
   align-items: center;
 }
-.u-fontLarge {
-  font-size: 18px;
-}
-.u-fontMedium {
-  font-size: 16px;
-}
+
 .u-border-bottom-dark {
   border-bottom: 1px solid black;
 }

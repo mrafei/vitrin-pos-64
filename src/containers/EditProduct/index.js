@@ -151,7 +151,7 @@ export function EditProduct({
           ? Math.floor(((initialPrice - discountedPrice) / initialPrice) * 100)
           : 0,
     });
-
+    console.log(form.complementary);
     if (match.params.category)
       setCategories([
         categories &&
@@ -192,7 +192,7 @@ export function EditProduct({
       setError("لطفا دسته‌بندی انتخاب کنید.");
     } else {
       setError("");
-      const extraData = {};
+      const extraData = product.extra_data ? { ...product.extra_data } : {};
       extraData.info_table = productInfoTable.filter(
         (r) => r.value !== "" || r.key !== ""
       );
