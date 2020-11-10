@@ -3,7 +3,12 @@ import request from "../../utils/request";
 import pristine from "../../assets/audio/pristine.mp3";
 import { amplifyMedia } from "../../utils/helper";
 
-export default function initPushNotification(showSnackBar, history, updateOrders, siteDomain) {
+export default function initPushNotification(
+  showSnackBar,
+  history,
+  updateOrders,
+  siteDomain
+) {
   const { ipcRenderer, remote } = require("electron");
   const {
     START_NOTIFICATION_SERVICE,
@@ -15,7 +20,11 @@ export default function initPushNotification(showSnackBar, history, updateOrders
 
   // Listen for service successfully started
   ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
-    request(PUSH_NOTIFICATION_API, { label: `Admin Panel ${siteDomain}`, token }, "POST");
+    request(
+      PUSH_NOTIFICATION_API,
+      { label: `Admin Panel ${siteDomain}`, token },
+      "POST"
+    );
     console.log("service successfully started", token);
   });
 
@@ -26,7 +35,11 @@ export default function initPushNotification(showSnackBar, history, updateOrders
 
   // Send FCM token to backend
   ipcRenderer.on(TOKEN_UPDATED, (_, token) => {
-    request(PUSH_NOTIFICATION_API, { label: `Admin Panel ${siteDomain}`, token }, "POST");
+    request(
+      PUSH_NOTIFICATION_API,
+      { label: `Admin Panel ${siteDomain}`, token },
+      "POST"
+    );
     console.log("token updated", token);
   });
 
@@ -39,7 +52,7 @@ export default function initPushNotification(showSnackBar, history, updateOrders
       updateOrders();
       ipcRenderer.send("orderReceived", serverNotificationPayload.notification);
       const audio = new Audio(pristine);
-      amplifyMedia(audio, 50);
+      amplifyMedia(audio, localStorage.getItem("volume") || 50);
       audio.play();
     } else {
       // payload has no body, so consider it silent (and just consider the data portion)

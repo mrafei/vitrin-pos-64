@@ -1,24 +1,24 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import Input from '../../components/Input';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
+import React, { memo, useCallback, useEffect, useState } from "react";
+import Input from "../../components/Input";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 import {
   makeSelectBusiness,
   makeSelectPrinterOptions,
-} from '../../../stores/business/selector';
-import Icon from '../../components/Icon';
-import { ICONS } from '../../../assets/images/icons';
-import { remote } from 'electron';
-import Select from '../../components/Select';
+} from "../../../stores/business/selector";
+import Icon from "../../components/Icon";
+import { ICONS } from "../../../assets/images/icons";
+import { remote } from "electron";
+import Select from "../../components/Select";
 import {
   englishNumberToPersianNumber,
   persianToEnglishNumber,
-} from '../../../utils/helper';
-import Switch from '../../components/Swtich';
-import FactorModal from './FactorModal';
-import { setPrinterOptions } from '../App/actions';
+} from "../../../utils/helper";
+import Switch from "../../components/Swtich";
+import FactorModal from "./FactorModal";
+import { setPrinterOptions } from "../App/actions";
 
 function PrinterSettings({ options, _setPrinterOptions, business }) {
   const [printers, setPrinters] = useState([]);
@@ -31,7 +31,7 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
     (data) => {
       _setPrinterOptions({ ...options, ...data });
     },
-    [options],
+    [options]
   );
   const addPrinter = useCallback(() => {
     submitChanges({
@@ -40,7 +40,8 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
         {
           id: printers.length ? printers[printers.length - 1].id + 1 : 1,
           title: `چاپگر ${englishNumberToPersianNumber(printers.length + 1)}`,
-          device: '',
+          device: "",
+          size: "۸ سانتی‌متری",
           isActive: true,
           copies: 1,
           factor: {},
@@ -123,7 +124,7 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
               <div className="col-6">
                 <Select
                   inputData={{
-                    label: 'انتخاب چاپگر',
+                    label: "انتخاب چاپگر",
                     value: printers[index].device,
                   }}
                   options={remote
@@ -155,6 +156,32 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
                     submitChanges({ printers: newPrinters });
                   }}
                   label="تعداد چاپ"
+                />
+              </div>
+              <div className="col-6">
+                <Select
+                  inputData={{
+                    label: "نوع فاکتور",
+                    value: `${printers[index].size}`,
+                  }}
+                  options={[
+                    {
+                      id: "8cm",
+                      text: "۸ سانتی‌متری",
+                    },
+                    {
+                      id: "6cm",
+                      text: "۶ سانتی‌متری",
+                    },
+                  ]}
+                  selectOption={(value) => {
+                    let newPrinters = [...printers];
+                    newPrinters[index] = {
+                      ...newPrinters[index],
+                      size: value,
+                    };
+                    submitChanges({ printers: newPrinters });
+                  }}
                 />
               </div>
               <div

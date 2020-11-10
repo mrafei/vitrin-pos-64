@@ -23,13 +23,13 @@ import Input from "../Input";
 const penIcon = `${CDN_BASE_URL}edit-pen-white-icn.svg`;
 
 function ProductCard({
-                       onClick,
-                       themeColor,
-                       product,
-                       _updateProduct = noOp,
-                       loading,
-                       isList,
-                     }) {
+  onClick,
+  themeColor,
+  product,
+  _updateProduct = noOp,
+  loading,
+  isList,
+}) {
   const [snackBar, setSnackBar] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState({ ...product });
   const {
@@ -41,7 +41,7 @@ function ProductCard({
   } = updatedProduct;
   const submit = (p) => {
     if (!loading && updatedProduct.id) {
-      _updateProduct(updatedProduct.id, p || updatedProduct, [], []);
+      _updateProduct(updatedProduct.id, p || updatedProduct, [], null);
     }
   };
   useEffect(() => {
@@ -81,10 +81,9 @@ function ProductCard({
                   initial_price: price
                     ? parseInt(persianToEnglishNumber(price))
                     : 0,
-                  discounted_price:
-                    price
-                      ? parseInt(persianToEnglishNumber(price))
-                      : 0,
+                  discounted_price: price
+                    ? parseInt(persianToEnglishNumber(price))
+                    : 0,
                 })
               }
               onBlur={() => {
@@ -111,7 +110,7 @@ function ProductCard({
               }}
               numberOnly
               value={englishNumberToPersianNumber(
-                initialPrice - discountedPrice,
+                initialPrice - discountedPrice
               )}
             />
           </div>
@@ -132,7 +131,7 @@ function ProductCard({
               }}
               numberOnly
               value={englishNumberToPersianNumber(
-                calculateDiscountPercent(initialPrice, discountedPrice),
+                calculateDiscountPercent(initialPrice, discountedPrice)
               )}
             />
           </div>
@@ -149,6 +148,7 @@ function ProductCard({
                 setUpdatedProduct({
                   ...updatedProduct,
                   extra_data: {
+                    ...updatedProduct.extra_data,
                     inventory_count:
                       value === ""
                         ? null
@@ -192,6 +192,7 @@ function ProductCard({
                     ...updatedProduct,
                     available,
                     extra_data: {
+                      ...updatedProduct.extra_data,
                       inventory_count:
                         !available || inventoryCount ? inventoryCount : null,
                     },
@@ -200,6 +201,7 @@ function ProductCard({
                     ...updatedProduct,
                     available,
                     extra_data: {
+                      ...updatedProduct.extra_data,
                       inventory_count:
                         !available || inventoryCount ? inventoryCount : null,
                     },
@@ -209,7 +211,7 @@ function ProductCard({
             </div>
           </div>
           <div className="col-2 px-0" onClick={() => onClick(product)}>
-            <img alt="" className="mx-2 cursorPointer" src={pen}/>
+            <img alt="" className="mx-2 cursorPointer" src={pen} />
           </div>
         </div>
       </div>
@@ -224,7 +226,7 @@ function ProductCard({
         className="position-relative align-self-center overflow-hidden u-border-top-left-radius-4 u-border-top-right-radius-4"
         style={{ background: "#c4c4c4" }}
       >
-        <div className="liner-gradiant-card d-flex align-items-center p-1"/>
+        <div className="liner-gradiant-card d-flex align-items-center p-1" />
         <img
           className="c-business-card-item-img"
           src={mainImageThumbnailUrl}
@@ -252,8 +254,7 @@ function ProductCard({
           به سبد خرید افزوده شد!
         </div>
       </div>
-      <div
-        className="u-fontNormal px-1 u-text-black mt-1 u-fontWeightBold text-right overflow-hidden">
+      <div className="u-fontNormal px-1 u-text-black mt-1 u-fontWeightBold text-right overflow-hidden">
         {ellipseText(title, 40)}
       </div>
       <div className="d-flex justify-content-between px-1 align-items-end pb-2 flex-1">
@@ -279,7 +280,7 @@ function ProductCard({
         type="button"
         className="c-btn c-product-btn-editMode u-border-radius-4 u-addItem z-index-2"
       >
-        <img alt="" src={penIcon}/>
+        <img alt="" src={penIcon} />
       </button>
     </div>
   );
