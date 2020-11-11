@@ -41,6 +41,7 @@ import OrdersReport from "../OrdersReport";
 import { setSiteDomain } from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
 import UploadCustomers from "../UploadCustomers";
+import SoundSettings from "../SoundSettings";
 
 const App = function ({
   history,
@@ -142,6 +143,7 @@ const App = function ({
             />
 
             <Route exact path="/settings/printer" component={PrinterSettings} />
+            <Route exact path="/settings/sound" component={SoundSettings} />
             <Route exact path="/categories/:id" component={Products} />
             <Route
               exact

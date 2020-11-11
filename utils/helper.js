@@ -490,7 +490,7 @@ function copyToClipboard(event) {
           localStorage.getItem("initialEncoding") || "win1256"
         )
       ),
-      localStorage.getItem("targeteEncoding") || "latin1"
+      localStorage.getItem("targetEncoding") || "latin1"
     )
   );
 }

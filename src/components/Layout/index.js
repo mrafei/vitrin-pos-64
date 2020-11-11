@@ -11,6 +11,8 @@ import Icon from "../Icon";
 import { ICONS } from "../../../assets/images/icons";
 import MenuItem from "./MenuItem";
 import logo from "../../../assets/images/vitrin-blue.png";
+import pristine from "../../../assets/audio/pristine.mp3";
+import { amplifyMedia } from "../../../utils/helper";
 
 const drawerWidth = 250;
 const drawerClosedWidth = 64;
@@ -142,6 +144,12 @@ const subRoutes = [
       title: "تنظیمات چاپگر",
       path: "/settings/printer",
       icon: ICONS.PRINT,
+    },
+    {
+      id: 1,
+      title: "تنظیمات صدا",
+      path: "/settings/sound",
+      icon: ICONS.VOLUME,
     },
   ],
   [

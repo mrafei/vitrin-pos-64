@@ -107,7 +107,7 @@ export default class ComponentToPrint extends React.Component {
           )}
           {!printOptions.hideCustomerAddress && (
             <div className="mt-1">
-              <span className="u-textBlack"> آدرس سفارش دهنده: </span>
+              <span> آدرس سفارش دهنده: </span>
               {order.delivery_on_site && (
                 <span
                   style={{ fontSize: isLarge ? 18 : 16 }}

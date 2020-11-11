@@ -52,7 +52,10 @@ export default function initPushNotification(
       updateOrders();
       ipcRenderer.send("orderReceived", serverNotificationPayload.notification);
       const audio = new Audio(pristine);
-      amplifyMedia(audio, localStorage.getItem("volume") || 50);
+      const volume = parseFloat(localStorage.getItem("volume")) || 50;
+      amplifyMedia(audio, volume);
+      if (localStorage.getItem("volume") !== "0") audio.play();
+    
       audio.play();
     } else {
       // payload has no body, so consider it silent (and just consider the data portion)
