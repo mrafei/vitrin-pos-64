@@ -42,6 +42,7 @@ export default class ComponentToPrint extends React.Component {
         className="bg-white u-text-black w-100 printable px-3"
         style={{
           width: isLarge ? "100%" : "calc(100% - 60px)",
+          marginRight: isLarge ? 0 : 30,
           minWidth: 300,
           fontSize: isLarge ? 14 : 12,
         }}
