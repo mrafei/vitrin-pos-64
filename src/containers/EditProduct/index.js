@@ -68,8 +68,8 @@ export function EditProduct({
         images: [],
         categories: [],
         available: true,
+        inventory_count: null,
         extra_data: {
-          inventory_count: null,
           only_on_day: [],
           packaging_price: 0,
           info_table: [],
@@ -114,8 +114,8 @@ export function EditProduct({
       categories: _categories,
       extra_items: extraItems,
       available,
+      inventory_count: inventoryCount,
       extra_data: {
-        inventory_count: inventoryCount,
         only_on_day: onlyOnDay,
         packaging_price: packagingPrice,
         info_table,
@@ -201,8 +201,6 @@ export function EditProduct({
       extraData.packaging_price = productPackagingPrice
         ? parseInt(productPackagingPrice, 10)
         : 0;
-      if (productAmount > 0)
-        extraData.inventory_count = parseInt(productAmount, 10);
       let discountedPrice = form.price;
       if (hasDiscount) {
         if (isPercent)
@@ -223,6 +221,8 @@ export function EditProduct({
         extra_items: product.extra_items || [],
         priority: +form.priority,
       };
+      if (productAmount > 0)
+        _product.inventory_count = parseInt(productAmount, 10);
       if (product.id) {
         _updateProduct(
           product.id,
