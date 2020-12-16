@@ -37,7 +37,7 @@ function ProductCard({
     initial_price: initialPrice,
     discounted_price: discountedPrice,
     main_image_thumbnail_url: mainImageThumbnailUrl,
-    extra_data: { inventory_count: inventoryCount },
+    inventory_count: inventoryCount,
   } = updatedProduct;
   const submit = (p) => {
     if (!loading && updatedProduct.id) {
@@ -147,21 +147,17 @@ function ProductCard({
               onChange={(value) =>
                 setUpdatedProduct({
                   ...updatedProduct,
-                  extra_data: {
-                    ...updatedProduct.extra_data,
-                    inventory_count:
-                      value === ""
-                        ? null
-                        : parseInt(persianToEnglishNumber(value)),
-                  },
+                  inventory_count:
+                    value === ""
+                      ? null
+                      : parseInt(persianToEnglishNumber(value)),
                   available:
                     updatedProduct.available &&
                     parseInt(persianToEnglishNumber(value)) !== 0,
                 })
               }
               onBlur={() => {
-                if (inventoryCount !== product.extra_data.inventory_count)
-                  submit();
+                if (inventoryCount !== product.inventory_count) submit();
               }}
               numberOnly
               value={
@@ -191,20 +187,14 @@ function ProductCard({
                   setUpdatedProduct({
                     ...updatedProduct,
                     available,
-                    extra_data: {
-                      ...updatedProduct.extra_data,
-                      inventory_count:
-                        !available || inventoryCount ? inventoryCount : null,
-                    },
+                    inventory_count:
+                      !available || inventoryCount ? inventoryCount : null,
                   });
                   submit({
                     ...updatedProduct,
                     available,
-                    extra_data: {
-                      ...updatedProduct.extra_data,
-                      inventory_count:
-                        !available || inventoryCount ? inventoryCount : null,
-                    },
+                    inventory_count:
+                      !available || inventoryCount ? inventoryCount : null,
                   });
                 }}
               />

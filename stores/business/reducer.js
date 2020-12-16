@@ -35,8 +35,8 @@ export const initialState = {
     images: [],
     categories: [],
     available: true,
+    inventory_count: null,
     extra_data: {
-      inventory_count: null,
       only_on_day: [],
       packaging_price: 0,
       info_table: [],
