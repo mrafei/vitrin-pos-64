@@ -10,8 +10,6 @@ import QRCode from "qrcode.react";
 export default class ComponentToPrint extends React.Component {
   render() {
     const { order, business, printOptions = {}, size } = this.props;
-
-    console.log(size);
     const isLarge = size === "۸ سانتی‌متری";
     let cost = "رایگان";
     if (+order.delivery_price === 999999) cost = "خارج از محدوده ارسال";

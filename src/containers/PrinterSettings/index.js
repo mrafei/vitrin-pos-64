@@ -10,7 +10,7 @@ import {
 } from "../../../stores/business/selector";
 import Icon from "../../components/Icon";
 import { ICONS } from "../../../assets/images/icons";
-import { remote } from "electron";
+const { getCurrentWebContents } = require("@electron/remote");
 import Select from "../../components/Select";
 import {
   englishNumberToPersianNumber,
@@ -127,8 +127,7 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
                     label: "انتخاب چاپگر",
                     value: printers[index].device,
                   }}
-                  options={remote
-                    .getCurrentWebContents()
+                  options={getCurrentWebContents()
                     .getPrinters()
                     .map((printer) => ({
                       id: printer.name,
