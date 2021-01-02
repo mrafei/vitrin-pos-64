@@ -9,7 +9,8 @@ export default function initPushNotification(
   updateOrders,
   siteDomain
 ) {
-  const { ipcRenderer, remote } = require("electron");
+  const { ipcRenderer } = require("electron");
+  const { getCurrentWindow } = require("@electron/remote");
   const {
     START_NOTIFICATION_SERVICE,
     NOTIFICATION_SERVICE_STARTED,
@@ -55,7 +56,7 @@ export default function initPushNotification(
       const volume = parseFloat(localStorage.getItem("volume")) || 50;
       amplifyMedia(audio, volume);
       if (localStorage.getItem("volume") !== "0") audio.play();
-    
+
       audio.play();
     } else {
       // payload has no body, so consider it silent (and just consider the data portion)
@@ -72,6 +73,6 @@ export default function initPushNotification(
   ipcRenderer.send(START_NOTIFICATION_SERVICE, senderId);
   ipcRenderer.on("redirectOrder", (event, orderId) => {
     history.push(`/orders/${orderId}`);
-    remote.getCurrentWindow().show();
+    getCurrentWindow().show();
   });
 }

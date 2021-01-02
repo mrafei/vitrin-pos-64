@@ -3,12 +3,13 @@
 import "../../../styles/_main.scss";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { compose } from "redux";
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { createStructuredSelector } from "reselect";
 import Snackbar from "@material-ui/core/esm/Snackbar";
 import { connect } from "react-redux";
 import Axios from "axios";
-import { remote } from "electron";
+const { ipcRenderer } = require("electron");
+const { getCurrentWebContents } = require("@electron/remote");
 
 import { useInjectReducer } from "../../../utils/injectReducer";
 import { useInjectSaga } from "../../../utils/injectSaga";
@@ -42,6 +43,12 @@ import { setSiteDomain } from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
 import UploadCustomers from "../UploadCustomers";
 import SoundSettings from "../SoundSettings";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
 
 const App = function ({
   history,
@@ -60,7 +67,7 @@ const App = function ({
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
-
+  const [dialog, setDialog] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -74,8 +81,11 @@ const App = function ({
         history.push("/login");
       }
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "I") {
-        remote.getCurrentWebContents().openDevTools();
+        getCurrentWebContents().openDevTools();
       }
+    });
+    ipcRenderer.on("closePrompt", () => {
+      setDialog(true);
     });
   }, []);
 
@@ -182,6 +192,35 @@ const App = function ({
         autoHideDuration={4000}
         message={snackBarMessage.message}
       />
+      <Dialog
+        PaperProps={{ style: { minWidth: 400 } }}
+        open={dialog}
+        onClose={() => setDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <div className="u-fontWeightBold py-3 px-5">{"خروج از نرم‌افزار"}</div>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            آیا مایل به بستن نرم‌افزار هستید؟
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialog(false)} color="primary">
+            انصراف
+          </Button>
+          <Button
+            onClick={() => {
+              ipcRenderer.send("closeApp");
+              setDialog(false);
+            }}
+            color="primary"
+            autoFocus
+          >
+            خروج
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
