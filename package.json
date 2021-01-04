@@ -46,7 +46,7 @@
     "package": "npm run build",
     "postpackage": "electron-packager ./ --asar --overwrite --platform=win32 --arch=ia32 --out=build --icon=assets/icon.ico",
     "create-installer-win": "node createinstaller.js",
-    "postinstall": "electron-rebuild --arch=ia32 -f -w sqlite3",
+    "postinstall": "electron-builder install-app-deps --arch=ia32",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:css": "stylelint app/**/*.js",
     "lint:eslint": "eslint",
@@ -86,7 +86,7 @@
     "redux-saga": "^1.1.3",
     "reselect": "^4.0.0",
     "sass-loader": "^8.0.2",
-    "sqlite3": "^4.2.0",
+    "sqlite3": "^5.0.0",
     "update-electron-app": "^1.5.0"
   },
   "devDependencies": {
@@ -125,6 +125,7 @@
     "css-loader": "^3.5.3",
     "dotenv-webpack": "^1.8.0",
     "electron": "^9.0.0",
+    "electron-builder": "^22.9.1",
     "electron-packager": "^14.2.1",
     "electron-rebuild": "^1.11.0",
     "electron-serve": "^1.0.0",
