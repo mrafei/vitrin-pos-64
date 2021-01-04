@@ -8,7 +8,7 @@
   <body>
     <script>
       const ipcRenderer = require("electron").ipcRenderer;
-      const { getCurrentWebContents } = require('@electron/remote')
+      const remote = require("electron").remote;
       const QRious = require("qrious");
       ipcRenderer.on("print", (event, content, url, printOptions) => {
         document.write(
@@ -30,9 +30,7 @@
               value: url,
             });
         })();
-        console.log(printOptions);
-        console.log(getCurrentWebContents())
-        getCurrentWebContents().print(
+        remote.getCurrentWebContents().print(
           {
             silent: true,
             deviceName: printOptions.device,

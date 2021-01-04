@@ -40,7 +40,7 @@ import { applyCategory, setBusiness, setDeal, setDeliveries } from "./actions";
 import { makeSelectSubDomain } from "../../src/containers/App/selectors";
 import { reloadPage, setSnackBarMessage } from "../ui/actions";
 import { makeSelectBusiness, makeSelectBusinessSlug } from "./selector";
-const { getCurrentWebContents } = require("@electron/remote");
+import { remote } from "electron";
 
 export function* getBusinessData() {
   try {
@@ -61,7 +61,7 @@ export function* getBusinessData() {
         setPrinterOptions(JSON.parse(localStorage.getItem("printerOptions")))
       );
     else {
-      const defaultPrinter = getCurrentWebContents()
+      const defaultPrinter = remote.getCurrentWebContents()
         .getPrinters()
         .find((p) => p.isDefault);
       let printers = [];

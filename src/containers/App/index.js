@@ -8,9 +8,7 @@ import { createStructuredSelector } from "reselect";
 import Snackbar from "@material-ui/core/esm/Snackbar";
 import { connect } from "react-redux";
 import Axios from "axios";
-const { ipcRenderer } = require("electron");
-const { getCurrentWebContents } = require("@electron/remote");
-
+const { ipcRenderer, remote } = require("electron");
 import { useInjectReducer } from "../../../utils/injectReducer";
 import { useInjectSaga } from "../../../utils/injectSaga";
 import reducer from "./reducer";
@@ -81,7 +79,7 @@ const App = function ({
         history.push("/login");
       }
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "I") {
-        getCurrentWebContents().openDevTools();
+        remote.getCurrentWebContents().openDevTools();
       }
     });
     ipcRenderer.on("closePrompt", () => {

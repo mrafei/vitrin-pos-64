@@ -1,8 +1,7 @@
 "use strict";
 
 // Import parts of electron to use
-require("@electron/remote/main").initialize();
-// const { testDataBase } = require("./utils/database");
+const { testDataBase } = require("./utils/database");
 
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
@@ -10,6 +9,7 @@ const url = require("url");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
 const Sentry = require("@sentry/electron");
 app.showExitPrompt = true;
+
 require("update-electron-app")();
 
 Sentry.init({
@@ -21,7 +21,7 @@ if (handleSquirrelEvent()) {
   process.exit();
 }
 
-// testDataBase();
+testDataBase();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -59,9 +59,9 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true,
     },
   });
   if (!dev) {
@@ -105,7 +105,6 @@ function createWindow() {
     }
   });
   setupPushReceiver(mainWindow.webContents);
-
   mainWindow.on("close", function (e) {
     if (app.showExitPrompt) {
       e.preventDefault();
@@ -123,13 +122,12 @@ function createWindow() {
     app.quit();
   });
   workerWindow = new BrowserWindow({
-    show: false,
     webPreferences: {
-      enableRemoteModule: true,
       nodeIntegration: true,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
+  workerWindow.hide();
   notifWindow = new BrowserWindow({
     width: 240,
     height: 135,
@@ -143,13 +141,12 @@ function createWindow() {
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true,
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
   app.dock.hide();
   notifWindow.setAlwaysOnTop(true, "floating", 1);
-  notifWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  notifWindow.setVisibleOnAllWorkspaces(true);
   notifWindow.setFullScreenable(false);
   notifWindow.maximize();
 }
