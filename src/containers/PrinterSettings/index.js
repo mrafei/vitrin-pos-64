@@ -11,6 +11,7 @@ import {
 import Icon from "../../components/Icon";
 import { ICONS } from "../../../assets/images/icons";
 const { getCurrentWebContents } = require("@electron/remote");
+
 import Select from "../../components/Select";
 import {
   englishNumberToPersianNumber,

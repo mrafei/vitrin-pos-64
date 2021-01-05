@@ -80,7 +80,6 @@ function createWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true,
     },
   });
   if (!dev) {
@@ -124,7 +123,6 @@ function createWindow() {
     }
   });
   setupPushReceiver(mainWindow.webContents);
-
   mainWindow.on("close", function (e) {
     if (app.showExitPrompt) {
       e.preventDefault();
@@ -142,13 +140,12 @@ function createWindow() {
     app.quit();
   });
   workerWindow = new BrowserWindow({
-    show: false,
     webPreferences: {
-      enableRemoteModule: true,
       nodeIntegration: true,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
+  workerWindow.hide();
   notifWindow = new BrowserWindow({
     width: 240,
     height: 135,
@@ -162,7 +159,6 @@ function createWindow() {
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true,
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
@@ -201,9 +197,6 @@ ipcMain.on("print", (event, content, url, printOptions) => {
   ipcMain.once("printFinished", () => {
     event.returnValue = "result";
   });
-});
-ipcMain.on("sentryError", (event, errorMessage) => {
-  Sentry.captureException(errorMessage);
 });
 ipcMain.on("orderReceived", (event, notification) => {
   let split = notification.click_action.split("/");
