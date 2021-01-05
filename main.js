@@ -2,26 +2,44 @@
 
 // Import parts of electron to use
 require("@electron/remote/main").initialize();
-// const { testDataBase } = require("./utils/database");
 
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const url = require("url");
+const sqlite3 = require("sqlite3").verbose();
+const db = new sqlite3.Database("./database.sqlite", (err) => {
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log("Connected to the in-memory SQlite database.");
+});
+db.run(
+  "CREATE TABLE IF NOT EXISTS orders \
+  (order_id TEXT PRIMARY KEY, \
+   total_initial_price INTEGER, \
+   total_final_price INTEGER, \
+   total_discount INTEGER, \
+   items TEXT \
+  )"
+);
+db.run(
+  "CREATE TABLE IF NOT EXISTS status (id TEXT PRIMARY KEY, has_updates INTEGER)"
+);
+db.run(
+  `INSERT INTO status(id,has_updates) VALUES(?, ?)`,
+  ["singleId", 0],
+  function () {}
+);
 const { setup: setupPushReceiver } = require("electron-push-receiver");
-const Sentry = require("@sentry/electron");
 app.showExitPrompt = true;
+
 require("update-electron-app")();
 
-Sentry.init({
-  dsn: "https://f10f2a0b0cb94dc6bfb819be6171641a@sentry.hamravesh.com/91",
-});
 if (require("electron-squirrel-startup")) app.quit();
 
 if (handleSquirrelEvent()) {
   process.exit();
 }
-
-// testDataBase();
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -59,6 +77,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -147,11 +166,9 @@ function createWindow() {
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
-  app.dock.hide();
-  notifWindow.setAlwaysOnTop(true, "floating", 1);
   notifWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  notifWindow.setFullScreenable(false);
-  notifWindow.maximize();
+  notifWindow.setAlwaysOnTop(true, "floating", 1);
+  notifWindow.moveTop();
 }
 
 // This method will be called when Electron has finished
@@ -189,6 +206,9 @@ ipcMain.on("sentryError", (event, errorMessage) => {
   Sentry.captureException(errorMessage);
 });
 ipcMain.on("orderReceived", (event, notification) => {
+  let split = notification.click_action.split("/");
+  const orderId = split[split.length - 1];
+  console.log(orderId);
   notifWindow.webContents.send("orderReceived", notification);
   notifWindow.show();
 });
@@ -202,6 +222,24 @@ ipcMain.on("redirectOrder", (event, notification) => {
     const orderId = split[split.length - 1];
     mainWindow.webContents.send("redirectOrder", orderId);
   }
+});
+ipcMain.on("insertOrder", (event, order) => {
+  db.run(
+    `INSERT INTO orders(order_id,total_initial_price,total_final_price,total_discount, items) VALUES(?, ?, ?, ?, ?)`,
+    [
+      order.id,
+      order.total_initial_price,
+      order.total_final_price,
+      order.total_discount,
+      JSON.stringify(order.items),
+    ],
+    function (err) {
+      if (err) {
+        return err.message;
+      }
+      db.run(`REPLACE INTO status (id, has_updates) VALUES("singleId", 1);`);
+    }
+  );
 });
 
 function handleSquirrelEvent() {
