@@ -80,6 +80,7 @@ function createWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
   if (!dev) {
@@ -140,12 +141,13 @@ function createWindow() {
     app.quit();
   });
   workerWindow = new BrowserWindow({
+    show: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
-  workerWindow.hide();
   notifWindow = new BrowserWindow({
     width: 240,
     height: 135,
@@ -159,6 +161,7 @@ function createWindow() {
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
