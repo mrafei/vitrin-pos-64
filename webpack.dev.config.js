@@ -131,6 +131,7 @@ module.exports = {
       "process.env.NODE_ENV": JSON.stringify("development"),
     }),
   ],
+  externals: {sqlite3: "commonjs sqlite3"},
   devtool: "cheap-source-map",
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),

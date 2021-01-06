@@ -151,7 +151,6 @@ export function EditProduct({
           ? Math.floor(((initialPrice - discountedPrice) / initialPrice) * 100)
           : 0,
     });
-    console.log(form.complementary);
     if (match.params.category)
       setCategories([
         categories &&

@@ -5,6 +5,7 @@ build/
 # Development folders and files #
 #################################
 .tmp/
+.vscode/
 dist/
 node_modules/
 *.compiled.*
