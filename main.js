@@ -80,6 +80,7 @@ function createWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
   if (!dev) {
@@ -140,12 +141,13 @@ function createWindow() {
     app.quit();
   });
   workerWindow = new BrowserWindow({
+    show: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
-  workerWindow.hide();
   notifWindow = new BrowserWindow({
     width: 240,
     height: 135,
@@ -159,6 +161,7 @@ function createWindow() {
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
@@ -217,17 +220,19 @@ ipcMain.on("redirectOrder", (event, notification) => {
   }
 });
 ipcMain.on("insertOrder", (event, order) => {
+  console.log(order)
   db.run(
     `INSERT INTO orders(order_id,total_initial_price,total_final_price,total_discount, items) VALUES(?, ?, ?, ?, ?)`,
     [
       order.id,
       order.total_initial_price,
-      order.total_final_price,
+      order.final_price,
       order.total_discount,
       JSON.stringify(order.items),
     ],
     function (err) {
       if (err) {
+
         return err.message;
       }
       db.run(`REPLACE INTO status (id, has_updates) VALUES("singleId", 1);`);
