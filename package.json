@@ -46,7 +46,7 @@
     "package": "npm run build",
     "postpackage": "electron-packager ./ --asar --overwrite --out=build --icon=assets/icon.ico",
     "create-installer-win": "node createinstaller.js",
-    "postinstall": "electron-builder install-app-deps --arch=ia32",
+    "postinstall": "electron-builder install-app-deps",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:css": "stylelint app/**/*.js",
     "lint:eslint": "eslint",
