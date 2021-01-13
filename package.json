@@ -46,7 +46,7 @@
     "package": "npm run build",
     "postpackage": "electron-packager ./ --asar --overwrite --out=build --icon=assets/icon.ico",
     "create-installer-win": "node createinstaller.js",
-    "postinstall": "electron-rebuild -f -w sqlite3",
+    "postinstall": "electron-builder install-app-deps",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:css": "stylelint app/**/*.js",
     "lint:eslint": "eslint",
@@ -86,7 +86,7 @@
     "reselect": "^4.0.0",
     "sass-loader": "^10.1.0",
     "sqlite3": "^5.0.0",
-    "update-electron-app": "^1.5.0"
+    "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
     "@babel/cli": "7.4.3",
@@ -128,7 +128,7 @@
     "electron-packager": "^15.2.0",
     "electron-rebuild": "^2.3.4",
     "electron-serve": "^1.0.0",
-    "electron-winstaller": "^4.0.0",
+    "electron-winstaller": "^4.0.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-airbnb-base": "13.1.0",

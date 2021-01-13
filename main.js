@@ -6,6 +6,7 @@ require("@electron/remote/main").initialize();
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const url = require("url");
+app.disableHardwareAcceleration();
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("./database.sqlite", (err) => {
   if (err) {
@@ -220,7 +221,7 @@ ipcMain.on("redirectOrder", (event, notification) => {
   }
 });
 ipcMain.on("insertOrder", (event, order) => {
-  console.log(order)
+  console.log(order);
   db.run(
     `INSERT INTO orders(order_id,total_initial_price,total_final_price,total_discount, items) VALUES(?, ?, ?, ?, ?)`,
     [
@@ -232,7 +233,6 @@ ipcMain.on("insertOrder", (event, order) => {
     ],
     function (err) {
       if (err) {
-
         return err.message;
       }
       db.run(`REPLACE INTO status (id, has_updates) VALUES("singleId", 1);`);
