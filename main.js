@@ -6,6 +6,7 @@ require("@electron/remote/main").initialize();
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const url = require("url");
+app.disableHardwareAcceleration();
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("./database.sqlite", (err) => {
   if (err) {
