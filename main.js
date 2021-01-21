@@ -7,30 +7,6 @@ const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const url = require("url");
 app.disableHardwareAcceleration();
-const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("./database.sqlite", (err) => {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log("Connected to the in-memory SQlite database.");
-});
-db.run(
-  "CREATE TABLE IF NOT EXISTS orders \
-  (order_id TEXT PRIMARY KEY, \
-   total_initial_price INTEGER, \
-   total_final_price INTEGER, \
-   total_discount INTEGER, \
-   items TEXT \
-  )"
-);
-db.run(
-  "CREATE TABLE IF NOT EXISTS status (id TEXT PRIMARY KEY, has_updates INTEGER)"
-);
-db.run(
-  `INSERT INTO status(id,has_updates) VALUES(?, ?)`,
-  ["singleId", 0],
-  function () {}
-);
 const { setup: setupPushReceiver } = require("electron-push-receiver");
 app.showExitPrompt = true;
 
@@ -46,7 +22,23 @@ if (handleSquirrelEvent()) {
 let mainWindow;
 let workerWindow;
 let notifWindow;
+const gotTheLock = app.requestSingleInstanceLock();
 
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+
+  app.whenReady().then(() => {
+    createWindow();
+  });
+}
 // Keep a reference for dev mode
 let dev = false;
 
@@ -174,7 +166,6 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
@@ -220,26 +211,7 @@ ipcMain.on("redirectOrder", (event, notification) => {
     mainWindow.webContents.send("redirectOrder", orderId);
   }
 });
-ipcMain.on("insertOrder", (event, order) => {
-  console.log(order)
-  db.run(
-    `INSERT INTO orders(order_id,total_initial_price,total_final_price,total_discount, items) VALUES(?, ?, ?, ?, ?)`,
-    [
-      order.id,
-      order.total_initial_price,
-      order.final_price,
-      order.total_discount,
-      JSON.stringify(order.items),
-    ],
-    function (err) {
-      if (err) {
-
-        return err.message;
-      }
-      db.run(`REPLACE INTO status (id, has_updates) VALUES("singleId", 1);`);
-    }
-  );
-});
+ipcMain.on("insertOrder", (event, order) => {});
 
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {
