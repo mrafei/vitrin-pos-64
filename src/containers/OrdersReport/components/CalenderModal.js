@@ -1,18 +1,18 @@
-import React, { memo } from 'react';
-import Icon from '../../../components/Icon';
-import Calendar from 'react-persian-calendar';
-import { ICONS } from '../../../../assets/images/icons';
+import React, { memo } from "react";
+import Icon from "../../../components/Icon";
+import Calendar from "reactjs-persian-calendar";
+import { ICONS } from "../../../../assets/images/icons";
 
 const CalenderModal = ({ onClose, selectDay, open }) => {
   const dayClicked = (day) => {
-    selectDay(day.replace(/-/g, '/'));
+    selectDay(day.replace(/-/g, "/"));
     onClose();
   };
 
   return (
     <div
       className={`c-modal ${
-        !open && 'visibility-hidden u-pointer-events-none'
+        !open && "visibility-hidden u-pointer-events-none"
       }`}
       id="c-modal-name"
     >
@@ -21,18 +21,18 @@ const CalenderModal = ({ onClose, selectDay, open }) => {
           <div className="c-modal-background" onClick={onClose} />
           <div
             className="c-modal-box c-modal-box-small u-border-radius-4"
-            style={{ width: 'auto' }}
+            style={{ width: "auto" }}
           >
             <div
               className="d-flex c-modal-header u-background-white text-center u-borderBottom"
-              style={{ width: 'auto' }}
+              style={{ width: "auto" }}
             >
               <div className="u-relative" onClick={onClose}>
                 <Icon
                   className="c-modal-header-close u-absolute c-modal-header-close-custom"
                   icon={ICONS.CLOSE}
                   size={25}
-                  color={'#ccd4d7'}
+                  color={"#ccd4d7"}
                 />
               </div>
               <div className="m-auto u-fontMedium u-text-dark-grey" />
@@ -43,7 +43,7 @@ const CalenderModal = ({ onClose, selectDay, open }) => {
                 <div className="u-textBlack u-fontWeightBold u-fontMedium mb-3">
                   روز مورد نظر خود را بر روی تقویم انتخاب کنید.
                 </div>
-                <Calendar onChange={dayClicked} />
+                <Calendar color="#0050ff" onClick={dayClicked} size={50} />
               </div>
             </div>
           </div>
