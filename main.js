@@ -194,9 +194,6 @@ ipcMain.on("print", (event, content, url, printOptions) => {
   });
 });
 ipcMain.on("orderReceived", (event, notification) => {
-  let split = notification.click_action.split("/");
-  const orderId = split[split.length - 1];
-  console.log(orderId);
   notifWindow.webContents.send("orderReceived", notification);
   notifWindow.show();
 });
@@ -211,8 +208,6 @@ ipcMain.on("redirectOrder", (event, notification) => {
     mainWindow.webContents.send("redirectOrder", orderId);
   }
 });
-ipcMain.on("insertOrder", (event, order) => {});
-
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {
     return false;
