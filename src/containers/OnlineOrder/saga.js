@@ -24,8 +24,8 @@ import {
   stopLoading,
   stopProgressLoading,
 } from "../App/actions";
-import { submitAriaOrderApi } from "../../../integrations/aria/api";
 import { submitHamiOrder } from "../../../integrations/hami/actions";
+import { submitAriaOrder } from "../../../integrations/aria/actions";
 
 export function* getFoodAdminOrder(action) {
   try {
@@ -82,7 +82,7 @@ export function* acceptFoodOrder(action) {
         yield put(setSnackBarMessage("سفارش مورد نظر تایید شد.", "success"));
         const integration = localStorage.getItem("integrated");
         if (integration === "hami") submitHamiOrder(data);
-        if (integration === "aria") submitAriaOrderApi(data);
+        if (integration === "aria") submitAriaOrder(data);
 
         yield put(setFoodAdminOrder(data));
       } else
@@ -95,7 +95,7 @@ export function* acceptFoodOrder(action) {
       );
     yield put(stopLoading());
   } catch (err) {
-    console.log(err)
+    console.log(err);
     yield put(setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail"));
     yield put(stopLoading());
   }

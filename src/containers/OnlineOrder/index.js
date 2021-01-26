@@ -45,7 +45,6 @@ import { ipcRenderer, shell } from "electron";
 import { renderToString } from "react-dom/server";
 import ComponentToPrint from "../../components/ComponentToPrint";
 import CheckBox from "../../components/CheckBox";
-import { submitHamiOrder } from "../../../integrations/hami/actions";
 
 export function OnlineOrder({
   adminOrder: order,
