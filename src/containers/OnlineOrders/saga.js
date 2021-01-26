@@ -25,9 +25,6 @@ export function* getFoodAdminOrdersFunc(action) {
     const pagesCount = Math.ceil(pagination.count / ADMIN_ORDERS_PAGE_SIZE);
 
     if (data) {
-      data.map((order) => {
-        ipcRenderer.send("insertOrder", order);
-      });
       yield put(setFoodAdminOrders(data, { ...pagination, pagesCount }));
     }
     yield put(stopProgressLoading());

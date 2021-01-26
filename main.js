@@ -194,9 +194,6 @@ ipcMain.on("print", (event, content, url, printOptions) => {
   });
 });
 ipcMain.on("orderReceived", (event, notification) => {
-  let split = notification.click_action.split("/");
-  const orderId = split[split.length - 1];
-  console.log(orderId);
   notifWindow.webContents.send("orderReceived", notification);
   notifWindow.show();
 });
@@ -211,30 +208,6 @@ ipcMain.on("redirectOrder", (event, notification) => {
     mainWindow.webContents.send("redirectOrder", orderId);
   }
 });
-<<<<<<< HEAD
-ipcMain.on("insertOrder", (event, order) => {
-  console.log(order);
-  db.run(
-    `INSERT INTO orders(order_id,total_initial_price,total_final_price,total_discount, items) VALUES(?, ?, ?, ?, ?)`,
-    [
-      order.id,
-      order.total_initial_price,
-      order.final_price,
-      order.total_discount,
-      JSON.stringify(order.items),
-    ],
-    function (err) {
-      if (err) {
-        return err.message;
-      }
-      db.run(`REPLACE INTO status (id, has_updates) VALUES("singleId", 1);`);
-    }
-  );
-});
-=======
-ipcMain.on("insertOrder", (event, order) => {});
->>>>>>> bb695554868ac112fb00c7a28f63626ef52a39c0
-
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {
     return false;
