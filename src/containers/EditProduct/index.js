@@ -79,7 +79,7 @@ function AdminProduct({
   }, [uploadedFiles]);
   useEffect(() => {
     if (product && productId !== null) {
-      const newImages = product.images;
+      const newImages = product.images || [];
       setImagesArray([...newImages]);
     }
   }, [product]);
