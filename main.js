@@ -160,7 +160,6 @@ function createWindow() {
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
   notifWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   notifWindow.setAlwaysOnTop(true, "floating", 1);
-  notifWindow.moveTop();
 }
 
 // This method will be called when Electron has finished
@@ -195,6 +194,7 @@ ipcMain.on("print", (event, content, url, printOptions) => {
 });
 ipcMain.on("orderReceived", (event, notification) => {
   notifWindow.webContents.send("orderReceived", notification);
+  notifWindow.moveTop();
   notifWindow.show();
 });
 ipcMain.on("hideNotification", () => {
