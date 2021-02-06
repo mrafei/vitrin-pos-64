@@ -27,22 +27,7 @@ export const initialState = {
     phone: "",
     printers: [],
   },
-  deal: {
-    description: undefined,
-    title: "",
-    discounted_price: 0,
-    initial_price: 0,
-    images: [],
-    categories: [],
-    available: true,
-    inventory_count: null,
-    extra_data: {
-      only_on_day: [],
-      packaging_price: 0,
-      info_table: [],
-      complementary: undefined,
-    },
-  },
+  deal: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */

@@ -15,10 +15,6 @@ const makeSelectPlugin = () =>
     if (state.business.plugins_config) {
       if (state.business.plugins_config.shopping)
         return state.business.plugins_config.shopping;
-      if (state.business.plugins_config.food)
-        return state.business.plugins_config.food;
-      if (state.business.plugins_config.ecommerce)
-        return state.business.plugins_config.ecommerce;
     }
     return {};
   });
@@ -54,8 +50,6 @@ const makeSelectCategory = (id) =>
 
 const makeSelectBusinessThemeColor = () =>
   createSelector(selectBusiness, (state) => "#0050FF");
-const makeSelectBusinessFoodDemo = () =>
-  createSelector(selectBusiness, () => true);
 const makeSelectBusinessSlug = () =>
   createSelector(selectBusiness, (state) => state.business.slug);
 
@@ -152,7 +146,6 @@ export {
   makeSelectBusinessSiteDomain,
   makeSelectBusinessWorkingHours,
   makeSelectProducts,
-  makeSelectBusinessFoodDemo,
   makeSelectPlugin,
   makeSelectDeliverers,
   makeSelectDeliveries,

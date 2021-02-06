@@ -197,7 +197,9 @@ export default class ComponentToPrint extends React.Component {
                       whiteSpace: "pre-wrap",
                     }}
                   >
-                    {item.deal.title}
+                    {item.deal.title}{" "}
+                    {item.deal.variation_name &&
+                      `(${item.deal.variation_name})`}
                   </div>
                   <div
                     className="text-center u-fontWeightBold"

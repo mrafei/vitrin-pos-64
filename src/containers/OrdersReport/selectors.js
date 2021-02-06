@@ -17,17 +17,17 @@ const selectAdminDomain = (state) => state.ordersReport || initialState;
 
 const makeSelectAdmin = () =>
   createSelector(selectAdminDomain, (substate) => substate);
-const makeSelectFoodAdminOrders = () =>
-  createSelector(selectAdminDomain, (state) => state.foodAdminOrders);
-const makeSelectFoodAdminOrdersPagination = () =>
-  createSelector(selectAdminDomain, (state) => state.foodAdminOrdersPagination);
+const makeSelectAdminOrders = () =>
+  createSelector(selectAdminDomain, (state) => state.adminOrders);
+const makeSelectAdminOrdersPagination = () =>
+  createSelector(selectAdminDomain, (state) => state.adminOrdersPagination);
 const makeSelectOrdersReport = () =>
   createSelector(selectAdminDomain, (state) => state.report);
 
 export default makeSelectAdmin;
 export {
   selectAdminDomain,
-  makeSelectFoodAdminOrders,
-  makeSelectFoodAdminOrdersPagination,
+  makeSelectAdminOrders,
+  makeSelectAdminOrdersPagination,
   makeSelectOrdersReport,
 };

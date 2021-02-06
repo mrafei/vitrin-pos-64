@@ -6,10 +6,10 @@
 
 import {
   DEFAULT_ACTION,
-  GET_FOOD_ADMIN_ORDER,
-  SET_FOOD_ADMIN_ORDER,
-  ACCEPT_FOOD_ORDER,
-  CANCEL_FOOD_ORDER,
+  GET_ADMIN_ORDER,
+  SET_ADMIN_ORDER,
+  ACCEPT_ORDER,
+  CANCEL_ORDER,
   REQUEST_ALOPEYK,
 } from "./constants";
 
@@ -19,9 +19,9 @@ export function defaultAction() {
   };
 }
 
-export function getFoodAdminOrder(data) {
+export function getAdminOrder(data) {
   return {
-    type: GET_FOOD_ADMIN_ORDER,
+    type: GET_ADMIN_ORDER,
     data,
   };
 }
@@ -31,23 +31,23 @@ export function requestAlopeyk(order_id) {
     data: { order_id },
   };
 }
-export function setFoodAdminOrder(data) {
+export function setAdminOrder(data) {
   return {
-    type: SET_FOOD_ADMIN_ORDER,
+    type: SET_ADMIN_ORDER,
     data,
   };
 }
 
-export function acceptFoodOrder(data) {
+export function acceptOrder(data) {
   return {
-    type: ACCEPT_FOOD_ORDER,
+    type: ACCEPT_ORDER,
     data,
   };
 }
 
-export function cancelFoodOrder(data) {
+export function cancelOrder(data) {
   return {
-    type: CANCEL_FOOD_ORDER,
+    type: CANCEL_ORDER,
     data,
   };
 }

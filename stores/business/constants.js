@@ -18,5 +18,21 @@ export const GET_DEAL = "store/business/GET_DEAL";
 export const SET_DEAL = "store/business/SET_DEAL";
 
 export const APPLY_CATEGORY = "store/business/APPLY_CATEGORY";
+export const UPLOAD_IMAGE_AND_UPDATE_PRODUCT = "store/business/UPLOAD_IMAGE_AND_UPDATE_PRODUCT";
 
 export const DELIVERIES_PAGE_SIZE = 20;
+export const inventoryOptions = [
+  { label: "نامحدود", value: "" },
+  { label: "۱۰", value: 10 },
+  { label: "۱۰۰", value: 100 },
+  { label: "۱۰۰۰", value: 1000 },
+];
+export const availableOnDayOptions = [
+  { id: 6, text: "شنبه" },
+  { id: 0, text: "یک‌شنبه" },
+  { id: 1, text: "دوشنبه" },
+  { id: 2, text: "سه‌شنبه" },
+  { id: 3, text: "چهارشنبه" },
+  { id: 4, text: "پنج‌شنبه" },
+  { id: 5, text: "جمعه" },
+];

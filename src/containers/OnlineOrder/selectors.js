@@ -20,13 +20,13 @@ const makeSelectAdmin = () =>
     selectAdminDomain,
     substate => substate
   );
-const makeSelectFoodAdminOrder = () =>
+const makeSelectAdminOrder = () =>
   createSelector(
     selectAdminDomain,
-    state => state.foodAdminOrder
+    state => state.adminOrder
   );
 export default makeSelectAdmin;
 export {
   selectAdminDomain,
-  makeSelectFoodAdminOrder,
+  makeSelectAdminOrder,
 };

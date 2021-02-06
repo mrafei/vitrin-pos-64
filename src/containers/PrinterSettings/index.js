@@ -113,6 +113,7 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
               </div>
               <div className="col-6">
                 <Input
+                  className="mt-3"
                   value={printers[index].title}
                   onChange={(title) => {
                     let newPrinters = [...printers];
@@ -146,6 +147,7 @@ function PrinterSettings({ options, _setPrinterOptions, business }) {
               </div>
               <div className="col-6">
                 <Input
+                  className="mt-3"
                   value={englishNumberToPersianNumber(printers[index].copies)}
                   onChange={(copies) => {
                     let newPrinters = [...printers];

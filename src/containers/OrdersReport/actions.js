@@ -5,9 +5,9 @@
  */
 
 import {
-  SET_FOOD_ADMIN_ORDERS,
+  SET_ADMIN_ORDERS,
   DEFAULT_ACTION,
-  GET_FOOD_ADMIN_ORDERS,
+  GET_ADMIN_ORDERS,
   GET_ORDERS_REPORT,
   SET_ORDERS_REPORT,
 } from './constants';
@@ -31,16 +31,16 @@ export function setOrdersReport(data) {
     data,
   };
 }
-export function getFoodAdminOrders(params) {
+export function getAdminOrders(params) {
   return {
-    type: GET_FOOD_ADMIN_ORDERS,
+    type: GET_ADMIN_ORDERS,
     data: params,
   };
 }
 
-export function setFoodAdminOrders(data, pagination) {
+export function setAdminOrders(data, pagination) {
   return {
-    type: SET_FOOD_ADMIN_ORDERS,
+    type: SET_ADMIN_ORDERS,
     data,
     pagination,
   };

@@ -6,7 +6,7 @@ import { createStructuredSelector } from "reselect";
 import { useInjectReducer } from "../../../utils/injectReducer";
 import { useInjectSaga } from "../../../utils/injectSaga";
 import { makeSelectOrders, makeSelectOrdersPagination } from "./selectors";
-import { getFoodAdminOrders, setDeliverers } from "./actions";
+import { getAdminOrders, setDeliverers } from "./actions";
 
 import reducer from "./reducer";
 import saga from "./saga";
@@ -221,7 +221,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     _getAdminOrders: (page, hasDeliverer) =>
-      dispatch(getFoodAdminOrders(page, hasDeliverer)),
+      dispatch(getAdminOrders(page, hasDeliverer)),
     _setDeliverers: (data) => dispatch(setDeliverers(data)),
   };
 }

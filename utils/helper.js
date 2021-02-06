@@ -475,6 +475,21 @@ function persianToArabicCharacters(input) {
   }
   return input;
 }
+function slugify(text) {
+  return (
+    text &&
+    text
+      .toString()
+      .toLowerCase()
+      .replace(/\s+/g, "-") // Replace spaces with -
+      .replace(/%/g, "-") // Remove all non-word chars
+      .replace(/\-\-+/g, "-") // Replace multiple - with single -
+      .replace(/^-+/, "-")
+      .replace(/‌/, "") // Trim - from start of text
+      .replace(/-+$/, "") // Trim - from end of text
+      .replace(/\//, "-")
+  ); // Trim - from end of text
+}
 function copyToClipboard(event) {
   let range = document.createRange();
   range.selectNode(event.target);
@@ -494,6 +509,101 @@ function copyToClipboard(event) {
     )
   );
 }
+function uniqueid() {
+  // always start with a letter (for DOM friendlyness)
+  let idstr = String.fromCharCode(Math.floor(Math.random() * 25 + 65));
+  do {
+    // between numbers and characters (48 is 0 and 90 is Z (42-48 = 90)
+    const ascicode = Math.floor(Math.random() * 42 + 48);
+    if (ascicode < 58 || ascicode > 64) {
+      // exclude all chars between : (58) and @ (64)
+      idstr += String.fromCharCode(ascicode);
+    }
+  } while (idstr.length < 32);
+
+  return idstr;
+}
+const convertVariantToTable = (variants, isEditMode, table, product) => {
+  let variations = variants.length ? [{ id: "", values: "" }] : [];
+  variants.forEach((variant, i) => {
+    if (variant.values.length) {
+      variations = ((i > 0 && variants[i - 1].value) || variations).flatMap(
+        (d) =>
+          variant.values.map((v) => ({
+            id: d.id ? `${d.id + "-" + v.id}` : v.id,
+            value: `${d.value || ""} ${v.value || ""}`,
+          }))
+      );
+    }
+  });
+  const obj = {};
+  if (isEditMode) {
+    variations.forEach((v) => {
+      if (!v.id) {
+        return;
+      }
+      const item = table[v.id];
+      if (item) {
+        obj[v.id] = { ...item };
+      } else {
+        obj[v.id] = {
+          discounted_price: product ? product.discounted_price : 0,
+          name: v.value,
+          id: v.id,
+          discount_percent: product
+            ? (
+                ((product.initial_price - product.discounted_price) /
+                  product.initial_price) *
+                100
+              ).toFixed(1)
+            : 0,
+          discount_amount: product
+            ? product.initial_price - product.discounted_price
+            : 0,
+          initial_price: product ? product.initial_price : 0,
+          inventory_count: 1,
+          available: true,
+          new: true,
+        };
+      }
+    });
+  } else {
+    variations.forEach((v) => {
+      if (!v.id) {
+        return;
+      }
+      obj[v.id] = {
+        discounted_price: product ? product.discounted_price : 0,
+        name: v.value,
+        id: v.id,
+        discount_amount: product
+          ? product.initial_price - product.discounted_price
+          : 0,
+        discount_percent: product
+          ? (
+              ((product.initial_price - product.discounted_price) /
+                product.initial_price) *
+              100
+            ).toFixed(1)
+          : 0,
+        initial_price: product ? product.initial_price : 0,
+        inventory_count: 1,
+        available: true,
+        new: true,
+      };
+    });
+  }
+  console.log(obj);
+  return obj;
+};
+const reversePriceFormatter = (price) => {
+  if (price)
+    return parseInt(
+      persianToEnglishNumber(price.toString().replace(/,/g, "")),
+      10
+    );
+  return 0;
+};
 export {
   getCountDown,
   noOp,
@@ -534,4 +644,8 @@ export {
   deliveryTimeFormatter,
   copyToClipboard,
   persianToArabicCharacters,
+  slugify,
+  uniqueid,
+  convertVariantToTable,
+  reversePriceFormatter
 };

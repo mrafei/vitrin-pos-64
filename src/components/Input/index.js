@@ -19,10 +19,13 @@ function Input({
   noModal,
   numberOnly,
   style,
-  variant = "filled",
+  variant = "outlined",
   editOnDoubleClick = false,
   onDoubleClick = noOp,
   onBlur = noOp,
+  size = "",
+  InputLabelProps = { className: "" },
+  InputProps = { className: "" },
   ...props
 }) {
   const [assistiveText, setAssistiveText] = useState("");
@@ -48,6 +51,14 @@ function Input({
         <TextField
           InputLabelProps={{
             style: { textAlign: "left", direction: "rtl" },
+          }}
+          InputProps={{
+            ...InputProps,
+            className: `${size} ${InputProps.className}`,
+          }}
+          InputLabelProps={{
+            ...InputLabelProps,
+            className: `${size} medium ${InputLabelProps.className}`,
           }}
           inputProps={{ style }}
           fullWidth
