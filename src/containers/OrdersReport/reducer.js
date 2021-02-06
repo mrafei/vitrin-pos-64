@@ -5,14 +5,14 @@
  */
 import produce from 'immer';
 import {
-  SET_FOOD_ADMIN_ORDERS,
+  SET_ADMIN_ORDERS,
   DEFAULT_ACTION,
   SET_ORDERS_REPORT,
 } from './constants';
 
 export const initialState = {
-  foodAdminOrders: [],
-  foodAdminOrdersPagination: {},
+  adminOrders: [],
+  adminOrdersPagination: {},
   reportLoading: false,
   report: {},
 };
@@ -21,9 +21,9 @@ export const initialState = {
 const adminReducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case SET_FOOD_ADMIN_ORDERS:
-        draft.foodAdminOrders = action.data;
-        draft.foodAdminOrdersPagination = action.pagination;
+      case SET_ADMIN_ORDERS:
+        draft.adminOrders = action.data;
+        draft.adminOrdersPagination = action.pagination;
         break;
       case SET_ORDERS_REPORT:
         draft.report = action.data;

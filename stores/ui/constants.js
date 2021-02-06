@@ -14,26 +14,7 @@ export const LOGIN_MODAL = 'login_modal';
 export const VERIFICATION_MODAL = 'verification_modal';
 export const DEALS_PRODUCT_MODAL = 'deals_product_modal';
 export const ECOMMERCE_PRODUCT_MODAL = 'ecommerce_product_modal';
-export const FOOD_PRODUCT_MODAL = 'food_product_modal';
 
-// drawers
-export const FOOD_ORDER_PREVIEW_DRAWER = 'food_order_preview_drawer';
-export const FOOD_USER_ADDRESSES_DRAWER = 'food_user_addresses_drawer';
-export const FOOD_USER_LOCATION_DRAWER = 'food_user_location_drawer';
-export const FOOD_USER_NEW_ADDRESS_DRAWER = 'food_user_new_address_drawer';
-export const FOOD_INVOICE_DRAWER = 'food_invoice_drawer';
-
-export const ECOMMERCE_ORDER_PREVIEW_DRAWER = 'ecommerce_order_preview_drawer';
-export const ECOMMERCE_USER_ADDRESSES_DRAWER =
-  'ecommerce_user_addresses_drawer';
-export const ECOMMERCE_USER_LOCATION_DRAWER = 'ecommerce_user_location_drawer';
-export const ECOMMERCE_USER_NEW_ADDRESS_DRAWER =
-  'ecommerce_user_new_address_drawer';
-export const ECOMMERCE_INVOICE_DRAWER = 'ecommerce_invoice_drawer';
-export const ECOMMERCE_SUBMITED_ORDERS_DRAWER =
-  'ecommerce_submited_orders_drawer';
-export const ECOMMERCE_ORDER_DELIVERY_TIME_DRAWER =
-  'ecommerce_order_delivery_time_drawer';
 
 export const SUPERMARKET_USER_ADDRESSES_DRAWER =
   'supermarket_user_addresses_drawer';
@@ -73,7 +54,7 @@ export const ADMIN_EDIT_SLIDER_SECTION_MODAL =
 export const ADMIN_EDIT_BUSINESS_CONTACT_INFO_MODAL =
   'admin_edit_business_contact_info_modal';
 export const ADMIN_THEME_COLOR_MODAL = 'ADMIN_THEME_COLOR_MODAL';
-export const ADMIN_CANCEL_FOOD_ORDER_MODAL = 'ADMIN_CANCEL_FOOD_ORDER_MODAL';
+export const ADMIN_CANCEL_ORDER_MODAL = 'ADMIN_CANCEL_ORDER_MODAL';
 export const ADMIN_CANCEL_ECOMMERCE_ORDER_MODAL =
   'ADMIN_CANCEL_ECOMMERCE_ORDER_MODAL';
 
@@ -87,3 +68,58 @@ export const ADMIN_ORDER_NOTIFICATIONS_MODAL =
 export const SET_SNACK_BAR_MESSAGE = 'TOGGLE_SNACK_BAR';
 
 export const RELOAD_PAGE = 'store/ui/RELOAD_PAGE';
+
+export const quillModules = {
+  toolbar: [
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote", "code-block"],
+
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ direction: "rtl" }], // text direction
+
+    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+    [
+      {
+        color: [
+          "#000000",
+          "#CE9C7B",
+          "#F5AB35",
+          "#FF926B",
+          "#FF6C5C",
+          "#FA5C98",
+          "#9B59B6",
+          "#1297E0",
+          "#27CBC0",
+          "#2ECC71",
+          "#8C9AA9",
+          "#909090",
+        ],
+      },
+      {
+        background: [
+          "#CE9C7B",
+          "#F5AB35",
+          "#FF926B",
+          "#FF6C5C",
+          "#FA5C98",
+          "#9B59B6",
+          "#1297E0",
+          "#27CBC0",
+          "#2ECC71",
+          "#8C9AA9",
+          "#909090",
+          "#FFFFFF",
+        ],
+      },
+    ], // dropdown with defaults from theme
+    [{ align: [] }],
+    ["link", "image"],
+
+    ["clean"], // remove formatting button
+  ],
+};

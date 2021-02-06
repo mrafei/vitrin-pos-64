@@ -10,11 +10,11 @@ import {
   ORDER_DELIVERER_API,
   REQUEST_ALOPEYK_API,
 } from "../../../utils/api";
-import { setFoodAdminOrder } from "./actions";
+import { setAdminOrder } from "./actions";
 import {
-  GET_FOOD_ADMIN_ORDER,
-  ACCEPT_FOOD_ORDER,
-  CANCEL_FOOD_ORDER,
+  GET_ADMIN_ORDER,
+  ACCEPT_ORDER,
+  CANCEL_ORDER,
   REQUEST_ALOPEYK,
 } from "./constants";
 import { setSnackBarMessage } from "../../../stores/ui/actions";
@@ -27,18 +27,18 @@ import {
 import { submitHamiOrder } from "../../../integrations/hami/actions";
 import { submitAriaOrder } from "../../../integrations/aria/actions";
 
-export function* getFoodAdminOrder(action) {
+export function* getAdminOrder(action) {
   try {
     yield put(startProgressLoading());
     const {
       response: { data },
     } = yield call(
       request,
-      USER_ORDERS_ITEMS_API(action.data.id, "food"),
+      USER_ORDERS_ITEMS_API(action.data.id, "shopping"),
       {},
       "GET"
     );
-    if (data) yield put(setFoodAdminOrder(data));
+    if (data) yield put(setAdminOrder(data));
     yield put(stopProgressLoading());
   } catch (err) {
     yield put(stopProgressLoading());
@@ -47,7 +47,7 @@ export function* getFoodAdminOrder(action) {
   }
 }
 
-export function* acceptFoodOrder(action) {
+export function* acceptOrder(action) {
   try {
     yield put(startLoading());
     const {
@@ -62,7 +62,7 @@ export function* acceptFoodOrder(action) {
       if (action.data.deliverer)
         yield call(
           request,
-          ORDER_DELIVERER_API(action.data.id, "food"),
+          ORDER_DELIVERER_API(action.data.id, "shopping"),
           {
             deliverer_name: action.data.deliverer,
             send_sms: action.data.sendSms,
@@ -74,7 +74,7 @@ export function* acceptFoodOrder(action) {
         response: { data },
       } = yield call(
         request,
-        ORDER_STATUS_PROGRESS_API(action.data.id, "food"),
+        ORDER_STATUS_PROGRESS_API(action.data.id, "shopping"),
         {},
         "PATCH"
       );
@@ -84,7 +84,7 @@ export function* acceptFoodOrder(action) {
         if (integration === "hami") submitHamiOrder(data);
         if (integration === "aria") submitAriaOrder(data);
 
-        yield put(setFoodAdminOrder(data));
+        yield put(setAdminOrder(data));
       } else
         yield put(
           setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail")
@@ -101,20 +101,20 @@ export function* acceptFoodOrder(action) {
   }
 }
 
-export function* cancelFoodOrder(action) {
+export function* cancelOrder(action) {
   try {
     yield put(startLoading());
     const {
       response: { data },
     } = yield call(
       request,
-      ORDER_STATUS_CANCELLED_API(action.data.id, "food"),
+      ORDER_STATUS_CANCELLED_API(action.data.id, "shopping"),
       {},
       "PATCH"
     );
     if (data) {
       yield put(setSnackBarMessage("سفارش مورد نظر لغو شد.", "success"));
-      yield put(setFoodAdminOrder(data));
+      yield put(setAdminOrder(data));
     } else
       yield put(setSnackBarMessage("در لغو سفارش خطایی رخ داده است!", "fail"));
     yield put(stopLoading());
@@ -130,14 +130,14 @@ export function* requestAlopeykFunc(action) {
       response: { data },
     } = yield call(
       request,
-      REQUEST_ALOPEYK_API(action.data.order_id, "food"),
+      REQUEST_ALOPEYK_API(action.data.order_id, "shopping"),
       {},
       "POST"
     );
     if (data) {
       yield put(setSnackBarMessage("درخواست الوپیک شما ثبت شد.", "success"));
       yield call(() =>
-        getFoodAdminOrder({ data: { id: action.data.order_id } })
+        getAdminOrder({ data: { id: action.data.order_id } })
       );
     } else
       yield put(
@@ -149,8 +149,8 @@ export function* requestAlopeykFunc(action) {
   }
 }
 export default function* adminPanelAppSaga() {
-  yield takeLatest(GET_FOOD_ADMIN_ORDER, getFoodAdminOrder);
-  yield takeLatest(ACCEPT_FOOD_ORDER, acceptFoodOrder);
-  yield takeLatest(CANCEL_FOOD_ORDER, cancelFoodOrder);
+  yield takeLatest(GET_ADMIN_ORDER, getAdminOrder);
+  yield takeLatest(ACCEPT_ORDER, acceptOrder);
+  yield takeLatest(CANCEL_ORDER, cancelOrder);
   yield takeLatest(REQUEST_ALOPEYK, requestAlopeykFunc);
 }

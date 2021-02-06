@@ -6,10 +6,10 @@ import { createStructuredSelector } from "reselect";
 import { useInjectReducer } from "../../../utils/injectReducer";
 import { useInjectSaga } from "../../../utils/injectSaga";
 import {
-  makeSelectFoodAdminOrders,
-  makeSelectFoodAdminOrdersPagination,
+  makeSelectAdminOrders,
+  makeSelectAdminOrdersPagination,
 } from "./selectors";
-import { getFoodAdminOrders } from "./actions";
+import { getAdminOrders } from "./actions";
 
 import reducer from "./reducer";
 import saga from "./saga";
@@ -62,14 +62,14 @@ const OnlineOrders = function ({
 };
 
 const mapStateToProps = createStructuredSelector({
-  adminOrders: makeSelectFoodAdminOrders(),
-  pagination: makeSelectFoodAdminOrdersPagination(),
+  adminOrders: makeSelectAdminOrders(),
+  pagination: makeSelectAdminOrdersPagination(),
   businessTitle: makeSelectBusinessTitle(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    _getAdminOrders: (page) => dispatch(getFoodAdminOrders(page)),
+    _getAdminOrders: (page) => dispatch(getAdminOrders(page)),
   };
 }
 

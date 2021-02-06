@@ -4,7 +4,7 @@
  *
  */
 
-import { SET_FOOD_ADMIN_ORDERS, DEFAULT_ACTION, GET_FOOD_ADMIN_ORDERS } from "./constants";
+import { SET_ADMIN_ORDERS, DEFAULT_ACTION, GET_ADMIN_ORDERS } from "./constants";
 
 export function defaultAction() {
   return {
@@ -12,16 +12,16 @@ export function defaultAction() {
   };
 }
 
-export function getFoodAdminOrders(page) {
+export function getAdminOrders(page) {
   return {
-    type: GET_FOOD_ADMIN_ORDERS,
+    type: GET_ADMIN_ORDERS,
     data: page,
   };
 }
 
-export function setFoodAdminOrders(data, pagination) {
+export function setAdminOrders(data, pagination) {
   return {
-    type: SET_FOOD_ADMIN_ORDERS,
+    type: SET_ADMIN_ORDERS,
     data,
     pagination,
   };

@@ -30,16 +30,16 @@ HighchartsExporting(Highcharts);
 exportData(Highcharts);
 setChartOptions(Highcharts);
 
-function AdminFoodAnalytics({
+function AdminShoppingAnalytics({
   loading,
-  _getFoodAnalyticsData,
+  _getShoppingAnalyticsData,
   analyticsData,
   businessId,
 }) {
   useInjectReducer({ key: 'Analytics', reducer });
   useInjectSaga({ key: 'Analytics', saga });
   useEffect(() => {
-    if (businessId) _getFoodAnalyticsData(businessId);
+    if (businessId) _getShoppingAnalyticsData(businessId);
   }, [businessId]);
   if (analyticsData) {
     const {
@@ -252,11 +252,11 @@ function AdminFoodAnalytics({
   return <LoadingIndicator />;
 }
 
-AdminFoodAnalytics.propTypes = {
+AdminShoppingAnalytics.propTypes = {
   loading: PropTypes.bool,
   history: PropTypes.object,
   analyticsData: PropTypes.object,
-  _getFoodAnalyticsData: PropTypes.func,
+  _getShoppingAnalyticsData: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -267,11 +267,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    _getFoodAnalyticsData: (businessId) =>
+    _getShoppingAnalyticsData: (businessId) =>
       dispatch(getAnalyticsData(businessId)),
   };
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect, withRouter, memo)(AdminFoodAnalytics);
+export default compose(withConnect, withRouter, memo)(AdminShoppingAnalytics);

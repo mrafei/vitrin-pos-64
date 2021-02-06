@@ -15,8 +15,14 @@ import {
   GET_DEAL,
   SET_DEAL,
   APPLY_CATEGORY,
+  UPLOAD_IMAGE_AND_UPDATE_PRODUCT,
 } from "./constants";
-
+export function uploadImageAndUpdateProduct(productId, product) {
+  return {
+    type: UPLOAD_IMAGE_AND_UPDATE_PRODUCT,
+    data: { id: productId, product },
+  };
+}
 export function setBusiness(business) {
   return {
     type: SET_BUSINESS,

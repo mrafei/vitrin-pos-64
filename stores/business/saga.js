@@ -21,6 +21,7 @@ import {
   GROUP_DISCOUNT_ON_DEALS,
   DEALS_EXTRA_ITEMS_ITEM_API,
   DEALS_EXTRA_ITEMS_API,
+  DEALS_IMAGES_ITEM_CHANGE_ORDER_API,
 } from "../../utils/api";
 import {
   CREATE_CATEGORY,
@@ -35,9 +36,13 @@ import {
   GET_DELIVERIES,
   DELIVERIES_PAGE_SIZE,
   GET_DEAL,
+  UPLOAD_IMAGE_AND_UPDATE_PRODUCT,
 } from "./constants";
 import { applyCategory, setBusiness, setDeal, setDeliveries } from "./actions";
-import { makeSelectSubDomain } from "../../src/containers/App/selectors";
+import {
+  makeSelectSubDomain,
+  makeSelectUploadedFile,
+} from "../../src/containers/App/selectors";
 import { reloadPage, setSnackBarMessage } from "../ui/actions";
 import { makeSelectBusiness, makeSelectBusinessSlug } from "./selector";
 const { getCurrentWebContents } = require("@electron/remote");
@@ -223,21 +228,33 @@ export function* createProduct(action) {
 export function* updateProduct(action) {
   try {
     yield put(startLoading());
-    yield put(startProgressLoading());
-    const { id, product, images, callback, extraItems } = action.data;
+    const { id, product, images, extra_items: extraItems } = action.data;
 
     const {
-      response: { meta },
+      response: { meta, data },
     } = yield call(request, DEALS_ITEM_API(id), product, "PATCH");
-
+    yield put(setDeal(data));
     if (meta.status_code >= 200 && meta.status_code <= 300) {
-      for (let image = 0; image < images.length; image += 1) {
-        const dto = {
-          image: `${images[image].folder_name}/${images[image].file_name}`,
-          deal: id,
-        };
-        yield call(request, DEALS_IMAGES_API, dto, "POST");
+      if (images) {
+        for (let imageIndex = 0; imageIndex < images.length; imageIndex += 1) {
+          if (images[imageIndex].id) {
+            yield call(
+              request,
+              DEALS_IMAGES_ITEM_CHANGE_ORDER_API(images[imageIndex].id),
+              { order: imageIndex },
+              "PATCH"
+            );
+          } else {
+            const dto = {
+              image: `${images[imageIndex].folder_name}/${images[imageIndex].file_name}`,
+              deal: id,
+              order: imageIndex,
+            };
+            yield call(request, DEALS_IMAGES_API, dto, "POST");
+          }
+        }
       }
+
       if (extraItems) {
         for (let item = 0; item < extraItems.length; item += 1) {
           const { title, price, id: _id, deals } = extraItems[item];
@@ -257,32 +274,32 @@ export function* updateProduct(action) {
             );
           }
         }
-        for (let item = 0; item < product.extra_items.length; item += 1) {
-          const { id: _id, deals } = product.extra_items[item];
-          if (!extraItems.map((i) => i.id || null).includes(_id)) {
-            yield call(
-              request,
-              DEALS_EXTRA_ITEMS_ITEM_API(_id),
-              {
-                deals: deals.filter((deal) => deal !== id),
-              },
-              "PATCH"
-            );
+        if (product.extra_items) {
+          for (let item = 0; item < product.extra_items.length; item += 1) {
+            const { id: _id, deals } = product.extra_items[item];
+            if (!extraItems.map((i) => i.id || null).includes(_id)) {
+              yield call(
+                request,
+                DEALS_EXTRA_ITEMS_ITEM_API(_id),
+                {
+                  deals: deals.filter((deal) => deal !== id),
+                },
+                "PATCH"
+              );
+            }
           }
         }
       }
       yield put(
         setSnackBarMessage("ویرایش محصول با موفقیت انجام شد", "success")
       );
-      if (callback) yield call(callback);
+      if (action.callback) yield call(action.callback);
     } else yield put(setSnackBarMessage("ویرایش محصول ناموفق بود", "fail"));
     yield put(stopLoading());
-    yield put(stopProgressLoading());
   } catch (err) {
     console.log(err);
     yield put(setSnackBarMessage("ویرایش محصول ناموفق بود", "fail"));
     yield put(stopLoading());
-    yield put(stopProgressLoading());
   }
 }
 
@@ -393,6 +410,40 @@ export function* getProductSaga(action) {
     yield put(stopLoading());
   }
 }
+
+export function* uploadImageAndUpdateProductSaga(action) {
+  const { id } = action.data;
+  if (id) {
+    try {
+      yield put(startLoading());
+      const uploadedFile = yield select(makeSelectUploadedFile());
+      const dto = {
+        image: `${uploadedFile.folder_name}/${uploadedFile.file_name}`,
+        deal: id,
+      };
+      const {
+        response: { meta, data },
+      } = yield call(request, DEALS_IMAGES_API, dto, "POST");
+
+      if (meta.status_code >= 200 && meta.status_code <= 300) {
+        const {
+          response: { meta, data: product },
+        } = yield call(request, DEALS_ITEM_API(id));
+        yield put(setDeal(product));
+        yield put(
+          setSnackBarMessage("عکس مورد نظر با موفقیت ذخیره شد.", "success")
+        );
+        yield put(clearUploadedFiles());
+        if (action.callback) yield call(action.callback);
+      } else yield put(setSnackBarMessage("ذخیره عکس ناموفق بود.", "fail"));
+      yield put(stopLoading());
+    } catch (err) {
+      console.log(err);
+      yield put(setSnackBarMessage("ذخیره عکس ناموفق بود.", "fail"));
+      yield put(stopLoading());
+    }
+  }
+}
 export default [
   takeLatest(GET_BUSINESS, getBusinessData),
   takeLatest(CREATE_CATEGORY, createCategory),
@@ -405,4 +456,5 @@ export default [
   takeLatest(SET_PLUGIN_DATA, setPluginData),
   takeLatest(GET_DELIVERIES, getDeliveries),
   takeLatest(GET_DEAL, getProductSaga),
+  takeLatest(UPLOAD_IMAGE_AND_UPDATE_PRODUCT, uploadImageAndUpdateProductSaga),
 ];

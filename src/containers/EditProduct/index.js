@@ -1,246 +1,160 @@
-import React, { memo, useEffect, useState } from "react";
+/* eslint-disable camelcase */
+/* eslint-disable indent */
+/* eslint-disable no-underscore-dangle */
+import React, { useState, memo, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
-import { connect } from "react-redux";
-
-import Icon from "../../components/Icon";
-import { ICONS } from "../../../assets/images/icons";
-import { makeSelectLoading, makeSelectUploadedFiles } from "../App/selectors";
-import {
-  makeSelectBusiness,
-  makeSelectBusinessThemeColor,
-  makeSelectCategories,
-  makeSelectDeal,
-} from "../../../stores/business/selector";
-import {
-  handleKeyDown,
-  persianToEnglishNumber,
-  useCustomForm,
-} from "../../../utils/helper";
+import Button from "@material-ui/core/Button";
+import InfoTable from "./InfoTable";
+import PriceSection from "./PriceSection";
+import GeneralInfo from "./GeneralInfo";
+import ExtraDescriptionSection from "./ExtraDescriptionSection";
+import PopularitySection from "./PopularitySection";
+import VariationSection from "./VariationSection.js";
+import { setSnackBarMessage } from "../../../stores/ui/actions";
 import {
   createProduct,
   deleteImageFromProduct,
   deleteProduct,
   getDeal,
-  setDeal,
   updateProduct,
 } from "../../../stores/business/actions";
-import SeoSection from "./SeoSection";
 import { clearUploadedFiles, removeFile, uploadFile } from "../App/actions";
-import PopularitySection from "./PopularitySection";
-import ExtraDescriptionSection from "./ExtraDescriptionSection";
-import InfoTable from "./InfoTable";
-import AvailabilitySection from "./AvailabilitySection";
-import ExtraItems from "./ExtraItems";
-import PriceSection from "./PriceSection";
-import GeneralInfo from "./GeneralInfo";
+import {
+  makeSelectBusiness,
+  makeSelectCategories,
+  makeSelectDeal,
+} from "../../../stores/business/selector";
+import { makeSelectLoading, makeSelectUploadedFiles } from "../App/selectors";
+import Icon from "../../components/Icon";
+import { ICONS } from "../../../assets/images/icons";
+import LoadingIndicator from "../../components/LoadingIndicator";
 
-export function EditProduct({
-  match,
-  history,
-  deal: product,
-  categories,
-  isLoading,
-  _updateProduct,
-  _removeFile,
-  uploadedFiles,
+import PopUp from "../../components/PopUp";
+
+function AdminProduct({
   _uploadFile,
+  business,
+  uploadedFiles,
+  isLoading,
   _deleteProductImage,
+  _deleteProduct,
+  _updateProduct,
+  categories,
+  adminDeal,
+  _removeFile,
   cleanUploads,
   _createProduct,
-  _deleteProduct,
-  _getDeal,
-  business,
-  _setDeal,
+  _getAdminDeal,
+  match,
+  _uploadImageAndUpdateProduct,
+  history,
 }) {
-  useEffect(() => {
-    if (match.params.id) {
-      _getDeal(match.params.id);
-    }
-    return () => {
-      cleanUploads();
-      _setDeal({
-        description: undefined,
-        title: "",
-        discounted_price: 0,
-        initial_price: 0,
-        images: [],
-        categories: [],
-        available: true,
-        inventory_count: null,
-        extra_data: {
-          only_on_day: [],
-          packaging_price: 0,
-          info_table: [],
-          complementary: undefined,
-        },
-      });
-    };
-  }, [match.params.id]);
-  const [form, setForm] = useCustomForm({
-    title: "",
-    description: undefined,
-    complementary: undefined,
-    price: "",
-    discountAmount: "",
-    discountPercent: "",
-    finalPrice: "",
-    priority: 100,
-  });
-
+  const productId = match.params.id;
   const [error, setError] = useState("");
-  const [hasDiscount, setHasDiscount] = useState(false);
-  const [isPercent, setIsPercent] = useState(true);
   const [isDialogBoxOpen, setDialogBox] = useState(false);
-  const [isProductAvailable, toggleProductAvailability] = useState(false);
-  const [productInfoTable, setProductInfoTable] = useState([
-    { key: "", value: "" },
-  ]);
-  const [productExtraItems, setProductExtraItems] = useState([]);
-  const [productAmount, setProductAmount] = useState("");
-  const [productPackagingPrice, setProductPackagingPrice] = useState(0);
-  const [productImages, setImages] = useState([]);
-  const [selectedCategories, setCategories] = useState([]);
-  const [selectedDays, setDays] = useState([]);
-
+  const [variations, setVariations] = useState({
+    variations_data: [],
+    variations_table: {},
+  });
+  const [product, setProduct] = useState(null);
+  const [extraItems, setExtraItems] = useState([]);
+  const [timeoutId, setTimeoutId] = useState(null);
+  const [imagesArray, setImagesArray] = useState([]);
   useEffect(() => {
-    const {
-      description,
-      title,
-      discounted_price: discountedPrice,
-      initial_price: initialPrice,
-      images,
-      categories: _categories,
-      extra_items: extraItems,
-      available,
-      inventory_count: inventoryCount,
-      extra_data: {
-        only_on_day: onlyOnDay,
-        packaging_price: packagingPrice,
-        info_table,
-        complementary,
-      },
-      priority,
-    } = product;
-    toggleProductAvailability(available);
-    setProductAmount(inventoryCount);
-    setHasDiscount(initialPrice > discountedPrice);
-    setDays(onlyOnDay || []);
-    setProductPackagingPrice(packagingPrice);
-    setImages(images);
-    setCategories(
-      _categories.map(
-        (_c) => categories && categories.find((__c) => __c.id === _c)
-      )
-    );
-    setProductInfoTable(
-      info_table && info_table.length ? info_table : [{ key: "", value: "" }]
-    );
-    setProductExtraItems(extraItems || []);
-    setForm({
-      title: title || "",
-      description: match.params.id ? description : "",
-      complementary: match.params.id ? complementary : "",
-      price: initialPrice,
-      finalPrice: discountedPrice,
-      priority: priority || priority === 0 ? priority : 100,
-      discountAmount: initialPrice ? initialPrice - discountedPrice : 0,
-      discountPercent:
-        initialPrice && discountedPrice
-          ? Math.floor(((initialPrice - discountedPrice) / initialPrice) * 100)
-          : 0,
-    });
-    if (match.params.category)
-      setCategories([
-        categories &&
-          categories.find((__c) => __c.id === +match.params.category),
-      ]);
-  }, [match.params.id, product]);
+    if (productId !== null) {
+      setImagesArray([...imagesArray, ...uploadedFiles]);
+    } else {
+      const uploadedImagesArray = [];
+      uploadedFiles.map((file) =>
+        uploadedImagesArray.push({
+          initialIndex: uploadedFiles.indexOf(file),
+          ...file,
+        })
+      );
+      setImagesArray(uploadedImagesArray);
+    }
+  }, [uploadedFiles]);
+  useEffect(() => {
+    if (product && productId !== null) {
+      const newImages = product.images;
+      setImagesArray([...newImages]);
+    }
+  }, [product]);
+  useEffect(() => {
+    if (adminDeal) {
+      setProduct(adminDeal);
+      setImagesArray(adminDeal.images);
+      if (adminDeal.variations && Object.keys(adminDeal.variations).length) {
+        setVariations({ ...adminDeal.variations });
+      } else {
+        setVariations({
+          variations_data: [],
+          variations_table: {},
+        });
+      }
 
-  const addCategory = (_category) => {
-    if (selectedCategories.findIndex((sc) => sc.id === _category.id) === -1) {
-      setCategories([...selectedCategories, _category]);
+      setExtraItems(adminDeal.extra_items);
     }
-  };
-  const removeCategory = (_category) => {
-    const selectedCategoryIndex = selectedCategories.findIndex(
-      (sc) => sc.id === _category.id
-    );
-    const _selectedCategories = [...selectedCategories];
-    _selectedCategories.splice(selectedCategoryIndex, 1);
-    if (selectedCategoryIndex > -1) {
-      setCategories(_selectedCategories);
+  }, [adminDeal]);
+  useEffect(() => {
+    setProduct(null);
+    setImagesArray([]);
+    if (productId) _getAdminDeal(productId);
+    else {
+      const initialCategory = categories.find(
+        (cat) => cat.id === +match.params.category
+      );
+      setProduct({
+        extra_data: {},
+        extra_items: [],
+        categories: initialCategory ? [initialCategory.id] : [],
+        initial_price: 0,
+        discounted_price: 0,
+        available: true,
+        priority: 100,
+        description: "",
+      });
+      setExtraItems([]);
     }
-  };
-  const addDay = (day) => {
-    if (!selectedDays.find((sc) => sc.id === day.id)) {
-      setDays([...selectedDays, day]);
-    }
-  };
-  const removeDay = (day) => {
-    const selectedDayIndex = selectedDays.findIndex((sc) => sc.id === day.id);
-    const _selectedDays = [...selectedDays];
-    _selectedDays.splice(selectedDayIndex, 1);
-    if (selectedDayIndex > -1) {
-      setDays(_selectedDays);
-    }
-  };
+  }, [productId]);
   const submit = () => {
-    if (selectedCategories.length === 0) {
+    if (product.categories.length === 0) {
       setError("لطفا دسته‌بندی انتخاب کنید.");
+      document.body.scrollIntoView();
     } else {
       setError("");
-      const extraData = product.extra_data ? { ...product.extra_data } : {};
-      extraData.info_table = productInfoTable.filter(
-        (r) => r.value !== "" || r.key !== ""
-      );
-      extraData.complementary = form.complementary;
-      extraData.only_on_day = selectedDays;
-      extraData.packaging_price = productPackagingPrice
-        ? parseInt(productPackagingPrice, 10)
-        : 0;
-      let discountedPrice = form.price;
-      if (hasDiscount) {
-        if (isPercent)
-          discountedPrice = Math.round(
-            (form.finalPrice / form.price) * persianToEnglishNumber(form.price)
-          );
-        else discountedPrice = persianToEnglishNumber(form.price) - discount;
-      }
-      const _product = {
-        business: business.id,
-        title: form.title,
-        discounted_price: +discountedPrice,
-        initial_price: +form.price,
-        description: form.description,
-        categories: selectedCategories.map((sc) => sc.id),
-        available: isProductAvailable,
-        extra_data: extraData,
-        extra_items: product.extra_items || [],
-        priority: +form.priority,
-      };
-      if (productAmount > 0)
-        _product.inventory_count = parseInt(productAmount, 10);
-      if (product.id) {
+      let _variations = null;
+      if (productId) {
+        if (variations.variations_data.length) {
+          _variations = variations;
+          Object.keys(_variations.variations_table).forEach((item) => {
+            _variations.variations_table[item].new = false;
+          });
+        }
         _updateProduct(
-          product.id,
-          _product,
-          uploadedFiles,
-          productExtraItems,
-          history.goBack
+          productId,
+          { ...product, variations: _variations },
+          imagesArray,
+          extraItems,
+          () => window.scrollTo(0, 0)
         );
       } else {
-        _createProduct(_product, uploadedFiles, productExtraItems, history);
+        _createProduct(
+          { ...product, variations: _variations },
+          imagesArray,
+          extraItems
+        );
       }
-      setCategories([]);
-      setDays([]);
       cleanUploads();
     }
   };
-  const discount = isPercent
-    ? Math.round(((form.price - form.finalPrice) / form.price) * 100)
-    : Math.round(form.price - form.finalPrice);
+  const hasVariation =
+    variations &&
+    variations.variations_data &&
+    variations.variations_data.length;
   return (
     <>
       <div className="px-3 u-background-white justify-content-between align-items-center container u-height-44 d-flex u-border-radius-8 box-shadow py-3 u-fontWeightBold">
@@ -260,172 +174,120 @@ export function EditProduct({
       >
         <div className="overflow-hidden d-flex mt-4 flex-1">
           <div className="overflow-auto pb-2 w-100">
-            <GeneralInfo
-              _deleteProductImage={_deleteProductImage}
-              productImages={productImages}
-              setImages={setImages}
-              isLoading={isLoading}
-              uploadedFiles={uploadedFiles}
-              _removeFile={_removeFile}
-              error={error}
-              description={form.description}
-              setDescription={(value) => setForm("description", value)}
-              removeCategory={removeCategory}
-              addCategory={addCategory}
-              categories={categories}
-              selectedCategories={selectedCategories}
-              title={form.title}
-              setTitle={(value) => setForm("title", value)}
-              _uploadFile={_uploadFile}
-            />
-            <InfoTable
-              productInfoTable={productInfoTable}
-              setProductInfoTable={setProductInfoTable}
-            />
-            <ExtraDescriptionSection
-              complementary={form.complementary}
-              setComplementary={(value) => setForm("complementary", value)}
-            />
-          </div>
-        </div>
-        <div className="overflow-hidden d-flex mt-4 flex-1">
-          <div className="overflow-auto pb-2 w-100">
-            <PriceSection
-              price={+form.price}
-              setPrice={(value) => setForm("price", value)}
-              finalPrice={+form.finalPrice}
-              setFinalPrice={(value) => setForm("finalPrice", value)}
-              productPackagingPrice={productPackagingPrice}
-              setProductPackagingPrice={setProductPackagingPrice}
-              discount={discount}
-              isPercent={isPercent}
-              hasDiscount={hasDiscount}
-              setHasDiscount={setHasDiscount}
-              setIsPercent={setIsPercent}
-            />
-            <ExtraItems
-              productExtraItems={productExtraItems}
-              setProductExtraItems={setProductExtraItems}
-            />
-            <AvailabilitySection
-              isProductAvailable={isProductAvailable}
-              toggleProductAvailability={toggleProductAvailability}
-              productAmount={+productAmount}
-              setProductAmount={(value) => {
-                if (value === 0) toggleProductAvailability(false);
-                setProductAmount(value);
-              }}
-              removeDay={removeDay}
-              addDay={addDay}
-              selectedDays={selectedDays}
-            />
-
-            <PopularitySection
-              priority={form.priority}
-              setPriority={(value) => setForm("priority", value)}
-            />
-            <SeoSection title={form.title} description={form.description} />
+            {product ? (
+              <div>
+                <GeneralInfo
+                  _deleteProductImage={_deleteProductImage}
+                  isLoading={isLoading}
+                  uploadedFiles={uploadedFiles}
+                  _removeFile={_removeFile}
+                  error={error}
+                  categories={categories}
+                  _uploadFile={_uploadFile}
+                  product={product}
+                  setProduct={setProduct}
+                  _uploadImageAndUpdateProduct={_uploadImageAndUpdateProduct}
+                  setImagesArray={setImagesArray}
+                  imagesArray={imagesArray}
+                />
+                {!hasVariation && (
+                  <PriceSection
+                    hasVariation={
+                      variations &&
+                      variations.variations_data &&
+                      variations.variations_data.length
+                    }
+                    product={product}
+                    setProduct={setProduct}
+                  />
+                )}
+                <InfoTable product={product} setProduct={setProduct} />
+                <ExtraDescriptionSection
+                  product={product}
+                  setProduct={setProduct}
+                />
+                <VariationSection
+                  product={product}
+                  variations={variations}
+                  setVariations={setVariations}
+                  history={history}
+                />
+                <PopularitySection product={product} setProduct={setProduct} />
+                <PopUp
+                  open={isDialogBoxOpen}
+                  onClose={() => setDialogBox(false)}
+                  text="آیا مایل به حذف محصول هستید؟"
+                  submitText="حذف محصول"
+                  closeText="انصراف"
+                  onSubmit={() => {
+                    _deleteProduct(productId);
+                    setDialogBox(false);
+                  }}
+                  onClose={() => {
+                    setDialogBox(false);
+                  }}
+                />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  style={{ flex: 2 }}
+                  onClick={submit}
+                  disabled={isLoading}
+                >
+                  ذخیره تغییرات
+                </Button>
+                {productId && (
+                  <Button
+                    color="primary"
+                    style={{ flex: 1 }}
+                    className="mr-2"
+                    disabled={isLoading}
+                    onClick={() => setDialogBox(true)}
+                  >
+                    حذف محصول
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <LoadingIndicator />
+            )}
           </div>
         </div>
       </div>
-      <div className="d-flex container mt-3 px-0">
-        <button
-          className="d-flex container-shadow fit-content px-4 py-2 justify-content-center u-border-radius-8 align-items-center c-btn-primary u-fontSemiSmall u-text-white u-background-primary-blue"
-          disabled={isLoading}
-          type="button"
-          tabIndex="0"
-          onClick={submit}
-        >
-          <Icon
-            icon={ICONS.SAVE}
-            size={24}
-            width={20}
-            height={20}
-            color="white"
-            className="ml-1"
-          />
-          تایید و ذخیره
-        </button>
-        {product.id && (
-          <button
-            className="d-flex container-shadow fit-content px-4 py-2 justify-content-center u-border-radius-8 align-items-center c-btn-primary u-fontSemiSmall mr-2 u-text-primary-blue u-background-white"
-            disabled={isLoading}
-            type="button"
-            tabIndex="0"
-            onClick={() => {
-              setDialogBox(true);
-            }}
-          >
-            <Icon
-              icon={ICONS.TRASH}
-              size={19}
-              color="#0050FF"
-              className="ml-1"
-            />
-            حذف محصول
-          </button>
-        )}
-      </div>
-      {isDialogBoxOpen && (
-        <div className="c-modal" id="c-modal-name">
-          <div className="d-flex flex-column c-dialogBox px-3">
-            <div className="u-text-darkest-grey u-fontMedium">
-              اطمینان دارید که می‌خواهید این محصول را حذف کنید؟
-            </div>
-            <div className="d-flex flex-row justify-content-around mr-auto u-fontWeightBold">
-              <span
-                className="u-text-primary-blue cursorPointer u-fontMedium"
-                onClick={() => {
-                  _deleteProduct(product.id, history);
-                  setDialogBox(false);
-                }}
-              >
-                حذف
-              </span>
-              <span
-                className="u-text-primary-blue cursorPointer mr-4 u-fontMedium"
-                onClick={() => setDialogBox(false)}
-                onKeyDown={(e) => handleKeyDown(e, () => setDialogBox(false))}
-                role="button"
-                tabIndex="0"
-              >
-                بستن
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
 
 const mapStateToProps = createStructuredSelector({
-  isLoading: makeSelectLoading(),
-  categories: makeSelectCategories(),
+  categories: makeSelectCategories(true),
   business: makeSelectBusiness(),
   uploadedFiles: makeSelectUploadedFiles(),
-  themeColor: makeSelectBusinessThemeColor(),
-  deal: makeSelectDeal(),
+  isLoading: makeSelectLoading(),
+  adminDeal: makeSelectDeal(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    _createProduct: (product, images, extraItems, history) =>
-      dispatch(createProduct(product, images, extraItems, history)),
-    _deleteProduct: (productId, history) =>
-      dispatch(deleteProduct(productId, history)),
-    _updateProduct: (productId, product, images, extraItems, callback) =>
-      dispatch(updateProduct(productId, product, images, extraItems, callback)),
+    _getAdminDeal: (id) => dispatch(getDeal(id)),
     cleanUploads: () => dispatch(clearUploadedFiles()),
-    _uploadFile: (files, folderName) =>
-      dispatch(uploadFile({ files, folderName })),
+    _createProduct: (product, images, extraItems) =>
+      dispatch(createProduct(product, images, extraItems)),
+    _uploadFile: (files, folderName, callback) =>
+      dispatch(uploadFile({ files, folderName }, callback)),
     _removeFile: (index) => dispatch(removeFile(index)),
     _deleteProductImage: (imageId) => dispatch(deleteImageFromProduct(imageId)),
-    _getDeal: (id) => dispatch(getDeal(id)),
-    _setDeal: (deal) => dispatch(setDeal(deal)),
+    _deleteProduct: (productId) => dispatch(deleteProduct(productId)),
+    _updateProduct: (productId, product, uploadedFiles, extraItems, callback) =>
+      dispatch(
+        updateProduct(productId, product, uploadedFiles, null, callback)
+      ),
+    _uploadImageAndUpdateProduct: (productId, product) =>
+      dispatch(uploadImageAndUpdateProduct(productId, product)),
+    _setSnackBarMessage: (message, type) =>
+      dispatch(setSnackBarMessage(message, type)),
   };
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(memo, withRouter, withConnect)(EditProduct);
+export default compose(withConnect, withRouter, memo)(AdminProduct);

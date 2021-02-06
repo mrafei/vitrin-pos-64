@@ -38,7 +38,7 @@ export const DEALS_ITEMS_API = (categories) =>
   `${BASE_URL}deals/?${categories}`;
 export const ALL_DEALS_API = (businessSlug) =>
   `${BASE_URL}deals/by_business/?business_slug=${businessSlug}`;
-export const DEALS_EXTRA_ITEMS_ITEM_API = id =>
+export const DEALS_EXTRA_ITEMS_ITEM_API = (id) =>
   `${BASE_URL}deals/extra_items/${id}/`;
 export const DEALS_EXTRA_ITEMS_API = `${BASE_URL}deals/extra_items/`;
 
@@ -54,7 +54,7 @@ export const ORDER_STATUS_PROGRESS_API = (id, plugin) =>
 export const ORDER_STATUS_CANCELLED_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/change_order_status_to_cancelled/`;
 export const ORDER_DELIVERIES_BY_DELIVERER = (page, pageSize) =>
-  `${BASE_URL}food_orders/by_deliverer_name/?page=${page}&page_size=${pageSize}`;
+  `${BASE_URL}shopping_orders/by_deliverer_name/?page=${page}&page_size=${pageSize}`;
 
 export const ORDER_ONLINE_PAYMENT_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/payment_transaction/`;
@@ -84,6 +84,8 @@ export const TRANSACTION_ZIBAL_API = (id) =>
 export const TRANSACTION_API = (id, gateway) =>
   `${BASE_URL}transactions/${id}/${gateway}_gateway`;
 
-export const REPORTS_API = `${BASE_URL}food_orders/report/`;
+export const REPORTS_API = `${BASE_URL}shopping_orders/report/`;
 export const GROUP_PACKAGING_PRICE_ON_DEALS_API = (id) =>
   `${BASE_URL}deal_categories/${id}/group_packaging_price_on_deals/`;
+export const DEALS_IMAGES_ITEM_CHANGE_ORDER_API = (id) =>
+  `${BASE_URL}deals/images/${id}/change_order_by_business/`;

@@ -1,144 +1,348 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import useTheme from "@material-ui/core/styles/useTheme";
-import Paper from "@material-ui/core/esm/Paper";
-import KeyboardArrowDownRoundedIcon from "@material-ui/icons/KeyboardArrowDownRounded";
+import Paper from "@material-ui/core/Paper";
 
-import { Collapse } from "react-collapse";
-import Input from "../../components/Input";
 import {
+  calculateDiscountPercent,
   englishNumberToPersianNumber,
-  handleKeyDown,
   persianToEnglishNumber,
   priceFormatter,
+  reversePriceFormatter,
 } from "../../../utils/helper";
-import Switch from "../../components/Swtich";
+import useTheme from "@material-ui/core/styles/useTheme";
+import Chip from "@material-ui/core/Chip";
+import Box from "@material-ui/core/Box";
+import Checkbox from "@material-ui/core/Checkbox";
+import Collapse from "@material-ui/core/Collapse";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "../../components/Input";
 import TextSwitch from "../../components/TextSwitch";
+import Select from "../../components/Select";
+import { availableOnDayOptions, inventoryOptions } from "../../../stores/business/constants";
 
-export default function PriceSection({
-  price,
-  setPrice,
-  finalPrice,
-  setFinalPrice,
-  productPackagingPrice,
-  setProductPackagingPrice,
-  discount,
-  isPercent,
-  hasDiscount,
-  setHasDiscount,
-  setIsPercent,
-}) {
+export default function PriceSection({ product, setProduct, hasVariation }) {
   const theme = useTheme();
-  const [isCollapseOpen, openCollapse] = useState(true);
+  const [hasDiscount, setHasDiscount] = useState(
+    product.initial_price > product.discounted_price
+  );
+  const [isPercent, setIsPercent] = useState(false);
+  const {
+    extra_data: {
+      only_on_day: selectedDays = [],
+      packaging_price: packagingPrice,
+    },
+    available,
+    inventory_count: inventoryCount,
+    initial_price: price,
+    discounted_price: finalPrice,
+  } = product;
 
+  const addDay = (day) => {
+    if (!selectedDays.find((sc) => sc.id === day.id)) {
+      setProduct({
+        ...product,
+        extra_data: {
+          ...product.extra_data,
+          only_on_day: [...selectedDays, day],
+        },
+      });
+    }
+  };
+  const removeDay = (day) => {
+    const selectedDayIndex = selectedDays.findIndex((sc) => sc.id === day.id);
+    const _selectedDays = [...selectedDays];
+    _selectedDays.splice(selectedDayIndex, 1);
+    if (selectedDayIndex > -1) {
+      setProduct({
+        ...product,
+        extra_data: { ...product.extra_data, only_on_day: _selectedDays },
+      });
+    }
+  };
   return (
-    <div className="my-3 px-3">
-      <Paper className="d-flex flex-column align-items-center u-cursor-pointer mx-auto">
-        <div
-          onClick={() => openCollapse(!isCollapseOpen)}
-          className="d-flex justify-content-between collapse-header u-font-semi-small-r w-100"
-          onKeyDown={(e) =>
-            handleKeyDown(e, () => openCollapse(!isCollapseOpen))
-          }
-          role="button"
-          tabIndex="0"
-        >
-          <div className="flex-1 u-text-black u-fontWeightBold">قیمت محصول</div>
+    <Paper className="d-flex flex-wrap my-3 py-3">
+      <div className="col-12 col-lg-6">
+        <div className="flex-1 u-fontLarge">قیمت و موجودی محصول</div>
 
-          <KeyboardArrowDownRoundedIcon
-            style={{
-              color: theme.palette.text.primary,
-              transform: `rotate(${isCollapseOpen ? 180 : 0}deg)`,
-              transition: "all 0.3s ease-in-out",
+        <div className="d-flex mt-2 align-items-center">
+          <Checkbox
+            color="primary"
+            checked={hasDiscount}
+            onChange={(e) => {
+              setHasDiscount(e.target.checked);
+              setProduct({
+                ...product,
+                discounted_price: reversePriceFormatter(product.initial_price),
+              });
             }}
           />
+          <Box color={theme.palette.text.tertiary}>تخفیف روی محصول</Box>
         </div>
-        <Collapse
-          isOpened={isCollapseOpen}
-          theme={{
-            collapse: "w-100 ReactCollapse--collapse",
-            content: "ReactCollapse--content p-3",
+
+        <Input
+          label="قیمت محصول (تومان)"
+          value={price}
+          size="medium"
+          className="u-fontNormal mt-3"
+          priceInput
+          onChange={(value) => {
+            setProduct({
+              ...product,
+              initial_price: reversePriceFormatter(value),
+              discounted_price: reversePriceFormatter(value),
+            });
           }}
-        >
-          <Input
-            label="قیمت محصول (تومان)"
-            value={price ? englishNumberToPersianNumber(price) : ""}
-            onChange={(value) => setPrice(persianToEnglishNumber(value))}
-          />
-          <div className="mt-3 u-relative">
-            <Input
-              label="هزینه‌ی بسته‌بندی محصول (تومان)"
-              value={
-                productPackagingPrice
-                  ? englishNumberToPersianNumber(productPackagingPrice)
-                  : ""
-              }
-              onChange={(value) =>
-                setProductPackagingPrice(persianToEnglishNumber(value))
-              }
-              numberOnly
-            />
-          </div>
-          <div className="d-flex mt-4 align-items-center justify-content-between">
-            <span className="u-fontWeightBold u-text-black">
-              تخفیف روی محصول
-            </span>
-            <Switch
-              isSwitchOn={hasDiscount}
-              toggleSwitch={(value) => {
-                if (!value) setPrice(price);
-                setHasDiscount(value);
-              }}
-            />
-          </div>
-          <Collapse isOpened={hasDiscount}>
-            <div className="d-flex align-items-center mt-2">
-              <div className="w-50">
-                <Input
-                  value={discount ? englishNumberToPersianNumber(discount) : ""}
-                  onChange={(value) => {
-                    if (isPercent && persianToEnglishNumber(value) <= 100)
-                      setFinalPrice(
-                        price * (1 - persianToEnglishNumber(value) / 100)
-                      );
-                    if (!isPercent)
-                      setFinalPrice(price - persianToEnglishNumber(value));
-                  }}
-                  label={`تخفیف محصول (${isPercent ? "درصد" : "تومان"})`}
-                  numberOnly
-                />
-              </div>
-              <div className="w-50 pr-4">
-                <span>قیمت نهایی:</span>
-                <span className="mr-1 u-fontWeightBold">
-                  {priceFormatter(Math.round(finalPrice))}
-                </span>
-                <span className="mr-1 u-fontMedium">تومان</span>
-              </div>
+        />
+        <Collapse in={hasDiscount}>
+          <div className="d-flex align-items-center mt-2">
+            <div className="w-50">
+              <Input
+                size="medium"
+                disabled={hasVariation}
+                value={
+                  isPercent
+                    ? englishNumberToPersianNumber(
+                        calculateDiscountPercent(
+                          reversePriceFormatter(price),
+                          finalPrice
+                        ),
+                        ""
+                      )
+                    : englishNumberToPersianNumber(
+                        reversePriceFormatter(price) - finalPrice,
+                        ""
+                      )
+                }
+                className="u-height-36 u-fontNormal mt-3"
+                priceInput={!isPercent}
+                onChange={(value) => {
+                  if (isPercent) {
+                    if (persianToEnglishNumber(value) <= 100)
+                      setProduct({
+                        ...product,
+                        discounted_price: Math.floor(
+                          reversePriceFormatter(price) *
+                            (1 - persianToEnglishNumber(value) / 100)
+                        ),
+                      });
+                  } else {
+                    if (
+                      reversePriceFormatter(price) -
+                        reversePriceFormatter(value) >
+                      0
+                    )
+                      setProduct({
+                        ...product,
+                        discounted_price:
+                          reversePriceFormatter(price) -
+                          reversePriceFormatter(value),
+                      });
+                  }
+                }}
+                label={`تخفیف محصول (${isPercent ? "درصد" : "تومان"})`}
+                numberOnly
+                InputProps={{
+                  className: "u-height-40",
+                }}
+              />
             </div>
-            <TextSwitch
-              className="mt-3"
-              isSwitchOn={!isPercent}
-              toggleSwitch={(value) => setIsPercent(!value)}
-              texts={["تومان", "درصد"]}
-            />
-          </Collapse>
+            <div className="w-50 pr-4">
+              <span>قیمت نهایی:</span>
+              <span className="mr-1 u-fontWeightBold">
+                {priceFormatter(Math.round(finalPrice))}
+              </span>
+              <span className="mr-1 u-fontMedium">تومان</span>
+            </div>
+          </div>
+          <TextSwitch
+            className="mt-3"
+            isSwitchOn={isPercent}
+            toggleSwitch={setIsPercent}
+            texts={["تومان", "درصد"]}
+          />
         </Collapse>
-      </Paper>
-    </div>
+        <div className="mt-3 u-relative">
+          <Input
+            size="medium"
+            label="هزینه‌ی بسته‌بندی محصول (تومان)"
+            value={
+              packagingPrice ? englishNumberToPersianNumber(packagingPrice) : ""
+            }
+            onChange={(value) =>
+              setProduct({
+                ...product,
+                extra_data: {
+                  ...product.extra_data,
+                  packaging_price: value,
+                },
+              })
+            }
+            numberOnly
+          />
+        </div>
+      </div>
+      <div className="col-12 col-lg-6 mt-lg-4">
+        <div className="mt-3 d-flex align-items-center">
+          <Checkbox
+            color="primary"
+            checked={product.available}
+            onChange={(e) =>
+              setProduct({
+                ...product,
+                available: e.target.checked,
+                inventory_count:
+                  !e.target.checked || inventoryCount ? inventoryCount : null,
+              })
+            }
+          />
+          <Box color={theme.palette.text.tertiary}>موجود</Box>
+        </div>
+        <div className="mt-2 d-flex">
+          <Autocomplete
+            options={inventoryOptions}
+            autoHighlight
+            freeSolo
+            inputValue={
+              inventoryCount || inventoryCount === 0
+                ? englishNumberToPersianNumber(inventoryCount)
+                : ""
+            }
+            onInputChange={(e, value) => {
+              setProduct({
+                ...product,
+                inventory_count:
+                  value === "" ? null : parseInt(persianToEnglishNumber(value)),
+                available:
+                  product.available &&
+                  parseInt(persianToEnglishNumber(value)) !== 0,
+              });
+            }}
+            defaultValue={{
+              label: "",
+              value:
+                inventoryCount || inventoryCount === 0
+                  ? englishNumberToPersianNumber(inventoryCount)
+                  : "",
+            }}
+            PaperComponent={(props) => (
+              <Paper
+                {...props}
+                style={{
+                  ...props.style,
+                  marginTop: 4,
+                  borderRadius: "0 0 4px 4px",
+                }}
+                elevation={3}
+              />
+            )}
+            getOptionLabel={(option) =>
+              englishNumberToPersianNumber(option.value, "")
+            }
+            renderOption={(option) => <span>{option.label}</span>}
+            ListboxProps={{ style: { fontSize: 13 } }}
+            className="w-100"
+            renderInput={(params) => (
+              <Input
+                {...params}
+                InputLabelProps={{ shrink: true }}
+                label={"موجودی"}
+                placeholder={available ? "نامحدود" : "ناموجود"}
+                size="medium"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <InputAdornment
+                      style={{ position: "absolute", left: 3 }}
+                      position="start"
+                    >
+                      <div
+                        className="d-flex flex-column align-items-center justify-content-center"
+                        style={{ width: 18, height: 18 }}
+                      >
+                        <IconButton
+                          className="p-1"
+                          onClick={() => {
+                            if (inventoryCount >= 0)
+                              setProduct({
+                                ...product,
+                                inventory_count: +inventoryCount + 1,
+                                available: true,
+                              });
+                          }}
+                        >
+                          <KeyboardArrowUpIcon
+                            className="u-cursor-pointer"
+                            style={{ fontSize: 12 }}
+                          />
+                        </IconButton>
+                        <IconButton
+                          className="p-1"
+                          onClick={() => {
+                            if (inventoryCount > 0)
+                              setProduct({
+                                ...product,
+                                inventory_count: inventoryCount - 1,
+                                available: inventoryCount - 1 > 0,
+                              });
+                          }}
+                        >
+                          <KeyboardArrowDownIcon
+                            className="u-cursor-pointer"
+                            style={{ fontSize: 12 }}
+                          />
+                        </IconButton>
+                      </div>
+                    </InputAdornment>
+                  ),
+                }}
+                inputProps={{
+                  ...params.inputProps,
+                  className: `${params.inputProps.className} pr-3 ${
+                    available ? "placeholder-active" : "placeholder-error"
+                  }`,
+                }}
+              />
+            )}
+          />
+        </div>
+        <div className="mt-3">
+          <Select
+            className="medium"
+            inputData={{
+              value: "",
+              defaultValue: "فقط موجود در روزهای خاص (غذای روز)",
+            }}
+            options={availableOnDayOptions}
+            selectOption={(text) =>
+              addDay(
+                availableOnDayOptions.find((option) => option.text === text)
+              )
+            }
+          />
+          <div className="d-flex mt-2 flex-wrap">
+            {selectedDays.map((c) => (
+              <Chip
+                style={{ direction: "ltr" }}
+                label={c.text}
+                onDelete={() => {
+                  removeDay(c);
+                }}
+                variant="outlined"
+                className="m-1"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </Paper>
   );
 }
 
 PriceSection.propTypes = {
-  price: PropTypes.number,
-  setPrice: PropTypes.func,
-  finalPrice: PropTypes.number,
-  setFinalPrice: PropTypes.func,
-  productPackagingPrice: PropTypes.number,
-  setProductPackagingPrice: PropTypes.func,
-  discount: PropTypes.number,
-  isPercent: PropTypes.bool,
-  hasDiscount: PropTypes.bool,
-  setHasDiscount: PropTypes.func,
-  setIsPercent: PropTypes.func,
+  product: PropTypes.object,
+  setProduct: PropTypes.func,
 };

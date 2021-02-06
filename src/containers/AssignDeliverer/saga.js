@@ -6,8 +6,8 @@ import {
   BUSINESS_ORDERS_SORTED_BY_DELIVERER_API,
   ORDERS_LIST_DELIVERER_API,
 } from "../../../utils/api";
-import { getFoodAdminOrders, setFoodAdminOrders } from "./actions";
-import { GET_FOOD_ADMIN_ORDERS, ORDERS_PAGE_SIZE, SET_DELIVERERS } from "./constants";
+import { getAdminOrders, setAdminOrders } from "./actions";
+import { GET_ADMIN_ORDERS, ORDERS_PAGE_SIZE, SET_DELIVERERS } from "./constants";
 import { makeSelectSubDomain } from "../App/selectors";
 import {
   startLoading,
@@ -28,14 +28,14 @@ export function* getOrdersFunc(action) {
       response: { data, pagination },
     } = yield call(
       request,
-      BUSINESS_ORDERS_SORTED_BY_DELIVERER_API("food", page, ORDERS_PAGE_SIZE),
+      BUSINESS_ORDERS_SORTED_BY_DELIVERER_API("shopping", page, ORDERS_PAGE_SIZE),
       { ...body },
       "GET"
     );
     const pagesCount = Math.ceil(pagination.count / ORDERS_PAGE_SIZE);
 
     if (data) {
-      yield put(setFoodAdminOrders(data, { ...pagination, pagesCount }));
+      yield put(setAdminOrders(data, { ...pagination, pagesCount }));
     }
     yield put(stopProgressLoading());
   } catch (err) {
@@ -51,7 +51,7 @@ export function* setDeliverers(action) {
         response: { data },
       } = yield call(
         request,
-        ORDERS_LIST_DELIVERER_API(action.data.id, "food"),
+        ORDERS_LIST_DELIVERER_API(action.data.id, "shopping"),
         {
           deliverer_name: action.data.deliverer,
           send_sms: action.data.sendSms,
@@ -60,7 +60,7 @@ export function* setDeliverers(action) {
         "PATCH"
       );
       if (data) {
-        yield put(getFoodAdminOrders(action.data.page, action.data.hasDeliverer));
+        yield put(getAdminOrders(action.data.page, action.data.hasDeliverer));
         yield put(setSnackBarMessage("تخصیص پیک با موفقیت انجام شد.", "success"));
       } else yield put(setSnackBarMessage("در تخصیص پیک خطایی رخ داده است!", "fail"));
     }
@@ -71,6 +71,6 @@ export function* setDeliverers(action) {
   }
 }
 export default function* adminPanelAppSaga() {
-  yield takeLatest(GET_FOOD_ADMIN_ORDERS, getOrdersFunc);
+  yield takeLatest(GET_ADMIN_ORDERS, getOrdersFunc);
   yield takeLatest(SET_DELIVERERS, setDeliverers);
 }

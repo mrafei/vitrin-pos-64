@@ -6,14 +6,14 @@ import { GET_ANALYTICS_DATA } from './constants';
 import { startLoading, stopLoading } from '../App/actions';
 import { ORDER_ANALYTICS_DATA_API } from '../../../utils/api';
 import { setAnalyticsData } from './actions';
-export function* getFoodAnalyticsData(action) {
+export function* getShoppingAnalyticsData(action) {
   try {
     yield put(startLoading());
     const {
       response: { data },
     } = yield call(
       request,
-      ORDER_ANALYTICS_DATA_API('food'),
+      ORDER_ANALYTICS_DATA_API('shopping'),
       { id: action.data },
       'PATCH',
     );
@@ -24,5 +24,5 @@ export function* getFoodAnalyticsData(action) {
   }
 }
 export default function* adminPanelAppSaga() {
-  yield takeLatest(GET_ANALYTICS_DATA, getFoodAnalyticsData);
+  yield takeLatest(GET_ANALYTICS_DATA, getShoppingAnalyticsData);
 }

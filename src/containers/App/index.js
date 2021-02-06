@@ -27,7 +27,7 @@ import LoadingIndicator from "../../components/LoadingIndicator";
 import { reloadPage, setSnackBarMessage } from "../../../stores/ui/actions";
 import { makeSelectSnackBarMessage } from "../../../stores/ui/selector";
 import initPushNotification from "../pushNotification";
-import { getFoodAdminOrders } from "../OnlineOrders/actions";
+import { getAdminOrders } from "../OnlineOrders/actions";
 import { makeSelectBusinessTitle } from "../../../stores/business/selector";
 import DeliverersList from "../DeliverersList";
 import CreateDeliverer from "../CreateDeliverer";
@@ -37,6 +37,7 @@ import PrinterSettings from "../PrinterSettings";
 import AssignDeliverer from "../AssignDeliverer";
 import Products from "../Products";
 import EditProduct from "../EditProduct";
+import EditVariant from "../EditVariant";
 import Analytics from "../Analytics";
 import OrdersReport from "../OrdersReport";
 import { setSiteDomain } from "./actions";
@@ -160,6 +161,7 @@ const App = function ({
               path="/products/new/:category"
               component={EditProduct}
             />
+            <Route exact path="/products/:id/variant/:variant" component={EditVariant} />
             <Route exact path="/products/:id" component={EditProduct} />
 
             <Route exact path="/users/upload" component={UploadCustomers} />
@@ -238,7 +240,7 @@ function mapDispatchToProps(dispatch) {
     _getBusiness: () => dispatch(getBusiness()),
     _setSiteDomain: (domain) => dispatch(setSiteDomain(domain)),
     _getBusinesses: () => dispatch(getBusinesses()),
-    _getAdminOrders: () => dispatch(getFoodAdminOrders(1)),
+    _getAdminOrders: () => dispatch(getAdminOrders(1)),
     _setSnackBarMessage: (message, type) =>
       dispatch(setSnackBarMessage(message, type)),
     reload: () => dispatch(reloadPage()),

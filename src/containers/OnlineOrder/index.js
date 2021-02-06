@@ -16,12 +16,12 @@ import {
   persianToEnglishNumber,
 } from "../../../utils/helper";
 import { makeSelectLoading } from "../App/selectors";
-import { makeSelectFoodAdminOrder } from "./selectors";
+import { makeSelectAdminOrder } from "./selectors";
 import Icon from "../../components/Icon";
 import {
-  acceptFoodOrder,
-  cancelFoodOrder,
-  getFoodAdminOrder,
+  acceptOrder,
+  cancelOrder,
+  getAdminOrder,
   requestAlopeyk,
 } from "./actions";
 import {
@@ -67,7 +67,11 @@ export function OnlineOrder({
   }, [match.params.id]);
   useEffect(() => {
     setDeliverer(order.deliverer_name);
-    setDuration(order.delivery_time ? order.delivery_time / 60 : "");
+    setDuration(
+      order.delivery_time
+        ? order.delivery_time / 60
+        : pluginData.data.default_delivery_time || ""
+    );
   }, [order]);
   const printOrder = useCallback(() => {
     printOptions.printers.map((p, index) => {
@@ -96,7 +100,7 @@ export function OnlineOrder({
   const accept = () => {
     _acceptOrder({
       id: order.id,
-      plugin: "food",
+      plugin: "shopping",
       deliveryTime: duration ? parseInt(duration, 10) * 60 : "",
       deliverer,
       sendSms,
@@ -375,7 +379,7 @@ export function OnlineOrder({
 }
 
 const mapStateToProps = createStructuredSelector({
-  adminOrder: makeSelectFoodAdminOrder(),
+  adminOrder: makeSelectAdminOrder(),
   loading: makeSelectLoading(),
   business: makeSelectBusiness(),
   pluginData: makeSelectPlugin(),
@@ -385,9 +389,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     ـrequestAlopeyk: (id) => dispatch(requestAlopeyk(id)),
-    _getAdminOrder: (data) => dispatch(getFoodAdminOrder(data)),
-    _acceptOrder: (data) => dispatch(acceptFoodOrder(data)),
-    _cancelOrder: (data) => dispatch(cancelFoodOrder(data)),
+    _getAdminOrder: (data) => dispatch(getAdminOrder(data)),
+    _acceptOrder: (data) => dispatch(acceptOrder(data)),
+    _cancelOrder: (data) => dispatch(cancelOrder(data)),
   };
 }
 

@@ -58,6 +58,9 @@ function ItemsSection({ order }) {
               </ul>
             ) : null}
           </div>
+          {item.deal.variation_name && (
+            <div className="ml-2">{item.deal.variation_name}</div>
+          )}
           <div className="u-text-darkest-grey order--item u-border-medium-grey align-items-center u-no-wrap">
             <div>{englishNumberToPersianNumber(item.amount)}</div>
             عدد
