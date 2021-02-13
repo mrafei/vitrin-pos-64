@@ -68,11 +68,11 @@ function devideArraysIntoGroups(arr = [], devideTo) {
   return arrayRows;
 }
 
-function englishNumberToPersianNumber(num) {
+function englishNumberToPersianNumber(num, defaultValue = "۰") {
   const id = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   if (num && num.toString())
     return num.toString().replace(/[0-9]/g, (w) => id[+w]);
-  return "۰";
+  return defaultValue;
 }
 
 function addCommaToPrice(num) {
@@ -593,7 +593,6 @@ const convertVariantToTable = (variants, isEditMode, table, product) => {
       };
     });
   }
-  console.log(obj);
   return obj;
 };
 const reversePriceFormatter = (price) => {

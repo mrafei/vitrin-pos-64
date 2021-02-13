@@ -22,7 +22,10 @@ import IconButton from "@material-ui/core/IconButton";
 import Input from "../../components/Input";
 import TextSwitch from "../../components/TextSwitch";
 import Select from "../../components/Select";
-import { availableOnDayOptions, inventoryOptions } from "../../../stores/business/constants";
+import {
+  availableOnDayOptions,
+  inventoryOptions,
+} from "../../../stores/business/constants";
 
 export default function PriceSection({ product, setProduct, hasVariation }) {
   const theme = useTheme();
