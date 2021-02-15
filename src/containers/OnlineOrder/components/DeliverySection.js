@@ -105,6 +105,21 @@ function DeliverySection({ order }) {
               </span>
             </div>
           ) : null}
+          <div className="mt-2">
+            <span
+              className={`u-textBlack ${
+                order.delivery_on_site ? "u-fontWeightBold" : ""
+              }`}
+            >
+              {order.delivery_on_site
+                ? `سفارش توسط مشتری تحویل گرفته میشود. ${
+                    order.is_carry_out_order
+                      ? "سفارش بیرون بر است و باید بسته‌بندی شود."
+                      : "نیازی به بسته‌بندی ندارد."
+                  }`
+                : "سفارش به محل مشتری ارسال شود."}
+            </span>
+          </div>
         </div>
         <Map options={mapOptions} />
       </div>
