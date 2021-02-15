@@ -84,6 +84,8 @@ const appReducer = (state = initialState, action) =>
           const uploadedFiles = [...draft.multipleUploadedFiles];
           uploadedFiles.splice(action.index, 1);
           draft.multipleUploadedFiles = uploadedFiles;
+        } else {
+          draft.multipleUploadedFiles = [];
         }
         break;
       case CLEAR_UPLOADED_FILES:
