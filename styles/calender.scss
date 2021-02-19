@@ -1,151 +1,28 @@
-#calender-wrapper {
-  margin: 0 15px;
-  background-color: white;
-  padding: 10px !important;
-  display: flex;
-  width: 320px;
-  flex-direction: column;
+.Calendar__day.-today {
+  color: $ocean-I !important;
+  border: 1px solid $ocean-I !important;
+  &::after {
+    content: none !important;
+  }
 }
-
-#calender-wrapper button {
-  //margin-top: auto;
-  //width: 100%;
-  //padding: 10px 30px;
-  //border-radius: 5px;
-  //border: 3px silver solid;
-  //background: silver;
-  //color: white;
-  //box-shadow: none;
-  //cursor: pointer;
-  //transition: all 0.4s ease-in-out;
-  //will-change: background, box-shadow;
-  display: none;
+.Calendar {
+  transition: none !important;
+  font-size: 14px !important;
+  box-shadow: none !important;
+  & * {
+    transition: none !important;
+    font-size: 16px !important;
+  }
 }
-
-#calender-wrapper button:hover {
-  background: slategray;
-  border-color: slategray;
-  color: white;
+.Calendar__day.-rtl {
+  font-size: 20px !important;
 }
-
-#calendar {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  width: 100%;
-  margin-bottom: 20px;
+.Calendar__monthArrow {
+  width: 1.2em !important;
+  height: 1.2em !important;
 }
-
-#calendar > div.header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 5px;
-  color: $smoke;
-  direction: rtl;
-}
-
-#calendar > div.header > * {
-  vertical-align: middle;
-}
-
-#calendar > div.header > div.icon-and-text-in-a-row {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-weight: bold;
-  width: 35px;
-}
-
-#calendar > div.header > div.icon-and-text-in-a-row:hover {
-  color: silver;
-}
-
-#calendar > div.header > span {
-  font-size: 16px;
-  direction: ltr;
-  box-sizing: border-box;
-  text-align: center;
-  color: black;
-}
-
-#calendar div.weeks-container {
-  width: 100%;
-  transition: height 0.3s linear;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-}
-
-#calendar div.weeks-container > div.week {
-  margin: 5px 0;
-  justify-content: space-between;
-}
-
-#calendar div.weeks-container > div.week span.day {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-}
-
-#calendar div.weeks-container > div.week span.day:not(.selected):hover {
-}
-
-#calendar div.weeks-container > div.week span.day:last-child {
-  color: $strawberry-I;
-}
-
-#calendar div.week {
-  direction: rtl;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-#calendar div.week span.day {
-  box-sizing: border-box;
-  text-align: center;
-  display: inline-block;
-  vertical-align: middle;
-  cursor: pointer;
-  color: black;
-}
-
-#calendar div.week span.day.today {
-  border: 2px $ocean-I solid;
-  color: $ocean-I;
-}
-
-#calendar div.week span.day.different-month {
-  color: $smoke;
-}
-
-#calendar div.week span.day.selected {
-  background: $ocean-I;
-  color: white;
-}
-
-#calendar div.week.names {
-  margin: 10px 0;
-  padding: 10px 0;
-  border-radius: 5px;
-}
-
-#calendar div.week.names span {
-  color: $smoke;
-  font-size: 13px;
-  font-weight: bold;
-  width: 50px;
-  cursor: initial;
+.Calendar__monthYear {
+  & * {
+    font-size: 20px !important;
+  }
 }
