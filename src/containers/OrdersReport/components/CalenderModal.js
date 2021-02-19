@@ -1,7 +1,8 @@
 import React, { memo } from "react";
 import Icon from "../../../components/Icon";
-import Calendar from "reactjs-persian-calendar";
 import { ICONS } from "../../../../assets/images/icons";
+import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
+import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 
 const CalenderModal = ({ onClose, selectDay, open }) => {
   const dayClicked = (day) => {
@@ -43,7 +44,14 @@ const CalenderModal = ({ onClose, selectDay, open }) => {
                 <div className="u-textBlack u-fontWeightBold u-fontMedium mb-3">
                   روز مورد نظر خود را بر روی تقویم انتخاب کنید.
                 </div>
-                <Calendar color="#0050ff" onClick={dayClicked} size={50} />
+                <Calendar
+                  locale="fa"
+                  colorPrimary="#0050ff"
+                  shouldHighlightWeekends
+                  onChange={(date) => {
+                    dayClicked(`${date.year}-${date.month}-${date.day}`);
+                  }}
+                />
               </div>
             </div>
           </div>
