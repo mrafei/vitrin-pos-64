@@ -1,5 +1,6 @@
 const createWindowsInstaller = require('electron-winstaller').createWindowsInstaller
 const path = require('path')
+const VERSION = process.env.npm_package_version;
 
 getInstallerConfig()
   .then(createWindowsInstaller)
@@ -20,7 +21,7 @@ function getInstallerConfig() {
     noMsi: true,
     outputDirectory: path.join(outPath, 'installable'),
     exe: 'vitrin-pos.exe',
-    setupExe: 'VitrinPOS-32bit.exe',
+    setupExe: `VitrinPOS-${VERSION}-32bit.exe`,
     setupIcon: path.join(rootPath, 'assets', 'icon.ico'),
     skipUpdateIcon: true,
     loadingGif: path.join(rootPath, 'assets', 'loading.gif'),
