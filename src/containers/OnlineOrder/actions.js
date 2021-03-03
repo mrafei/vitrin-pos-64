@@ -11,6 +11,9 @@ import {
   ACCEPT_ORDER,
   CANCEL_ORDER,
   REQUEST_ALOPEYK,
+  REQUEST_MIARE,
+  SET_CUSTOMER_ORDERS,
+  GET_CUSTOMER_ORDERS,
 } from "./constants";
 
 export function defaultAction() {
@@ -31,6 +34,13 @@ export function requestAlopeyk(order_id) {
     data: { order_id },
   };
 }
+export function requestMiare(order_id) {
+  return {
+    type: REQUEST_MIARE,
+    data: { order_id },
+  };
+}
+
 export function setAdminOrder(data) {
   return {
     type: SET_ADMIN_ORDER,
@@ -48,6 +58,20 @@ export function acceptOrder(data) {
 export function cancelOrder(data) {
   return {
     type: CANCEL_ORDER,
+    data,
+  };
+}
+
+export function getCustomerOrders(userId) {
+  return {
+    type: GET_CUSTOMER_ORDERS,
+    data: { userId },
+  };
+}
+
+export function setCustomerOrders(data) {
+  return {
+    type: SET_CUSTOMER_ORDERS,
     data,
   };
 }

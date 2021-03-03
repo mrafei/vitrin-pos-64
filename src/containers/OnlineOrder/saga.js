@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { call, put, takeLatest } from "@redux-saga/core/effects";
+import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 
 import request from "../../../utils/request";
 import {
@@ -9,13 +9,17 @@ import {
   ORDER_DELIVERY_TIME_API,
   ORDER_DELIVERER_API,
   REQUEST_ALOPEYK_API,
+  REQUEST_MIARE_API,
+  CUSTOMER_ORDERS_API,
 } from "../../../utils/api";
-import { setAdminOrder } from "./actions";
+import { setAdminOrder, setCustomerOrders } from "./actions";
 import {
   GET_ADMIN_ORDER,
   ACCEPT_ORDER,
   CANCEL_ORDER,
   REQUEST_ALOPEYK,
+  REQUEST_MIARE,
+  GET_CUSTOMER_ORDERS,
 } from "./constants";
 import { setSnackBarMessage } from "../../../stores/ui/actions";
 import {
@@ -26,6 +30,7 @@ import {
 } from "../App/actions";
 import { submitHamiOrder } from "../../../integrations/hami/actions";
 import { submitAriaOrder } from "../../../integrations/aria/actions";
+import { makeSelectSubDomain } from "../App/selectors";
 
 export function* getAdminOrder(action) {
   try {
@@ -136,21 +141,70 @@ export function* requestAlopeykFunc(action) {
     );
     if (data) {
       yield put(setSnackBarMessage("درخواست الوپیک شما ثبت شد.", "success"));
-      yield call(() =>
-        getAdminOrder({ data: { id: action.data.order_id } })
-      );
-    } else
+      yield call(() => getAdminOrder({ data: { id: action.data.order_id } }));
+    } else {
       yield put(
         setSnackBarMessage("در درخواست الوپیک خطایی رخ داده است!", "fail")
       );
+    }
     yield put(stopLoading());
   } catch (err) {
     yield put(stopLoading());
   }
 }
+
+export function* requestMiareFunc(action) {
+  try {
+    yield put(startLoading());
+    const {
+      response: { data },
+    } = yield call(
+      request,
+      REQUEST_MIARE_API(action.data.order_id, "shopping"),
+      {},
+      "POST"
+    );
+    if (data) {
+      yield put(setSnackBarMessage("درخواست میاره شما ثبت شد.", "success"));
+      yield call(() => getAdminOrder({ data: { id: action.data.order_id } }));
+    } else {
+      yield put(
+        setSnackBarMessage("در درخواست میاره خطایی رخ داده است!", "fail")
+      );
+    }
+    yield put(stopLoading());
+  } catch (err) {
+    yield put(stopLoading());
+  }
+}
+export function* getCustomerOrdersFunc(action) {
+  try {
+    yield put(startProgressLoading());
+    const domain = yield select(makeSelectSubDomain());
+    const {
+      response: { data },
+    } = yield call(
+      request,
+      CUSTOMER_ORDERS_API,
+      { domain, user: action.data.userId },
+      "GET"
+    );
+
+    if (data) {
+      yield put(setCustomerOrders(data));
+    }
+    yield put(stopProgressLoading());
+  } catch (err) {
+    yield put(stopProgressLoading());
+    console.log(err);
+  }
+}
+
 export default function* adminPanelAppSaga() {
   yield takeLatest(GET_ADMIN_ORDER, getAdminOrder);
   yield takeLatest(ACCEPT_ORDER, acceptOrder);
   yield takeLatest(CANCEL_ORDER, cancelOrder);
   yield takeLatest(REQUEST_ALOPEYK, requestAlopeykFunc);
+  yield takeLatest(REQUEST_MIARE, requestMiareFunc);
+  yield takeLatest(GET_CUSTOMER_ORDERS, getCustomerOrdersFunc);
 }

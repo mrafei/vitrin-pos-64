@@ -112,12 +112,10 @@ function DeliverySection({ order }) {
               }`}
             >
               {order.delivery_on_site
-                ? `سفارش توسط مشتری تحویل گرفته میشود. ${
-                    order.is_carry_out_order
-                      ? "سفارش بیرون بر است و باید بسته‌بندی شود."
-                      : "نیازی به بسته‌بندی ندارد."
-                  }`
-                : "سفارش به محل مشتری ارسال شود."}
+                ? order.is_carry_out_order
+                  ? "سفارش بیرون بر - بسته‌بندی شود."
+                  : "میل در سالن"
+                : null}
             </span>
           </div>
         </div>
