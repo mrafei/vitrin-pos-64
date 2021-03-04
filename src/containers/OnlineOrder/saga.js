@@ -157,7 +157,7 @@ export function* requestMiareFunc(action) {
   try {
     yield put(startLoading());
     const {
-      response: { data },
+      response: { data, meta },
     } = yield call(
       request,
       REQUEST_MIARE_API(action.data.order_id, "shopping"),
@@ -169,7 +169,7 @@ export function* requestMiareFunc(action) {
       yield call(() => getAdminOrder({ data: { id: action.data.order_id } }));
     } else {
       yield put(
-        setSnackBarMessage("در درخواست میاره خطایی رخ داده است!", "fail")
+        setSnackBarMessage(meta.detail.global_error_messages[0], "fail")
       );
     }
     yield put(stopLoading());

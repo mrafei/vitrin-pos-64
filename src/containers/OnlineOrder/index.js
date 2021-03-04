@@ -223,11 +223,12 @@ export function OnlineOrder({
                 <div className="u-textBlack u-fontWeightBold">انتخاب پیک</div>
                 {pluginData.data.deliverer_companies.alopeyk_api_token ? (
                   <div className="mt-4 mb-2">
-                    {order.alopeyk_token ? (
+                    {order.delivery_companies_data &&
+                    order.delivery_companies_data.alopeyk_token ? (
                       <button
                         onClick={() =>
                           shell.openExternal(
-                            `https://tracking.alopeyk.com/#/${order.alopeyk_token}`
+                            `https://tracking.alopeyk.com/#/${order.delivery_companies_data.alopeyk_token}`
                           )
                         }
                         className="p-3 d-flex aling-items-center"
@@ -268,7 +269,8 @@ export function OnlineOrder({
                 ) : null}
                 {pluginData.data.deliverer_companies.miare_api_token ? (
                   <div className="mt-4 d-flex mb-2">
-                    {order.miare_requested ? (
+                    {order.delivery_companies_data &&
+                    order.delivery_companies_data.miare_tracking_url ? (
                       <div
                         className="p-3 d-flex aling-items-center"
                         style={{
