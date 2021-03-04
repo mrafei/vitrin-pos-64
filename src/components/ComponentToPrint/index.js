@@ -147,6 +147,18 @@ export default class ComponentToPrint extends React.Component {
               </span>
             </div>
           )}
+          {order.delivery_on_site ? (
+            <div className="mt-1">
+              <span
+                className="u-fontWeightBold"
+                style={{ whiteSpace: "pre-wrap" }}
+              >
+                {order.is_carry_out_order
+                  ? "سفارش بیرون بر - بسته‌بندی شود."
+                  : "میل در سالن"}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         {!printOptions.hideItems && (

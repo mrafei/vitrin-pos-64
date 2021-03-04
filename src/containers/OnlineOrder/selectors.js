@@ -1,11 +1,11 @@
-import { createSelector } from 'reselect';
-import { initialState } from './reducer';
+import { createSelector } from "reselect";
+import { initialState } from "./reducer";
 
 /**
  * Direct selector to the admin state domain
  */
 
-const selectAdminDomain = state => state.adminOrder || initialState;
+const selectAdminDomain = (state) => state.adminOrder || initialState;
 
 /**
  * Other specific selectors
@@ -16,17 +16,11 @@ const selectAdminDomain = state => state.adminOrder || initialState;
  */
 
 const makeSelectAdmin = () =>
-  createSelector(
-    selectAdminDomain,
-    substate => substate
-  );
+  createSelector(selectAdminDomain, (substate) => substate);
 const makeSelectAdminOrder = () =>
-  createSelector(
-    selectAdminDomain,
-    state => state.adminOrder
-  );
+  createSelector(selectAdminDomain, (state) => state.adminOrder);
+const makeSelectCustomerOrders = () =>
+  createSelector(selectAdminDomain, (state) => state.customerOrders);
 export default makeSelectAdmin;
-export {
-  selectAdminDomain,
-  makeSelectAdminOrder,
-};
+
+export { selectAdminDomain, makeSelectAdminOrder, makeSelectCustomerOrders };

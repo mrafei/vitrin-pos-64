@@ -10,19 +10,23 @@ import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
+import moment from "moment-jalaali";
 
 import {
   englishNumberToPersianNumber,
   persianToEnglishNumber,
+  priceFormatter,
 } from "../../../utils/helper";
 import { makeSelectLoading } from "../App/selectors";
-import { makeSelectAdminOrder } from "./selectors";
+import { makeSelectAdminOrder, makeSelectCustomerOrders } from "./selectors";
 import Icon from "../../components/Icon";
 import {
   acceptOrder,
   cancelOrder,
   getAdminOrder,
+  getCustomerOrders,
   requestAlopeyk,
+  requestMiare,
 } from "./actions";
 import {
   makeSelectBusiness,
@@ -31,6 +35,7 @@ import {
 } from "../../../stores/business/selector";
 import { ICONS } from "../../../assets/images/icons";
 import alopeyk from "../../../assets/images/alopeyk.svg";
+import miare from "../../../assets/images/miare.png";
 import Input from "../../components/Input";
 import ItemsSection from "./components/ItemsSection";
 import DeliverySection from "./components/DeliverySection";
@@ -58,10 +63,13 @@ export function OnlineOrder({
   pluginData,
   printOptions,
   ـrequestAlopeyk,
+  _requestMiare,
+  _getCustomerOrders,
+  customerOrders,
 }) {
   useInjectReducer({ key: "adminOrder", reducer });
   useInjectSaga({ key: "adminOrder", saga });
-
+  console.log(customerOrders);
   useEffect(() => {
     _getAdminOrder({ id: match.params.id });
   }, [match.params.id]);
@@ -72,6 +80,9 @@ export function OnlineOrder({
         ? order.delivery_time / 60
         : pluginData.data.default_delivery_time || ""
     );
+    if (order && order.user_id) {
+      _getCustomerOrders(order.user_id);
+    }
   }, [order]);
   const printOrder = useCallback(() => {
     printOptions.printers.map((p, index) => {
@@ -110,6 +121,18 @@ export function OnlineOrder({
     pluginData.data && pluginData.data.deliverers
       ? pluginData.data.deliverers
       : [];
+  let lastOrderTime = "ندارد";
+  if (customerOrders && customerOrders.length > 1) {
+    const lastOrderDate = new Date(customerOrders[1]._submitted_at);
+    lastOrderTime = englishNumberToPersianNumber(
+      moment(
+        `${lastOrderDate.getFullYear()}-${
+          lastOrderDate.getMonth() + 1
+        }-${lastOrderDate.getDate()}`,
+        "YYYY-MM-DD"
+      ).format("jYYYY/jMM/jDD")
+    );
+  }
   return (
     <>
       <PrintModal
@@ -143,62 +166,169 @@ export function OnlineOrder({
             <div className="d-flex flex-1 flex-column align-items-center overflow-auto">
               <ItemsSection order={order} />
               <DeliverySection order={order} />
+              {customerOrders && customerOrders.length ? (
+                <div className="w-100 flex-1 py-2 u-background-white mt-1 px-3">
+                  <div className="flex-1 u-fontWeightBold mb-2 u-text-black">
+                    تاریخچه خرید مشتری
+                  </div>
+                  <div className="d-flex justify-content-between flex-wrap px-3">
+                    <div className="mb-2 w-100">
+                      <div className="d-flex align-items-center justify-content-around flex-1 mt-1">
+                        <div className="text-center">
+                          <div className="u-text-darkest-grey">
+                            تاریخ آخرین سفارش
+                          </div>
+                          <div className="u-text-night u-fontWeightBold u-fontVeryLarge mt-1">
+                            {lastOrderTime}
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="u-text-darkest-grey">تعداد سفارش</div>
+                          <div className="u-text-night mt-1 u-fontWeightBold u-fontVeryLarge">
+                            {englishNumberToPersianNumber(
+                              customerOrders.length
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <div className="u-text-darkest-grey">
+                            جمع مبالغ خرید
+                          </div>
+                          <div className="u-text-night mt-1 u-fontWeightBold u-fontVeryLarge">
+                            {priceFormatter(
+                              customerOrders.reduce(
+                                (cost, o) => cost + o.final_price,
+                                0
+                              )
+                            )}{" "}
+                            تومان
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="overflow-auto py-3 mt-3" style={{ width: 400 }}>
             {pluginData.data &&
             pluginData.data.deliverer_companies &&
-            pluginData.data.deliverer_companies.alopeyk_api_token ? (
+            (pluginData.data.deliverer_companies.alopeyk_api_token ||
+              pluginData.data.deliverer_companies.miare_api_token) ? (
               <div
                 className="p-3 u-relative u-background-white box-shadow u-border-radius-8 mr-4"
                 style={{ height: "fit-content" }}
               >
                 <div className="u-textBlack u-fontWeightBold">انتخاب پیک</div>
-                <div className="mt-4 mb-2">
-                  {order.alopeyk_token ? (
-                    <button
-                      onClick={() =>
-                        shell.openExternal(
-                          `https://tracking.alopeyk.com/#/${order.alopeyk_token}`
-                        )
-                      }
-                      className="p-3 d-flex aling-items-center"
-                      style={{
-                        background: "#FFFFFF",
-                        boxShadow: "0px 0px 10px rgba(79, 89, 91, 0.1)",
-                        borderRadius: "4px",
-                        fontSize: 14,
-                        color: "#00BFFF",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      <span className="ml-2">
-                        <img src={alopeyk} alt="" />
-                      </span>
-                      پیگیری الوپیک
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => ـrequestAlopeyk(order.id)}
-                      className="p-3 d-flex aling-items-center"
-                      style={{
-                        background: "#FFFFFF",
-                        boxShadow: "0px 0px 10px rgba(79, 89, 91, 0.1)",
-                        borderRadius: "4px",
-                        fontSize: 14,
-                        color: "#00BFFF",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      <span className="ml-2">
-                        <img src={alopeyk} alt="" />
-                      </span>
-                      درخواست الوپیک
-                    </button>
-                  )}
-                </div>
+                {pluginData.data.deliverer_companies.alopeyk_api_token ? (
+                  <div className="mt-4 mb-2">
+                    {order.delivery_companies_data &&
+                    order.delivery_companies_data.alopeyk_token ? (
+                      <button
+                        onClick={() =>
+                          shell.openExternal(
+                            `https://tracking.alopeyk.com/#/${order.delivery_companies_data.alopeyk_token}`
+                          )
+                        }
+                        className="p-3 d-flex aling-items-center"
+                        style={{
+                          background: "#FFFFFF",
+                          boxShadow: "0px 0px 10px rgba(79, 89, 91, 0.1)",
+                          borderRadius: "4px",
+                          fontSize: 16,
+                          color: "#00BFFF",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <span className="ml-2">
+                          <img src={alopeyk} alt="" />
+                        </span>
+                        پیگیری الوپیک
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => ـrequestAlopeyk(order.id)}
+                        className="p-3 d-flex aling-items-center"
+                        style={{
+                          background: "#FFFFFF",
+                          boxShadow: "0px 0px 10px rgba(79, 89, 91, 0.1)",
+                          borderRadius: "4px",
+                          fontSize: 16,
+                          color: "#00BFFF",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <span className="ml-2">
+                          <img src={alopeyk} alt="" />
+                        </span>
+                        درخواست الوپیک
+                      </button>
+                    )}
+                  </div>
+                ) : null}
+                {pluginData.data.deliverer_companies.miare_api_token ? (
+                  <div className="mt-4 d-flex mb-2">
+                    {order.delivery_companies_data &&
+                    order.delivery_companies_data.miare_tracking_url ? (
+                      <div
+                        className="p-3 d-flex aling-items-center"
+                        style={{
+                          background: "#FFFFFF",
+                          boxShadow: "0px 0px 10px rgba(79, 89, 91, 0.1)",
+                          borderRadius: "4px",
+                          fontSize: 16,
+                          color: "#6f2282",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <span className="ml-2">
+                          <img
+                            style={{
+                              width: 30,
+                              height: 30,
+                              objectFit: "cover",
+                              borderRadius: 15,
+                            }}
+                            src={miare}
+                            alt=""
+                          />
+                        </span>
+                        درخواست میاره ثبت شد
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => _requestMiare(order.id)}
+                        className="p-3 d-flex aling-items-center"
+                        style={{
+                          background: "#FFFFFF",
+                          boxShadow: "0px 0px 10px rgba(79, 89, 91, 0.1)",
+                          borderRadius: "4px",
+                          fontSize: 16,
+                          color: "#6f2282",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        <span className="ml-2">
+                          <img
+                            style={{
+                              width: 30,
+                              height: 30,
+                              objectFit: "cover",
+                              borderRadius: 15,
+                            }}
+                            src={miare}
+                            alt=""
+                          />
+                        </span>
+                        درخواست میاره
+                      </button>
+                    )}
+                  </div>
+                ) : null}
               </div>
             ) : null}
+
             <div
               className="p-3 u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4"
               style={{ height: "fit-content" }}
@@ -384,12 +514,15 @@ const mapStateToProps = createStructuredSelector({
   business: makeSelectBusiness(),
   pluginData: makeSelectPlugin(),
   printOptions: makeSelectPrinterOptions(),
+  customerOrders: makeSelectCustomerOrders(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     ـrequestAlopeyk: (id) => dispatch(requestAlopeyk(id)),
+    _requestMiare: (id) => dispatch(requestMiare(id)),
     _getAdminOrder: (data) => dispatch(getAdminOrder(data)),
+    _getCustomerOrders: (id) => dispatch(getCustomerOrders(id)),
     _acceptOrder: (data) => dispatch(acceptOrder(data)),
     _cancelOrder: (data) => dispatch(cancelOrder(data)),
   };

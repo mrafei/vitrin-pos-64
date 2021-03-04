@@ -32,6 +32,7 @@ export const USER_ORDERS_ITEMS_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/`;
 export const BUSINESS_ORDERS_API = (plugin) =>
   `${BASE_URL}${plugin}_orders/by_business_site_domain/`;
+export const CUSTOMER_ORDERS_API = `${BASE_URL}shopping_orders/by_business_by_user_id/`;
 export const BUSINESS_LIGHT_BY_SITE_DOMAIN_API = (subDomain) =>
   `${BASE_URL}businesses/${subDomain}/light_by_site_domain/`;
 export const DEALS_ITEMS_API = (categories) =>
@@ -67,6 +68,8 @@ export const ORDERS_LIST_DELIVERER_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/set_orders_list_deliverer/`;
 export const REQUEST_ALOPEYK_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/apply_for_alopeyk/`;
+export const REQUEST_MIARE_API = (id) =>
+  `${BASE_URL}shopping_orders/${id}/apply_for_miare/`;
 
 // Plugins API
 export const SET_PLUGIN_DATA_API = (slug) =>
