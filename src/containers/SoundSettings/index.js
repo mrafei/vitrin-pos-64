@@ -10,7 +10,7 @@ export default function SoundSettings() {
   useEffect(() => {
     const volume =
       localStorage.getItem("volume") !== "0"
-        ? parseFloat(localStorage.getItem("volume")) || 50
+        ? parseFloat(localStorage.getItem("volume")) || 20
         : 0;
     if (volume > 1) setVolume(volume + 50);
     else setVolume(volume * 50);
