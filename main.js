@@ -2,19 +2,28 @@
 
 // Import parts of electron to use
 require("@electron/remote/main").initialize();
+const Sentry = require("@sentry/electron");
+Sentry.init({
+  dsn: "https://f10f2a0b0cb94dc6bfb819be6171641a@sentry.hamravesh.com/91",
+});
 
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const url = require("url");
 app.disableHardwareAcceleration();
 const { setup: setupPushReceiver } = require("electron-push-receiver");
-app.showExitPrompt = true;
+app.showExitPrompt = false;
 
 require("update-electron-app")();
 
-if (require("electron-squirrel-startup")) app.quit();
+if (require("electron-squirrel-startup"))
+  setTimeout(() => {
+    app.showExitPrompt = false;
+    app.quit();
+  }, 1000);
 
 if (handleSquirrelEvent()) {
+  app.showExitPrompt = false;
   process.exit();
 }
 // Keep a global reference of the window object, if you don't, the window will
@@ -133,6 +142,7 @@ function createWindow() {
     notifWindow = null;
     app.quit();
   });
+
   workerWindow = new BrowserWindow({
     show: false,
     webPreferences: {
@@ -185,6 +195,10 @@ app.on("activate", () => {
 ipcMain.on("closeApp", () => {
   app.showExitPrompt = false;
   mainWindow.close();
+});
+ipcMain.on("disable-close", () => {
+  console.log("HI");
+  app.showExitPrompt = true;
 });
 ipcMain.on("print", (event, content, url, printOptions) => {
   workerWindow.webContents.send("print", content, url, printOptions);
@@ -249,7 +263,10 @@ function handleSquirrelEvent() {
       // Install desktop and start menu shortcuts
       spawnUpdate(["--createShortcut", exeName]);
 
-      setTimeout(app.quit, 1000);
+      setTimeout(() => {
+        app.showExitPrompt = false;
+        app.quit();
+      }, 1000);
       break;
 
     case "--squirrel-uninstall":
@@ -259,7 +276,10 @@ function handleSquirrelEvent() {
       // Remove desktop and start menu shortcuts
       spawnUpdate(["--removeShortcut", exeName]);
 
-      setTimeout(app.quit, 1000);
+      setTimeout(() => {
+        app.showExitPrompt = false;
+        app.quit();
+      }, 1000);
       break;
 
     case "--squirrel-obsolete":
@@ -267,7 +287,10 @@ function handleSquirrelEvent() {
       // we update to the new version - it's the opposite of
       // --squirrel-updated
 
-      app.quit();
+      setTimeout(() => {
+        app.showExitPrompt = false;
+        app.quit();
+      }, 1000);
       break;
   }
 }

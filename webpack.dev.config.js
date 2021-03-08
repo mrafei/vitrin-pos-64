@@ -3,6 +3,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { spawn } = require("child_process");
 const SRC = path.resolve(__dirname, "assets");
+const PreloadWebpackPlugin = require("@vue/preload-webpack-plugin");
 
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
 
@@ -127,11 +128,17 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "مدیریت ویترین",
     }),
+    new PreloadWebpackPlugin({
+      rel: 'prefetch',
+      as: 'font',
+      include: 'allAssets',
+      fileWhitelist: [/\.(woff2?|eot|ttf|otf)(\?.*)?$/i],
+    }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("development"),
     }),
   ],
-  externals: {sqlite3: "commonjs sqlite3"},
+  externals: { sqlite3: "commonjs sqlite3" },
   devtool: "cheap-source-map",
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),
@@ -141,7 +148,11 @@ module.exports = {
       children: false,
     },
     before() {
-      spawn("electron", ["."], { shell: true, env: process.env, stdio: "inherit" })
+      spawn("electron", ["."], {
+        shell: true,
+        env: process.env,
+        stdio: "inherit",
+      })
         .on("close", (code) => process.exit(0))
         .on("error", (spawnError) => console.error(spawnError));
     },
