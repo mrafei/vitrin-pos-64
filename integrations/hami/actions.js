@@ -41,7 +41,7 @@ export const submitHamiOrder = (order) => {
         Payable: order.final_price,
         Remaining: 0,
         CommissionPrice: 0,
-        PaymentTypeId: order.payment_status === "1" ? 1 : 3,
+        PaymentTypeId: parseInt(order.payment_status) === 1 ? 1 : 3,
         DiscountCode: "",
         Latitude: `${order.user_address.latitude}`,
         Longitude: `${order.user_address.longitude}`,

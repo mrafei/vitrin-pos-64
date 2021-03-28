@@ -70,6 +70,7 @@ const App = function ({
   useInjectSaga({ key: "app", saga });
   const [dialog, setDialog] = useState(false);
   useEffect(() => {
+    ipcRenderer.send("disable-close");
     const token = localStorage.getItem("token");
     if (token) {
       Axios.defaults.headers.common.Authorization = `Token ${token}`;
@@ -161,7 +162,11 @@ const App = function ({
               path="/products/new/:category"
               component={EditProduct}
             />
-            <Route exact path="/products/:id/variant/:variant" component={EditVariant} />
+            <Route
+              exact
+              path="/products/:id/variant/:variant"
+              component={EditVariant}
+            />
             <Route exact path="/products/:id" component={EditProduct} />
 
             <Route exact path="/users/upload" component={UploadCustomers} />
