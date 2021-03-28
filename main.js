@@ -197,7 +197,6 @@ ipcMain.on("closeApp", () => {
   mainWindow.close();
 });
 ipcMain.on("disable-close", () => {
-  console.log("HI");
   app.showExitPrompt = true;
 });
 ipcMain.on("print", (event, content, url, printOptions) => {
