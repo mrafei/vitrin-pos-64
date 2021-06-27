@@ -12,7 +12,6 @@ import { ICONS } from "../../../assets/images/icons";
 import MenuItem from "./MenuItem";
 import logo from "../../../assets/images/vitrin-blue.png";
 
-
 const drawerWidth = 250;
 const drawerClosedWidth = 64;
 
@@ -145,10 +144,17 @@ const subRoutes = [
       icon: ICONS.PRINT,
     },
     {
-      id: 1,
+      id: 2,
       title: "تنظیمات صدا",
       path: "/settings/sound",
       icon: ICONS.VOLUME,
+    },
+    {
+      id: 3,
+      title: "حامی",
+      path: "/settings/hami",
+      icon: ICONS.ITEMS,
+      show: localStorage.getItem("integrated") === "hami" || false,
     },
   ],
   [
@@ -203,7 +209,9 @@ function Layout({
                 setOpen={setOpen}
                 key={route.path}
                 route={route}
-                subRoutes={subRoutes[index]}
+                subRoutes={subRoutes[index].filter(
+                  (route) => route.show === undefined || route.show === true
+                )}
                 history={history}
               />
             ))}

@@ -50,6 +50,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
+import HamiSettings from "../HamiSettings";
 
 const App = function ({
   history,
@@ -155,6 +156,7 @@ const App = function ({
             />
 
             <Route exact path="/settings/printer" component={PrinterSettings} />
+            <Route exact path="/settings/hami" component={HamiSettings} />
             <Route exact path="/settings/sound" component={SoundSettings} />
             <Route exact path="/categories/:id" component={Products} />
             <Route
