@@ -23,10 +23,12 @@
 // http://193.151.128.95/HamiOrder/SetDiscountCard.aspx
 
 // دریافت اطلاعات گروه های کالایی
-export const getHamiDealCategoriesApi = `http://localhost/HamiOrder/GetGoodsGroup.aspx`;
+export const getHamiDealCategoriesApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/GetGoodsGroup.aspx`;
 
 // دریافت اطلاعات کالاهای فروش
-export const getHamiDealItemApi = `http://localhost/HamiOrder/GetGoods.aspx`;
+export const getHamiDealItemApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/GetGoods.aspx`;
 
 // دریافت اطلاعات توضیحات کالا
 // http://193.151.128.95/HamiOrder/GetGoodsDescription.aspx
@@ -62,7 +64,8 @@ export const getHamiDealItemApi = `http://localhost/HamiOrder/GetGoods.aspx`;
 // http://193.151.128.95/HamiOrder/GetInvoiceStatus.aspx
 
 // ثبت سفارش
-export const submitHamiOrderApi = "http://localhost/HamiOrder/SetInvoice.aspx";
+export const submitHamiOrderApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/SetInvoice.aspx`;
 
 // درج تیک انتقال اطلاعات کارت تخفیف
 // http://193.151.128.95/HamiOrder/SetTransferDiscountCard.aspx

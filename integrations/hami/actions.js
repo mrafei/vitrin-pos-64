@@ -1,5 +1,5 @@
 import request from "../../utils/request";
-import { submitHamiOrderApi } from "./api";
+import { getHamiDealCategoriesApi, submitHamiOrderApi } from "./api";
 import moment from "moment-jalaali";
 
 export const init = () => {};
@@ -14,7 +14,7 @@ export const submitHamiOrder = (order) => {
   )}:${`0${orderDateObject.getSeconds()}`.slice(-2)}`;
 
   request(
-    submitHamiOrderApi,
+    submitHamiOrderApi(localStorage.getItem("hamiIp")),
     {
       Invoice: {
         OrderId: parseInt(order.order_id),
@@ -67,4 +67,7 @@ export const submitHamiOrder = (order) => {
     },
     "POST"
   );
+};
+export const getHamiDealCategories = async () => {
+  return await request(getHamiDealCategoriesApi(localStorage.getItem("hamiIp")));
 };

@@ -93,17 +93,6 @@ function Input({
   );
 }
 
-Input.propTypes = {
-  className: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  themeColor: PropTypes.string,
-  noModal: PropTypes.bool,
-  numberOnly: PropTypes.bool,
-  editOnDoubleClick: PropTypes.bool,
-};
-
 Input.defaultProps = {
   className: "direction-rtl",
   themeColor: "#0050FF",
