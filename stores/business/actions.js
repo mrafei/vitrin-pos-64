@@ -69,27 +69,20 @@ export function deleteCategory(data, history) {
   };
 }
 
-export function createProduct(product, images, extraItems, history) {
+export function createProduct(product, images, history) {
   return {
     type: CREATE_PRODUCT,
-    data: { product, images, extraItems, history },
+    data: { product, images, history },
   };
 }
 
-export function updateProduct(
-  productId,
-  product,
-  uploadedFiles,
-  extraItems,
-  callback
-) {
+export function updateProduct(productId, product, uploadedFiles, callback) {
   return {
     type: UPDATE_PRODUCT,
     data: {
       id: productId,
       product,
       images: uploadedFiles,
-      extraItems,
       callback,
     },
   };

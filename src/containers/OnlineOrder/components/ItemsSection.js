@@ -17,7 +17,7 @@ function ItemsSection({ order }) {
           className="d-flex flex-row justify-content-between mt-2 px-3"
           style={{
             alignItems:
-              item.deal.extra_items && item.deal.extra_items.length
+              item.deal.modifiers && item.deal.modifiers.length
                 ? "start"
                 : "center",
           }}
@@ -43,12 +43,12 @@ function ItemsSection({ order }) {
                 __html: item.deal.description,
               }}
             />
-            {item.deal.extra_items && item.deal.extra_items.length ? (
+            {item.deal.modifiers && item.deal.modifiers.length ? (
               <ul
                 className="d-flex flex-column justify-content-center align-items-center"
                 style={{ fontSize: 12 }}
               >
-                {item.deal.extra_items.map((_item) => (
+                {item.deal.modifiers.map((_item) => (
                   <li className="d-flex justify-content-between align-items-center w-100">
                     <div className="u-fontVerySmall u-text-darkest-grey ">
                       - {_item.title}

@@ -456,11 +456,12 @@ function amplifyMedia(mediaElem, multiplier) {
   return result;
 }
 function deliveryTimeFormatter(deliveryTime) {
-  const fromTime = moment.unix(deliveryTime.from_time);
+  const fromTime = moment(deliveryTime.from_time);
   const date = englishNumberToPersianNumber(fromTime.jDate());
   const month = getMonthName(fromTime.jMonth());
   const weekDay = getWeekDay(fromTime.isoWeekday());
-  const toTime = moment.unix(deliveryTime.to_time).format("HH:mm");
+  const toTime = moment(deliveryTime.to_time).format("HH:mm");
+  console.log(fromTime, toTime)
   return `${weekDay} ${date} ${month} بازه ${englishNumberToPersianNumber(
     fromTime.format("HH:mm")
   )} تا ${englishNumberToPersianNumber(toTime)}`;

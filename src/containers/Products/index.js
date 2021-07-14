@@ -287,9 +287,9 @@ function mapDispatchToProps(dispatch) {
   return {
     _getDeals: (data) => dispatch(getDeals(data)),
     _getUnavailableDeals: (data) => dispatch(getUnavailableDeals(data)),
-    _updateProduct: (productId, product, uploadedFiles, extraItems, callback) =>
+    _updateProduct: (productId, product, uploadedFiles,  callback) =>
       dispatch(
-        updateProduct(productId, product, uploadedFiles, extraItems, callback)
+        updateProduct(productId, product, uploadedFiles, callback)
       ),
   };
 }

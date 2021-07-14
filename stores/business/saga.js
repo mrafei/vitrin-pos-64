@@ -19,8 +19,6 @@ import {
   BUSINESS_LIGHT_BY_SITE_DOMAIN_API,
   GROUP_PACKAGING_PRICE_ON_DEALS_API,
   GROUP_DISCOUNT_ON_DEALS,
-  DEALS_EXTRA_ITEMS_ITEM_API,
-  DEALS_EXTRA_ITEMS_API,
   DEALS_IMAGES_ITEM_CHANGE_ORDER_API,
 } from "../../utils/api";
 import {
@@ -44,7 +42,11 @@ import {
   makeSelectUploadedFile,
 } from "../../src/containers/App/selectors";
 import { reloadPage, setSnackBarMessage } from "../ui/actions";
-import { makeSelectBusiness, makeSelectBusinessSlug } from "./selector";
+import {
+  makeSelectBusiness,
+  makeSelectBusinessId,
+  makeSelectBusinessSlug,
+} from "./selector";
 const { getCurrentWebContents } = require("@electron/remote");
 
 export function* getBusinessData() {
@@ -199,10 +201,10 @@ export function* createProduct(action) {
     yield put(startLoading());
     yield put(startProgressLoading());
     const { product, images, history } = action.data;
-
+    const _business = yield select(makeSelectBusinessId());
     const {
       response: { meta, data: deal },
-    } = yield call(request, DEALS_API, product, "POST");
+    } = yield call(request, DEALS_API, { ...product, _business }, "POST");
 
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       for (let image = 0; image < images.length; image += 1) {
@@ -228,7 +230,7 @@ export function* createProduct(action) {
 export function* updateProduct(action) {
   try {
     yield put(startLoading());
-    const { id, product, images, extra_items: extraItems } = action.data;
+    const { id, product, images } = action.data;
 
     const {
       response: { meta, data },
@@ -251,42 +253,6 @@ export function* updateProduct(action) {
               order: imageIndex,
             };
             yield call(request, DEALS_IMAGES_API, dto, "POST");
-          }
-        }
-      }
-
-      if (extraItems) {
-        for (let item = 0; item < extraItems.length; item += 1) {
-          const { title, price, id: _id, deals } = extraItems[item];
-          if (!_id) {
-            yield call(
-              request,
-              DEALS_EXTRA_ITEMS_API,
-              { title, price, deals: [id] },
-              "POST"
-            );
-          } else {
-            yield call(
-              request,
-              DEALS_EXTRA_ITEMS_ITEM_API(_id),
-              { title, price, deals: [...deals, id] },
-              "PATCH"
-            );
-          }
-        }
-        if (product.extra_items) {
-          for (let item = 0; item < product.extra_items.length; item += 1) {
-            const { id: _id, deals } = product.extra_items[item];
-            if (!extraItems.map((i) => i.id || null).includes(_id)) {
-              yield call(
-                request,
-                DEALS_EXTRA_ITEMS_ITEM_API(_id),
-                {
-                  deals: deals.filter((deal) => deal !== id),
-                },
-                "PATCH"
-              );
-            }
           }
         }
       }

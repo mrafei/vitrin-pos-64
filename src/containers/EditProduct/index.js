@@ -60,7 +60,6 @@ function AdminProduct({
     variations_table: {},
   });
   const [product, setProduct] = useState(null);
-  const [extraItems, setExtraItems] = useState([]);
   const [timeoutId, setTimeoutId] = useState(null);
   const [imagesArray, setImagesArray] = useState([]);
   useEffect(() => {
@@ -95,8 +94,6 @@ function AdminProduct({
           variations_table: {},
         });
       }
-
-      setExtraItems(adminDeal.extra_items);
     }
   }, [adminDeal]);
   useEffect(() => {
@@ -109,15 +106,13 @@ function AdminProduct({
       );
       setProduct({
         extra_data: {},
-        extra_items: [],
         categories: initialCategory ? [initialCategory.id] : [],
         initial_price: 0,
         discounted_price: 0,
-        available: true,
+        is_active: true,
         priority: 100,
         description: "",
       });
-      setExtraItems([]);
     }
   }, [productId]);
   const submit = () => {
@@ -138,14 +133,12 @@ function AdminProduct({
           productId,
           { ...product, variations: _variations },
           imagesArray,
-          extraItems,
           () => window.scrollTo(0, 0)
         );
       } else {
         _createProduct(
           { ...product, variations: _variations },
           imagesArray,
-          extraItems,
           history
         );
       }
@@ -224,9 +217,6 @@ function AdminProduct({
                     _deleteProduct(productId, history);
                     setDialogBox(false);
                   }}
-                  onClose={() => {
-                    setDialogBox(false);
-                  }}
                 />
                 <Button
                   color="primary"
@@ -271,18 +261,16 @@ function mapDispatchToProps(dispatch) {
   return {
     _getAdminDeal: (id) => dispatch(getDeal(id)),
     cleanUploads: () => dispatch(clearUploadedFiles()),
-    _createProduct: (product, images, extraItems, history) =>
-      dispatch(createProduct(product, images, extraItems, history)),
+    _createProduct: (product, images, history) =>
+      dispatch(createProduct(product, images, history)),
     _uploadFile: (files, folderName, callback) =>
       dispatch(uploadFile({ files, folderName }, callback)),
     _removeFile: (index) => dispatch(removeFile(index)),
     _deleteProductImage: (imageId) => dispatch(deleteImageFromProduct(imageId)),
     _deleteProduct: (productId, history) =>
       dispatch(deleteProduct(productId, history)),
-    _updateProduct: (productId, product, uploadedFiles, extraItems, callback) =>
-      dispatch(
-        updateProduct(productId, product, uploadedFiles, null, callback)
-      ),
+    _updateProduct: (productId, product, uploadedFiles, callback) =>
+      dispatch(updateProduct(productId, product, uploadedFiles, callback)),
     _uploadImageAndUpdateProduct: (productId, product) =>
       dispatch(uploadImageAndUpdateProduct(productId, product)),
     _setSnackBarMessage: (message, type) =>

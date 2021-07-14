@@ -22,7 +22,6 @@ export const UPLOAD_IMAGE_AND_UPDATE_PRODUCT = "store/business/UPLOAD_IMAGE_AND_
 
 export const DELIVERIES_PAGE_SIZE = 20;
 export const inventoryOptions = [
-  { label: "نامحدود", value: "" },
   { label: "۱۰", value: 10 },
   { label: "۱۰۰", value: 100 },
   { label: "۱۰۰۰", value: 1000 },
