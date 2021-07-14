@@ -38,7 +38,7 @@ export default function PriceSection({ product, setProduct, hasVariation }) {
       only_on_day: selectedDays = [],
       packaging_price: packagingPrice,
     },
-    available,
+    is_active,
     inventory_count: inventoryCount,
     initial_price: price,
     discounted_price: finalPrice,
@@ -192,17 +192,15 @@ export default function PriceSection({ product, setProduct, hasVariation }) {
         <div className="mt-3 d-flex align-items-center">
           <Checkbox
             color="primary"
-            checked={product.available}
+            checked={product.is_active}
             onChange={(e) =>
               setProduct({
                 ...product,
-                available: e.target.checked,
-                inventory_count:
-                  !e.target.checked || inventoryCount ? inventoryCount : null,
+                is_active: e.target.checked,
               })
             }
           />
-          <Box color={theme.palette.text.tertiary}>موجود</Box>
+          <Box color={theme.palette.text.tertiary}>{is_active? "فعال": "غیرفعال"}</Box>
         </div>
         <div className="mt-2 d-flex">
           <Autocomplete
@@ -219,9 +217,6 @@ export default function PriceSection({ product, setProduct, hasVariation }) {
                 ...product,
                 inventory_count:
                   value === "" ? null : parseInt(persianToEnglishNumber(value)),
-                available:
-                  product.available &&
-                  parseInt(persianToEnglishNumber(value)) !== 0,
               });
             }}
             defaultValue={{
@@ -253,7 +248,6 @@ export default function PriceSection({ product, setProduct, hasVariation }) {
                 {...params}
                 InputLabelProps={{ shrink: true }}
                 label={"موجودی"}
-                placeholder={available ? "نامحدود" : "ناموجود"}
                 size="medium"
                 InputProps={{
                   ...params.InputProps,
@@ -273,7 +267,6 @@ export default function PriceSection({ product, setProduct, hasVariation }) {
                               setProduct({
                                 ...product,
                                 inventory_count: +inventoryCount + 1,
-                                available: true,
                               });
                           }}
                         >
@@ -289,7 +282,6 @@ export default function PriceSection({ product, setProduct, hasVariation }) {
                               setProduct({
                                 ...product,
                                 inventory_count: inventoryCount - 1,
-                                available: inventoryCount - 1 > 0,
                               });
                           }}
                         >
@@ -305,7 +297,7 @@ export default function PriceSection({ product, setProduct, hasVariation }) {
                 inputProps={{
                   ...params.inputProps,
                   className: `${params.inputProps.className} pr-3 ${
-                    available ? "placeholder-active" : "placeholder-error"
+                    is_active ? "placeholder-active" : "placeholder-error"
                   }`,
                 }}
               />

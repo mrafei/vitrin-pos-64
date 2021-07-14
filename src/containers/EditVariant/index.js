@@ -477,7 +477,6 @@ function EditVariant({
                       {...params}
                       InputLabelProps={{ shrink: true }}
                       label={"موجودی"}
-                      placeholder={available ? "نامحدود" : "ناموجود"}
                       size="medium"
                       InputProps={{
                         ...params.InputProps,
@@ -565,17 +564,15 @@ function mapDispatchToProps(dispatch) {
   return {
     _getAdminDeal: (id) => dispatch(getDeal(id)),
     cleanUploads: () => dispatch(clearUploadedFiles()),
-    _createProduct: (product, images, extraItems) =>
-      dispatch(createProduct(product, images, extraItems)),
+    _createProduct: (product, images) =>
+      dispatch(createProduct(product, images)),
     _uploadFile: (files, folderName, callback) =>
       dispatch(uploadFile({ files, folderName }, callback)),
     _removeFile: (index) => dispatch(removeFile(index)),
     _deleteProductImage: (imageId) => dispatch(deleteImageFromProduct(imageId)),
     _deleteProduct: (productId) => dispatch(deleteProduct(productId)),
-    _updateProduct: (productId, product, uploadedFiles, extraItems, callback) =>
-      dispatch(
-        updateProduct(productId, product, uploadedFiles, null, callback)
-      ),
+    _updateProduct: (productId, product, uploadedFiles, callback) =>
+      dispatch(updateProduct(productId, product, uploadedFiles, callback)),
     _uploadImageAndUpdateProduct: (productId, product) =>
       dispatch(uploadImageAndUpdateProduct(productId, product)),
     _setSnackBarMessage: (message, type) =>

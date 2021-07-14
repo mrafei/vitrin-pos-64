@@ -140,7 +140,6 @@ function ProductCard({
           </div>
           <div className="col-1 px-0">
             <Input
-              placeholder="نامحدود"
               editOnDoubleClick
               style={{ textAlign: "center" }}
               variant="standard"
@@ -151,8 +150,8 @@ function ProductCard({
                     value === ""
                       ? null
                       : parseInt(persianToEnglishNumber(value)),
-                  available:
-                    updatedProduct.available &&
+                  is_active:
+                    updatedProduct.is_active &&
                     parseInt(persianToEnglishNumber(value)) !== 0,
                 })
               }
@@ -174,27 +173,23 @@ function ProductCard({
               <span
                 style={{ width: 40 }}
                 className={`u-font-semi-small ml-2 u-fontWeightBold ${
-                  updatedProduct.available
+                  updatedProduct.is_active
                     ? "u-text-primary-blue"
                     : "u-text-darkest-grey"
                 }`}
               >
-                {updatedProduct.available ? "موجود" : "ناموجود"}
+                {updatedProduct.is_active ? "فعال" : "غیرفعال"}
               </span>
               <Switch
-                isSwitchOn={updatedProduct.available}
-                toggleSwitch={(available) => {
+                isSwitchOn={updatedProduct.is_active}
+                toggleSwitch={(is_active) => {
                   setUpdatedProduct({
                     ...updatedProduct,
-                    available,
-                    inventory_count:
-                      !available || inventoryCount ? inventoryCount : null,
+                    is_active,
                   });
                   submit({
                     ...updatedProduct,
-                    available,
-                    inventory_count:
-                      !available || inventoryCount ? inventoryCount : null,
+                    is_active,
                   });
                 }}
               />
@@ -251,18 +246,18 @@ function ProductCard({
         <span
           style={{ width: 40 }}
           className={`u-font-semi-small u-fontWeightBold ${
-            updatedProduct.available
+            updatedProduct.is_active
               ? "u-text-primary-blue"
               : "u-text-darkest-grey"
           }`}
         >
-          {updatedProduct.available ? "موجود" : "ناموجود"}
+          {updatedProduct.is_active ? "فعال" : "غیرفعال"}
         </span>
         <Switch
-          isSwitchOn={updatedProduct.available}
-          toggleSwitch={(available) => {
-            setUpdatedProduct({ ...updatedProduct, available });
-            submit({ ...updatedProduct, available });
+          isSwitchOn={updatedProduct.is_active}
+          toggleSwitch={(is_active) => {
+            setUpdatedProduct({ ...updatedProduct, is_active });
+            submit({ ...updatedProduct, is_active});
           }}
         />
       </div>

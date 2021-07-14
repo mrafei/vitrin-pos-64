@@ -124,7 +124,6 @@ module.exports = {
     ]
   },
   target: 'electron-renderer',
-  externals: {sqlite3: "commonjs sqlite3"},
   plugins: [
     new HtmlWebpackPlugin({
       title: "مدیریت ویترین",

@@ -12,18 +12,15 @@ const path = require("path");
 const url = require("url");
 app.disableHardwareAcceleration();
 const { setup: setupPushReceiver } = require("electron-push-receiver");
-app.showExitPrompt = false;
 
 require("update-electron-app")();
 
 if (require("electron-squirrel-startup"))
   setTimeout(() => {
-    app.showExitPrompt = false;
     app.quit();
   }, 1000);
 
 if (handleSquirrelEvent()) {
-  app.showExitPrompt = false;
   process.exit();
 }
 // Keep a global reference of the window object, if you don't, the window will
@@ -31,23 +28,18 @@ if (handleSquirrelEvent()) {
 let mainWindow;
 let workerWindow;
 let notifWindow;
-const gotTheLock = app.requestSingleInstanceLock();
 
-if (!gotTheLock) {
-  app.quit();
-} else {
-  app.on("second-instance", (event, commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus();
-    }
-  });
+app.on("second-instance", (event, commandLine, workingDirectory) => {
+  // Someone tried to run a second instance, we should focus our window.
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.focus();
+  }
+});
 
-  app.whenReady().then(() => {
-    createWindow();
-  });
-}
+app.whenReady().then(() => {
+  createWindow();
+});
 // Keep a reference for dev mode
 let dev = false;
 
@@ -126,12 +118,6 @@ function createWindow() {
     }
   });
   setupPushReceiver(mainWindow.webContents);
-  mainWindow.on("close", function (e) {
-    if (app.showExitPrompt) {
-      e.preventDefault();
-      mainWindow.webContents.send("closePrompt");
-    }
-  });
   // Emitted when the window is closed.
   mainWindow.on("closed", function () {
     // Dereference the window object, usually you would store windows
@@ -191,13 +177,6 @@ app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
   }
-});
-ipcMain.on("closeApp", () => {
-  app.showExitPrompt = false;
-  mainWindow.close();
-});
-ipcMain.on("disable-close", () => {
-  app.showExitPrompt = true;
 });
 ipcMain.on("print", (event, content, url, printOptions) => {
   workerWindow.webContents.send("print", content, url, printOptions);
@@ -263,7 +242,6 @@ function handleSquirrelEvent() {
       spawnUpdate(["--createShortcut", exeName]);
 
       setTimeout(() => {
-        app.showExitPrompt = false;
         app.quit();
       }, 1000);
       break;
@@ -276,7 +254,6 @@ function handleSquirrelEvent() {
       spawnUpdate(["--removeShortcut", exeName]);
 
       setTimeout(() => {
-        app.showExitPrompt = false;
         app.quit();
       }, 1000);
       break;
@@ -287,7 +264,6 @@ function handleSquirrelEvent() {
       // --squirrel-updated
 
       setTimeout(() => {
-        app.showExitPrompt = false;
         app.quit();
       }, 1000);
       break;

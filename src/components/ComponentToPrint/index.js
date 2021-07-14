@@ -25,12 +25,12 @@ export default class ComponentToPrint extends React.Component {
     sortedItems.sort((a, b) => {
       let firstTotal = a.deal.discounted_price;
       let secondTotal = b.deal.discounted_price;
-      if (a.deal.extra_items)
-        for (let i = 0; i < a.deal.extra_items.length; i += 1)
-          firstTotal += a.deal.extra_items[i].price;
-      if (b.deal.extra_items)
-        for (let j = 0; j < b.deal.extra_items.length; j += 1)
-          secondTotal += b.deal.extra_items[j].price;
+      if (a.deal.modifiers)
+        for (let i = 0; i < a.deal.modifiers.length; i += 1)
+          firstTotal += a.deal.modifiers[i].price;
+      if (b.deal.modifiers)
+        for (let j = 0; j < b.deal.modifiers.length; j += 1)
+          secondTotal += b.deal.modifiers[j].price;
       if (firstTotal > secondTotal) return -1;
       if (firstTotal < secondTotal) return 1;
       return 0;
@@ -195,7 +195,7 @@ export default class ComponentToPrint extends React.Component {
               <>
                 <div
                   className={`d-flex flex-row px-2 ${
-                    item.deal.extra_items && item.deal.extra_items.length
+                    item.deal.modifiers && item.deal.modifiers.length
                       ? "pt-1"
                       : "u-border-bottom-dark py-1"
                   }`}
@@ -233,8 +233,8 @@ export default class ComponentToPrint extends React.Component {
                     </>
                   ) : null}
                 </div>
-                {item.deal.extra_items && item.deal.extra_items.length
-                  ? item.deal.extra_items.map((_item) => (
+                {item.deal.modifiers && item.deal.modifiers.length
+                  ? item.deal.modifiers.map((_item) => (
                       <div
                         className="d-flex flex-row px-2 pb-1 u-border-bottom-dark"
                         key={`order-item-${_item.id}`}
