@@ -95,10 +95,11 @@ export function stopInitLoading() {
   };
 }
 
-export function uploadFile(data) {
+export function uploadFile(data, callback) {
   return {
     type: UPLOAD_FILE,
     data,
+    callback,
   };
 }
 

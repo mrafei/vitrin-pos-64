@@ -1,5 +1,6 @@
 import { call, put, takeLatest, select } from "@redux-saga/core/effects";
 import {
+  clearUploadedFiles,
   setPrinterOptions,
   startLoading,
   startProgressLoading,
