@@ -20,6 +20,7 @@ import {
   deleteProduct,
   getDeal,
   updateProduct,
+  uploadImageAndUpdateProduct,
 } from "../../../stores/business/actions";
 import { clearUploadedFiles, removeFile, uploadFile } from "../App/actions";
 import {

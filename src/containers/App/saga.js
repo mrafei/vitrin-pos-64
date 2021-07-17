@@ -88,7 +88,7 @@ export function* uploadFileSaga(url, file) {
   }
 }
 
-export function* uploadFile(file, folderName) {
+export function* uploadFile(file, folderName, callback) {
   yield put(startLoading());
   yield put(uploadRequest());
   try {
@@ -114,6 +114,12 @@ export function* uploadFile(file, folderName) {
         type,
       };
       yield put(fileUploaded(uploadedFile));
+      if (callback)
+        yield call(
+          callback,
+          url.substr(0, url.indexOf("?")),
+          `${uploadedFile.folder_name}/${uploadedFile.file_name}`
+        );
     }
   } catch (err) {
     console.log(err);
@@ -137,8 +143,7 @@ export function* uploadFiles(action) {
       getFileExtention(files[i].name).toLowerCase()
     );
     const _file = type === "image" ? yield compressImage(files[i]) : files[i];
-
-    yield call(() => uploadFile(_file, folderName));
+    yield call(uploadFile, _file, folderName, action.callback);
   }
   yield put(stopLoading());
 }
