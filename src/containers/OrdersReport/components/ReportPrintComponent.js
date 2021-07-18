@@ -18,14 +18,14 @@ export default class ReportPrintComponent extends React.Component {
             className="u-border-radius-8 text-center u-border-black p-3"
             style={{ minWidth: 105 }}
           >
-            {printOptions.date && printOptions.date.from}
+            {printOptions.date && printOptions.date.from_date}
           </span>
           <span>{business.revised_title}</span>
           <span
             className="u-border-radius-8 text-center u-border-black p-3"
             style={{ minWidth: 105 }}
           >
-            {printOptions.date && printOptions.date.to}
+            {printOptions.date && printOptions.date.to_date}
           </span>
         </div>
         <div className="d-flex flex-column justify-content-between px-3 pb-1">

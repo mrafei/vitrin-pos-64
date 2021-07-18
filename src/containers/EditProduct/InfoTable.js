@@ -57,7 +57,7 @@ export default function InfoTable({ product, setProduct }) {
                     setProduct({
                       ...product,
                       extra_data: {
-                        extra_data: product.extra_data,
+                        ...product.extra_data,
                         info_table: newProductInfoTable,
                       },
                     });
@@ -112,14 +112,14 @@ export default function InfoTable({ product, setProduct }) {
                   newProductInfoTable.splice(index + 1, 0, {
                     key: "",
                     value: "",
-                  }),
-                    setProduct({
-                      ...product,
-                      extra_data: {
-                        ...product.extra_data,
-                        info_table: newProductInfoTable,
-                      },
-                    });
+                  });
+                  setProduct({
+                    ...product,
+                    extra_data: {
+                      ...product.extra_data,
+                      info_table: newProductInfoTable,
+                    },
+                  });
                 }}
                 edge="end"
               >
