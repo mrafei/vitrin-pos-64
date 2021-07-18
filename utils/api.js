@@ -82,7 +82,7 @@ export const GET_ORDER_TRANSACTION_API = (id) =>
 export const TRANSACTION_ZIBAL_API = (id) =>
   `${BASE_URL}order_transactions/${id}/pay_transaction/`;
 export const TRANSACTION_API = (id, gateway) =>
-  `${BASE_URL}transactions/${id}/${gateway}_gateway`;
+  `${BASE_URL}transactions/${id}/${gateway}_gateway/`;
 
 export const REPORTS_API = `${BASE_URL}shopping_orders/report/`;
 export const GROUP_PACKAGING_PRICE_ON_DEALS_API = (id) =>

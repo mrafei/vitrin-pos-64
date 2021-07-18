@@ -53,11 +53,11 @@ const OrdersReport = function ({
   const [modalOpen, setModalOpen] = useState(false);
   const [toCalenderOpen, setToCalenderOpen] = useState(false);
   const [fromCalenderOpen, setFromCalenderOpen] = useState(false);
-  const [query, setQuery] = useState({ to: "", from: "" });
+  const [query, setQuery] = useState({ to_date: "", from_date: "" });
 
   const page = getQueryParams("page", location.search) || 1;
-  const toTime = moment(query.to, "jYYYY/jMM/jDD").format("YYYY-MM-DD");
-  const fromTime = moment(query.from, "jYYYY/jMM/jDD").format("YYYY-MM-DD");
+  const toTime = moment(query.to_date, "jYYYY/jMM/jDD").format("YYYY-MM-DD");
+  const fromTime = moment(query.from_date, "jYYYY/jMM/jDD").format("YYYY-MM-DD");
 
   useEffect(() => {
     submit();
@@ -66,8 +66,8 @@ const OrdersReport = function ({
   const submit = useCallback(() => {
     const params = { page };
     if (query) {
-      if (query.to) params.to = toTime;
-      if (query.from) params.from = fromTime;
+      if (query.to_date) params.to_date = toTime;
+      if (query.from_date) params.from_date = fromTime;
     }
     _getAdminOrders(params);
   }, [query, location]);
@@ -79,12 +79,12 @@ const OrdersReport = function ({
       <CalenderModal
         open={toCalenderOpen}
         onClose={() => setToCalenderOpen(false)}
-        selectDay={(day) => setQuery({ ...query, to: day })}
+        selectDay={(day) => setQuery({ ...query, to_date: day })}
       />
       <CalenderModal
         open={fromCalenderOpen}
         onClose={() => setFromCalenderOpen(false)}
-        selectDay={(day) => setQuery({ ...query, from: day })}
+        selectDay={(day) => setQuery({ ...query, from_date: day })}
       />
       <FactorModal
         business={business}
@@ -96,9 +96,9 @@ const OrdersReport = function ({
         printers={printOptions.printers}
         report={report}
         date={{
-          to: query.to ? englishNumberToPersianNumber(query.to) : "--/--/--",
-          from: query.from
-            ? englishNumberToPersianNumber(query.from)
+          to_date: query.to_date ? englishNumberToPersianNumber(query.to_date) : "--/--/--",
+          from_date: query.from_date
+            ? englishNumberToPersianNumber(query.from_date)
             : "--/--/--",
         }}
       />
@@ -110,7 +110,7 @@ const OrdersReport = function ({
           >
             از تاریخ
             <span className="mr-2">
-              {query.from ? englishNumberToPersianNumber(query.from) : "----"}
+              {query.from_date ? englishNumberToPersianNumber(query.from_date) : "----"}
             </span>
             <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#001e2d" />
           </div>
@@ -120,7 +120,7 @@ const OrdersReport = function ({
           >
             تا تاریخ
             <span className="mr-2">
-              {query.to ? englishNumberToPersianNumber(query.to) : "----"}
+              {query.to_date ? englishNumberToPersianNumber(query.to_date) : "----"}
             </span>
             <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#001e2d" />
           </div>
@@ -129,8 +129,8 @@ const OrdersReport = function ({
           <div
             onClick={() => {
               const params = {};
-              if (query.to) params.to = toTime;
-              if (query.from) params.from = fromTime;
+              if (query.to_date) params.to_date = toTime;
+              if (query.from_date) params.from_date = fromTime;
               _getOrdersReport(params);
               setModalOpen(true);
             }}
