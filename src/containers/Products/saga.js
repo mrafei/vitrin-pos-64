@@ -44,13 +44,9 @@ export function* getFilteredDeals(action) {
     yield put(startLoading());
     const {
       response: { meta, data, pagination },
-    } = action.data.categories.length
-      ? yield call(request, DEALS_ITEMS_API(categories), {
-          ...action.data.filters,
-        })
-      : yield call(request, ALL_DEALS_API(slug), {
-          ...action.data.filters,
-        });
+    } = yield call(request, `${ALL_DEALS_API(slug)}${categories}`, {
+      ...action.data.filters,
+    });
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       const pagesCount = Math.ceil(pagination.count / 24);
 
@@ -74,15 +70,10 @@ export function* getUnavailableDeals(action) {
     yield put(startLoading());
     const {
       response: { meta, data, pagination },
-    } = action.data.categories.length
-      ? yield call(request, DEALS_ITEMS_API(categories), {
-          available: false,
-          ...action.data.filters,
-        })
-      : yield call(request, ALL_DEALS_API(slug), {
-          available: false,
-          ...action.data.filters,
-        });
+    } = yield call(request, `${ALL_DEALS_API(slug)}${categories}`, {
+      available: false,
+      ...action.data.filters,
+    });
 
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       const pagesCount = Math.ceil(pagination.count / 10);
