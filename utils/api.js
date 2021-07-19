@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 export const CDN_BASE_URL =
   "https://hs3-cf.behtarino.com/static/images/behtarino-web/";
-const BASE_URL = "https://api.behtarino.com/api/v1/";
+const BASE_URL = "https://factor.behtarino.com/api/v1/";
 
 export const EMAIL_API = `${BASE_URL}send_custom_email/`;
 export const FILE_SERVER_URL_API = `${BASE_URL}get_minio_url/`;

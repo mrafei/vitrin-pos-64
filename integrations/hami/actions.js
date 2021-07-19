@@ -1,6 +1,12 @@
 import request from "../../utils/request";
-import { getHamiDealCategoriesApi, submitHamiOrderApi } from "./api";
+import {
+  getHamiDealCategoriesApi,
+  getHamiDealItemApi,
+  submitHamiOrderApi,
+} from "./api";
 import moment from "moment-jalaali";
+import { CATEGORIES_API } from "../../utils/api";
+const fs = require("fs");
 
 export const init = () => {};
 
@@ -68,6 +74,39 @@ export const submitHamiOrder = (order) => {
     "POST"
   );
 };
+export const getHamiDeals = async () => {
+  return await request(getHamiDealItemApi(localStorage.getItem("hamiIp")));
+};
 export const getHamiDealCategories = async () => {
-  return await request(getHamiDealCategoriesApi(localStorage.getItem("hamiIp")));
+  return await request(
+    getHamiDealCategoriesApi(localStorage.getItem("hamiIp"))
+  );
+};
+
+export const createOrUpdateHamiDealCategories = async () => {
+  let exception = false;
+  const result = await getHamiDealCategories();
+  if (!result || !result.response) return null;
+  fs.writeFile("categories.json", result.response, function (err) {
+    if (err) {
+      exception = true;
+      console.log(err);
+    }
+  });
+  if (exception) return null;
+  return await request(CATEGORIES_API, [], "POST");
+};
+export const createOrUpdateHamiDeals = async () => {
+  const result = await getHamiDeals();
+  if (!result || !result.response) return null;
+  fs.writeFile("deals.json", jsonResult, { flag: "w" }, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+export const createOrUpdateDealsAndCategories = async () => {
+  const categoriesResult = await createOrUpdateHamiDealCategories();
+  const dealsResult = await createOrUpdateHamiDeals();
+  return categoriesResult && dealsResult;
 };
