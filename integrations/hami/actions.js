@@ -87,23 +87,33 @@ export const createOrUpdateHamiDealCategories = async () => {
   let exception = false;
   const result = await getHamiDealCategories();
   if (!result || !result.response) return null;
-  fs.writeFile("categories.json", result.response, function (err) {
-    if (err) {
-      exception = true;
-      console.log(err);
+  fs.writeFile(
+    "categories.json",
+    JSON.stringify(result.response),
+    { flag: "w" },
+    function (err) {
+      if (err) {
+        exception = true;
+        console.log(err);
+      }
     }
-  });
+  );
   if (exception) return null;
   return await request(CATEGORIES_API, [], "POST");
 };
 export const createOrUpdateHamiDeals = async () => {
   const result = await getHamiDeals();
   if (!result || !result.response) return null;
-  fs.writeFile("deals.json", jsonResult, { flag: "w" }, function (err) {
-    if (err) {
-      console.log(err);
+  fs.writeFile(
+    "deals.json",
+    JSON.stringify(result.response),
+    { flag: "w" },
+    function (err) {
+      if (err) {
+        console.log(err);
+      }
     }
-  });
+  );
 };
 export const createOrUpdateDealsAndCategories = async () => {
   const categoriesResult = await createOrUpdateHamiDealCategories();
