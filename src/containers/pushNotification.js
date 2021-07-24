@@ -9,8 +9,7 @@ export default function initPushNotification(
   updateOrders,
   siteDomain
 ) {
-  const { ipcRenderer } = require("electron");
-  const { getCurrentWindow } = require("@electron/remote");
+  const { ipcRenderer,remote } = require("electron");
   const {
     START_NOTIFICATION_SERVICE,
     NOTIFICATION_SERVICE_STARTED,
@@ -73,6 +72,6 @@ export default function initPushNotification(
   ipcRenderer.send(START_NOTIFICATION_SERVICE, senderId);
   ipcRenderer.on("redirectOrder", (event, orderId) => {
     history.push(`/orders/${orderId}`);
-    getCurrentWindow().show();
+    remote.getCurrentWindow().show();
   });
 }

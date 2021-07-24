@@ -1,7 +1,6 @@
 "use strict";
 
 // Import parts of electron to use
-require("@electron/remote/main").initialize();
 const Sentry = require("@sentry/electron");
 Sentry.init({
   dsn: "https://f10f2a0b0cb94dc6bfb819be6171641a@sentry.hamravesh.com/91",
@@ -74,7 +73,6 @@ function createWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true,
     },
   });
   if (!dev) {
@@ -133,7 +131,6 @@ function createWindow() {
     show: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
@@ -150,7 +147,6 @@ function createWindow() {
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true,
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");

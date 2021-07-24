@@ -48,7 +48,7 @@ import {
   makeSelectBusinessId,
   makeSelectBusinessSlug,
 } from "./selector";
-const { getCurrentWebContents } = require("@electron/remote");
+const { remote } = require("electron");
 
 export function* getBusinessData() {
   try {
@@ -69,7 +69,7 @@ export function* getBusinessData() {
         setPrinterOptions(JSON.parse(localStorage.getItem("printerOptions")))
       );
     else {
-      const defaultPrinter = getCurrentWebContents()
+      const defaultPrinter = remote.getCurrentWebContents()
         .getPrinters()
         .find((p) => p.isDefault);
       let printers = [];
