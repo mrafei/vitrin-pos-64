@@ -75,6 +75,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
   if (!dev) {
@@ -134,6 +135,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
@@ -151,6 +153,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");

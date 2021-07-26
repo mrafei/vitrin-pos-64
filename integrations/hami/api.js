@@ -69,3 +69,7 @@ export const submitHamiOrderApi = (prefix) =>
 
 // درج تیک انتقال اطلاعات کارت تخفیف
 // http://193.151.128.95/HamiOrder/SetTransferDiscountCard.aspx
+
+
+export const getHamiCustomersApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/GetApiCustomers.aspx`;

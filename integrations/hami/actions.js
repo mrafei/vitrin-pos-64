@@ -1,11 +1,18 @@
 import request from "../../utils/request";
 import {
+  getHamiCustomersApi,
   getHamiDealCategoriesApi,
   getHamiDealItemApi,
   submitHamiOrderApi,
 } from "./api";
 import moment from "moment-jalaali";
-import { CATEGORIES_API } from "../../utils/api";
+import {
+  CATEGORIES_API,
+  UPSERT_CATEGORIES_API,
+  UPSERT_CRM_MEMBERSHIP_API,
+  UPSERT_DEALS_API,
+  UPSERT_USER_ADDRESS_API,
+} from "../../utils/api";
 const fs = require("fs");
 
 export const init = () => {};
@@ -22,6 +29,7 @@ export const submitHamiOrder = (order) => {
   request(
     submitHamiOrderApi(localStorage.getItem("hamiIp")),
     {
+      securityKey: localStorage.getItem("hamiSecurityKey"),
       Invoice: {
         OrderId: parseInt(order.order_id),
         BranchId: 1,
@@ -75,16 +83,20 @@ export const submitHamiOrder = (order) => {
   );
 };
 export const getHamiDeals = async () => {
-  return await request(getHamiDealItemApi(localStorage.getItem("hamiIp")));
+  return await request(getHamiDealItemApi(localStorage.getItem("hamiIp")), {
+    securityKey: localStorage.getItem("hamiSecurityKey"),
+  });
 };
 export const getHamiDealCategories = async () => {
   return await request(
-    getHamiDealCategoriesApi(localStorage.getItem("hamiIp"))
+    getHamiDealCategoriesApi(localStorage.getItem("hamiIp")),
+    {
+      securityKey: localStorage.getItem("hamiSecurityKey"),
+    }
   );
 };
 
-export const createOrUpdateHamiDealCategories = async () => {
-  let exception = false;
+export const createOrUpdateHamiDealCategories = async (businessId) => {
   const result = await getHamiDealCategories();
   if (!result || !result.response) return null;
   fs.writeFile(
@@ -93,15 +105,23 @@ export const createOrUpdateHamiDealCategories = async () => {
     { flag: "w" },
     function (err) {
       if (err) {
-        exception = true;
         console.log(err);
       }
     }
   );
-  if (exception) return null;
-  return await request(CATEGORIES_API, [], "POST");
+
+  return await request(
+    UPSERT_CATEGORIES_API,
+    result.response["GoodsGroup"].map((category) => ({
+      pos_id: category.GroupId,
+      // extra_data: { pos_code: category.GroupCode },
+      title: category.GroupName,
+      business: businessId,
+    })),
+    "POST"
+  );
 };
-export const createOrUpdateHamiDeals = async () => {
+export const createOrUpdateHamiDeals = async (categories, businessId) => {
   const result = await getHamiDeals();
   if (!result || !result.response) return null;
   fs.writeFile(
@@ -114,9 +134,91 @@ export const createOrUpdateHamiDeals = async () => {
       }
     }
   );
+  return await request(
+    UPSERT_DEALS_API,
+    result.response["Goods"].map((deal) => ({
+      pos_id: deal.GoodsId,
+      pos_code: deal.GoodsCode,
+      title: deal.GoodsName,
+      description: deal.GoodsDescription,
+      discounted_price: deal.GoodsPrice,
+      initial_price: deal.GoodsPrice,
+      categories:
+        categories && categories.find((cat) => cat.pos_id === deal.GoodsGroupId)
+          ? [categories.find((cat) => cat.pos_id === deal.GoodsGroupId).id]
+          : [],
+      _business: businessId,
+    })),
+    "POST"
+  );
 };
-export const createOrUpdateDealsAndCategories = async () => {
-  const categoriesResult = await createOrUpdateHamiDealCategories();
-  const dealsResult = await createOrUpdateHamiDeals();
-  return categoriesResult && dealsResult;
+export const createOrUpdateDealsAndCategories = async (
+  businessId,
+  fromTime,
+  toTime
+) => {
+  const categoriesResult = await createOrUpdateHamiDealCategories(
+    businessId,
+    {}
+  );
+  const dealsResult = await createOrUpdateHamiDeals(
+    categoriesResult.data,
+    businessId
+  );
+  return categoriesResult.data && dealsResult.data;
+};
+
+export const createOrUpdateHamiCRMMemberships = async (
+  businessId,
+  fromTime,
+  toTime
+) => {
+  const memberships = [];
+  const addresses = [];
+  const result = await request(
+    getHamiCustomersApi(localStorage.getItem("hamiIp")),
+    {
+      securityKey: localStorage.getItem("hamiSecurityKey"),
+      CreationDateStart: fromTime,
+      CreationDateEnd: toTime,
+      CreationTimeStart: "00:00:00",
+      CreationTimeEnd: "00:00:00",
+    }
+  );
+  result.response.map((user) => {
+    user.MApiCustomerPhoness.map((numberItem) =>
+      memberships.push({
+        pos_id: user.PartyId,
+        name: user.FirstName + " " + user.LastName,
+        phone: numberItem.PhoneNumber,
+        business: businessId,
+      })
+    );
+    user.MApiCustomerAddresss.map((addressItem) =>
+      memberships.push({
+        pos_id: user.LocationId,
+        name: user.FirstName + " " + user.LastName,
+        latitude: addressItem.latitude,
+        longitude: addressItem.longitude,
+        address: addressItem.Address,
+        phone:
+          user.MApiCustomerPhoness && user.MApiCustomerPhoness.length
+            ? user.MApiCustomerPhoness[0].PhoneNumber
+            : "",
+        business: businessId,
+      })
+    );
+  });
+
+  const membershipsResult = await request(
+    UPSERT_CRM_MEMBERSHIP_API,
+    memberships,
+    "POST"
+  );
+  const addressesResult = await request(
+    UPSERT_USER_ADDRESS_API,
+    addresses,
+    "POST"
+  );
+  return membershipsResult.data && addressesResult.data;
 };

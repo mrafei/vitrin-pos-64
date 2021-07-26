@@ -54,7 +54,7 @@
     "lint:staged": "lint-staged"
   },
   "dependencies": {
-    "@electron/remote": "^1.0.2",
+    "@electron/remote": "^1.2.0",
     "@hassanmojab/react-modern-calendar-datepicker": "^3.1.7",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@sentry/electron": "^2.4.0",
@@ -128,10 +128,10 @@
     "cross-env": "^7.0.2",
     "css-loader": "^3.5.3",
     "dotenv-webpack": "^1.8.0",
-    "electron": "11.1.1",
-    "electron-packager": "^15.2.0",
+    "electron": "^13.1.7",
+    "electron-packager": "^15.3.0",
     "electron-serve": "^1.0.0",
-    "electron-winstaller": "^4.0.1",
+    "electron-winstaller": "^5.0.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-airbnb-base": "13.1.0",
