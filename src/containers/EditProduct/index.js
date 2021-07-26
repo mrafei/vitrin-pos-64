@@ -123,6 +123,7 @@ function AdminProduct({
     } else {
       setError("");
       let _variations = null;
+      delete product.modifier_sets;
       if (productId) {
         if (variations.variations_data.length) {
           _variations = variations;
