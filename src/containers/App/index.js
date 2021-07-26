@@ -22,7 +22,11 @@ import { makeSelectBusinesses } from "../../../stores/user/selector";
 
 import Layout from "../../components/Layout";
 import OnlineOrder from "../OnlineOrder";
-import { makeSelectProgressLoading, makeSelectSubDomain } from "./selectors";
+import {
+  makeSelectHamiModal,
+  makeSelectProgressLoading,
+  makeSelectSubDomain,
+} from "./selectors";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import { reloadPage, setSnackBarMessage } from "../../../stores/ui/actions";
 import { makeSelectSnackBarMessage } from "../../../stores/ui/selector";
@@ -40,7 +44,7 @@ import EditProduct from "../EditProduct";
 import EditVariant from "../EditVariant";
 import Analytics from "../Analytics";
 import OrdersReport from "../OrdersReport";
-import { setSiteDomain } from "./actions";
+import { setSiteDomain, toggleHamiModal } from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
 import UploadCustomers from "../UploadCustomers";
 import SoundSettings from "../SoundSettings";
@@ -48,9 +52,9 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import HamiSettings from "../HamiSettings";
+import HamiModal from "./components/HamiModal";
 
 const App = function ({
   history,
@@ -66,6 +70,8 @@ const App = function ({
   businesses,
   _getBusiness,
   reload,
+  _toggleHamiModal,
+  showHamiModal,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
@@ -85,6 +91,9 @@ const App = function ({
       }
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "I") {
         getCurrentWebContents().openDevTools();
+      }
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "~") {
+        _toggleHamiModal(true);
       }
     });
     ipcRenderer.on("closePrompt", () => {
@@ -156,7 +165,6 @@ const App = function ({
             />
 
             <Route exact path="/settings/printer" component={PrinterSettings} />
-            <Route exact path="/settings/hami" component={HamiSettings} />
             <Route exact path="/settings/sound" component={SoundSettings} />
             <Route exact path="/categories/:id" component={Products} />
             <Route
@@ -179,6 +187,7 @@ const App = function ({
             <Redirect path="/settings" to="/settings/printer" />
             <Redirect path="/delivery" to="/delivery/assign" />
             <Redirect path="/reports" to="/reports/analytics" />
+            <Route exact path="/integrations/hami" component={HamiSettings} />
             <Redirect path="/" to="/orders" />
           </Switch>
         </Layout>
@@ -230,6 +239,10 @@ const App = function ({
           </Button>
         </DialogActions>
       </Dialog>
+      <HamiModal
+        _onClose={() => _toggleHamiModal(false)}
+        isOpen={showHamiModal}
+      />
     </>
   );
 };
@@ -240,6 +253,7 @@ const mapStateToProps = createStructuredSelector({
   snackBarMessage: makeSelectSnackBarMessage(),
   progressLoading: makeSelectProgressLoading(),
   businesses: makeSelectBusinesses(),
+  showHamiModal: makeSelectHamiModal(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -251,6 +265,7 @@ function mapDispatchToProps(dispatch) {
     _setSnackBarMessage: (message, type) =>
       dispatch(setSnackBarMessage(message, type)),
     reload: () => dispatch(reloadPage()),
+    _toggleHamiModal: (show) => dispatch(toggleHamiModal(show)),
   };
 }
 

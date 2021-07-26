@@ -28,6 +28,7 @@ if (handleSquirrelEvent()) {
 let mainWindow;
 let workerWindow;
 let notifWindow;
+let integrationWindow;
 
 app.on("second-instance", (event, commandLine, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.

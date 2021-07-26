@@ -109,6 +109,14 @@ const routes = [
     path: "/reports",
     icon: ICONS.ANALYTICS,
   },
+  {
+    id: 6,
+    disabled: false,
+    title: "همسوسازی‌ها",
+    path: "/integrations",
+    icon: ICONS.INTEGRATION,
+    show: localStorage.getItem("integrated") || false,
+  },
 ];
 const subRoutes = [
   [{ id: 1, title: "همه سفارش‌ها", path: "/orders/all", icon: ICONS.ITEMS }],
@@ -149,13 +157,6 @@ const subRoutes = [
       path: "/settings/sound",
       icon: ICONS.VOLUME,
     },
-    {
-      id: 3,
-      title: "حامی",
-      path: "/settings/hami",
-      icon: ICONS.ITEMS,
-      show: localStorage.getItem("integrated") === "hami" || false,
-    },
   ],
   [
     {
@@ -169,6 +170,15 @@ const subRoutes = [
       title: "گزارش سفارش‌ها",
       path: "/reports/orders",
       icon: ICONS.ITEMS,
+    },
+  ],
+  [
+    {
+      id: 1,
+      title: "حامی",
+      path: "/integrations/hami",
+      icon: ICONS.ITEMS,
+      show: localStorage.getItem("integrated") === "hami" || false,
     },
   ],
 ];

@@ -3,8 +3,8 @@
  * The global state selectors
  */
 
-import { createSelector } from 'reselect';
-import { initialState } from './reducer';
+import { createSelector } from "reselect";
+import { initialState } from "./reducer";
 
 const selectGlobal = (state) => state.global || initialState;
 
@@ -31,7 +31,7 @@ const makeSelectUploadedFile = () =>
 const makeSelectUploadedFiles = () =>
   createSelector(
     selectGlobal,
-    (globalState) => globalState.multipleUploadedFiles,
+    (globalState) => globalState.multipleUploadedFiles
   );
 
 const makeSelectError = () =>
@@ -42,6 +42,9 @@ const makeSelectSubDomain = () =>
 
 const makeSelectLocation = () =>
   createSelector(selectRouter, (routerState) => routerState.location);
+
+const makeSelectHamiModal = () =>
+  createSelector(selectGlobal, (globalState) => globalState.hamiModal);
 
 export {
   makeSelectInitLoading,
@@ -55,4 +58,5 @@ export {
   makeSelectUploadProgress,
   makeSelectUploadStarted,
   makeSelectProgressLoading,
+  makeSelectHamiModal,
 };

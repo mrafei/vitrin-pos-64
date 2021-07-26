@@ -36,6 +36,7 @@ import {
   START_PROGRESS_LOADING,
   STOP_PROGRESS_LOADING,
   SET_PRINTER_OPTIONS,
+  TOGGLE_HAMI_MODAL,
 } from "./constants";
 
 export function init() {
@@ -156,4 +157,9 @@ export const uploadFailure = (file, err) => ({
   payload: err,
   error: true,
   meta: { file },
+});
+
+export const toggleHamiModal = (show) => ({
+  type: TOGGLE_HAMI_MODAL,
+  show,
 });
