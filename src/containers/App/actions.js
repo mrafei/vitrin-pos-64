@@ -37,6 +37,7 @@ import {
   STOP_PROGRESS_LOADING,
   SET_PRINTER_OPTIONS,
   TOGGLE_HAMI_MODAL,
+  ACCEPT_ORDER,
 } from "./constants";
 
 export function init() {
@@ -163,3 +164,10 @@ export const toggleHamiModal = (show) => ({
   type: TOGGLE_HAMI_MODAL,
   show,
 });
+
+export function acceptOrder(data) {
+  return {
+    type: ACCEPT_ORDER,
+    data,
+  };
+}

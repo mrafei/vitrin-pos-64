@@ -7,7 +7,7 @@ Sentry.init({
   dsn: "https://f10f2a0b0cb94dc6bfb819be6171641a@sentry.hamravesh.com/91",
 });
 
-const { app, BrowserWindow, ipcMain, screen } = require("electron");
+const { app, BrowserWindow, ipcMain, screen, Tray, Menu } = require("electron");
 const path = require("path");
 const url = require("url");
 app.disableHardwareAcceleration();
@@ -28,7 +28,12 @@ if (handleSquirrelEvent()) {
 let mainWindow;
 let workerWindow;
 let notifWindow;
-let integrationWindow;
+let tray;
+let isQuiting;
+
+app.on("before-quit", function () {
+  isQuiting = true;
+});
 
 app.on("second-instance", (event, commandLine, workingDirectory) => {
   // Someone tried to run a second instance, we should focus our window.
@@ -39,6 +44,22 @@ app.on("second-instance", (event, commandLine, workingDirectory) => {
 });
 
 app.whenReady().then(() => {
+  tray = new Tray(path.join(__dirname, "assets", "icon.ico"));
+  tray.setIgnoreDoubleClickEvents(true);
+  tray.on("click", function (e) {
+    mainWindow.show();
+  });
+  tray.setContextMenu(
+    Menu.buildFromTemplate([
+      {
+        label: "خروج",
+        click: function () {
+          isQuiting = true;
+          app.quit();
+        },
+      },
+    ])
+  );
   createWindow();
 });
 // Keep a reference for dev mode
@@ -121,7 +142,17 @@ function createWindow() {
   });
   setupPushReceiver(mainWindow.webContents);
   // Emitted when the window is closed.
-  mainWindow.on("closed", function () {
+  mainWindow.on("close", function (event) {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    if (!isQuiting) {
+      event.preventDefault();
+      mainWindow.hide();
+      event.returnValue = false;
+    }
+  });
+  mainWindow.on("closed", function (event) {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.

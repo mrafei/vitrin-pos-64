@@ -8,7 +8,6 @@ import {
   DEFAULT_ACTION,
   GET_ADMIN_ORDER,
   SET_ADMIN_ORDER,
-  ACCEPT_ORDER,
   CANCEL_ORDER,
   REQUEST_ALOPEYK,
   REQUEST_MIARE,
@@ -48,12 +47,6 @@ export function setAdminOrder(data) {
   };
 }
 
-export function acceptOrder(data) {
-  return {
-    type: ACCEPT_ORDER,
-    data,
-  };
-}
 
 export function cancelOrder(data) {
   return {

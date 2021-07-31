@@ -1,9 +1,7 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable func-names */
 import "../../../styles/_main.scss";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { compose } from "redux";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { createStructuredSelector } from "reselect";
 import Snackbar from "@material-ui/core/esm/Snackbar";
 import { connect } from "react-redux";
@@ -32,7 +30,10 @@ import { reloadPage, setSnackBarMessage } from "../../../stores/ui/actions";
 import { makeSelectSnackBarMessage } from "../../../stores/ui/selector";
 import initPushNotification from "../pushNotification";
 import { getAdminOrders } from "../OnlineOrders/actions";
-import { makeSelectBusinessTitle } from "../../../stores/business/selector";
+import {
+  makeSelectBusinessId,
+  makeSelectBusinessTitle,
+} from "../../../stores/business/selector";
 import DeliverersList from "../DeliverersList";
 import CreateDeliverer from "../CreateDeliverer";
 import EditDeliverer from "../EditDeliverer";
@@ -44,7 +45,7 @@ import EditProduct from "../EditProduct";
 import EditVariant from "../EditVariant";
 import Analytics from "../Analytics";
 import OrdersReport from "../OrdersReport";
-import { setSiteDomain, toggleHamiModal } from "./actions";
+import { acceptOrder, setSiteDomain, toggleHamiModal } from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
 import UploadCustomers from "../UploadCustomers";
 import SoundSettings from "../SoundSettings";
@@ -55,6 +56,11 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import Button from "@material-ui/core/Button";
 import HamiSettings from "../HamiSettings";
 import HamiModal from "./components/HamiModal";
+import {
+  createOrUpdateHamiCRMMemberships,
+  createOrUpdateHamiOrders,
+} from "../../../integrations/hami/actions";
+import moment from "moment-jalaali";
 
 const App = function ({
   history,
@@ -72,10 +78,15 @@ const App = function ({
   reload,
   _toggleHamiModal,
   showHamiModal,
+  _acceptOrder,
+  businessId,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
   const [dialog, setDialog] = useState(false);
+  const orderInterval = useRef(null);
+  const customersInterval = useRef(null);
+  const productsInterval = useRef(null);
   useEffect(() => {
     ipcRenderer.send("disable-close");
     const token = localStorage.getItem("token");
@@ -102,15 +113,42 @@ const App = function ({
   }, []);
 
   useEffect(() => {
+    clearInterval(orderInterval.current);
+    clearInterval(customersInterval.current);
     if (siteDomain) {
       _getBusiness();
       initPushNotification(
         _setSnackBarMessage,
         history,
         _getAdminOrders,
-        siteDomain
+        siteDomain,
+        _acceptOrder
       );
     }
+    if (siteDomain) {
+      orderInterval.current = setInterval(() => {
+        _getAdminOrders({ status: 0 });
+      }, 120 * 1000);
+      customersInterval.current = setInterval(() => {
+        createOrUpdateHamiCRMMemberships(
+          businessId,
+          "1375/01/01",
+          moment().format("jYYYY/jMM/jDD")
+        );
+        createOrUpdateHamiOrders(
+          businessId,
+          "1375/01/01",
+          moment().format("jYYYY/jMM/jDD")
+        );
+      }, 10 * 1000);
+      orderInterval.current = setInterval(() => {
+        _getAdminOrders({ status: 0 });
+      }, 120 * 1000);
+    }
+    return () => {
+      clearInterval(customersInterval.current);
+      clearInterval(orderInterval.current);
+    };
   }, [siteDomain]);
 
   if ((!siteDomain || !businessTitle) && location.pathname !== "/login")
@@ -250,6 +288,7 @@ const App = function ({
 const mapStateToProps = createStructuredSelector({
   siteDomain: makeSelectSubDomain(),
   businessTitle: makeSelectBusinessTitle(),
+  businessId: makeSelectBusinessId(),
   snackBarMessage: makeSelectSnackBarMessage(),
   progressLoading: makeSelectProgressLoading(),
   businesses: makeSelectBusinesses(),
@@ -261,11 +300,12 @@ function mapDispatchToProps(dispatch) {
     _getBusiness: () => dispatch(getBusiness()),
     _setSiteDomain: (domain) => dispatch(setSiteDomain(domain)),
     _getBusinesses: () => dispatch(getBusinesses()),
-    _getAdminOrders: () => dispatch(getAdminOrders(1)),
+    _getAdminOrders: () => dispatch(getAdminOrders({ page: 1 })),
     _setSnackBarMessage: (message, type) =>
       dispatch(setSnackBarMessage(message, type)),
     reload: () => dispatch(reloadPage()),
     _toggleHamiModal: (show) => dispatch(toggleHamiModal(show)),
+    _acceptOrder: (data) => dispatch(acceptOrder(data)),
   };
 }
 

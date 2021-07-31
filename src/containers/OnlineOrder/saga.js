@@ -4,10 +4,7 @@ import { call, put, select, takeLatest } from "@redux-saga/core/effects";
 import request from "../../../utils/request";
 import {
   USER_ORDERS_ITEMS_API,
-  ORDER_STATUS_PROGRESS_API,
   ORDER_STATUS_CANCELLED_API,
-  ORDER_DELIVERY_TIME_API,
-  ORDER_DELIVERER_API,
   REQUEST_ALOPEYK_API,
   REQUEST_MIARE_API,
   CUSTOMER_ORDERS_API,
@@ -15,7 +12,6 @@ import {
 import { setAdminOrder, setCustomerOrders } from "./actions";
 import {
   GET_ADMIN_ORDER,
-  ACCEPT_ORDER,
   CANCEL_ORDER,
   REQUEST_ALOPEYK,
   REQUEST_MIARE,
@@ -28,8 +24,6 @@ import {
   stopLoading,
   stopProgressLoading,
 } from "../App/actions";
-import { submitHamiOrder } from "../../../integrations/hami/actions";
-import { submitAriaOrder } from "../../../integrations/aria/actions";
 import { makeSelectSubDomain } from "../App/selectors";
 
 export function* getAdminOrder(action) {
@@ -48,60 +42,6 @@ export function* getAdminOrder(action) {
   } catch (err) {
     yield put(stopProgressLoading());
 
-    yield put(stopLoading());
-  }
-}
-
-export function* acceptOrder(action) {
-  try {
-    yield put(startLoading());
-    const {
-      response: { meta },
-    } = yield call(
-      request,
-      ORDER_DELIVERY_TIME_API(action.data.id, action.data.plugin),
-      { delivery_time: action.data.deliveryTime },
-      "PATCH"
-    );
-    if (meta.status_code >= 200 && meta.status_code <= 300) {
-      if (action.data.deliverer)
-        yield call(
-          request,
-          ORDER_DELIVERER_API(action.data.id, "shopping"),
-          {
-            deliverer_name: action.data.deliverer,
-            send_sms: action.data.sendSms,
-          },
-          "PATCH"
-        );
-
-      const {
-        response: { data },
-      } = yield call(
-        request,
-        ORDER_STATUS_PROGRESS_API(action.data.id, "shopping"),
-        {},
-        "PATCH"
-      );
-      if (data) {
-        yield put(setSnackBarMessage("سفارش مورد نظر تایید شد.", "success"));
-        const integration = localStorage.getItem("integrated");
-        if (integration === "hami") submitHamiOrder(data);
-        if (integration === "aria") submitAriaOrder(data);
-
-        yield put(setAdminOrder(data));
-      } else
-        yield put(
-          setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail")
-        );
-    } else
-      yield put(
-        setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail")
-      );
-    yield put(stopLoading());
-  } catch (err) {
-    console.log(err);
-    yield put(setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail"));
     yield put(stopLoading());
   }
 }
@@ -202,7 +142,6 @@ export function* getCustomerOrdersFunc(action) {
 
 export default function* adminPanelAppSaga() {
   yield takeLatest(GET_ADMIN_ORDER, getAdminOrder);
-  yield takeLatest(ACCEPT_ORDER, acceptOrder);
   yield takeLatest(CANCEL_ORDER, cancelOrder);
   yield takeLatest(REQUEST_ALOPEYK, requestAlopeykFunc);
   yield takeLatest(REQUEST_MIARE, requestMiareFunc);

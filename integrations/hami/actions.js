@@ -3,6 +3,8 @@ import {
   getHamiCustomersApi,
   getHamiDealCategoriesApi,
   getHamiDealItemApi,
+  getHamiOrdersApi,
+  getHamiToppingsApi,
   submitHamiOrderApi,
 } from "./api";
 import moment from "moment-jalaali";
@@ -11,6 +13,8 @@ import {
   UPSERT_CATEGORIES_API,
   UPSERT_CRM_MEMBERSHIP_API,
   UPSERT_DEALS_API,
+  UPSERT_MODIFIERS_API,
+  UPSERT_POS_ORDERS_API,
   UPSERT_USER_ADDRESS_API,
 } from "../../utils/api";
 const fs = require("fs");
@@ -95,7 +99,37 @@ export const getHamiDealCategories = async () => {
     }
   );
 };
+export const getHamiToppings = async () => {
+  return await request(getHamiToppingsApi(localStorage.getItem("hamiIp")), {
+    securityKey: localStorage.getItem("hamiSecurityKey"),
+  });
+};
 
+export const createOrUpdateHamiModifiers = async (businessId) => {
+  const result = await getHamiToppings();
+  if (!result || !result.response) return null;
+  fs.writeFile(
+    "modifiers.json",
+    JSON.stringify(result.response),
+    { flag: "w" },
+    function (err) {
+      if (err) {
+        console.log(err);
+      }
+    }
+  );
+
+  return await request(
+    UPSERT_MODIFIERS_API,
+    result.response["ToppingGoods"].map((modifierSet) => ({
+      pos_id: modifierSet.GroupId,
+      // extra_data: { pos_code: category.GroupCode },
+      name: category.GroupName,
+      business: businessId,
+    })),
+    "POST"
+  );
+};
 export const createOrUpdateHamiDealCategories = async (businessId) => {
   const result = await getHamiDealCategories();
   if (!result || !result.response) return null;
@@ -115,7 +149,7 @@ export const createOrUpdateHamiDealCategories = async (businessId) => {
     result.response["GoodsGroup"].map((category) => ({
       pos_id: category.GroupId,
       // extra_data: { pos_code: category.GroupCode },
-      title: category.GroupName,
+      name: category.GroupName,
       business: businessId,
     })),
     "POST"
@@ -165,7 +199,11 @@ export const createOrUpdateDealsAndCategories = async (
     categoriesResult.data,
     businessId
   );
-  return categoriesResult.data && dealsResult.data;
+  const modifiersResult = await createOrUpdateHamiModifiers(
+    categoriesResult.data,
+    businessId
+  );
+  return categoriesResult.data && dealsResult.data && modifiersResult.data;
 };
 
 export const createOrUpdateHamiCRMMemberships = async (
@@ -185,6 +223,7 @@ export const createOrUpdateHamiCRMMemberships = async (
       CreationTimeEnd: "00:00:00",
     }
   );
+  if (!result || !result.response) return null;
   result.response.map((user) => {
     user.MApiCustomerPhoness.map((numberItem) =>
       memberships.push({
@@ -221,4 +260,54 @@ export const createOrUpdateHamiCRMMemberships = async (
     "POST"
   );
   return membershipsResult.data && addressesResult.data;
+};
+
+export const createOrUpdateHamiOrders = async (
+  businessId,
+  fromTime,
+  toTime
+) => {
+  const result = await request(
+    getHamiOrdersApi(localStorage.getItem("hamiIp")),
+    {
+      securityKey: localStorage.getItem("hamiSecurityKey"),
+      InvoiceDateStart: fromTime,
+      InvoiceDateEnd: toTime,
+      InvoiceTimeStart: "00:00:00",
+      InvoiceTimeEnd: "00:00:00",
+    }
+  );
+  if (!result || !result.response) return null;
+
+  const orders = result.response.map((order) => ({
+    pos_id: order.SaleInvoiceId,
+    items: order.MApiInvoiceItems.map((orderItem) => ({
+      amount: orderItem.GoodsCount,
+      deal: {
+        pos_id: orderItem.GoodsId,
+        initial_price: orderItem.GoodsPrice,
+        title: orderItem.GoodsName,
+        discounted_price:
+          orderItem.GoodsPrice - orderItem.SumDiscount / order.GoodsCount,
+      },
+    })),
+    user: {
+      pos_id: order.PartyId,
+      name: order.PartyName,
+      address: order.PartyAddress,
+      phone: order.PartyPhone,
+    },
+    created_at: moment(
+      `${order.InvoiceDate} ${order.InvoiceTime}`,
+      "jYYYY/jMM/jDD HH:mm:ss"
+    ).format("YYYY-MM-DD"),
+    delivery_price: order.DeliveryPrice,
+    final_price: order.Payable,
+    taxing_price: order.SumTax,
+    description: order.description,
+    total_discount: order.SumDiscount,
+    total_items_price: order.SumSell,
+  }));
+  const ordersResult = await request(UPSERT_POS_ORDERS_API, orders, "POST");
+  return ordersResult.data;
 };

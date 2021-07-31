@@ -21,7 +21,6 @@ import { makeSelectLoading } from "../App/selectors";
 import { makeSelectAdminOrder, makeSelectCustomerOrders } from "./selectors";
 import Icon from "../../components/Icon";
 import {
-  acceptOrder,
   cancelOrder,
   getAdminOrder,
   getCustomerOrders,
@@ -50,6 +49,7 @@ import { ipcRenderer, shell } from "electron";
 import { renderToString } from "react-dom/server";
 import ComponentToPrint from "../../components/ComponentToPrint";
 import CheckBox from "../../components/CheckBox";
+import { acceptOrder } from "../App/actions";
 
 export function OnlineOrder({
   adminOrder: order,

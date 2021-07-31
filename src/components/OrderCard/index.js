@@ -102,7 +102,7 @@ function OrderCard({
             {ellipseText(englishNumberToPersianNumber(order.order_id), 8)}
           </span>
           <span className="u-text-ellipse px-2" style={{ width: 114 }}>
-            {ellipseText(userAddress.name, 18)}
+            {ellipseText(userAddress && userAddress.name, 18)}
           </span>
 
           <span
