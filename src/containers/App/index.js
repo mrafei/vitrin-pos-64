@@ -160,10 +160,7 @@ const App = function ({
           "1375/01/01",
           moment().format("jYYYY/jMM/jDD")
         );
-      }, 10 * 1000);
-      orderInterval.current = setInterval(() => {
-        _getAdminOrders({ status: 0 });
-      }, 120 * 1000);
+      }, 120 * 60 * 1000);
     }
     return () => {
       clearInterval(customersInterval.current);

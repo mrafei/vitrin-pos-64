@@ -297,7 +297,7 @@ export const createOrUpdateHamiOrders = async (
     .filter((order) => !order.Description.includes("وب سایت"))
     .map((order) => ({
       business_id: businessId,
-      pos_order_id: order.SaleInvoiceId,
+      pos_id: order.SaleInvoiceId,
       order_items: order.MApiInvoiceItems.map((orderItem) => ({
         amount: orderItem.GoodsCount,
         deal_pos_id: orderItem.GoodsId,
