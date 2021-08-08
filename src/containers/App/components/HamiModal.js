@@ -16,7 +16,14 @@ import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import moment from "moment-jalaali";
 import CalenderModal from "../../OrdersReport/components/CalenderModal";
-function HamiModal({ isOpen, _onClose, _setSnackBarMessage, businessId }) {
+import { makeSelectUser } from "../../../../stores/user/selector";
+function HamiModal({
+  isOpen,
+  _onClose,
+  _setSnackBarMessage,
+  businessId,
+  user,
+}) {
   const [toCalenderOpen, setToCalenderOpen] = useState(false);
   const [fromCalenderOpen, setFromCalenderOpen] = useState(false);
   const [orderToCalenderOpen, setOrderToCalenderOpen] = useState(false);
@@ -37,6 +44,7 @@ function HamiModal({ isOpen, _onClose, _setSnackBarMessage, businessId }) {
   const orderFromTime = moment(query.order_from_date, "jYYYY/jM/jD").format(
     "jYYYY/jMM/jDD"
   );
+  console.log(toTime, fromTime);
   return (
     <>
       <CalenderModal
@@ -96,8 +104,8 @@ function HamiModal({ isOpen, _onClose, _setSnackBarMessage, businessId }) {
                   }
                   const result = await createOrUpdateHamiCRMMemberships(
                     businessId,
-                    toTime,
-                    fromTime
+                    fromTime,
+                    toTime
                   );
                   if (result) {
                     localStorage.setItem(
@@ -168,8 +176,9 @@ function HamiModal({ isOpen, _onClose, _setSnackBarMessage, businessId }) {
                   }
                   const result = await createOrUpdateHamiOrders(
                     businessId,
-                    orderToTime,
-                    orderFromTime
+                    user.id,
+                    orderFromTime,
+                    orderToTime
                   );
                   if (result) {
                     localStorage.setItem(
@@ -223,6 +232,7 @@ function HamiModal({ isOpen, _onClose, _setSnackBarMessage, businessId }) {
 
 const mapStateToProps = createStructuredSelector({
   businessId: makeSelectBusinessId(),
+  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {

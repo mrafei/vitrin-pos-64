@@ -15,8 +15,11 @@ import reducer from "./reducer";
 import saga from "./saga";
 import OnlineOrders from "../OnlineOrders";
 import Login from "../Login";
-import { getBusinesses } from "../../../stores/user/actions";
-import { makeSelectBusinesses } from "../../../stores/user/selector";
+import { getBusinesses, setUser } from "../../../stores/user/actions";
+import {
+  makeSelectBusinesses,
+  makeSelectUser,
+} from "../../../stores/user/selector";
 
 import Layout from "../../components/Layout";
 import OnlineOrder from "../OnlineOrder";
@@ -61,6 +64,8 @@ import {
   createOrUpdateHamiOrders,
 } from "../../../integrations/hami/actions";
 import moment from "moment-jalaali";
+import request from "../../../utils/request";
+import { USER_INFO_API } from "../../../utils/api";
 
 const App = function ({
   history,
@@ -80,6 +85,8 @@ const App = function ({
   showHamiModal,
   _acceptOrder,
   businessId,
+  user,
+  _setUser,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
@@ -87,11 +94,23 @@ const App = function ({
   const orderInterval = useRef(null);
   const customersInterval = useRef(null);
   const productsInterval = useRef(null);
+  const getUserInfo = async () => {
+    const {
+      response: {
+        data,
+        meta: { status_code },
+      },
+    } = await request(USER_INFO_API);
+    if (status_code === 200) {
+      _setUser(data);
+    }
+  };
   useEffect(() => {
     ipcRenderer.send("disable-close");
     const token = localStorage.getItem("token");
     if (token) {
       Axios.defaults.headers.common.Authorization = `Token ${token}`;
+      getUserInfo();
       _getBusinesses();
     } else history.push("/login");
     document.addEventListener("keydown", function (zEvent) {
@@ -125,7 +144,7 @@ const App = function ({
         _acceptOrder
       );
     }
-    if (siteDomain) {
+    if (siteDomain && localStorage.getItem("integrateed" === "hami")) {
       orderInterval.current = setInterval(() => {
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
@@ -137,6 +156,7 @@ const App = function ({
         );
         createOrUpdateHamiOrders(
           businessId,
+          user.id,
           "1375/01/01",
           moment().format("jYYYY/jMM/jDD")
         );
@@ -293,6 +313,7 @@ const mapStateToProps = createStructuredSelector({
   progressLoading: makeSelectProgressLoading(),
   businesses: makeSelectBusinesses(),
   showHamiModal: makeSelectHamiModal(),
+  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -306,6 +327,7 @@ function mapDispatchToProps(dispatch) {
     reload: () => dispatch(reloadPage()),
     _toggleHamiModal: (show) => dispatch(toggleHamiModal(show)),
     _acceptOrder: (data) => dispatch(acceptOrder(data)),
+    _setUser: (data) => dispatch(setUser(data)),
   };
 }
 

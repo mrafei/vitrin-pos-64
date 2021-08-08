@@ -93,6 +93,6 @@ export const GROUP_PACKAGING_PRICE_ON_DEALS_API = (id) =>
 export const DEALS_IMAGES_ITEM_CHANGE_ORDER_API = (id) =>
   `${BASE_URL}deals/images/${id}/change_order_by_business/`;
 
-export const UPSERT_CRM_MEMBERSHIP_API = `${BASE_URL}crm_memberships/bulk_upsert_by_pos_id/`;
-export const UPSERT_USER_ADDRESS_API = `${BASE_URL}user_addresses/bulk_upsert_by_pos_id/`;
-export const UPSERT_POS_ORDERS_API = `${BASE_URL}shopping_order/pos_create/`;
+export const UPSERT_CRM_MEMBERSHIP_API = `${BASE_URL}crm_membership/bulk_upsert_by_pos_id/`;
+export const UPSERT_USER_ADDRESS_API = `${BASE_URL}user_address/bulk_upsert_by_pos_id/`;
+export const UPSERT_POS_ORDERS_API = `${BASE_URL}shopping_orders/hami_create/`;

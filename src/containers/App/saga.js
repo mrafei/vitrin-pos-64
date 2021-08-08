@@ -166,7 +166,6 @@ export function* acceptOrder(action) {
         ORDER_DELIVERY_TIME_API(action.data.id, action.data.plugin),
         {
           delivery_time: action.data.deliveryTime,
-          prevent_sms: action.data.preventSms,
         },
         "PATCH"
       );
@@ -192,7 +191,7 @@ export function* acceptOrder(action) {
       } = yield call(
         request,
         ORDER_STATUS_PROGRESS_API(action.data.id, "shopping"),
-        {},
+        action.data.preventSms ? { pos_device: 0 } : {},
         "PATCH"
       );
       if (data) {
@@ -207,11 +206,11 @@ export function* acceptOrder(action) {
         }
         yield put(setSnackBarMessage("سفارش مورد نظر تایید شد.", "success"));
         yield put(setAdminOrder(data));
-      } else
+      } else if (!action.data.preventSms)
         yield put(
           setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail")
         );
-    } else
+    } else if (!action.data.preventSms)
       yield put(
         setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail")
       );

@@ -105,14 +105,16 @@ function OrderCard({
             {ellipseText(userAddress && userAddress.name, 18)}
           </span>
 
-          <span
-            className="u-text-ellipse mx-2 text-right flex-1 position-relative"
-            style={{ width: 500 }}
-          >
-            {deliveryOnSite
-              ? `تحویل در محل ${businessTitle}`
-              : userAddress.address}
-          </span>
+          {userAddress ? (
+            <span
+              className="u-text-ellipse mx-2 text-right flex-1 position-relative"
+              style={{ width: 500 }}
+            >
+              {deliveryOnSite
+                ? `تحویل در محل ${businessTitle}`
+                : userAddress.address}
+            </span>
+          ) : null}
           {order.final_price === 0 ? (
             <div className="d-flex" style={{ width: 35 }}>
               <span className="u-text-green mr-1">اعتبار هدیه</span>

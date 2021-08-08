@@ -9,7 +9,6 @@ import {
 } from "./api";
 import moment from "moment-jalaali";
 import {
-  CATEGORIES_API,
   UPSERT_CATEGORIES_API,
   UPSERT_CRM_MEMBERSHIP_API,
   UPSERT_DEALS_API,
@@ -17,6 +16,7 @@ import {
   UPSERT_POS_ORDERS_API,
   UPSERT_USER_ADDRESS_API,
 } from "../../utils/api";
+import { persianToEnglishNumber } from "../../utils/helper";
 const fs = require("fs");
 
 export const init = () => {};
@@ -31,9 +31,12 @@ export const submitHamiOrder = (order) => {
   )}:${`0${orderDateObject.getSeconds()}`.slice(-2)}`;
 
   request(
-    submitHamiOrderApi(localStorage.getItem("hamiIp")),
+    `${submitHamiOrderApi(localStorage.getItem("hamiIp"))}${
+      localStorage.getItem("hamiSecurityKey")
+        ? `?securityKey=${localStorage.getItem("hamiSecurityKey")}`
+        : ""
+    }`,
     {
-      securityKey: localStorage.getItem("hamiSecurityKey"),
       Invoice: {
         OrderId: parseInt(order.order_id),
         BranchId: 1,
@@ -178,32 +181,36 @@ export const createOrUpdateHamiDeals = async (categories, businessId) => {
       discounted_price: deal.GoodsPrice,
       initial_price: deal.GoodsPrice,
       categories:
-        categories && categories.find((cat) => cat.pos_id === deal.GoodsGroupId)
-          ? [categories.find((cat) => cat.pos_id === deal.GoodsGroupId).id]
+        categories &&
+        categories.find(
+          (cat) => parseInt(cat.pos_id) === parseInt(deal.GoodsGroupId)
+        )
+          ? [
+              parseInt(
+                categories.find(
+                  (cat) => parseInt(cat.pos_id) === parseInt(deal.GoodsGroupId)
+                ).id
+              ),
+            ]
           : [],
       _business: businessId,
     })),
     "POST"
   );
 };
-export const createOrUpdateDealsAndCategories = async (
-  businessId,
-  fromTime,
-  toTime
-) => {
-  const categoriesResult = await createOrUpdateHamiDealCategories(
-    businessId,
-    {}
-  );
+export const createOrUpdateDealsAndCategories = async (businessId) => {
+  const categoriesResult = await createOrUpdateHamiDealCategories(businessId);
+  if (!categoriesResult.response || !categoriesResult.response.data)
+    return null;
   const dealsResult = await createOrUpdateHamiDeals(
-    categoriesResult.data,
+    categoriesResult.response.data,
     businessId
   );
-  const modifiersResult = await createOrUpdateHamiModifiers(
-    categoriesResult.data,
-    businessId
-  );
-  return categoriesResult.data && dealsResult.data && modifiersResult.data;
+  // const modifiersResult = await createOrUpdateHamiModifiers(
+  //   categoriesResult.data,
+  //   businessId
+  // );
+  return dealsResult.response && dealsResult.response.data;
 };
 
 export const createOrUpdateHamiCRMMemberships = async (
@@ -223,47 +230,54 @@ export const createOrUpdateHamiCRMMemberships = async (
       CreationTimeEnd: "00:00:00",
     }
   );
-  if (!result || !result.response) return null;
+  if (!result || !result.response || !result.response.length) return null;
   result.response.map((user) => {
-    user.MApiCustomerPhoness.map((numberItem) =>
+    user.MApiCustomerPhoness.map((memberItem) =>
       memberships.push({
         pos_id: user.PartyId,
         name: user.FirstName + " " + user.LastName,
-        phone: numberItem.PhoneNumber,
+        phone: persianToEnglishNumber(memberItem.PhoneNumber),
         business: businessId,
       })
     );
     user.MApiCustomerAddresss.map((addressItem) =>
-      memberships.push({
-        pos_id: user.LocationId,
+      addresses.push({
+        // pos_id: addressItem.LocationId,
         name: user.FirstName + " " + user.LastName,
         latitude: addressItem.latitude,
         longitude: addressItem.longitude,
         address: addressItem.Address,
-        phone:
+        phone: persianToEnglishNumber(
           user.MApiCustomerPhoness && user.MApiCustomerPhoness.length
             ? user.MApiCustomerPhoness[0].PhoneNumber
-            : "",
+            : ""
+        ),
         business: businessId,
       })
     );
   });
-
+  const uniqueArray = memberships.filter(function (item, pos) {
+    return memberships.findIndex((i) => i.phone === item.phone) === pos;
+  });
   const membershipsResult = await request(
     UPSERT_CRM_MEMBERSHIP_API,
-    memberships,
+    uniqueArray,
     "POST"
   );
-  const addressesResult = await request(
-    UPSERT_USER_ADDRESS_API,
-    addresses,
-    "POST"
+  const addressesResult = addresses.length
+    ? await request(UPSERT_USER_ADDRESS_API, addresses, "POST")
+    : { response: { data: [] } };
+  return (
+    membershipsResult.response &&
+    membershipsResult.response.data &&
+    addressesResult.response &&
+    addressesResult.response.data
   );
-  return membershipsResult.data && addressesResult.data;
 };
 
 export const createOrUpdateHamiOrders = async (
   businessId,
+  userId,
   fromTime,
   toTime
 ) => {
@@ -277,37 +291,56 @@ export const createOrUpdateHamiOrders = async (
       InvoiceTimeEnd: "00:00:00",
     }
   );
-  if (!result || !result.response) return null;
+  if (!result || !result.response || !result.response.length) return null;
 
-  const orders = result.response.map((order) => ({
-    pos_id: order.SaleInvoiceId,
-    items: order.MApiInvoiceItems.map((orderItem) => ({
-      amount: orderItem.GoodsCount,
-      deal: {
-        pos_id: orderItem.GoodsId,
+  const orders = result.response
+    .filter((order) => !order.Description.includes("وب سایت"))
+    .map((order) => ({
+      business_id: businessId,
+      pos_order_id: order.SaleInvoiceId,
+      order_items: order.MApiInvoiceItems.map((orderItem) => ({
+        amount: orderItem.GoodsCount,
+        deal_pos_id: orderItem.GoodsId,
+        deal_id: null,
         initial_price: orderItem.GoodsPrice,
-        title: orderItem.GoodsName,
         discounted_price:
-          orderItem.GoodsPrice - orderItem.SumDiscount / order.GoodsCount,
+          orderItem.GoodsPrice - orderItem.SumDiscount / orderItem.GoodsCount,
+        final_unit_cost: orderItem.GoodsPrice,
+        packaging_price: 0,
+      })),
+      order_number: order.SaleInvoiceNumber,
+      order_status: 1,
+      user_address: {
+        name: order.PartyName,
+        address: order.PartyAddress,
+        phone: order.PartyPhone,
       },
-    })),
-    user: {
-      pos_id: order.PartyId,
-      name: order.PartyName,
-      address: order.PartyAddress,
-      phone: order.PartyPhone,
-    },
-    created_at: moment(
-      `${order.InvoiceDate} ${order.InvoiceTime}`,
-      "jYYYY/jMM/jDD HH:mm:ss"
-    ).format("YYYY-MM-DD"),
-    delivery_price: order.DeliveryPrice,
-    final_price: order.Payable,
-    taxing_price: order.SumTax,
-    description: order.description,
-    total_discount: order.SumDiscount,
-    total_items_price: order.SumSell,
-  }));
+      user_phone_number: order.PartyPhone,
+      delivery_site_type:
+        order.SaleInvoiceTypeTitle === "مشترکین"
+          ? "delivery_on_business_site"
+          : "delivery_on_user_site",
+      payments: [],
+      sales_channel: 1,
+      created_at: moment(
+        `${order.InvoiceDate} ${order.InvoiceTime}`,
+        "jYYYY/jMM/jDD HH:mm:ss"
+      ).format("YYYY-MM-DD"),
+      submitted_at: moment(
+        `${order.InvoiceDate} ${order.InvoiceTime}`,
+        "jYYYY/jMM/jDD HH:mm:ss"
+      ).format("YYYY-MM-DD"),
+      pos_user_id: userId,
+      _delivery_price: order.DeliveryPrice,
+      final_price: order.Payable,
+      _taxing_price: order.SumTax,
+      description: order.description,
+      total_discount: order.SumDiscount,
+      total_items_price: order.SumSell,
+      _total_packaging_price: 0,
+      payment_type: "onsite",
+      payment_status: 2,
+    }));
   const ordersResult = await request(UPSERT_POS_ORDERS_API, orders, "POST");
-  return ordersResult.data;
+  return ordersResult.response && ordersResult.response.data;
 };

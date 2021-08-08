@@ -13,7 +13,7 @@ function ItemsSection({ order }) {
       </div>
       {order.items.map((item) => (
         <div
-          key={`order-item-${item.deal.id}`}
+          key={`order-item-${item.deal.id}-${item.deal.modifiers.length || 0}`}
           className="d-flex flex-row justify-content-between mt-2 px-3"
           style={{
             alignItems:
