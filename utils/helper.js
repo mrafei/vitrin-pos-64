@@ -461,7 +461,6 @@ function deliveryTimeFormatter(deliveryTime) {
   const month = getMonthName(fromTime.jMonth());
   const weekDay = getWeekDay(fromTime.isoWeekday());
   const toTime = moment(deliveryTime.to_time).format("HH:mm");
-  console.log(fromTime, toTime)
   return `${weekDay} ${date} ${month} بازه ${englishNumberToPersianNumber(
     fromTime.format("HH:mm")
   )} تا ${englishNumberToPersianNumber(toTime)}`;
