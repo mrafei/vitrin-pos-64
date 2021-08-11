@@ -11,6 +11,7 @@ const { app, BrowserWindow, ipcMain, screen, Tray, Menu } = require("electron");
 const path = require("path");
 const url = require("url");
 app.disableHardwareAcceleration();
+app.commandLine.appendSwitch ("disable-http-cache");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
 
 require("update-electron-app")();

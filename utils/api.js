@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 export const CDN_BASE_URL =
   "https://hs3-cf.behtarino.com/static/images/behtarino-web/";
-const BASE_URL = "https://factor.behtarino.com/api/v1/";
+const BASE_URL = "https://api.behtarino.com/api/v1/";
 
 export const EMAIL_API = `${BASE_URL}send_custom_email/`;
 export const FILE_SERVER_URL_API = `${BASE_URL}get_minio_url/`;
@@ -95,4 +95,4 @@ export const DEALS_IMAGES_ITEM_CHANGE_ORDER_API = (id) =>
 
 export const UPSERT_CRM_MEMBERSHIP_API = `${BASE_URL}crm_membership/bulk_upsert_by_pos_id/`;
 export const UPSERT_USER_ADDRESS_API = `${BASE_URL}user_address/bulk_upsert_by_pos_id/`;
-export const UPSERT_POS_ORDERS_API = `${BASE_URL}shopping_orders/hami_create/`;
+export const UPSERT_POS_ORDERS_API = `${BASE_URL}shopping_orders/pos_create/`;

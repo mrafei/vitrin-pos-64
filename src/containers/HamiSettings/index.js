@@ -13,12 +13,11 @@ import { createStructuredSelector } from "reselect";
 import { makeSelectBusinessId } from "../../../stores/business/selector";
 import CalenderModal from "../OrdersReport/components/CalenderModal";
 import moment from "moment-jalaali";
+import CheckBox from "../../components/CheckBox";
 
 function HamiSettings({ _setSnackBarMessage, businessId }) {
   return (
     <>
-
-
       <div className="u-border-radius-8 container px-0 container-shadow mt-5">
         <div className="px-5 py-3 d-flex justify-content-between align-items-center">
           <div className="u-fontWeightBold u-text-black">تنظیمات حامی</div>
@@ -68,6 +67,18 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
                 onChange={(value) => {
                   localStorage.setItem("hamiSecurityKey", value);
                 }}
+              />
+            </div>
+            <div className="col-6 mt-4">
+              <CheckBox
+                className="u-fontMedium"
+                label="defaultCheck1"
+                defaultValue={localStorage.getItem("hamiKeepTracking") || ""}
+                onChange={(checked) => {
+                  if (checked) localStorage.setItem("hamiKeepTracking", "true");
+                  else localStorage.removeItem("hamiKeepTracking");
+                }}
+                text="سفارش‌های حامی در موجودی محصولات ویترین اعمال شود."
               />
             </div>
           </div>

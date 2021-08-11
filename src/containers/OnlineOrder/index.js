@@ -73,7 +73,6 @@ export function OnlineOrder({
 }) {
   useInjectReducer({ key: "adminOrder", reducer });
   useInjectSaga({ key: "adminOrder", saga });
-  console.log(customerOrders);
   useEffect(() => {
     _getAdminOrder({ id: match.params.id });
   }, [match.params.id]);
