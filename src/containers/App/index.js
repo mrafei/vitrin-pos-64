@@ -116,7 +116,7 @@ const App = function ({
     document.addEventListener("keydown", function (zEvent) {
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "X") {
         delete Axios.defaults.headers.common.Authorization;
-        localStorage.clear();
+        localStorage.removeItem("token");
         history.push("/login");
       }
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "I") {
@@ -149,17 +149,17 @@ const App = function ({
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
       customersInterval.current = setInterval(() => {
-        createOrUpdateHamiCRMMemberships(
-          businessId,
-          "1375/01/01",
-          moment().format("jYYYY/jMM/jDD")
-        );
-        createOrUpdateHamiOrders(
-          businessId,
-          user.id,
-          "1375/01/01",
-          moment().format("jYYYY/jMM/jDD")
-        );
+        // createOrUpdateHamiCRMMemberships(
+        //   businessId,
+        //   "1375/01/01",
+        //   moment().format("jYYYY/jMM/jDD")
+        // );
+        // createOrUpdateHamiOrders(
+        //   businessId,
+        //   user.id,
+        //   "1375/01/01",
+        //   moment().format("jYYYY/jMM/jDD")
+        // );
       }, 120 * 60 * 1000);
     }
     return () => {

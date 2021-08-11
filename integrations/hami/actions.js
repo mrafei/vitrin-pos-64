@@ -332,6 +332,7 @@ export const createOrUpdateHamiOrders = async (
       ).format("YYYY-MM-DD"),
       pos_user_id: userId,
       _delivery_price: order.DeliveryPrice,
+      pos_device_id: 0,
       final_price: order.Payable,
       _taxing_price: order.SumTax,
       description: order.description,
@@ -340,6 +341,7 @@ export const createOrUpdateHamiOrders = async (
       _total_packaging_price: 0,
       payment_type: "onsite",
       payment_status: 2,
+      archived: localStorage.getItem("hamiKeepTracking") === "true",
     }));
   const ordersResult = await request(UPSERT_POS_ORDERS_API, orders, "POST");
   return ordersResult.response && ordersResult.response.data;
