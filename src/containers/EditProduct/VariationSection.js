@@ -141,7 +141,7 @@ export default function VariationSection({
                   dangerouslySetInnerHTML={{
                     __html: `
                   .MuiChip-deleteIcon{
-                    margin: 0px; 
+                    margin: 0px;
                   }
                   .MuiChip-root  {
                     margin: 12px 8px 12px 0px ;
@@ -260,9 +260,7 @@ export default function VariationSection({
                           <Button
                             color="primary"
                             onClick={() => {
-                              console.log(
-                                `/products/${product.id}/variant/${item.id}`
-                              );
+
                               history.push(
                                 `/products/${product.id}/variant/${item.id}`
                               );
