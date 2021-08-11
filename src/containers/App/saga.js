@@ -191,7 +191,7 @@ export function* acceptOrder(action) {
       } = yield call(
         request,
         ORDER_STATUS_PROGRESS_API(action.data.id, "shopping"),
-        action.data.preventSms ? { pos_device: 0 } : {},
+        action.data.preventSms ? { pos_device_id: 0 } : {},
         "PATCH"
       );
       if (data) {
