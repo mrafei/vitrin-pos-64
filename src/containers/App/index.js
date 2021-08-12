@@ -144,23 +144,23 @@ const App = function ({
         _acceptOrder
       );
     }
-    if (siteDomain && localStorage.getItem("integrateed" === "hami")) {
+    if (siteDomain && localStorage.getItem("integrateed") === "hami") {
       orderInterval.current = setInterval(() => {
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
-      customersInterval.current = setInterval(() => {
-        // createOrUpdateHamiCRMMemberships(
-        //   businessId,
-        //   "1375/01/01",
-        //   moment().format("jYYYY/jMM/jDD")
-        // );
-        // createOrUpdateHamiOrders(
-        //   businessId,
-        //   user.id,
-        //   "1375/01/01",
-        //   moment().format("jYYYY/jMM/jDD")
-        // );
-      }, 120 * 60 * 1000);
+      // customersInterval.current = setInterval(() => {
+      //   createOrUpdateHamiCRMMemberships(
+      //     businessId,
+      //     "1375/01/01",
+      //     moment().format("jYYYY/jMM/jDD")
+      //   );
+      //   createOrUpdateHamiOrders(
+      //     businessId,
+      //     user.id,
+      //     "1375/01/01",
+      //     moment().format("jYYYY/jMM/jDD")
+      //   );
+      // }, 120 * 60 * 1000);
     }
     return () => {
       clearInterval(customersInterval.current);
