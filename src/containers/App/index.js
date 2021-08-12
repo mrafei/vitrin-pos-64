@@ -144,7 +144,7 @@ const App = function ({
         _acceptOrder
       );
     }
-    if (siteDomain && localStorage.getItem("integrateed" === "hami")) {
+    if (siteDomain && localStorage.getItem("integrateed") === "hami") {
       orderInterval.current = setInterval(() => {
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
