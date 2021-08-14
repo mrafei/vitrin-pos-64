@@ -79,7 +79,7 @@ const App = function ({
     document.addEventListener("keydown", function (zEvent) {
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "X") {
         delete Axios.defaults.headers.common.Authorization;
-        localStorage.clear();
+        localStorage.removeItem("token");
         history.push("/login");
       }
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "I") {

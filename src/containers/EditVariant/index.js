@@ -132,7 +132,6 @@ function EditVariant({
       }
     })
   );
-  console.log(selectedVariation);
   const { main_image_url } = product;
   const submit = () => {
     if (price && finalPrice) {
