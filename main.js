@@ -11,7 +11,7 @@ const { app, BrowserWindow, ipcMain, screen, Tray, Menu } = require("electron");
 const path = require("path");
 const url = require("url");
 app.disableHardwareAcceleration();
-app.commandLine.appendSwitch ("disable-http-cache");
+app.commandLine.appendSwitch("disable-http-cache");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
 
 // require("update-electron-app")();
@@ -32,37 +32,44 @@ let notifWindow;
 let tray;
 let isQuiting;
 
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (event, commandLine, workingDirectory) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+      mainWindow.show();
+    }
+  });
+
+  app.whenReady().then(() => {
+    tray = new Tray(path.join(__dirname, "assets", "icon.ico"));
+    tray.setIgnoreDoubleClickEvents(true);
+    tray.on("click", function (e) {
+      mainWindow.show();
+    });
+    tray.setContextMenu(
+      Menu.buildFromTemplate([
+        {
+          label: "خروج",
+          click: function () {
+            isQuiting = true;
+            app.quit();
+          },
+        },
+      ])
+    );
+    createWindow();
+  });
+}
+
 app.on("before-quit", function () {
   isQuiting = true;
 });
 
-app.on("second-instance", (event, commandLine, workingDirectory) => {
-  // Someone tried to run a second instance, we should focus our window.
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) mainWindow.restore();
-    mainWindow.focus();
-  }
-});
-
-app.whenReady().then(() => {
-  tray = new Tray(path.join(__dirname, "assets", "icon.ico"));
-  tray.setIgnoreDoubleClickEvents(true);
-  tray.on("click", function (e) {
-    mainWindow.show();
-  });
-  tray.setContextMenu(
-    Menu.buildFromTemplate([
-      {
-        label: "خروج",
-        click: function () {
-          isQuiting = true;
-          app.quit();
-        },
-      },
-    ])
-  );
-  createWindow();
-});
 // Keep a reference for dev mode
 let dev = false;
 
