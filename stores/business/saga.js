@@ -232,7 +232,7 @@ export function* updateProduct(action) {
   try {
     yield put(startLoading());
     const { id, product, images } = action.data;
-
+    delete product.modifier_sets;
     const {
       response: { meta, data },
     } = yield call(request, DEALS_ITEM_API(id), product, "PATCH");
