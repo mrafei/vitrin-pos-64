@@ -16,6 +16,13 @@ import moment from "moment-jalaali";
 import CheckBox from "../../components/CheckBox";
 
 function HamiSettings({ _setSnackBarMessage, businessId }) {
+  const [notifChecked, setNotifChecked] = useState(
+    localStorage.getItem("hamiAllowVitrinNotification") === "true"
+  );
+  const [inventory, setInventory] = useState(
+    localStorage.getItem("hamiKeepTracking") === "true"
+  );
+
   return (
     <>
       <div className="u-border-radius-8 container px-0 container-shadow mt-5">
@@ -73,12 +80,27 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
               <CheckBox
                 className="u-fontMedium"
                 label="defaultCheck1"
-                defaultValue={localStorage.getItem("hamiKeepTracking") || ""}
+                checked={inventory}
                 onChange={(checked) => {
+                  setInventory(checked);
                   if (checked) localStorage.setItem("hamiKeepTracking", "true");
                   else localStorage.removeItem("hamiKeepTracking");
                 }}
                 text="سفارش‌های حامی در موجودی محصولات ویترین اعمال شود."
+              />
+            </div>
+            <div className="col-6 mt-4">
+              <CheckBox
+                className="u-fontMedium"
+                label="defaultCheck2"
+                checked={notifChecked}
+                onChange={(checked) => {
+                  setNotifChecked(checked);
+                  if (checked)
+                    localStorage.setItem("hamiAllowVitrinNotification", "true");
+                  else localStorage.removeItem("hamiAllowVitrinNotification");
+                }}
+                text="نوتیفیکیشن ویتترین زمان ثبت سفارش نمایش داده شود."
               />
             </div>
           </div>

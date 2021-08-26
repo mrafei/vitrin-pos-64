@@ -7,7 +7,6 @@ import {
   createOrUpdateHamiCRMMemberships,
   createOrUpdateHamiOrders,
 } from "../../../../integrations/hami/actions";
-import { englishNumberToPersianNumber } from "../../../../utils/helper";
 import { createStructuredSelector } from "reselect";
 import { makeSelectBusinessId } from "../../../../stores/business/selector";
 import { setSnackBarMessage } from "../../../../stores/ui/actions";
@@ -15,7 +14,6 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import moment from "moment-jalaali";
-import CalenderModal from "../../OrdersReport/components/CalenderModal";
 import { makeSelectUser } from "../../../../stores/user/selector";
 function HamiModal({
   isOpen,
@@ -24,49 +22,8 @@ function HamiModal({
   businessId,
   user,
 }) {
-  const [toCalenderOpen, setToCalenderOpen] = useState(false);
-  const [fromCalenderOpen, setFromCalenderOpen] = useState(false);
-  const [orderToCalenderOpen, setOrderToCalenderOpen] = useState(false);
-  const [orderFromCalenderOpen, setOrderFromCalenderOpen] = useState(false);
-  const [query, setQuery] = useState({
-    to_date: "",
-    from_date: "",
-    order_to_date: "",
-    order_from_date: "",
-  });
-  const toTime = moment(query.to_date, "jYYYY/jM/jD").format("jYYYY/jMM/jDD");
-  const fromTime = moment(query.from_date, "jYYYY/jM/jD").format(
-    "jYYYY/jMM/jDD"
-  );
-  const orderToTime = moment(query.order_to_date, "jYYYY/jM/jD").format(
-    "jYYYY/jMM/jDD"
-  );
-  const orderFromTime = moment(query.order_from_date, "jYYYY/jM/jD").format(
-    "jYYYY/jMM/jDD"
-  );
-  console.log(toTime, fromTime);
   return (
     <>
-      <CalenderModal
-        open={toCalenderOpen}
-        onClose={() => setToCalenderOpen(false)}
-        selectDay={(day) => setQuery({ ...query, to_date: day })}
-      />
-      <CalenderModal
-        open={fromCalenderOpen}
-        onClose={() => setFromCalenderOpen(false)}
-        selectDay={(day) => setQuery({ ...query, from_date: day })}
-      />
-      <CalenderModal
-        open={orderToCalenderOpen}
-        onClose={() => setOrderToCalenderOpen(false)}
-        selectDay={(day) => setQuery({ ...query, order_to_date: day })}
-      />
-      <CalenderModal
-        open={orderFromCalenderOpen}
-        onClose={() => setOrderFromCalenderOpen(false)}
-        selectDay={(day) => setQuery({ ...query, order_from_date: day })}
-      />
       <Modal isOpen={isOpen} onClose={_onClose}>
         <div className="u-relative u-background-white c-modal-box">
           <Icon
@@ -94,19 +51,23 @@ function HamiModal({
                       return;
                     }
                   }
-                  if (!query.to_date) {
-                    _setSnackBarMessage("تاریخ پایان را وارد کنید.", "fail");
-                    return;
+                  let result = true;
+                  const a = moment(`1375/01/01`, "jYYYY/jMM/jDD");
+                  const b = moment();
+                  for (
+                    let m = moment(b);
+                    m.isAfter(a);
+                    m.subtract(1, "months")
+                  ) {
+                    result =
+                      result &&
+                      (await createOrUpdateHamiCRMMemberships(
+                        businessId,
+                        m.startOf("month").format("jYYYY/jMM/jDD"),
+                        m.endOf("month").format("jYYYY/jMM/jDD")
+                      ));
                   }
-                  if (!query.to_date) {
-                    _setSnackBarMessage("تاریخ شروع را وارد کنید.", "fail");
-                    return;
-                  }
-                  const result = await createOrUpdateHamiCRMMemberships(
-                    businessId,
-                    fromTime,
-                    toTime
-                  );
+
                   if (result) {
                     localStorage.setItem(
                       "hamiCustomersLastUpdate",
@@ -123,32 +84,6 @@ function HamiModal({
               >
                 به‌روز رسانی کاربران
               </Button>
-              <div className="d-flex u-text-black mr-3">
-                <div
-                  className="u-cursor-pointer d-flex align-items-center"
-                  onClick={() => setFromCalenderOpen(true)}
-                >
-                  از تاریخ
-                  <span className="mr-2">
-                    {query.from_date
-                      ? englishNumberToPersianNumber(query.from_date)
-                      : "----"}
-                  </span>
-                  <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#001e2d" />
-                </div>
-                <div
-                  className="u-cursor-pointer d-flex align-items-center mr-5"
-                  onClick={() => setToCalenderOpen(true)}
-                >
-                  تا تاریخ
-                  <span className="mr-2">
-                    {query.to_date
-                      ? englishNumberToPersianNumber(query.to_date)
-                      : "----"}
-                  </span>
-                  <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#001e2d" />
-                </div>
-              </div>
             </div>
             <div className="mt-2 d-flex align-items-center">
               <Button
@@ -166,20 +101,23 @@ function HamiModal({
                       return;
                     }
                   }
-                  if (!query.order_to_date) {
-                    _setSnackBarMessage("تاریخ پایان را وارد کنید.", "fail");
-                    return;
+                  let result = true;
+                  const a = moment(`1375/01/01`, "jYYYY/jMM/jDD");
+                  const b = moment();
+                  for (
+                    let m = moment(b);
+                    m.isAfter(a);
+                    m.subtract(1, "months")
+                  ) {
+                    result =
+                      result &&
+                      (await createOrUpdateHamiOrders(
+                        businessId,
+                        user.id,
+                        m.startOf("month").format("jYYYY/jMM/jDD"),
+                        m.endOf("month").format("jYYYY/jMM/jDD")
+                      ));
                   }
-                  if (!query.order_to_date) {
-                    _setSnackBarMessage("تاریخ شروع را وارد کنید.", "fail");
-                    return;
-                  }
-                  const result = await createOrUpdateHamiOrders(
-                    businessId,
-                    user.id,
-                    orderFromTime,
-                    orderToTime
-                  );
                   if (result) {
                     localStorage.setItem(
                       "hamiOrdersLastUpdate",
@@ -196,32 +134,6 @@ function HamiModal({
               >
                 به‌روز رسانی سفارش‌ها
               </Button>
-              <div className="d-flex u-text-black mr-3">
-                <div
-                  className="u-cursor-pointer d-flex align-items-center"
-                  onClick={() => setOrderFromCalenderOpen(true)}
-                >
-                  از تاریخ
-                  <span className="mr-2">
-                    {query.order_from_date
-                      ? englishNumberToPersianNumber(query.order_from_date)
-                      : "----"}
-                  </span>
-                  <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#001e2d" />
-                </div>
-                <div
-                  className="u-cursor-pointer d-flex align-items-center mr-5"
-                  onClick={() => setOrderToCalenderOpen(true)}
-                >
-                  تا تاریخ
-                  <span className="mr-2">
-                    {query.order_to_date
-                      ? englishNumberToPersianNumber(query.order_to_date)
-                      : "----"}
-                  </span>
-                  <Icon icon={ICONS.CONTROL_DOWN} size={25} color="#001e2d" />
-                </div>
-              </div>
             </div>
           </div>
         </div>
