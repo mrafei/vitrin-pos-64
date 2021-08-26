@@ -100,7 +100,7 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
                     localStorage.setItem("hamiAllowVitrinNotification", "true");
                   else localStorage.removeItem("hamiAllowVitrinNotification");
                 }}
-                text="نوتیفیکیشن ویتترین زمان ثبت سفارش نمایش داده شود."
+                text="نوتیفیکیشن ویترین زمان ثبت سفارش نمایش داده شود."
               />
             </div>
           </div>
