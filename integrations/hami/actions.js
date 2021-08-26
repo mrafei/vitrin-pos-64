@@ -180,6 +180,7 @@ export const createOrUpdateHamiDeals = async (categories, businessId) => {
       description: deal.GoodsDescription,
       discounted_price: deal.GoodsPrice,
       initial_price: deal.GoodsPrice,
+      packaging_price: deal.PackingPrice || 0,
       categories:
         categories &&
         categories.find(
@@ -216,7 +217,9 @@ export const createOrUpdateDealsAndCategories = async (businessId) => {
 export const createOrUpdateHamiCRMMemberships = async (
   businessId,
   fromTime,
-  toTime
+  toTime,
+  CreationTimeStart = "00:00:00",
+  CreationTimeEnd = "24:00:00"
 ) => {
   const memberships = [];
   const addresses = [];
@@ -226,11 +229,13 @@ export const createOrUpdateHamiCRMMemberships = async (
       securityKey: localStorage.getItem("hamiSecurityKey"),
       CreationDateStart: fromTime,
       CreationDateEnd: toTime,
-      CreationTimeStart: "00:00:00",
-      CreationTimeEnd: "00:00:00",
+      CreationTimeStart,
+      CreationTimeEnd,
     }
   );
-  if (!result || !result.response || !result.response.length) return null;
+  if (!result || !result.response) return null;
+
+  if (!result.response.length) return true;
   result.response.map((user) => {
     user.MApiCustomerPhoness.map((memberItem) =>
       memberships.push({
@@ -279,7 +284,9 @@ export const createOrUpdateHamiOrders = async (
   businessId,
   userId,
   fromTime,
-  toTime
+  toTime,
+  InvoiceTimeStart = "00:00:00",
+  InvoiceTimeEnd = "24:00:00"
 ) => {
   const result = await request(
     getHamiOrdersApi(localStorage.getItem("hamiIp")),
@@ -287,8 +294,8 @@ export const createOrUpdateHamiOrders = async (
       securityKey: localStorage.getItem("hamiSecurityKey"),
       InvoiceDateStart: fromTime,
       InvoiceDateEnd: toTime,
-      InvoiceTimeStart: "00:00:00",
-      InvoiceTimeEnd: "00:00:00",
+      InvoiceTimeStart,
+      InvoiceTimeEnd,
     }
   );
   if (!result || !result.response || !result.response.length) return null;

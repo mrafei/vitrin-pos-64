@@ -13,6 +13,7 @@ import {
   SET_BUSINESS,
   SET_DEAL,
   SET_DELIVERIES,
+  SET_POS_DEVICES,
 } from "./constants";
 import { SET_PRINTER_OPTIONS } from "../../src/containers/App/constants";
 
@@ -28,6 +29,7 @@ export const initialState = {
     printers: [],
   },
   deal: null,
+  devices: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -69,6 +71,9 @@ const appReducer = (state = initialState, action) =>
         break;
       case SET_DEAL:
         draft.deal = action.data;
+        break;
+      case SET_POS_DEVICES:
+        draft.devices = action.data;
         break;
     }
   });

@@ -36,6 +36,7 @@ import { getAdminOrders } from "../OnlineOrders/actions";
 import {
   makeSelectBusinessId,
   makeSelectBusinessTitle,
+  makeSelectPOSDevices,
 } from "../../../stores/business/selector";
 import DeliverersList from "../DeliverersList";
 import CreateDeliverer from "../CreateDeliverer";
@@ -87,6 +88,7 @@ const App = function ({
   businessId,
   user,
   _setUser,
+  devices,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
@@ -94,6 +96,7 @@ const App = function ({
   const orderInterval = useRef(null);
   const customersInterval = useRef(null);
   const productsInterval = useRef(null);
+  const device = devices && devices[0];
   const getUserInfo = async () => {
     const {
       response: {
@@ -132,8 +135,6 @@ const App = function ({
   }, []);
 
   useEffect(() => {
-    clearInterval(orderInterval.current);
-    clearInterval(customersInterval.current);
     if (siteDomain) {
       _getBusiness();
       initPushNotification(
@@ -144,30 +145,39 @@ const App = function ({
         _acceptOrder
       );
     }
-    if (siteDomain && localStorage.getItem("integrateed") === "hami") {
+  }, [siteDomain]);
+  useEffect(() => {
+    clearInterval(orderInterval.current);
+    clearInterval(customersInterval.current);
+    if (siteDomain && localStorage.getItem("integrated") === "hami") {
       orderInterval.current = setInterval(() => {
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
-      // customersInterval.current = setInterval(() => {
-      //   createOrUpdateHamiCRMMemberships(
-      //     businessId,
-      //     "1375/01/01",
-      //     moment().format("jYYYY/jMM/jDD")
-      //   );
-      //   createOrUpdateHamiOrders(
-      //     businessId,
-      //     user.id,
-      //     "1375/01/01",
-      //     moment().format("jYYYY/jMM/jDD")
-      //   );
-      // }, 120 * 60 * 1000);
+      customersInterval.current = setInterval(() => {
+        if (device && device.last_users_update)
+          createOrUpdateHamiCRMMemberships(
+            businessId,
+            moment(device.last_users_update).format("jYYYY/jMM/jDD"),
+            moment().format("jYYYY/jMM/jDD"),
+            moment(device.last_users_update).format("HH/mm/ss"),
+            moment().format("HH/mm/ss")
+          );
+        if (device && device.last_orders_update)
+          createOrUpdateHamiOrders(
+            businessId,
+            user.id,
+            moment(device.last_orders_update).format("jYYYY/jMM/jDD"),
+            moment().format("jYYYY/jMM/jDD"),
+            moment(device.last_orders_update).format("HH/mm/ss"),
+            moment().format("HH/mm/ss")
+          );
+      }, 120 * 60 * 1000);
     }
     return () => {
       clearInterval(customersInterval.current);
       clearInterval(orderInterval.current);
     };
-  }, [siteDomain]);
-
+  }, [device, siteDomain]);
   if ((!siteDomain || !businessTitle) && location.pathname !== "/login")
     return (
       <div
@@ -311,6 +321,7 @@ const mapStateToProps = createStructuredSelector({
   businesses: makeSelectBusinesses(),
   showHamiModal: makeSelectHamiModal(),
   user: makeSelectUser(),
+  devices: makeSelectPOSDevices(),
 });
 
 function mapDispatchToProps(dispatch) {
