@@ -247,7 +247,9 @@ ipcMain.on("redirectOrder", (event, notification) => {
 });
 ipcMain.handle("request", async (_, axios_request, headers) => {
   axios.defaults.headers = headers;
-  const result = await axios(axios_request);
+  const result = await axios(axios_request).catch((error) => {
+    return { data: error };
+  });
   return { data: result.data, status: result.status };
 });
 
