@@ -10,6 +10,8 @@ Sentry.init({
 const { app, BrowserWindow, ipcMain, screen } = require("electron");
 const path = require("path");
 const url = require("url");
+const axios = require("axios");
+
 app.disableHardwareAcceleration();
 const { setup: setupPushReceiver } = require("electron-push-receiver");
 
@@ -200,6 +202,12 @@ ipcMain.on("redirectOrder", (event, notification) => {
     mainWindow.webContents.send("redirectOrder", orderId);
   }
 });
+ipcMain.handle("request", async (_, axios_request, headers) => {
+  axios.defaults.headers = headers;
+  const result = await axios(axios_request);
+  return { data: result.data, status: result.status };
+});
+
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {
     return false;

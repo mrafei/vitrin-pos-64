@@ -1,17 +1,18 @@
-import Axios from 'axios';
+import Axios from "axios";
+const { ipcRenderer } = require("electron");
 
 export default async function request(
   url,
   data,
-  method = 'GET',
+  method = "GET",
   headers,
-  config = null,
+  config = null
 ) {
   let params = {
     url,
     method,
-    data: method !== 'GET' ? data : undefined,
-    params: method === 'GET' ? data : undefined,
+    data: method !== "GET" ? data : undefined,
+    params: method === "GET" ? data : undefined,
     ...config,
   };
   if (headers) {
@@ -22,14 +23,26 @@ export default async function request(
   }
   let response = null;
   let status = null;
-  await Axios(params)
-    .then(res => {
+  await ipcRenderer
+    .invoke("request", params, Axios.defaults.headers)
+    .then((res) => {
+      console.log("****", res)
       response = res.data;
       status = res.data.meta.status_code;
+      return true;
     })
-    .catch(e => {
+    .catch((e) => {
       status = e;
       return e;
     });
+  // await Axios(params)
+  //   .then((res) => {
+  //     response = res.data;
+  //     status = res.data.meta.status_code;
+  //   })
+  //   .catch((e) => {
+  //     status = e;
+  //     return e;
+  //   });
   return { response, status };
 }
