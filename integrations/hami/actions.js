@@ -51,15 +51,27 @@ export const submitHamiOrder = (order) => {
         DeliveryAddress: order.user_address.address,
         Comments: order.description,
         OrderType: 1,
-        Price: order.total_items_price,
-        DeliveryPrice: order.delivery_price,
-        PackingPrice: order.total_packaging_price,
-        Discount: order.total_discount,
-        Tax: order.taxing_price,
+        Price:
+          order.total_items_price *
+          (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+        DeliveryPrice:
+          order.delivery_price *
+          (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+        PackingPrice:
+          order.total_packaging_price *
+          (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+        Discount:
+          order.total_discount *
+          (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+        Tax:
+          order.taxing_price *
+          (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
         Duty: 0,
         Addition: 0,
         Rounded: 0,
-        Payable: order.final_price,
+        Payable:
+          order.final_price *
+          (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
         Remaining: 0,
         CommissionPrice: 0,
         PaymentTypeId: parseInt(order.payment_status) === 1 ? 1 : 3,
@@ -75,12 +87,21 @@ export const submitHamiOrder = (order) => {
           ProductPrice: item.deal.initial_price,
           Quantity: item.amount,
           DescriptionPrice: 0,
-          SumPrice: item.deal.initial_price,
-          ProductDiscount: item.deal.initial_price - item.deal.discounted_price,
+          SumPrice:
+            item.deal.initial_price *
+            (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+
+          ProductDiscount:
+            (item.deal.initial_price - item.deal.discounted_price) *
+            (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+
           Addition: 0,
           ProductTax: 0,
           ProductDuty: 0,
-          TotalPrice: item.deal.discounted_price,
+          TotalPrice:
+            item.deal.discounted_price *
+            (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+
           Description: "",
         })),
         ItemsTopping: [],
@@ -149,9 +170,17 @@ export const createOrUpdateHamiDeals = async (categories, businessId) => {
       pos_code: deal.GoodsCode,
       title: deal.GoodsName,
       description: deal.GoodsDescription,
-      discounted_price: deal.GoodsPrice,
-      initial_price: deal.GoodsPrice,
-      packaging_price: deal.PackingPrice || 0,
+      discounted_price:
+        deal.GoodsPrice *
+        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+
+      initial_price:
+        deal.GoodsPrice *
+        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+
+      packaging_price:
+        deal.PackingPrice *
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1) || 0,
       categories:
         categories &&
         categories.find(
@@ -284,10 +313,19 @@ export const createOrUpdateHamiOrders = async (
         amount: orderItem.GoodsCount,
         deal_pos_id: orderItem.GoodsId,
         deal_id: null,
-        initial_price: orderItem.GoodsPrice,
+        initial_price:
+          orderItem.GoodsPrice *
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+
         discounted_price:
-          orderItem.GoodsPrice - orderItem.SumDiscount / orderItem.GoodsCount,
-        final_unit_cost: orderItem.GoodsPrice,
+          (orderItem.GoodsPrice -
+            orderItem.SumDiscount / orderItem.GoodsCount) *
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+
+        final_unit_cost:
+          orderItem.GoodsPrice *
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+
         packaging_price: 0,
       })),
       order_number: order.SaleInvoiceNumber,
@@ -313,13 +351,20 @@ export const createOrUpdateHamiOrders = async (
         "jYYYY/jMM/jDD HH:mm:ss"
       ).format("YYYY-MM-DD"),
       pos_user_id: userId,
-      _delivery_price: order.DeliveryPrice,
+      _delivery_price:
+        order.DeliveryPrice *
+        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
       pos_device_id: 0,
-      final_price: order.Payable,
-      _taxing_price: order.SumTax,
+      final_price:
+        order.Payable * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+      _taxing_price:
+        order.SumTax * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
       description: order.description,
-      total_discount: order.SumDiscount,
-      total_items_price: order.SumSell,
+      total_discount:
+        order.SumDiscount *
+        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+      total_items_price:
+        order.SumSell * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
       _total_packaging_price: 0,
       payment_type: "onsite",
       payment_status: 2,
