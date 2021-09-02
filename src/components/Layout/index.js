@@ -213,18 +213,22 @@ function Layout({
           }}
         >
           <List className="d-flex flex-1 flex-column">
-            {routes.map((route, index) => (
-              <MenuItem
-                open={open}
-                setOpen={setOpen}
-                key={route.path}
-                route={route}
-                subRoutes={subRoutes[index].filter(
-                  (route) => route.show === undefined || route.show === true
-                )}
-                history={history}
-              />
-            ))}
+            {routes
+              .filter(
+                (route) => route.show === undefined || route.show === true
+              )
+              .map((route, index) => (
+                <MenuItem
+                  open={open}
+                  setOpen={setOpen}
+                  key={route.path}
+                  route={route}
+                  subRoutes={subRoutes[index].filter(
+                    (route) => route.show === undefined || route.show === true
+                  )}
+                  history={history}
+                />
+              ))}
           </List>
           <ListItem button key={title} onClick={() => setOpen(!open)}>
             <ListItemIcon>
