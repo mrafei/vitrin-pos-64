@@ -8,20 +8,28 @@ import {
   createOrUpdateHamiOrders,
 } from "../../../../integrations/hami/actions";
 import { createStructuredSelector } from "reselect";
-import { makeSelectBusinessId } from "../../../../stores/business/selector";
+import {
+  makeSelectBusinessId,
+  makeSelectPOSDevices,
+} from "../../../../stores/business/selector";
 import { setSnackBarMessage } from "../../../../stores/ui/actions";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import moment from "moment-jalaali";
 import { makeSelectUser } from "../../../../stores/user/selector";
+import request from "../../../../utils/request";
+import { UPDATE_DEVICE_API } from "../../../../utils/api";
 function HamiModal({
   isOpen,
   _onClose,
   _setSnackBarMessage,
   businessId,
   user,
+  devices,
 }) {
+  const device = devices && devices[0];
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={_onClose}>
@@ -69,6 +77,19 @@ function HamiModal({
                   }
 
                   if (result) {
+                    if (localStorage.getItem("hamiSecurityKey"))
+                      await request(
+                        UPDATE_DEVICE_API(
+                          localStorage.getItem("hamiSecurityKey")
+                        ),
+                        {
+                          extra_data: {
+                            last_users_update: moment().unix(),
+                          },
+                        },
+                        "PATCH"
+                      );
+
                     localStorage.setItem(
                       "hamiCustomersLastUpdate",
                       moment().unix()
@@ -119,6 +140,18 @@ function HamiModal({
                       ));
                   }
                   if (result) {
+                    if (localStorage.getItem("hamiSecurityKey"))
+                      await request(
+                        UPDATE_DEVICE_API(
+                          localStorage.getItem("hamiSecurityKey")
+                        ),
+                        {
+                          extra_data: {
+                            last_orders_update: moment().unix(),
+                          },
+                        },
+                        "PATCH"
+                      );
                     localStorage.setItem(
                       "hamiOrdersLastUpdate",
                       moment().unix()
@@ -145,6 +178,7 @@ function HamiModal({
 const mapStateToProps = createStructuredSelector({
   businessId: makeSelectBusinessId(),
   user: makeSelectUser(),
+  devices: makeSelectPOSDevices(),
 });
 
 function mapDispatchToProps(dispatch) {

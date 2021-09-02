@@ -154,22 +154,25 @@ const App = function ({
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
       customersInterval.current = setInterval(() => {
-        if (device && device.last_users_update)
+        if (device && device.extra_data && device.extra_data.last_users_update)
           createOrUpdateHamiCRMMemberships(
             businessId,
-            moment(device.last_users_update).format("jYYYY/jMM/jDD"),
+            moment(device.extra_data.last_users_update).format("jYYYY/jMM/jDD"),
             moment().format("jYYYY/jMM/jDD"),
-            moment(device.last_users_update).format("HH/mm/ss"),
+            moment(device.extra_data.last_users_update).format("HH/mm/ss"),
             moment().format("HH/mm/ss")
           );
-        if (device && device.last_orders_update)
+        if (device && device.extra_data && device.extra_data.last_orders_update)
           createOrUpdateHamiOrders(
             businessId,
             user.id,
-            moment(device.last_orders_update).format("jYYYY/jMM/jDD"),
+            moment(device.extra_data.last_orders_update).format(
+              "jYYYY/jMM/jDD"
+            ),
             moment().format("jYYYY/jMM/jDD"),
-            moment(device.last_orders_update).format("HH/mm/ss"),
-            moment().format("HH/mm/ss")
+            moment(device.extra_data.last_orders_update).format("HH/mm/ss"),
+            moment().format("HH/mm/ss"),
+            device && device.extra_data
           );
       }, 120 * 60 * 1000);
     }

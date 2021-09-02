@@ -9,6 +9,7 @@ import {
 } from "./api";
 import moment from "moment-jalaali";
 import {
+  UPDATE_DEVICE_API,
   UPSERT_CATEGORIES_API,
   UPSERT_CRM_MEMBERSHIP_API,
   UPSERT_DEALS_API,
@@ -17,7 +18,6 @@ import {
   UPSERT_USER_ADDRESS_API,
 } from "../../utils/api";
 import { persianToEnglishNumber } from "../../utils/helper";
-const fs = require("fs");
 
 export const init = () => {};
 
@@ -111,16 +111,6 @@ export const getHamiToppings = async () => {
 export const createOrUpdateHamiModifiers = async (businessId) => {
   const result = await getHamiToppings();
   if (!result || !result.response) return null;
-  fs.writeFile(
-    "modifiers.json",
-    JSON.stringify(result.response),
-    { flag: "w" },
-    function (err) {
-      if (err) {
-        console.log(err);
-      }
-    }
-  );
 
   return await request(
     UPSERT_MODIFIERS_API,
@@ -136,16 +126,6 @@ export const createOrUpdateHamiModifiers = async (businessId) => {
 export const createOrUpdateHamiDealCategories = async (businessId) => {
   const result = await getHamiDealCategories();
   if (!result || !result.response) return null;
-  fs.writeFile(
-    "categories.json",
-    JSON.stringify(result.response),
-    { flag: "w" },
-    function (err) {
-      if (err) {
-        console.log(err);
-      }
-    }
-  );
 
   return await request(
     UPSERT_CATEGORIES_API,
@@ -161,16 +141,7 @@ export const createOrUpdateHamiDealCategories = async (businessId) => {
 export const createOrUpdateHamiDeals = async (categories, businessId) => {
   const result = await getHamiDeals();
   if (!result || !result.response) return null;
-  fs.writeFile(
-    "deals.json",
-    JSON.stringify(result.response),
-    { flag: "w" },
-    function (err) {
-      if (err) {
-        console.log(err);
-      }
-    }
-  );
+
   return await request(
     UPSERT_DEALS_API,
     result.response["Goods"].map((deal) => ({
@@ -243,6 +214,9 @@ export const createOrUpdateHamiCRMMemberships = async (
         name: user.FirstName + " " + user.LastName,
         phone: persianToEnglishNumber(memberItem.PhoneNumber),
         business: businessId,
+        extra_phones: user.MApiCustomerPhoness.map((item) =>
+          persianToEnglishNumber(item.PhoneNumber)
+        ),
       })
     );
     user.MApiCustomerAddresss.map((addressItem) =>
@@ -298,8 +272,9 @@ export const createOrUpdateHamiOrders = async (
       InvoiceTimeEnd,
     }
   );
-  if (!result || !result.response || !result.response.length) return null;
+  if (!result || !result.response) return null;
 
+  if (!result.response.length) return true;
   const orders = result.response
     .filter((order) => !order.Description.includes("وب سایت"))
     .map((order) => ({
@@ -351,5 +326,22 @@ export const createOrUpdateHamiOrders = async (
       archived: localStorage.getItem("hamiKeepTracking") === "true",
     }));
   const ordersResult = await request(UPSERT_POS_ORDERS_API, orders, "POST");
+  if (
+    ordersResult.response &&
+    ordersResult.response.data &&
+    localStorage.getItem("hamiSecurityKey")
+  )
+    await request(
+      UPDATE_DEVICE_API(localStorage.getItem("hamiSecurityKey")),
+      {
+        extra_data: {
+          initial_orders_date: moment(
+            `${toTime} ${InvoiceTimeEnd}`,
+            "jYYYY/jMM/jDD HH:mm:ss"
+          ).unix(),
+        },
+      },
+      "PATCH"
+    );
   return ordersResult.response && ordersResult.response.data;
 };
