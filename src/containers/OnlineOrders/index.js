@@ -31,7 +31,7 @@ const OnlineOrders = function ({
   const page = getQueryParams("page", location.search) || 1;
 
   useEffect(() => {
-    _getAdminOrders(page);
+    _getAdminOrders({ page });
   }, [location]);
   return (
     <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden flex-1">
@@ -69,7 +69,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    _getAdminOrders: (page) => dispatch(getAdminOrders(page)),
+    _getAdminOrders: (data) => dispatch(getAdminOrders(data)),
   };
 }
 

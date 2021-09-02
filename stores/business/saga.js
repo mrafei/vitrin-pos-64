@@ -21,6 +21,7 @@ import {
   GROUP_PACKAGING_PRICE_ON_DEALS_API,
   GROUP_DISCOUNT_ON_DEALS,
   DEALS_IMAGES_ITEM_CHANGE_ORDER_API,
+  GET_BUSINESS_DEVICES_API,
 } from "../../utils/api";
 import {
   CREATE_CATEGORY,
@@ -36,8 +37,16 @@ import {
   DELIVERIES_PAGE_SIZE,
   GET_DEAL,
   UPLOAD_IMAGE_AND_UPDATE_PRODUCT,
+  GET_POS_DEVICES,
 } from "./constants";
-import { applyCategory, setBusiness, setDeal, setDeliveries } from "./actions";
+import {
+  applyCategory,
+  getPosDevices,
+  setBusiness,
+  setDeal,
+  setDeliveries,
+  setPosDevices,
+} from "./actions";
 import {
   makeSelectSubDomain,
   makeSelectUploadedFile,
@@ -91,6 +100,7 @@ export function* getBusinessData() {
         })
       );
     }
+    yield put(getPosDevices());
     yield put(stopProgressLoading());
   } catch (err) {
     console.log(err);
@@ -411,6 +421,21 @@ export function* uploadImageAndUpdateProductSaga(action) {
     }
   }
 }
+export function* getBusinessDevicesSaga() {
+  const business_slug = yield select(makeSelectBusinessSlug());
+  try {
+    yield put(startLoading());
+
+    const {
+      response: { meta, data },
+    } = yield call(request, GET_BUSINESS_DEVICES_API, { business_slug });
+    if (data) yield put(setPosDevices(data));
+    yield put(stopLoading());
+  } catch (err) {
+    console.log(err);
+    yield put(stopLoading());
+  }
+}
 export default [
   takeLatest(GET_BUSINESS, getBusinessData),
   takeLatest(CREATE_CATEGORY, createCategory),
@@ -424,4 +449,5 @@ export default [
   takeLatest(GET_DELIVERIES, getDeliveries),
   takeLatest(GET_DEAL, getProductSaga),
   takeLatest(UPLOAD_IMAGE_AND_UPDATE_PRODUCT, uploadImageAndUpdateProductSaga),
+  takeLatest(GET_POS_DEVICES, getBusinessDevicesSaga),
 ];

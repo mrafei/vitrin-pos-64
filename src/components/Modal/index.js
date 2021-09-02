@@ -35,11 +35,4 @@ function Modal({ isOpen, onClose, className = "", children }) {
   );
 }
 
-Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  className: PropTypes.string,
-  onClose: PropTypes.func,
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
-};
-
 export default memo(Modal);

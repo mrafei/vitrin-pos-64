@@ -4,7 +4,11 @@
  *
  */
 
-import { SET_ADMIN_ORDERS, DEFAULT_ACTION, GET_ADMIN_ORDERS } from "./constants";
+import {
+  SET_ADMIN_ORDERS,
+  DEFAULT_ACTION,
+  GET_ADMIN_ORDERS,
+} from "./constants";
 
 export function defaultAction() {
   return {
@@ -12,10 +16,10 @@ export function defaultAction() {
   };
 }
 
-export function getAdminOrders(page) {
+export function getAdminOrders(data) {
   return {
     type: GET_ADMIN_ORDERS,
-    data: page,
+    data,
   };
 }
 

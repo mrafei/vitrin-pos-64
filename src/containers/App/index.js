@@ -1,9 +1,7 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable func-names */
 import "../../../styles/_main.scss";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { compose } from "redux";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { createStructuredSelector } from "reselect";
 import Snackbar from "@material-ui/core/esm/Snackbar";
 import { connect } from "react-redux";
@@ -17,18 +15,29 @@ import reducer from "./reducer";
 import saga from "./saga";
 import OnlineOrders from "../OnlineOrders";
 import Login from "../Login";
-import { getBusinesses } from "../../../stores/user/actions";
-import { makeSelectBusinesses } from "../../../stores/user/selector";
+import { getBusinesses, setUser } from "../../../stores/user/actions";
+import {
+  makeSelectBusinesses,
+  makeSelectUser,
+} from "../../../stores/user/selector";
 
 import Layout from "../../components/Layout";
 import OnlineOrder from "../OnlineOrder";
-import { makeSelectProgressLoading, makeSelectSubDomain } from "./selectors";
+import {
+  makeSelectHamiModal,
+  makeSelectProgressLoading,
+  makeSelectSubDomain,
+} from "./selectors";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import { reloadPage, setSnackBarMessage } from "../../../stores/ui/actions";
 import { makeSelectSnackBarMessage } from "../../../stores/ui/selector";
 import initPushNotification from "../pushNotification";
 import { getAdminOrders } from "../OnlineOrders/actions";
-import { makeSelectBusinessTitle } from "../../../stores/business/selector";
+import {
+  makeSelectBusinessId,
+  makeSelectBusinessTitle,
+  makeSelectPOSDevices,
+} from "../../../stores/business/selector";
 import DeliverersList from "../DeliverersList";
 import CreateDeliverer from "../CreateDeliverer";
 import EditDeliverer from "../EditDeliverer";
@@ -40,7 +49,7 @@ import EditProduct from "../EditProduct";
 import EditVariant from "../EditVariant";
 import Analytics from "../Analytics";
 import OrdersReport from "../OrdersReport";
-import { setSiteDomain } from "./actions";
+import { acceptOrder, setSiteDomain, toggleHamiModal } from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
 import UploadCustomers from "../UploadCustomers";
 import SoundSettings from "../SoundSettings";
@@ -48,9 +57,16 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import HamiSettings from "../HamiSettings";
+import HamiModal from "./components/HamiModal";
+import {
+  createOrUpdateHamiCRMMemberships,
+  createOrUpdateHamiOrders,
+} from "../../../integrations/hami/actions";
+import moment from "moment-jalaali";
+import request from "../../../utils/request";
+import { USER_INFO_API } from "../../../utils/api";
 
 const App = function ({
   history,
@@ -66,15 +82,38 @@ const App = function ({
   businesses,
   _getBusiness,
   reload,
+  _toggleHamiModal,
+  showHamiModal,
+  _acceptOrder,
+  businessId,
+  user,
+  _setUser,
+  devices,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
   const [dialog, setDialog] = useState(false);
+  const orderInterval = useRef(null);
+  const customersInterval = useRef(null);
+  const productsInterval = useRef(null);
+  const device = devices && devices[0];
+  const getUserInfo = async () => {
+    const {
+      response: {
+        data,
+        meta: { status_code },
+      },
+    } = await request(USER_INFO_API);
+    if (status_code === 200) {
+      _setUser(data);
+    }
+  };
   useEffect(() => {
     ipcRenderer.send("disable-close");
     const token = localStorage.getItem("token");
     if (token) {
       Axios.defaults.headers.common.Authorization = `Token ${token}`;
+      getUserInfo();
       _getBusinesses();
     } else history.push("/login");
     document.addEventListener("keydown", function (zEvent) {
@@ -85,6 +124,9 @@ const App = function ({
       }
       if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "I") {
         getCurrentWebContents().openDevTools();
+      }
+      if (zEvent.ctrlKey && zEvent.shiftKey && zEvent.key === "~") {
+        _toggleHamiModal(true);
       }
     });
     ipcRenderer.on("closePrompt", () => {
@@ -99,11 +141,46 @@ const App = function ({
         _setSnackBarMessage,
         history,
         _getAdminOrders,
-        siteDomain
+        siteDomain,
+        _acceptOrder
       );
     }
   }, [siteDomain]);
-
+  useEffect(() => {
+    clearInterval(orderInterval.current);
+    clearInterval(customersInterval.current);
+    if (siteDomain && localStorage.getItem("integrated") === "hami") {
+      orderInterval.current = setInterval(() => {
+        _getAdminOrders({ status: 0 });
+      }, 120 * 1000);
+      customersInterval.current = setInterval(() => {
+        if (device && device.extra_data && device.extra_data.last_users_update)
+          createOrUpdateHamiCRMMemberships(
+            businessId,
+            moment(device.extra_data.last_users_update).format("jYYYY/jMM/jDD"),
+            moment().format("jYYYY/jMM/jDD"),
+            moment(device.extra_data.last_users_update).format("HH/mm/ss"),
+            moment().format("HH/mm/ss")
+          );
+        if (device && device.extra_data && device.extra_data.last_orders_update)
+          createOrUpdateHamiOrders(
+            businessId,
+            user.id,
+            moment(device.extra_data.last_orders_update).format(
+              "jYYYY/jMM/jDD"
+            ),
+            moment().format("jYYYY/jMM/jDD"),
+            moment(device.extra_data.last_orders_update).format("HH/mm/ss"),
+            moment().format("HH/mm/ss"),
+            device && device.extra_data
+          );
+      }, 120 * 60 * 1000);
+    }
+    return () => {
+      clearInterval(customersInterval.current);
+      clearInterval(orderInterval.current);
+    };
+  }, [device, siteDomain]);
   if ((!siteDomain || !businessTitle) && location.pathname !== "/login")
     return (
       <div
@@ -156,7 +233,6 @@ const App = function ({
             />
 
             <Route exact path="/settings/printer" component={PrinterSettings} />
-            <Route exact path="/settings/hami" component={HamiSettings} />
             <Route exact path="/settings/sound" component={SoundSettings} />
             <Route exact path="/categories/:id" component={Products} />
             <Route
@@ -179,6 +255,7 @@ const App = function ({
             <Redirect path="/settings" to="/settings/printer" />
             <Redirect path="/delivery" to="/delivery/assign" />
             <Redirect path="/reports" to="/reports/analytics" />
+            <Route exact path="/integrations/hami" component={HamiSettings} />
             <Redirect path="/" to="/orders" />
           </Switch>
         </Layout>
@@ -230,6 +307,10 @@ const App = function ({
           </Button>
         </DialogActions>
       </Dialog>
+      <HamiModal
+        _onClose={() => _toggleHamiModal(false)}
+        isOpen={showHamiModal}
+      />
     </>
   );
 };
@@ -237,9 +318,13 @@ const App = function ({
 const mapStateToProps = createStructuredSelector({
   siteDomain: makeSelectSubDomain(),
   businessTitle: makeSelectBusinessTitle(),
+  businessId: makeSelectBusinessId(),
   snackBarMessage: makeSelectSnackBarMessage(),
   progressLoading: makeSelectProgressLoading(),
   businesses: makeSelectBusinesses(),
+  showHamiModal: makeSelectHamiModal(),
+  user: makeSelectUser(),
+  devices: makeSelectPOSDevices(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -247,10 +332,13 @@ function mapDispatchToProps(dispatch) {
     _getBusiness: () => dispatch(getBusiness()),
     _setSiteDomain: (domain) => dispatch(setSiteDomain(domain)),
     _getBusinesses: () => dispatch(getBusinesses()),
-    _getAdminOrders: () => dispatch(getAdminOrders(1)),
+    _getAdminOrders: () => dispatch(getAdminOrders({ page: 1 })),
     _setSnackBarMessage: (message, type) =>
       dispatch(setSnackBarMessage(message, type)),
     reload: () => dispatch(reloadPage()),
+    _toggleHamiModal: (show) => dispatch(toggleHamiModal(show)),
+    _acceptOrder: (data) => dispatch(acceptOrder(data)),
+    _setUser: (data) => dispatch(setUser(data)),
   };
 }
 

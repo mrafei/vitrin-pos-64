@@ -22,6 +22,7 @@ import {
   UPLOAD_REQUEST_FINISHED,
   START_PROGRESS_LOADING,
   STOP_PROGRESS_LOADING,
+  TOGGLE_HAMI_MODAL,
 } from "./constants";
 
 // The initial state of the App
@@ -36,6 +37,7 @@ export const initialState = {
   uploadStarted: false,
   subdomain: "",
   multipleUploadedFiles: [],
+  hamiModal: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -94,6 +96,9 @@ const appReducer = (state = initialState, action) =>
         break;
       case SET_SITE_DOMAIN:
         draft.subdomain = action.data;
+        break;
+      case TOGGLE_HAMI_MODAL:
+        draft.hamiModal = action.show;
         break;
     }
   });
