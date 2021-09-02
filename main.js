@@ -16,16 +16,16 @@ app.disableHardwareAcceleration();
 app.commandLine.appendSwitch("disable-http-cache");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
 
-// require("update-electron-app")();
-//
-// if (require("electron-squirrel-startup"))
-//   setTimeout(() => {
-//     app.quit();
-//   }, 1000);
-//
-// if (handleSquirrelEvent()) {
-//   process.exit();
-// }
+require("update-electron-app")();
+
+if (require("electron-squirrel-startup"))
+  setTimeout(() => {
+    app.quit();
+  }, 1000);
+
+if (handleSquirrelEvent()) {
+  process.exit();
+}
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
