@@ -126,6 +126,8 @@ const makeSelectBusinessAddress = () =>
   );
 const makeSelectDeal = () =>
   createSelector(selectBusiness, (state) => state.deal);
+const makeSelectPOSDevices = () =>
+  createSelector(selectBusiness, (state) => state.devices);
 
 export {
   makeSelectProduct,
@@ -153,4 +155,5 @@ export {
   makeSelectPrinterOptions,
   makeSelectBusinessAddress,
   makeSelectDeal,
+  makeSelectPOSDevices,
 };

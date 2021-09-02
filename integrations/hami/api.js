@@ -42,9 +42,6 @@ export const getHamiDealItemApi = (prefix) =>
 // دریافت اطلاعات مراحل تاپینگ
 // http://193.151.128.95/HamiOrder/GetToppingLevel.aspx
 
-// دریافت اطلاعات تاپینگ های کالا
-// http://193.151.128.95/HamiOrder/GetToppingGoods.aspx
-
 // دریافت اطلاعات تخفیف های تعریف شده
 // http://193.151.128.95/HamiOrder/GetDiscount.aspx
 
@@ -69,3 +66,12 @@ export const submitHamiOrderApi = (prefix) =>
 
 // درج تیک انتقال اطلاعات کارت تخفیف
 // http://193.151.128.95/HamiOrder/SetTransferDiscountCard.aspx
+
+export const getHamiCustomersApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/GetApiCustomers.aspx`;
+
+export const getHamiOrdersApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/GetApiInvoices.aspx`;
+
+export const getHamiToppingsApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/GetToppingGoods.aspx`;

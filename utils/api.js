@@ -19,10 +19,13 @@ export const BUSINESSES_BY_OWNER_API = `${BASE_URL}businesses/by_owner/`;
 
 // Deals API
 export const DEALS_API = `${BASE_URL}deals/`;
+export const UPSERT_DEALS_API = `${BASE_URL}deals/bulk_upsert_by_pos_id/`;
 export const DEALS_IMAGES_API = `${BASE_URL}deals/images/`;
 export const DEALS_ITEM_API = (id) => `${BASE_URL}deals/${id}/`;
 export const DEALS_IMAGES_ITEM_API = (id) => `${BASE_URL}deals/images/${id}/`;
 export const CATEGORIES_API = `${BASE_URL}deal_categories/`;
+export const UPSERT_CATEGORIES_API = `${BASE_URL}deal_categories/bulk_upsert_by_pos_id/`;
+export const UPSERT_MODIFIERS_API = `${BASE_URL}modifier_sets/bulk_upsert_by_pos_id/`;
 export const CATEGORIES_ITEMS_API = (id) => `${BASE_URL}deal_categories/${id}/`;
 export const CATEGORIES_ITEMS_CHANGE_ORDER_API = (id) =>
   `${BASE_URL}deal_categories/${id}/change_order_by_business/`;
@@ -89,3 +92,10 @@ export const GROUP_PACKAGING_PRICE_ON_DEALS_API = (id) =>
   `${BASE_URL}deal_categories/${id}/group_packaging_price_on_deals/`;
 export const DEALS_IMAGES_ITEM_CHANGE_ORDER_API = (id) =>
   `${BASE_URL}deals/images/${id}/change_order_by_business/`;
+
+export const UPSERT_CRM_MEMBERSHIP_API = `${BASE_URL}crm_membership/bulk_upsert_by_pos_id/`;
+export const UPSERT_USER_ADDRESS_API = `${BASE_URL}user_address/bulk_upsert_by_pos_id/`;
+export const UPSERT_POS_ORDERS_API = `${BASE_URL}shopping_orders/pos_create/`;
+export const GET_BUSINESS_DEVICES_API = `${BASE_URL}pos_devices/by_business/`;
+export const UPDATE_DEVICE_API = (licence_code) =>
+  `${BASE_URL}pos_devices/${licence_code}/update_by_licence_key/`;

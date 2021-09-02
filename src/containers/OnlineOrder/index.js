@@ -21,7 +21,6 @@ import { makeSelectLoading } from "../App/selectors";
 import { makeSelectAdminOrder, makeSelectCustomerOrders } from "./selectors";
 import Icon from "../../components/Icon";
 import {
-  acceptOrder,
   cancelOrder,
   getAdminOrder,
   getCustomerOrders,
@@ -50,7 +49,12 @@ import { ipcRenderer, shell } from "electron";
 import { renderToString } from "react-dom/server";
 import ComponentToPrint from "../../components/ComponentToPrint";
 import CheckBox from "../../components/CheckBox";
-
+import { acceptOrder } from "../App/actions";
+import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Menu, MenuItem } from "@material-ui/core";
+import { submitHamiOrder } from "../../../integrations/hami/actions";
 export function OnlineOrder({
   adminOrder: order,
   loading,
@@ -106,6 +110,7 @@ export function OnlineOrder({
   const [deliverer, setDeliverer] = useState("");
   const [sendSms, setSendSms] = useState(true);
   const [modal, setModal] = useState(false);
+  const [anchor, setAnchor] = useState(null);
 
   const accept = () => {
     _acceptOrder({
@@ -140,6 +145,22 @@ export function OnlineOrder({
         accept={accept}
         print={printOrder}
       />
+      <Menu
+        id="simple-menu"
+        anchorEl={anchor}
+        keepMounted
+        open={Boolean(anchor)}
+        onClose={() => setAnchor(null)}
+      >
+        <MenuItem
+          onClick={() => {
+            submitHamiOrder(order);
+            setAnchor(null);
+          }}
+        >
+          ارسال به حامی
+        </MenuItem>
+      </Menu>
       <div className="d-flex flex-column h-100">
         <div
           className="d-flex flex-1 container px-0"
@@ -150,15 +171,18 @@ export function OnlineOrder({
             style={{ height: "calc(100% - 30px)" }}
           >
             <div className="text-center u-fontMedium u-text-dark-grey py-2 u-background-white mb-1">
-              <div className="px-3 u-text-darkest-grey u-fontWeightBold">
-                جزییات سفارش
-                <Icon
-                  className="c-modal-header-close float-right"
-                  icon={ICONS.CLOSE}
-                  size={25}
-                  onClick={history.goBack}
-                  color="#98a9b1"
-                />
+              <div className="d-flex align-items-cneter justify-content-between flex-1 px-3 u-text-darkest-grey u-fontWeightBold">
+                <IconButton onClick={history.goBack}>
+                  <CloseRoundedIcon />
+                </IconButton>
+                <div className="d-flex align-items-center"> جزییات سفارش</div>
+                {localStorage.getItem("integrated") === "hami" ? (
+                  <IconButton onClick={(e) => setAnchor(e.currentTarget)}>
+                    <MoreVertIcon />
+                  </IconButton>
+                ) : (
+                  <div style={{ width: 45 }} />
+                )}
               </div>
             </div>
 

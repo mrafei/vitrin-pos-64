@@ -17,11 +17,20 @@ import {
   uploadRequest,
   uploadRequestFinished,
 } from "./actions";
-import { SEND_EMAIL, UPLOAD_FILE } from "./constants";
+import { ACCEPT_ORDER, SEND_EMAIL, UPLOAD_FILE } from "./constants";
 import { getFileExtensionType, getFileExtention } from "../../../utils/helper";
 import { setSnackBarMessage } from "../../../stores/ui/actions";
 import request from "../../../utils/request";
-import { EMAIL_API, FILE_SERVER_URL_API } from "../../../utils/api";
+import {
+  EMAIL_API,
+  FILE_SERVER_URL_API,
+  ORDER_DELIVERER_API,
+  ORDER_DELIVERY_TIME_API,
+  ORDER_STATUS_PROGRESS_API,
+} from "../../../utils/api";
+import { submitHamiOrder } from "../../../integrations/hami/actions";
+import { submitAriaOrder } from "../../../integrations/aria/actions";
+import { setAdminOrder } from "../OnlineOrder/actions";
 
 function dataURLtoFile(dataurl, filename) {
   const arr = dataurl.split(",");
@@ -147,12 +156,79 @@ export function* uploadFiles(action) {
   }
   yield put(stopLoading());
 }
+export function* acceptOrder(action) {
+  try {
+    yield put(startLoading());
+    let meta = {};
+    if (!action.data.preventSms) {
+      const { response } = yield call(
+        request,
+        ORDER_DELIVERY_TIME_API(action.data.id, action.data.plugin),
+        {
+          delivery_time: action.data.deliveryTime,
+        },
+        "PATCH"
+      );
+      meta = response.meta || {};
+    }
+    if (
+      action.data.preventSms ||
+      (meta.status_code >= 200 && meta.status_code <= 300)
+    ) {
+      if (action.data.deliverer)
+        yield call(
+          request,
+          ORDER_DELIVERER_API(action.data.id, "shopping"),
+          {
+            deliverer_name: action.data.deliverer,
+            send_sms: action.data.sendSms,
+          },
+          "PATCH"
+        );
+
+      const {
+        response: { data },
+      } = yield call(
+        request,
+        ORDER_STATUS_PROGRESS_API(action.data.id, "shopping"),
+        action.data.preventSms ? { pos_device: 0 } : {},
+        "PATCH"
+      );
+      if (data) {
+        const integration = localStorage.getItem("integrated");
+        if (integration === "hami") {
+          submitHamiOrder(data);
+          return;
+        }
+        if (integration === "aria") {
+          submitAriaOrder(data);
+          return;
+        }
+        yield put(setSnackBarMessage("سفارش مورد نظر تایید شد.", "success"));
+        yield put(setAdminOrder(data));
+      } else if (!action.data.preventSms)
+        yield put(
+          setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail")
+        );
+    } else if (!action.data.preventSms)
+      yield put(
+        setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail")
+      );
+    yield put(stopLoading());
+  } catch (err) {
+    console.log(err);
+    yield put(setSnackBarMessage("در تایید سفارش خطایی رخ داده است!", "fail"));
+    yield put(stopLoading());
+  }
+}
+
 export default function* generalSaga() {
   yield all([
     ...userSaga,
     ...businessSaga,
     ...uiSaga,
     ...transactionSaga,
+    takeLatest(ACCEPT_ORDER, acceptOrder),
     takeLatest(SEND_EMAIL, sendEmail),
     takeLatest(UPLOAD_FILE, uploadFiles),
   ]);

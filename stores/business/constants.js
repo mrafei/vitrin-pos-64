@@ -19,6 +19,8 @@ export const SET_DEAL = "store/business/SET_DEAL";
 
 export const APPLY_CATEGORY = "store/business/APPLY_CATEGORY";
 export const UPLOAD_IMAGE_AND_UPDATE_PRODUCT = "store/business/UPLOAD_IMAGE_AND_UPDATE_PRODUCT";
+export const GET_POS_DEVICES = "store/business/GET_POS_DEVICES";
+export const SET_POS_DEVICES = "store/business/SET_POS_DEVICES";
 
 export const DELIVERIES_PAGE_SIZE = 20;
 export const inventoryOptions = [

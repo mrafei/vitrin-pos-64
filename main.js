@@ -7,39 +7,71 @@ Sentry.init({
   dsn: "https://f10f2a0b0cb94dc6bfb819be6171641a@sentry.hamravesh.com/91",
 });
 
-const { app, BrowserWindow, ipcMain, screen } = require("electron");
+const { app, BrowserWindow, ipcMain, screen, Tray, Menu } = require("electron");
 const path = require("path");
 const url = require("url");
+const axios = require("axios");
+
 app.disableHardwareAcceleration();
+app.commandLine.appendSwitch("disable-http-cache");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
 
-require("update-electron-app")();
-
-if (require("electron-squirrel-startup"))
-  setTimeout(() => {
-    app.quit();
-  }, 1000);
-
-if (handleSquirrelEvent()) {
-  process.exit();
-}
+// require("update-electron-app")();
+//
+// if (require("electron-squirrel-startup"))
+//   setTimeout(() => {
+//     app.quit();
+//   }, 1000);
+//
+// if (handleSquirrelEvent()) {
+//   process.exit();
+// }
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let workerWindow;
 let notifWindow;
+let tray;
+let isQuiting;
 
-app.on("second-instance", (event, commandLine, workingDirectory) => {
-  // Someone tried to run a second instance, we should focus our window.
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) mainWindow.restore();
-    mainWindow.focus();
-  }
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", (event, commandLine, workingDirectory) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+      mainWindow.show();
+    }
+  });
+
+  app.whenReady().then(() => {
+    tray = new Tray(path.join(__dirname, "assets", "icon.ico"));
+    tray.setIgnoreDoubleClickEvents(true);
+    tray.on("click", function (e) {
+      mainWindow.show();
+    });
+    tray.setContextMenu(
+      Menu.buildFromTemplate([
+        {
+          label: "خروج",
+          click: function () {
+            isQuiting = true;
+            app.quit();
+          },
+        },
+      ])
+    );
+    createWindow();
+  });
+}
+
+app.on("before-quit", function () {
+  isQuiting = true;
 });
 
-app.whenReady().then(() => {
-  createWindow();
-});
 // Keep a reference for dev mode
 let dev = false;
 
@@ -75,6 +107,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
   if (!dev) {
@@ -119,7 +152,17 @@ function createWindow() {
   });
   setupPushReceiver(mainWindow.webContents);
   // Emitted when the window is closed.
-  mainWindow.on("closed", function () {
+  mainWindow.on("close", function (event) {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    if (!isQuiting) {
+      event.preventDefault();
+      mainWindow.hide();
+      event.returnValue = false;
+    }
+  });
+  mainWindow.on("closed", function (event) {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
@@ -134,6 +177,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
   workerWindow.loadURL("file://" + __dirname + "/assets/printerWindow.html");
@@ -151,6 +195,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
   notifWindow.loadURL("file://" + __dirname + "/assets/notification.html");
@@ -200,6 +245,14 @@ ipcMain.on("redirectOrder", (event, notification) => {
     mainWindow.webContents.send("redirectOrder", orderId);
   }
 });
+ipcMain.handle("request", async (_, axios_request, headers) => {
+  axios.defaults.headers = headers;
+  const result = await axios(axios_request).catch((error) => {
+    return { data: error };
+  });
+  return { data: result.data, status: result.status };
+});
+
 function handleSquirrelEvent() {
   if (process.argv.length === 1) {
     return false;

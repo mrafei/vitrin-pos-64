@@ -16,6 +16,8 @@ import {
   SET_DEAL,
   APPLY_CATEGORY,
   UPLOAD_IMAGE_AND_UPDATE_PRODUCT,
+  SET_POS_DEVICES,
+  GET_POS_DEVICES,
 } from "./constants";
 export function uploadImageAndUpdateProduct(productId, product) {
   return {
@@ -145,5 +147,16 @@ export function applyCategory(category, actionType) {
   return {
     type: APPLY_CATEGORY,
     data: { category, actionType },
+  };
+}
+export function getPosDevices() {
+  return {
+    type: GET_POS_DEVICES,
+  };
+}
+export function setPosDevices(data) {
+  return {
+    type: SET_POS_DEVICES,
+    data,
   };
 }

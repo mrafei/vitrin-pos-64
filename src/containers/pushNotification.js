@@ -7,7 +7,8 @@ export default function initPushNotification(
   showSnackBar,
   history,
   updateOrders,
-  siteDomain
+  siteDomain,
+  _acceptOrder
 ) {
   const { ipcRenderer } = require("electron");
   const { getCurrentWindow } = require("@electron/remote");
@@ -50,14 +51,54 @@ export default function initPushNotification(
     if (serverNotificationPayload.notification.body) {
       // payload has a body, so show it to the user
       console.log("display notification", serverNotificationPayload);
-      updateOrders();
-      ipcRenderer.send("orderReceived", serverNotificationPayload.notification);
-      const audio = new Audio(pristine);
-      const volume = parseFloat(localStorage.getItem("volume")) || 20;
-      amplifyMedia(audio, volume);
-      if (localStorage.getItem("volume") !== "0") audio.play();
-
-      audio.play();
+      if (localStorage.getItem("integrated") === "hami") {
+        updateOrders();
+        console.log(
+          serverNotificationPayload.notification.click_action,
+          serverNotificationPayload.notification.click_action.includes(
+            siteDomain
+          ),
+          localStorage.getItem("hamiAllowVitrinNotification")
+        );
+        if (
+          serverNotificationPayload.notification.click_action &&
+          serverNotificationPayload.notification.click_action.includes(
+            siteDomain
+          )
+        ) {
+          if (localStorage.getItem("hamiAllowVitrinNotification")) {
+            ipcRenderer.send(
+              "orderReceived",
+              serverNotificationPayload.notification
+            );
+            const audio = new Audio(pristine);
+            const volume = parseFloat(localStorage.getItem("volume")) || 20;
+            amplifyMedia(audio, volume);
+            if (localStorage.getItem("volume") !== "0") audio.play();
+            audio.play();
+          }
+          let split = serverNotificationPayload.notification.click_action.split(
+            "/"
+          );
+          const orderId = split[split.length - 1];
+          _acceptOrder({
+            id: orderId,
+            plugin: "shopping",
+            preventSms: true,
+          });
+        }
+      } else {
+        updateOrders();
+        ipcRenderer.send(
+          "orderReceived",
+          serverNotificationPayload.notification
+        );
+        const audio = new Audio(pristine);
+        const volume = parseFloat(localStorage.getItem("volume")) || 20;
+        amplifyMedia(audio, volume);
+        if (localStorage.getItem("volume") !== "0") audio.play();
+        audio.play();
+      }
     } else {
       // payload has no body, so consider it silent (and just consider the data portion)
       console.log(
