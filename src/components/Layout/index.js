@@ -115,7 +115,7 @@ const routes = [
     title: "همسوسازی‌ها",
     path: "/integrations",
     icon: ICONS.INTEGRATION,
-    show: localStorage.getItem("integrated") || false,
+    show: Boolean(localStorage.getItem("integrated")),
   },
 ];
 const subRoutes = [
@@ -178,7 +178,7 @@ const subRoutes = [
       title: "حامی",
       path: "/integrations/hami",
       icon: ICONS.ITEMS,
-      show: localStorage.getItem("integrated") === "hami" || false,
+      show: localStorage.getItem("integrated") === "hami",
     },
   ],
 ];

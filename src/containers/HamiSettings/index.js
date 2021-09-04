@@ -11,8 +11,6 @@ import {
 import { setSnackBarMessage } from "../../../stores/ui/actions";
 import { createStructuredSelector } from "reselect";
 import { makeSelectBusinessId } from "../../../stores/business/selector";
-import CalenderModal from "../OrdersReport/components/CalenderModal";
-import moment from "moment-jalaali";
 import CheckBox from "../../components/CheckBox";
 
 function HamiSettings({ _setSnackBarMessage, businessId }) {
@@ -21,6 +19,9 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
   );
   const [inventory, setInventory] = useState(
     localStorage.getItem("hamiKeepTracking") === "true"
+  );
+  const [convert, setConvert] = useState(
+    localStorage.getItem("hamiCurrencyConvert") === "true"
   );
 
   return (
@@ -101,6 +102,20 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
                   else localStorage.removeItem("hamiAllowVitrinNotification");
                 }}
                 text="نوتیفیکیشن ویترین زمان ثبت سفارش نمایش داده شود."
+              />
+            </div>
+            <div className="col-6 mt-4">
+              <CheckBox
+                className="u-fontMedium"
+                label="defaultCheck3"
+                checked={convert}
+                onChange={(checked) => {
+                  setConvert(checked);
+                  if (checked)
+                    localStorage.setItem("hamiCurrencyConvert", "true");
+                  else localStorage.removeItem("hamiCurrencyConvert");
+                }}
+                text="واحد پول در حامی ریال است."
               />
             </div>
           </div>
