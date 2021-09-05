@@ -323,9 +323,9 @@ export const createOrUpdateHamiOrders = async (
         final_unit_cost:
           orderItem.GoodsPrice *
           (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-        archived: localStorage.getItem("hamiKeepTracking") !== "true",
         packaging_price: 0,
       })),
+      archived: localStorage.getItem("hamiKeepTracking") !== "true",
       order_number: order.SaleInvoiceNumber,
       order_status: 1,
       user_address: {
