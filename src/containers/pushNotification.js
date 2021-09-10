@@ -53,13 +53,6 @@ export default function initPushNotification(
       console.log("display notification", serverNotificationPayload);
       if (localStorage.getItem("integrated") === "hami") {
         updateOrders();
-        console.log(
-          serverNotificationPayload.notification.click_action,
-          serverNotificationPayload.notification.click_action.includes(
-            siteDomain
-          ),
-          localStorage.getItem("hamiAllowVitrinNotification")
-        );
         if (
           serverNotificationPayload.notification.click_action &&
           serverNotificationPayload.notification.click_action.includes(

@@ -239,7 +239,7 @@ export const createOrUpdateHamiCRMMemberships = async (
         pos_id: user.PartyId,
         name: user.FirstName + " " + user.LastName,
         phone: persianToEnglishNumber(memberItem.PhoneNumber),
-        business: businessId,
+        business_id: businessId,
         extra_phones: user.MApiCustomerPhoness.map((item) =>
           persianToEnglishNumber(item.PhoneNumber)
         ),
