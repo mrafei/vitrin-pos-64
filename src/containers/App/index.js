@@ -24,6 +24,7 @@ import {
 import Layout from "../../components/Layout";
 import OnlineOrder from "../OnlineOrder";
 import {
+  makeSelectFirebaseToken,
   makeSelectHamiModal,
   makeSelectProgressLoading,
   makeSelectSubDomain,
@@ -49,7 +50,12 @@ import EditProduct from "../EditProduct";
 import EditVariant from "../EditVariant";
 import Analytics from "../Analytics";
 import OrdersReport from "../OrdersReport";
-import { acceptOrder, setSiteDomain, toggleHamiModal } from "./actions";
+import {
+  acceptOrder,
+  setFirebaseToken,
+  setSiteDomain,
+  toggleHamiModal,
+} from "./actions";
 import { getBusiness } from "../../../stores/business/actions";
 import UploadCustomers from "../UploadCustomers";
 import SoundSettings from "../SoundSettings";
@@ -66,7 +72,9 @@ import {
 } from "../../../integrations/hami/actions";
 import moment from "moment-jalaali";
 import request from "../../../utils/request";
-import { USER_INFO_API } from "../../../utils/api";
+import { PUSH_NOTIFICATION_API, USER_INFO_API } from "../../../utils/api";
+import pristine from "../../../assets/audio/pristine.mp3";
+import { amplifyMedia } from "../../../utils/helper";
 
 const App = function ({
   history,
@@ -89,6 +97,8 @@ const App = function ({
   user,
   _setUser,
   devices,
+  _setFirebaseToken,
+  firebaseToken,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
@@ -132,19 +142,51 @@ const App = function ({
     ipcRenderer.on("closePrompt", () => {
       setDialog(true);
     });
+    initPushNotification(
+      _setSnackBarMessage,
+      history,
+      receiveOrder,
+      _setFirebaseToken
+    );
   }, []);
-
-  useEffect(() => {
-    if (siteDomain) {
-      _getBusiness();
-      initPushNotification(
-        _setSnackBarMessage,
-        history,
-        _getAdminOrders,
-        siteDomain,
-        _acceptOrder
-      );
+  const receiveOrder = (payload) => {
+    _getAdminOrders();
+    if (localStorage.getItem("integrated") === "hami") {
+      let split = payload.click_action.split("/");
+      const orderId = split[split.length - 1];
+      _acceptOrder({
+        id: orderId,
+        plugin: "shopping",
+        preventSms: true,
+      });
     }
+    if (
+      localStorage.getItem("integrated") !== "hami" ||
+      localStorage.getItem("hamiAllowVitrinNotification")
+    ) {
+      ipcRenderer.send("orderReceived", payload);
+      const audio = new Audio(pristine);
+      const volume = parseFloat(localStorage.getItem("volume")) || 20;
+      amplifyMedia(audio, volume);
+      if (localStorage.getItem("volume") !== "0") audio.play();
+      audio.play();
+    }
+  };
+  useEffect(() => {
+    if (firebaseToken)
+      businesses?.map((business) => {
+        request(
+          PUSH_NOTIFICATION_API,
+          {
+            label: `Admin Panel ${business.site_domain}`,
+            token: firebaseToken,
+          },
+          "POST"
+        );
+      });
+  }, [firebaseToken, businesses]);
+  useEffect(() => {
+    if (siteDomain) _getBusiness();
   }, [siteDomain]);
   useEffect(() => {
     clearInterval(orderInterval.current);
@@ -157,6 +199,7 @@ const App = function ({
         if (device && device.extra_data && device.extra_data.last_users_update)
           createOrUpdateHamiCRMMemberships(
             businessId,
+            undefined,
             moment(device.extra_data.last_users_update).format("jYYYY/jMM/jDD"),
             moment().format("jYYYY/jMM/jDD"),
             moment(device.extra_data.last_users_update).format("HH/mm/ss"),
@@ -165,6 +208,7 @@ const App = function ({
         if (device && device.extra_data && device.extra_data.last_orders_update)
           createOrUpdateHamiOrders(
             businessId,
+            undefined,
             user.id,
             moment(device.extra_data.last_orders_update).format(
               "jYYYY/jMM/jDD"
@@ -325,6 +369,7 @@ const mapStateToProps = createStructuredSelector({
   showHamiModal: makeSelectHamiModal(),
   user: makeSelectUser(),
   devices: makeSelectPOSDevices(),
+  firebaseToken: makeSelectFirebaseToken(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -339,6 +384,7 @@ function mapDispatchToProps(dispatch) {
     _toggleHamiModal: (show) => dispatch(toggleHamiModal(show)),
     _acceptOrder: (data) => dispatch(acceptOrder(data)),
     _setUser: (data) => dispatch(setUser(data)),
+    _setFirebaseToken: (data) => dispatch(setFirebaseToken(data)),
   };
 }
 

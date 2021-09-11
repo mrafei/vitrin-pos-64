@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all, take } from "redux-saga/effects";
+import { call, put, takeLatest, all, take, select } from "redux-saga/effects";
 import { ImageCompressor } from "image-compressor";
 
 import userSaga from "../../../stores/user/saga";
@@ -31,6 +31,7 @@ import {
 import { submitHamiOrder } from "../../../integrations/hami/actions";
 import { submitAriaOrder } from "../../../integrations/aria/actions";
 import { setAdminOrder } from "../OnlineOrder/actions";
+import { makeSelectBusinesses } from "../../../stores/user/selector";
 
 function dataURLtoFile(dataurl, filename) {
   const arr = dataurl.split(",");
@@ -195,9 +196,16 @@ export function* acceptOrder(action) {
         "PATCH"
       );
       if (data) {
+        const businesses = yield select(makeSelectBusinesses());
+        const business = businesses.find(
+          (business) => business.site_domain === data.business_site_domain
+        );
         const integration = localStorage.getItem("integrated");
         if (integration === "hami") {
-          submitHamiOrder(data);
+          submitHamiOrder({
+            ...data,
+            business_pos_id: business.extra_data?.pos_id,
+          });
           return;
         }
         if (integration === "aria") {

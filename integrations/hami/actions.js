@@ -39,16 +39,16 @@ export const submitHamiOrder = (order) => {
     {
       Invoice: {
         OrderId: parseInt(order.order_id),
-        BranchId: 1,
+        BranchId: order.business_pos_id ?? 1,
         OrderDate: orderDate,
         OrderTime: orderTime,
         CustomerCode: `${order.user_id}`,
-        FirstName: order.user_address.name,
+        FirstName: order.user_address?.name || "",
         LastName: "",
-        Phone: order.user_address.phone,
-        CellPhone: order.user_address.phone,
+        Phone: order.user_address?.phone || "",
+        CellPhone: order.user_address?.phone || "",
         LocationId: 0,
-        DeliveryAddress: order.user_address.address,
+        DeliveryAddress: order.user_address?.address || "",
         Comments: order.description,
         OrderType: 1,
         Price:
@@ -76,8 +76,8 @@ export const submitHamiOrder = (order) => {
         CommissionPrice: 0,
         PaymentTypeId: parseInt(order.payment_status) === 1 ? 1 : 3,
         DiscountCode: "",
-        Latitude: `${order.user_address.latitude}`,
-        Longitude: `${order.user_address.longitude}`,
+        Latitude: `${order.user_address?.latitude || ""}`,
+        Longitude: `${order.user_address?.longitude || ""}`,
         Items: order.items.map((item) => ({
           OrderItemId: parseInt(`${order.order_id}000${item.deal.pos_id}`),
           OrderId: parseInt(order.order_id),
@@ -110,27 +110,33 @@ export const submitHamiOrder = (order) => {
     "POST"
   );
 };
-export const getHamiDeals = async () => {
+export const getHamiDeals = async (BranchId) => {
   return await request(getHamiDealItemApi(localStorage.getItem("hamiIp")), {
     securityKey: localStorage.getItem("hamiSecurityKey"),
+    BranchId,
   });
 };
-export const getHamiDealCategories = async () => {
+export const getHamiDealCategories = async (BranchId) => {
   return await request(
     getHamiDealCategoriesApi(localStorage.getItem("hamiIp")),
     {
       securityKey: localStorage.getItem("hamiSecurityKey"),
+      BranchId,
     }
   );
 };
-export const getHamiToppings = async () => {
+export const getHamiToppings = async (BranchId) => {
   return await request(getHamiToppingsApi(localStorage.getItem("hamiIp")), {
     securityKey: localStorage.getItem("hamiSecurityKey"),
+    BranchId,
   });
 };
 
-export const createOrUpdateHamiModifiers = async (businessId) => {
-  const result = await getHamiToppings();
+export const createOrUpdateHamiModifiers = async (
+  businessId,
+  branchId
+) => {
+  const result = await getHamiToppings(branchId);
   if (!result || !result.response) return null;
 
   return await request(
@@ -144,8 +150,11 @@ export const createOrUpdateHamiModifiers = async (businessId) => {
     "POST"
   );
 };
-export const createOrUpdateHamiDealCategories = async (businessId) => {
-  const result = await getHamiDealCategories();
+export const createOrUpdateHamiDealCategories = async (
+  businessId,
+  branchId
+) => {
+  const result = await getHamiDealCategories(branchId);
   if (!result || !result.response) return null;
 
   return await request(
@@ -159,8 +168,12 @@ export const createOrUpdateHamiDealCategories = async (businessId) => {
     "POST"
   );
 };
-export const createOrUpdateHamiDeals = async (categories, businessId) => {
-  const result = await getHamiDeals();
+export const createOrUpdateHamiDeals = async (
+  categories,
+  businessId,
+  branchId
+) => {
+  const result = await getHamiDeals(branchId);
   if (!result || !result.response) return null;
 
   return await request(
@@ -196,13 +209,20 @@ export const createOrUpdateHamiDeals = async (categories, businessId) => {
     "POST"
   );
 };
-export const createOrUpdateDealsAndCategories = async (businessId) => {
-  const categoriesResult = await createOrUpdateHamiDealCategories(businessId);
+export const createOrUpdateDealsAndCategories = async (
+  businessId,
+  branchId
+) => {
+  const categoriesResult = await createOrUpdateHamiDealCategories(
+    businessId,
+    branchId
+  );
   if (!categoriesResult.response || !categoriesResult.response.data)
     return null;
   const dealsResult = await createOrUpdateHamiDeals(
     categoriesResult.response.data,
-    businessId
+    businessId,
+    branchId
   );
   // const modifiersResult = await createOrUpdateHamiModifiers(
   //   categoriesResult.data,
@@ -213,6 +233,7 @@ export const createOrUpdateDealsAndCategories = async (businessId) => {
 
 export const createOrUpdateHamiCRMMemberships = async (
   businessId,
+  BranchId,
   fromTime,
   toTime,
   CreationTimeStart = "00:00:00",
@@ -228,6 +249,7 @@ export const createOrUpdateHamiCRMMemberships = async (
       CreationDateEnd: toTime,
       CreationTimeStart,
       CreationTimeEnd,
+      BranchId,
     }
   );
   if (!result || !result.response) return null;
@@ -282,6 +304,7 @@ export const createOrUpdateHamiCRMMemberships = async (
 
 export const createOrUpdateHamiOrders = async (
   businessId,
+  BranchId,
   userId,
   fromTime,
   toTime,
@@ -296,6 +319,7 @@ export const createOrUpdateHamiOrders = async (
       InvoiceDateEnd: toTime,
       InvoiceTimeStart,
       InvoiceTimeEnd,
+      BranchId,
     }
   );
   if (!result || !result.response) return null;

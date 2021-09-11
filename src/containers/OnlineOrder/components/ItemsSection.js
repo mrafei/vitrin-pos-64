@@ -11,7 +11,7 @@ function ItemsSection({ order }) {
       <div className="flex-1 u-fontWeightBold mb-2 u-text-black">
         آیتم‌های سفارش
       </div>
-      {order.items.map((item) => (
+      {order.items.map((item, index) => (
         <div
           className="d-flex flex-row justify-content-between mt-2 px-3"
           style={{
@@ -20,6 +20,7 @@ function ItemsSection({ order }) {
                 ? "start"
                 : "center",
           }}
+          key={`item-${index}`}
         >
           <div className="wrapper--img-order">
             <img
@@ -47,8 +48,11 @@ function ItemsSection({ order }) {
                 className="d-flex flex-column justify-content-center align-items-center"
                 style={{ fontSize: 12 }}
               >
-                {item.deal.modifiers.map((_item) => (
-                  <li className="d-flex justify-content-between align-items-center w-100">
+                {item.deal.modifiers.map((_item, index) => (
+                  <li
+                    key={`modifier-${index}`}
+                    className="d-flex justify-content-between align-items-center w-100"
+                  >
                     <div className="u-fontVerySmall u-text-darkest-grey ">
                       - {_item.title}
                     </div>

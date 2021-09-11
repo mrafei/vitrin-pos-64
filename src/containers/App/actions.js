@@ -37,7 +37,7 @@ import {
   STOP_PROGRESS_LOADING,
   SET_PRINTER_OPTIONS,
   TOGGLE_HAMI_MODAL,
-  ACCEPT_ORDER,
+  ACCEPT_ORDER, SET_FIREBASE_TOKEN,
 } from "./constants";
 
 export function init() {
@@ -168,6 +168,13 @@ export const toggleHamiModal = (show) => ({
 export function acceptOrder(data) {
   return {
     type: ACCEPT_ORDER,
+    data,
+  };
+}
+
+export function setFirebaseToken(data) {
+  return {
+    type: SET_FIREBASE_TOKEN,
     data,
   };
 }

@@ -1,14 +1,8 @@
-import { PUSH_NOTIFICATION_API } from "../../utils/api";
-import request from "../../utils/request";
-import pristine from "../../assets/audio/pristine.mp3";
-import { amplifyMedia } from "../../utils/helper";
-
 export default function initPushNotification(
   showSnackBar,
   history,
-  updateOrders,
-  siteDomain,
-  _acceptOrder
+  receiveOrder,
+  setToken
 ) {
   const { ipcRenderer } = require("electron");
   const { getCurrentWindow } = require("@electron/remote");
@@ -22,11 +16,7 @@ export default function initPushNotification(
 
   // Listen for service successfully started
   ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
-    request(
-      PUSH_NOTIFICATION_API,
-      { label: `Admin Panel ${siteDomain}`, token },
-      "POST"
-    );
+    setToken(token);
     console.log("service successfully started", token);
   });
 
@@ -37,11 +27,7 @@ export default function initPushNotification(
 
   // Send FCM token to backend
   ipcRenderer.on(TOKEN_UPDATED, (_, token) => {
-    request(
-      PUSH_NOTIFICATION_API,
-      { label: `Admin Panel ${siteDomain}`, token },
-      "POST"
-    );
+    setToken(token);
     console.log("token updated", token);
   });
 
@@ -51,47 +37,7 @@ export default function initPushNotification(
     if (serverNotificationPayload.notification.body) {
       // payload has a body, so show it to the user
       console.log("display notification", serverNotificationPayload);
-      if (localStorage.getItem("integrated") === "hami") {
-        updateOrders();
-        if (
-          serverNotificationPayload.notification.click_action &&
-          serverNotificationPayload.notification.click_action.includes(
-            siteDomain
-          )
-        ) {
-          if (localStorage.getItem("hamiAllowVitrinNotification")) {
-            ipcRenderer.send(
-              "orderReceived",
-              serverNotificationPayload.notification
-            );
-            const audio = new Audio(pristine);
-            const volume = parseFloat(localStorage.getItem("volume")) || 20;
-            amplifyMedia(audio, volume);
-            if (localStorage.getItem("volume") !== "0") audio.play();
-            audio.play();
-          }
-          let split = serverNotificationPayload.notification.click_action.split(
-            "/"
-          );
-          const orderId = split[split.length - 1];
-          _acceptOrder({
-            id: orderId,
-            plugin: "shopping",
-            preventSms: true,
-          });
-        }
-      } else {
-        updateOrders();
-        ipcRenderer.send(
-          "orderReceived",
-          serverNotificationPayload.notification
-        );
-        const audio = new Audio(pristine);
-        const volume = parseFloat(localStorage.getItem("volume")) || 20;
-        amplifyMedia(audio, volume);
-        if (localStorage.getItem("volume") !== "0") audio.play();
-        audio.play();
-      }
+      receiveOrder(serverNotificationPayload.notification);
     } else {
       // payload has no body, so consider it silent (and just consider the data portion)
       console.log(

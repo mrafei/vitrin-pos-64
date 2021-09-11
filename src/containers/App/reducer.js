@@ -22,7 +22,7 @@ import {
   UPLOAD_REQUEST_FINISHED,
   START_PROGRESS_LOADING,
   STOP_PROGRESS_LOADING,
-  TOGGLE_HAMI_MODAL,
+  TOGGLE_HAMI_MODAL, SET_FIREBASE_TOKEN,
 } from "./constants";
 
 // The initial state of the App
@@ -38,6 +38,7 @@ export const initialState = {
   subdomain: "",
   multipleUploadedFiles: [],
   hamiModal: false,
+  firebaseToken: ""
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -96,6 +97,9 @@ const appReducer = (state = initialState, action) =>
         break;
       case SET_SITE_DOMAIN:
         draft.subdomain = action.data;
+        break;
+      case SET_FIREBASE_TOKEN:
+        draft.firebaseToken = action.data;
         break;
       case TOGGLE_HAMI_MODAL:
         draft.hamiModal = action.show;
