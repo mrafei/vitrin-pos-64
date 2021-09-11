@@ -98,4 +98,4 @@ export const UPSERT_USER_ADDRESS_API = `${BASE_URL}user_address/bulk_upsert_by_p
 export const UPSERT_POS_ORDERS_API = `${BASE_URL}shopping_orders/pos_create/`;
 export const GET_BUSINESS_DEVICES_API = `${BASE_URL}pos_devices/by_business/`;
 export const UPDATE_DEVICE_API = (licence_code) =>
-  `${BASE_URL}pos_devices/${licence_code}/update_by_licence_key/`;
+  `${BASE_URL}pos_devices/${licence_code.toLowerCase()}/update_by_licence_key/`;
