@@ -10,10 +10,19 @@ import {
 } from "../../../integrations/hami/actions";
 import { setSnackBarMessage } from "../../../stores/ui/actions";
 import { createStructuredSelector } from "reselect";
-import { makeSelectBusinessId } from "../../../stores/business/selector";
+import {
+  makeSelectBusinessId,
+  makeSelectBusinessSiteDomain,
+} from "../../../stores/business/selector";
 import CheckBox from "../../components/CheckBox";
+import { makeSelectBusinesses } from "../../../stores/user/selector";
 
-function HamiSettings({ _setSnackBarMessage, businessId }) {
+function HamiSettings({
+  _setSnackBarMessage,
+  businessId,
+  siteDomain,
+  businesses,
+}) {
   const [notifChecked, setNotifChecked] = useState(
     localStorage.getItem("hamiAllowVitrinNotification") === "true"
   );
@@ -23,7 +32,9 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
   const [convert, setConvert] = useState(
     localStorage.getItem("hamiCurrencyConvert") === "true"
   );
-
+  const branchId = businesses.find(
+    (business) => business.site_domain === siteDomain
+  )?.extra_data?.pos_id;
   return (
     <>
       <div className="u-border-radius-8 container px-0 container-shadow mt-5">
@@ -46,7 +57,7 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
               />
               <Button
                 onClick={async () => {
-                  const result = await getHamiDealCategories();
+                  const result = await getHamiDealCategories(branchId);
                   if (result.response && typeof result.response !== "string")
                     _setSnackBarMessage(
                       "برقراری ارتباط با سرور حامی با موفقیت انجام شد.",
@@ -132,7 +143,10 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
           <Button
             className="mb-2"
             onClick={async () => {
-              const result = await createOrUpdateDealsAndCategories(businessId);
+              const result = await createOrUpdateDealsAndCategories(
+                businessId,
+                branchId
+              );
               if (result)
                 _setSnackBarMessage(
                   "به‌روزرسانی با موفقیت انجام شد.",
@@ -152,6 +166,8 @@ function HamiSettings({ _setSnackBarMessage, businessId }) {
 }
 const mapStateToProps = createStructuredSelector({
   businessId: makeSelectBusinessId(),
+  businesses: makeSelectBusinesses(),
+  siteDomain: makeSelectBusinessSiteDomain(),
 });
 
 function mapDispatchToProps(dispatch) {

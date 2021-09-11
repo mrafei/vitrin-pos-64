@@ -10,6 +10,7 @@ import {
 import { createStructuredSelector } from "reselect";
 import {
   makeSelectBusinessId,
+  makeSelectBusinessSiteDomain,
   makeSelectPOSDevices,
 } from "../../../../stores/business/selector";
 import { setSnackBarMessage } from "../../../../stores/ui/actions";
@@ -17,7 +18,10 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import moment from "moment-jalaali";
-import { makeSelectUser } from "../../../../stores/user/selector";
+import {
+  makeSelectBusinesses,
+  makeSelectUser,
+} from "../../../../stores/user/selector";
 import request from "../../../../utils/request";
 import { UPDATE_DEVICE_API } from "../../../../utils/api";
 function HamiModal({
@@ -27,9 +31,13 @@ function HamiModal({
   businessId,
   user,
   devices,
+  businesses,
+  siteDomain,
 }) {
   const device = devices && devices[0];
-
+  const branchId = businesses.find(
+    (business) => business.site_domain === siteDomain
+  )?.extra_data?.pos_id;
   return (
     <>
       <Modal isOpen={isOpen} onClose={_onClose}>
@@ -71,6 +79,7 @@ function HamiModal({
                       result &&
                       (await createOrUpdateHamiCRMMemberships(
                         businessId,
+                        branchId,
                         m.startOf("month").format("jYYYY/jMM/jDD"),
                         m.endOf("month").format("jYYYY/jMM/jDD")
                       ));
@@ -134,6 +143,7 @@ function HamiModal({
                       result &&
                       (await createOrUpdateHamiOrders(
                         businessId,
+                        branchId,
                         user.id,
                         m.startOf("month").format("jYYYY/jMM/jDD"),
                         m.endOf("month").format("jYYYY/jMM/jDD")
@@ -179,6 +189,8 @@ const mapStateToProps = createStructuredSelector({
   businessId: makeSelectBusinessId(),
   user: makeSelectUser(),
   devices: makeSelectPOSDevices(),
+  businesses: makeSelectBusinesses(),
+  siteDomain: makeSelectBusinessSiteDomain(),
 });
 
 function mapDispatchToProps(dispatch) {

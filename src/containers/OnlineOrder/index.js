@@ -55,6 +55,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Menu, MenuItem } from "@material-ui/core";
 import { submitHamiOrder } from "../../../integrations/hami/actions";
+import { makeSelectBusinesses } from "../../../stores/user/selector";
 export function OnlineOrder({
   adminOrder: order,
   loading,
@@ -70,6 +71,7 @@ export function OnlineOrder({
   _requestMiare,
   _getCustomerOrders,
   customerOrders,
+  businesses,
 }) {
   useInjectReducer({ key: "adminOrder", reducer });
   useInjectSaga({ key: "adminOrder", saga });
@@ -154,7 +156,13 @@ export function OnlineOrder({
       >
         <MenuItem
           onClick={() => {
-            submitHamiOrder(order);
+            const _business = businesses.find(
+              (business) => business.site_domain === order.business_site_domain
+            );
+            submitHamiOrder({
+              ...order,
+              business_pos_id: _business.extra_data?.pos_id,
+            });
             setAnchor(null);
           }}
         >
@@ -538,6 +546,7 @@ const mapStateToProps = createStructuredSelector({
   pluginData: makeSelectPlugin(),
   printOptions: makeSelectPrinterOptions(),
   customerOrders: makeSelectCustomerOrders(),
+  businesses: makeSelectBusinesses(),
 });
 
 function mapDispatchToProps(dispatch) {

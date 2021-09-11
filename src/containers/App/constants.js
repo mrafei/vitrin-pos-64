@@ -31,3 +31,4 @@ export const UPLOAD_FAILURE = "vitrin/App/UPLOAD_FAILURE";
 export const SET_PRINTER_OPTIONS = 'app/AdminPanelApp/SET_PRINTER_OPTIONS';
 export const TOGGLE_HAMI_MODAL = 'app/AdminPanelApp/TOGGLE_HAMI_MODAL';
 export const ACCEPT_ORDER = 'app/AdminPanelApp/ACCEPT_ORDER';
+export const SET_FIREBASE_TOKEN = 'app/AdminPanelApp/SET_FIREBASE_TOKEN';
