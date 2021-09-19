@@ -132,16 +132,13 @@ export const getHamiToppings = async (BranchId) => {
   });
 };
 
-export const createOrUpdateHamiModifiers = async (
-  businessId,
-  branchId
-) => {
+export const createOrUpdateHamiModifiers = async (businessId, branchId) => {
   const result = await getHamiToppings(branchId);
   if (!result || !result.response) return null;
 
   return await request(
     UPSERT_MODIFIERS_API,
-    result.response["ToppingGoods"].map((modifierSet) => ({
+    result?.response["ToppingGoods"].map((modifierSet) => ({
       pos_id: modifierSet.GroupId,
       // extra_data: { pos_code: category.GroupCode },
       name: category.GroupName,
@@ -159,7 +156,7 @@ export const createOrUpdateHamiDealCategories = async (
 
   return await request(
     UPSERT_CATEGORIES_API,
-    result.response["GoodsGroup"].map((category) => ({
+    result?.response["GoodsGroup"].map((category) => ({
       pos_id: category.GroupId,
       // extra_data: { pos_code: category.GroupCode },
       name: category.GroupName,
@@ -178,7 +175,7 @@ export const createOrUpdateHamiDeals = async (
 
   return await request(
     UPSERT_DEALS_API,
-    result.response["Goods"].map((deal) => ({
+    result?.response["Goods"].map((deal) => ({
       pos_id: deal.GoodsId,
       pos_code: deal.GoodsCode,
       title: deal.GoodsName,
@@ -217,8 +214,7 @@ export const createOrUpdateDealsAndCategories = async (
     businessId,
     branchId
   );
-  if (!categoriesResult.response || !categoriesResult.response.data)
-    return null;
+  if (!categoriesResult?.response?.data) return null;
   const dealsResult = await createOrUpdateHamiDeals(
     categoriesResult.response.data,
     businessId,
@@ -228,7 +224,7 @@ export const createOrUpdateDealsAndCategories = async (
   //   categoriesResult.data,
   //   businessId
   // );
-  return dealsResult.response && dealsResult.response.data;
+  return dealsResult?.response?.data;
 };
 
 export const createOrUpdateHamiCRMMemberships = async (
@@ -252,7 +248,7 @@ export const createOrUpdateHamiCRMMemberships = async (
       BranchId,
     }
   );
-  if (!result || !result.response) return null;
+  if (!result?.response) return null;
 
   if (!result.response.length) return true;
   result.response.map((user) => {
@@ -294,12 +290,7 @@ export const createOrUpdateHamiCRMMemberships = async (
   const addressesResult = addresses.length
     ? await request(UPSERT_USER_ADDRESS_API, addresses, "POST")
     : { response: { data: [] } };
-  return (
-    membershipsResult.response &&
-    membershipsResult.response.data &&
-    addressesResult.response &&
-    addressesResult.response.data
-  );
+  return membershipsResult?.response?.data && addressesResult?.response?.data;
 };
 
 export const createOrUpdateHamiOrders = async (
@@ -322,7 +313,7 @@ export const createOrUpdateHamiOrders = async (
       BranchId,
     }
   );
-  if (!result || !result.response) return null;
+  if (!result?.response) return null;
 
   if (!result.response.length) return true;
   const orders = result.response
@@ -394,11 +385,7 @@ export const createOrUpdateHamiOrders = async (
       payment_status: 2,
     }));
   const ordersResult = await request(UPSERT_POS_ORDERS_API, orders, "POST");
-  if (
-    ordersResult.response &&
-    ordersResult.response.data &&
-    localStorage.getItem("hamiSecurityKey")
-  )
+  if (ordersResult?.response?.data && localStorage.getItem("hamiSecurityKey"))
     await request(
       UPDATE_DEVICE_API(localStorage.getItem("hamiSecurityKey")),
       {
@@ -411,5 +398,5 @@ export const createOrUpdateHamiOrders = async (
       },
       "PATCH"
     );
-  return ordersResult.response && ordersResult.response.data;
+  return ordersResult?.response?.data;
 };
