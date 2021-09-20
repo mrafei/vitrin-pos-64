@@ -32,7 +32,7 @@ function HamiSettings({
   const [convert, setConvert] = useState(
     localStorage.getItem("hamiCurrencyConvert") === "true"
   );
-  const branchId = businesses.find(
+  const branchId = businesses?.find(
     (business) => business.site_domain === siteDomain
   )?.extra_data?.pos_id;
   return (

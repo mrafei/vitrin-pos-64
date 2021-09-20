@@ -35,7 +35,7 @@ function HamiModal({
   siteDomain,
 }) {
   const device = devices && devices[0];
-  const branchId = businesses.find(
+  const branchId = businesses?.find(
     (business) => business.site_domain === siteDomain
   )?.extra_data?.pos_id;
   return (
