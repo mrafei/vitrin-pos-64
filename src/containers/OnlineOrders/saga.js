@@ -27,7 +27,10 @@ export function* getAdminOrdersFunc(action) {
 
     if (data) {
       yield put(setAdminOrders(data, { ...pagination, pagesCount }));
-      if (localStorage.getItem("integrated") === "hami")
+      if (
+        localStorage.getItem("integrated") === "hami" &&
+        !localStorage.getItem("hamiPreventSendOrders")
+      )
         yield all(
           data
             .filter((order) => order.order_status === 0)

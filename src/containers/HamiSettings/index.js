@@ -129,6 +129,20 @@ function HamiSettings({
                 text="واحد پول در حامی ریال است."
               />
             </div>
+            <div className="col-6 mt-4">
+              <CheckBox
+                className="u-fontMedium"
+                label="defaultCheck4"
+                checked={inventory}
+                onChange={(checked) => {
+                  setInventory(checked);
+                  if (checked) localStorage.setItem("hamiPreventSendOrders", "true");
+                  else localStorage.removeItem("hamiPreventSendOrders");
+                }}
+                text="سفارش‌های دریافتی به سرور حامی ارسال نشود."
+              />
+            </div>
+
           </div>
         </div>
       </div>
