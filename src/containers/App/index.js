@@ -151,7 +151,10 @@ const App = function ({
   }, []);
   const receiveOrder = (payload) => {
     _getAdminOrders();
-    if (localStorage.getItem("integrated") === "hami") {
+    if (
+      localStorage.getItem("integrated") === "hami" &&
+      !localStorage.getItem("hamiPreventSendOrders")
+    ) {
       let split = payload.click_action.split("/");
       const orderId = split[split.length - 1];
       _acceptOrder({
