@@ -32,6 +32,9 @@ function HamiSettings({
   const [convert, setConvert] = useState(
     localStorage.getItem("hamiCurrencyConvert") === "true"
   );
+  const [sendOrders, setSendOrders] = useState(
+    localStorage.getItem("hamiPreventSendOrders") === "true"
+  );
   const branchId = businesses?.find(
     (business) => business.site_domain === siteDomain
   )?.extra_data?.pos_id;
@@ -133,9 +136,9 @@ function HamiSettings({
               <CheckBox
                 className="u-fontMedium"
                 label="defaultCheck4"
-                checked={inventory}
+                checked={sendOrders}
                 onChange={(checked) => {
-                  setInventory(checked);
+                  setSendOrders(checked);
                   if (checked) localStorage.setItem("hamiPreventSendOrders", "true");
                   else localStorage.removeItem("hamiPreventSendOrders");
                 }}
