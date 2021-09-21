@@ -129,7 +129,7 @@ export function OnlineOrder({
       : [];
   let lastOrderTime = "ندارد";
   if (customerOrders && customerOrders.length > 1) {
-    const lastOrderDate = new Date(customerOrders[1]._submitted_at);
+    const lastOrderDate = new Date(customerOrders[1].submitted_at);
     lastOrderTime = englishNumberToPersianNumber(
       moment(
         `${lastOrderDate.getFullYear()}-${
