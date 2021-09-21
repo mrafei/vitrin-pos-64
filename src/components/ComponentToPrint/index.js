@@ -279,14 +279,14 @@ export default class ComponentToPrint extends React.Component {
                 {priceFormatter(order.total_initial_price)} تومان
               </span>
             </div>
-            {order.total_discount ? (
+            {order.total_discount_amount ? (
               <div className="mt-1">
-                <span>تخفیف محصولات: </span>
+                <span>مجموع تخفیف‌ها و اعتبار هدیه: </span>
                 <span
                   className="u-fontWeightBold"
                   style={{ whiteSpace: "pre-wrap" }}
                 >
-                  {priceFormatter(order.total_discount)}
+                  {priceFormatter(order.total_discount_amount)}
                   <span style={{ marginRight: 2 }}>-</span>
                   <span className="mr-1">تومان</span>
                 </span>
