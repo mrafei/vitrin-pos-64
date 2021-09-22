@@ -37,14 +37,14 @@ function PriceSection({ order }) {
           </span>
         </div>
         <div className="d-flex flex-row justify-content-between mt-1">
-          <span className="u-textBlack">تخفیف محصولات: </span>
+          <span className="u-textBlack">مجموع تخفیف‌ها و اعتبار هدیه: </span>
           <span className="u-text-darkest-grey">
-            {priceFormatter(order.total_discount)}
+            {priceFormatter(order.total_discount_amount)}
             <span
               className="u-fontWeightBold"
               style={{ paddingRight: 2, paddingLeft: 5 }}
             >
-              {order.total_discount ? "-" : null}
+              {order.total_discount_amount ? "-" : null}
             </span>
             <span className="u-font-semi-small"> تومان</span>
           </span>

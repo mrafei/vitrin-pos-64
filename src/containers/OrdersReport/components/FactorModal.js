@@ -42,9 +42,9 @@ function FactorModal({ _onClose, open, business, printers, report, date }) {
         },
         {
           id: 3,
-          online: online.total_discount,
-          cash: cash.total_discount,
-          total: total.total_discount,
+          online: online.total_discount_amount,
+          cash: cash.total_discount_amount,
+          total: total.total_discount_amount,
           text: "تخفیف",
           show: true,
         },
