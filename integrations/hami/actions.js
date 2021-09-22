@@ -183,11 +183,10 @@ export const createOrUpdateHamiDeals = async (
       discounted_price:
         deal.GoodsPrice *
         (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-
       initial_price:
         deal.GoodsPrice *
         (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-
+      extra_data: { packaging_price: deal.PackingPrice },
       categories:
         categories &&
         categories.find(
