@@ -189,34 +189,54 @@ export default function PriceSection({ product, setProduct, hasVariation }) {
         </div>
       </div>
       <div className="col-12 col-lg-6 mt-lg-4">
-        <div className="mt-3 d-flex align-items-center">
-          <Checkbox
-            color="primary"
-            checked={product.is_active}
-            onChange={(e) =>
-              setProduct({
-                ...product,
-                is_active: e.target.checked,
-              })
-            }
-          />
-          <Box color={theme.palette.text.tertiary}>{is_active? "فعال": "غیرفعال"}</Box>
+        <div className="d-flex align-items-center">
+          <div className="mt-3 flex-1 d-flex align-items-center">
+            <Checkbox
+              color="primary"
+              checked={product.is_active}
+              onChange={(e) =>
+                setProduct({
+                  ...product,
+                  is_active: e.target.checked,
+                })
+              }
+            />
+            <Box color={theme.palette.text.tertiary}>
+              {is_active ? "فعال" : "غیرفعال"}
+            </Box>
+          </div>
+          <div className="mt-3 flex-1 d-flex align-items-center">
+            <Checkbox
+              color="primary"
+              checked={product.keep_tracking}
+              onChange={(e) =>
+                setProduct({
+                  ...product,
+                  keep_tracking: e.target.checked,
+                })
+              }
+            />
+            <Box color={theme.palette.text.tertiary}>انبارگردانی</Box>
+          </div>
         </div>
         <div className="mt-2 d-flex">
           <Autocomplete
             options={inventoryOptions}
             autoHighlight
             freeSolo
+            disabled={!product.keep_tracking}
             inputValue={
-              inventoryCount || inventoryCount === 0
-                ? englishNumberToPersianNumber(inventoryCount)
-                : ""
+              product.keep_tracking
+                ? inventoryCount || inventoryCount === 0
+                  ? englishNumberToPersianNumber(inventoryCount)
+                  : ""
+                : "نامحدود"
             }
             onInputChange={(e, value) => {
               setProduct({
                 ...product,
                 inventory_count:
-                  value === "" ? null : parseInt(persianToEnglishNumber(value)),
+                  value === "" ? 0 : parseInt(persianToEnglishNumber(value)),
               });
             }}
             defaultValue={{

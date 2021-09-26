@@ -408,43 +408,54 @@ function EditVariant({
               </Collapse>
             </div>
             <div className="col-12 col-lg-6 mt-lg-4">
-              <div className="mt-3 d-flex align-items-center">
-                <Checkbox
-                  color="primary"
-                  checked={variant.available}
-                  onChange={(e) =>
-                    setVariant({
-                      ...variant,
-                      available: e.target.checked,
-                      inventory_count:
-                        !e.target.checked || inventoryCount
-                          ? inventoryCount
-                          : null,
-                    })
-                  }
-                />
-                <Box color={theme.palette.text.tertiary}>موجود</Box>
+              <div className="d-flex align-items-center">
+                <div className="flex-1 mt-3 d-flex align-items-center">
+                  <Checkbox
+                    color="primary"
+                    checked={variant.is_active}
+                    onChange={(e) =>
+                      setVariant({
+                        ...variant,
+                        is_active: e.target.checked,
+                      })
+                    }
+                  />
+                  <Box color={theme.palette.text.tertiary}>موجود</Box>
+                </div>
+                <div className="mt-3 flex-1 d-flex align-items-center">
+                  <Checkbox
+                    color="primary"
+                    checked={variant.keep_tracking}
+                    onChange={(e) =>
+                      setVariant({
+                        ...variant,
+                        keep_tracking: e.target.checked,
+                      })
+                    }
+                  />
+                  <Box color={theme.palette.text.tertiary}>انبارگردانی</Box>
+                </div>
               </div>
               <div className="mt-2 d-flex">
                 <Autocomplete
                   options={inventoryOptions}
                   autoHighlight
                   freeSolo
+                  disabled={!variant.keep_tracking}
                   inputValue={
-                    inventoryCount || inventoryCount === 0
-                      ? englishNumberToPersianNumber(inventoryCount)
-                      : ""
+                    variant.keep_tracking
+                      ? inventoryCount || inventoryCount === 0
+                        ? englishNumberToPersianNumber(inventoryCount)
+                        : ""
+                      : "نامحدود"
                   }
                   onInputChange={(e, value) => {
                     setVariant({
                       ...variant,
                       inventory_count:
                         value === ""
-                          ? null
+                          ? 0
                           : parseInt(persianToEnglishNumber(value)),
-                      available:
-                        product.available &&
-                        parseInt(persianToEnglishNumber(value)) !== 0,
                     });
                   }}
                   defaultValue={{
@@ -495,7 +506,6 @@ function EditVariant({
                                     setVariant({
                                       ...variant,
                                       inventory_count: +inventoryCount + 1,
-                                      available: true,
                                     });
                                 }}
                               >
@@ -511,7 +521,6 @@ function EditVariant({
                                     setVariant({
                                       ...variant,
                                       inventory_count: inventoryCount - 1,
-                                      available: inventoryCount - 1 > 0,
                                     });
                                 }}
                               >
