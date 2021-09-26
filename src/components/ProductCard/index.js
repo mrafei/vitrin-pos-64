@@ -139,32 +139,11 @@ function ProductCard({
             <span>{priceFormatter(Math.round(discountedPrice))}</span>
           </div>
           <div className="col-1 px-0">
-            <Input
-              editOnDoubleClick
-              style={{ textAlign: "center" }}
-              variant="standard"
-              onChange={(value) =>
-                setUpdatedProduct({
-                  ...updatedProduct,
-                  inventory_count:
-                    value === ""
-                      ? null
-                      : parseInt(persianToEnglishNumber(value)),
-                  is_active:
-                    updatedProduct.is_active &&
-                    parseInt(persianToEnglishNumber(value)) !== 0,
-                })
-              }
-              onBlur={() => {
-                if (inventoryCount !== product.inventory_count) submit();
-              }}
-              numberOnly
-              value={
-                inventoryCount || inventoryCount === 0
-                  ? englishNumberToPersianNumber(inventoryCount)
-                  : ""
-              }
-            />
+            <span>
+              {inventoryCount || inventoryCount === 0
+                ? englishNumberToPersianNumber(inventoryCount)
+                : ""}
+            </span>
           </div>
         </div>
         <div className="col-2 px-0 d-flex">
@@ -257,7 +236,7 @@ function ProductCard({
           isSwitchOn={updatedProduct.is_active}
           toggleSwitch={(is_active) => {
             setUpdatedProduct({ ...updatedProduct, is_active });
-            submit({ ...updatedProduct, is_active});
+            submit({ ...updatedProduct, is_active });
           }}
         />
       </div>
