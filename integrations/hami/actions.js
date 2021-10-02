@@ -17,7 +17,10 @@ import {
   UPSERT_POS_ORDERS_API,
   UPSERT_USER_ADDRESS_API,
 } from "../../utils/api";
-import { persianToEnglishNumber } from "../../utils/helper";
+import {
+  englishNumberToPersianNumber,
+  persianToEnglishNumber,
+} from "../../utils/helper";
 
 export const init = () => {};
 
@@ -29,7 +32,19 @@ export const submitHamiOrder = (order) => {
   )}:${`0${orderDateObject.getMinutes()}`.slice(
     -2
   )}:${`0${orderDateObject.getSeconds()}`.slice(-2)}`;
-
+  const allItemModifiers = order.items.reduce((modifiers, item) => {
+    const newModifiers = { ...modifiers };
+    item.deal.modifiers.map((modifier) => {
+      newModifiers[modifier.modifier_id] = {
+        title: modifier.title,
+        amount:
+          (newModifiers[modifier.modifier_id]?.amount || 0) +
+          modifier.amount * item.amount,
+        price: modifier.price,
+      };
+    });
+    return newModifiers;
+  }, {});
   request(
     `${submitHamiOrderApi(localStorage.getItem("hamiIp"))}${
       localStorage.getItem("hamiSecurityKey")
@@ -49,7 +64,12 @@ export const submitHamiOrder = (order) => {
         CellPhone: order.user_address?.phone || "",
         LocationId: 0,
         DeliveryAddress: order.user_address?.address || "",
-        Comments: order.description,
+        Comments: `${order.description}${Object.values(allItemModifiers).map(
+          (modifier) =>
+            `-\n تاپینگ: ${englishNumberToPersianNumber(modifier.amount)} عدد ${
+              modifier.title
+            }`
+        )}`,
         OrderType: 1,
         Price:
           order.total_items_price *
@@ -78,32 +98,39 @@ export const submitHamiOrder = (order) => {
         DiscountCode: "",
         Latitude: `${order.user_address?.latitude || ""}`,
         Longitude: `${order.user_address?.longitude || ""}`,
-        Items: order.items.map((item) => ({
-          OrderItemId: parseInt(`${order.order_id}000${item.deal.pos_id}`),
-          OrderId: parseInt(order.order_id),
-          ProductId: parseInt(item.deal.pos_id),
-          ProductCode: parseInt(item.deal.pos_code),
-          ProductTitle: item.deal.title,
-          ProductPrice: item.deal.initial_price,
-          Quantity: item.amount,
-          DescriptionPrice: 0,
-          SumPrice:
-            item.deal.initial_price *
-            (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
-
-          ProductDiscount:
-            (item.deal.initial_price - item.deal.discounted_price) *
-            (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
-
-          Addition: 0,
-          ProductTax: 0,
-          ProductDuty: 0,
-          TotalPrice:
-            item.deal.discounted_price *
-            (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
-
-          Description: "",
-        })),
+        Items: order.items.map((item) => {
+          const modifiersPrice = item.deal.modifiers.reduce(
+            (sum, modifier) => sum + modifier.amount * modifier.price,
+            0
+          );
+          return {
+            OrderItemId: parseInt(`${order.order_id}000${item.deal.pos_id}`),
+            OrderId: parseInt(order.order_id),
+            ProductId: parseInt(item.deal.pos_id),
+            ProductCode: parseInt(item.deal.pos_code),
+            ProductTitle: item.deal.title,
+            ProductPrice:
+              item.deal.initial_price *
+              (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+            Quantity: item.amount,
+            DescriptionPrice: 0,
+            SumPrice:
+              (item.deal.initial_price + modifiersPrice) *
+              (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+            ProductDiscount:
+              (item.deal.initial_price +
+                modifiersPrice -
+                item.deal.discounted_price) *
+              (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+            Addition: 0,
+            ProductTax: 0,
+            ProductDuty: 0,
+            TotalPrice:
+              (item.deal.discounted_price + modifiersPrice) *
+              (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
+            Description: "",
+          };
+        }),
         ItemsTopping: [],
       },
     },

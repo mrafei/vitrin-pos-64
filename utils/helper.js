@@ -456,14 +456,21 @@ function amplifyMedia(mediaElem, multiplier) {
   return result;
 }
 function deliveryTimeFormatter(deliveryTime) {
-  const fromTime = moment(deliveryTime.from_time);
-  const date = englishNumberToPersianNumber(fromTime.jDate());
-  const month = getMonthName(fromTime.jMonth());
-  const weekDay = getWeekDay(fromTime.isoWeekday());
-  const toTime = moment(deliveryTime.to_time).format("HH:mm");
-  return `${weekDay} ${date} ${month} بازه ${englishNumberToPersianNumber(
-    fromTime.format("HH:mm")
-  )} تا ${englishNumberToPersianNumber(toTime)}`;
+  const fromTime = moment.unix(deliveryTime.from_time);
+  const fromDateDay = englishNumberToPersianNumber(fromTime.jDate());
+  const fromDateMonth = getMonthName(fromTime.jMonth() + 1);
+  const fromDateWeekDay = getWeekDay(fromTime.isoWeekday());
+  const toTime = moment.unix(deliveryTime.to_time);
+  const toDateDay = englishNumberToPersianNumber(toTime.jDate());
+  const toDateMonth = getMonthName(toTime.jMonth() + 1);
+  const toDateWeekDay = getWeekDay(toTime.isoWeekday());
+  if (fromTime.jDate() === toTime.jDate()) {
+    return `${fromDateWeekDay} ${fromDateDay} ${fromDateMonth} بازه ${englishNumberToPersianNumber(
+      fromTime.format("HH:mm")
+    )} تا ${englishNumberToPersianNumber(toTime.format("HH:mm"))}`;
+  } else {
+    return `بازه ${fromDateWeekDay} ${fromDateDay} ${fromDateMonth} تا ${toDateWeekDay} ${toDateDay} ${toDateMonth}`;
+  }
 }
 function persianToArabicCharacters(input) {
   const persianCharacters = [/ی/g, /ک/g];
@@ -646,5 +653,5 @@ export {
   slugify,
   uniqueid,
   convertVariantToTable,
-  reversePriceFormatter
+  reversePriceFormatter,
 };
