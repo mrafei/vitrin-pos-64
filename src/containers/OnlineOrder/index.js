@@ -184,7 +184,7 @@ export function OnlineOrder({
                   <CloseRoundedIcon />
                 </IconButton>
                 <div className="d-flex align-items-center"> جزییات سفارش</div>
-                {true || localStorage.getItem("integrated") === "hami" ? (
+                {localStorage.getItem("integrated") === "hami" ? (
                   <IconButton onClick={(e) => setAnchor(e.currentTarget)}>
                     <MoreVertIcon />
                   </IconButton>
