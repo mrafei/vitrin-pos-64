@@ -87,7 +87,11 @@ export const submitHamiOrder = (order) => {
           order.taxing_price *
           (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
         Duty: 0,
-        Addition: 0,
+        Addition:
+          Object.values(allItemModifiers).reduce(
+            (sum, modifier) => sum + modifier.amount * modifier.price,
+            0
+          ) * (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
         Rounded: 0,
         Payable:
           order.final_price *
@@ -122,7 +126,9 @@ export const submitHamiOrder = (order) => {
                 modifiersPrice -
                 item.deal.discounted_price) *
               (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
-            Addition: 0,
+            Addition:
+              modifiersPrice *
+              (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
             ProductTax: 0,
             ProductDuty: 0,
             TotalPrice:
