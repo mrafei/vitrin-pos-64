@@ -248,9 +248,9 @@ ipcMain.on("redirectOrder", (event, notification) => {
 ipcMain.handle("request", async (_, axios_request, headers) => {
   axios.defaults.headers = headers;
   const result = await axios(axios_request).catch((error) => {
-    return { data: error.response.data };
+    return { data: error?.response?.data };
   });
-  return { data: result.data, status: result.status };
+  return { data: result?.data, status: result?.status };
 });
 
 function handleSquirrelEvent() {
