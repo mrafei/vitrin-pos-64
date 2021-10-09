@@ -102,13 +102,13 @@ export const submitHamiOrder = (order) => {
         DiscountCode: "",
         Latitude: `${order.user_address?.latitude || ""}`,
         Longitude: `${order.user_address?.longitude || ""}`,
-        Items: order.items.map((item) => {
+        Items: order.items.map((item, index) => {
           const modifiersPrice = item.deal.modifiers.reduce(
             (sum, modifier) => sum + modifier.amount * modifier.price,
             0
           );
           return {
-            OrderItemId: parseInt(`${order.order_id}000${item.deal.pos_id}`),
+            OrderItemId: parseInt(`${order.order_id}000}`) + index,
             OrderId: parseInt(order.order_id),
             ProductId: parseInt(item.deal.pos_id),
             ProductCode: parseInt(item.deal.pos_code),
@@ -120,6 +120,7 @@ export const submitHamiOrder = (order) => {
             DescriptionPrice: 0,
             SumPrice:
               (item.deal.initial_price + modifiersPrice) *
+              item.amount *
               (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
             ProductDiscount:
               (item.deal.initial_price +
@@ -133,6 +134,7 @@ export const submitHamiOrder = (order) => {
             ProductDuty: 0,
             TotalPrice:
               (item.deal.discounted_price + modifiersPrice) *
+              item.amount *
               (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
             Description: "",
           };
