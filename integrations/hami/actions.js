@@ -334,7 +334,8 @@ export const createOrUpdateHamiOrders = async (
   fromTime,
   toTime,
   InvoiceTimeStart = "00:00:00",
-  InvoiceTimeEnd = "24:00:00"
+  InvoiceTimeEnd = "24:00:00",
+  archived
 ) => {
   const result = await request(
     getHamiOrdersApi(localStorage.getItem("hamiIp")),
@@ -374,7 +375,7 @@ export const createOrUpdateHamiOrders = async (
           (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
         packaging_price: 0,
       })),
-      archived: localStorage.getItem("hamiKeepTracking") !== "true",
+      archived: archived ?? localStorage.getItem("hamiKeepTracking") !== "true",
       order_number: order.SaleInvoiceNumber,
       order_status: 1,
       user_address: {
