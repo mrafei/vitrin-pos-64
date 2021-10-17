@@ -70,18 +70,16 @@ function HamiModal({
                   let result = true;
                   const a = moment(`1375/01/01`, "jYYYY/jMM/jDD");
                   const b = moment();
-                  for (
-                    let m = moment(b);
-                    m.isAfter(a);
-                    m.subtract(1, "months")
-                  ) {
+                  for (let m = moment(b); m.isAfter(a); m.subtract(1, "day")) {
                     result =
                       result &&
                       (await createOrUpdateHamiCRMMemberships(
                         businessId,
                         branchId,
-                        m.startOf("month").format("jYYYY/jMM/jDD"),
-                        m.endOf("month").format("jYYYY/jMM/jDD")
+                        m.format("jYYYY/jMM/jDD"),
+                        m.format("jYYYY/jMM/jDD"),
+                        undefined,
+                        undefined
                       ));
                   }
 
@@ -134,19 +132,18 @@ function HamiModal({
                   let result = true;
                   const a = moment(`1375/01/01`, "jYYYY/jMM/jDD");
                   const b = moment();
-                  for (
-                    let m = moment(b);
-                    m.isAfter(a);
-                    m.subtract(1, "months")
-                  ) {
+                  for (let m = moment(b); m.isAfter(a); m.subtract(1, "day")) {
                     result =
                       result &&
                       (await createOrUpdateHamiOrders(
                         businessId,
                         branchId,
                         user.id,
-                        m.startOf("month").format("jYYYY/jMM/jDD"),
-                        m.endOf("month").format("jYYYY/jMM/jDD")
+                        m.format("jYYYY/jMM/jDD"),
+                        m.format("jYYYY/jMM/jDD"),
+                        undefined,
+                        undefined,
+                        true
                       ));
                   }
                   if (result) {
