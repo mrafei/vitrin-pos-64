@@ -29,6 +29,9 @@ export function* getAdminOrdersFunc(action) {
       yield put(setAdminOrders(data, { ...pagination, pagesCount }));
       if (
         localStorage.getItem("integrated") === "hami" &&
+        (
+          JSON.parse(localStorage.getItem("hamiIntegratedBusinesses")) || []
+        ).includes(domain) &&
         !localStorage.getItem("hamiPreventSendOrders")
       )
         yield all(
