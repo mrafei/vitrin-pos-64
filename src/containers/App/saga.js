@@ -201,7 +201,12 @@ export function* acceptOrder(action) {
           (business) => business.site_domain === data.business_site_domain
         );
         const integration = localStorage.getItem("integrated");
-        if (integration === "hami") {
+        if (
+          integration === "hami" &&
+          (
+            JSON.parse(localStorage.getItem("hamiIntegratedBusinesses")) || []
+          ).includes(data.business_site_domain)
+        ) {
           submitHamiOrder({
             ...data,
             business_pos_id: business.extra_data?.pos_id,

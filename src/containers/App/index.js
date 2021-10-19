@@ -72,7 +72,11 @@ import {
 } from "../../../integrations/hami/actions";
 import moment from "moment-jalaali";
 import request from "../../../utils/request";
-import { PUSH_NOTIFICATION_API, USER_INFO_API } from "../../../utils/api";
+import {
+  PUSH_NOTIFICATION_API,
+  USER_INFO_API,
+  USER_ORDERS_ITEMS_API,
+} from "../../../utils/api";
 import pristine from "../../../assets/audio/pristine.mp3";
 import { amplifyMedia } from "../../../utils/helper";
 
@@ -149,14 +153,22 @@ const App = function ({
       _setFirebaseToken
     );
   }, []);
-  const receiveOrder = (payload) => {
+  const receiveOrder = async (payload) => {
     _getAdminOrders();
-    if (
+    let split = payload.click_action.split("/");
+    const orderId = split[split.length - 1];
+    const response = await request(USER_ORDERS_ITEMS_API(orderId, "shopping"));
+    const order = response?.response?.data || {};
+    if (order.order_status !== 0) return;
+    const isBusinessHamiIntegrated =
       localStorage.getItem("integrated") === "hami" &&
+      (
+        JSON.parse(localStorage.getItem("hamiIntegratedBusinesses")) || []
+      ).includes(order.business_site_domain);
+    if (
+      isBusinessHamiIntegrated &&
       !localStorage.getItem("hamiPreventSendOrders")
     ) {
-      let split = payload.click_action.split("/");
-      const orderId = split[split.length - 1];
       _acceptOrder({
         id: orderId,
         plugin: "shopping",
@@ -164,7 +176,7 @@ const App = function ({
       });
     }
     if (
-      localStorage.getItem("integrated") !== "hami" ||
+      !isBusinessHamiIntegrated ||
       localStorage.getItem("hamiAllowVitrinNotification")
     ) {
       ipcRenderer.send("orderReceived", payload);

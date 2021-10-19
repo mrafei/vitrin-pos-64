@@ -24,6 +24,7 @@ import {
 } from "../../../../stores/user/selector";
 import request from "../../../../utils/request";
 import { UPDATE_DEVICE_API } from "../../../../utils/api";
+import Checkbox from "@material-ui/core/Checkbox";
 function HamiModal({
   isOpen,
   _onClose,
@@ -38,6 +39,9 @@ function HamiModal({
   const branchId = businesses?.find(
     (business) => business.site_domain === siteDomain
   )?.extra_data?.pos_id;
+  const [hamiIntegratedBusinesses, setHamiIntegratedBusinesses] = useState(
+    JSON.parse(localStorage.getItem("hamiIntegratedBusinesses")) || []
+  );
   return (
     <>
       <Modal isOpen={isOpen} onClose={_onClose}>
@@ -174,6 +178,39 @@ function HamiModal({
               >
                 به‌روز رسانی سفارش‌ها
               </Button>
+            </div>
+            <div className="mt-4 u-text-black u-fontWeightBold">
+              ویترین‌های همسوسازی شده:
+            </div>
+            <div style={{ height: 400 }} className="mt-2 overflow-auto">
+              {businesses.map((business) => (
+                <div>
+                  <Checkbox
+                    color="primary"
+                    checked={hamiIntegratedBusinesses.includes(
+                      business.site_domain
+                    )}
+                    onChange={(e) => {
+                      let newIntegratedBusinesses;
+                      if (e.target.checked)
+                        newIntegratedBusinesses = [
+                          ...hamiIntegratedBusinesses,
+                          business.site_domain,
+                        ];
+                      else
+                        newIntegratedBusinesses = hamiIntegratedBusinesses.filter(
+                          (item) => item !== business.site_domain
+                        );
+                      setHamiIntegratedBusinesses(newIntegratedBusinesses);
+                      localStorage.setItem(
+                        "hamiIntegratedBusinesses",
+                        JSON.stringify(newIntegratedBusinesses)
+                      );
+                    }}
+                  />
+                  {business.title}
+                </div>
+              ))}
             </div>
           </div>
         </div>

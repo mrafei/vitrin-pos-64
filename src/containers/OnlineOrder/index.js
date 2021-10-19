@@ -184,7 +184,12 @@ export function OnlineOrder({
                   <CloseRoundedIcon />
                 </IconButton>
                 <div className="d-flex align-items-center"> جزییات سفارش</div>
-                {localStorage.getItem("integrated") === "hami" ? (
+                {localStorage.getItem("integrated") === "hami" &&
+                (
+                  JSON.parse(
+                    localStorage.getItem("hamiIntegratedBusinesses")
+                  ) || []
+                ).includes(order.business_site_domain) ? (
                   <IconButton onClick={(e) => setAnchor(e.currentTarget)}>
                     <MoreVertIcon />
                   </IconButton>
