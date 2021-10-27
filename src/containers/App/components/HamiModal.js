@@ -183,7 +183,7 @@ function HamiModal({
               ویترین‌های همسوسازی شده:
             </div>
             <div style={{ height: 400 }} className="mt-2 overflow-auto">
-              {businesses.map((business) => (
+              {businesses?.map((business) => (
                 <div>
                   <Checkbox
                     color="primary"

@@ -389,7 +389,7 @@ export const createOrUpdateHamiOrders = async (
           ? "delivery_on_business_site"
           : "delivery_on_user_site",
       payments: [],
-      sales_channel: 1,
+      sales_channel: 5,
       created_at: moment(
         `${order.InvoiceDate} ${order.InvoiceTime}`,
         "jYYYY/jMM/jDD HH:mm:ss"
