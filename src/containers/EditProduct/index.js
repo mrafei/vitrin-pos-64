@@ -139,7 +139,7 @@ function AdminProduct({
         );
       } else {
         _createProduct(
-          { ...product, variations: _variations },
+          { ...product, variations: _variations, sku: null },
           imagesArray,
           history
         );
