@@ -81,7 +81,7 @@ export const submitHamiOrder = (order) => {
           order.total_packaging_price *
           (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
         Discount:
-          order.total_discount_amount *
+          (order.total_discount_amount + order.gift_credit_used) *
           (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
         Tax:
           order.taxing_price *
