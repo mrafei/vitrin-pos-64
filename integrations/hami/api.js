@@ -1,6 +1,3 @@
-// دریافت اطلاعات شعب
-// http://193.151.128.95/HamiOrder/GetBranches.aspx
-
 // دریافت دلایل رد سفارش
 // http://193.151.128.95/HamiOrder/GetDeclineReason.aspx
 
@@ -75,3 +72,7 @@ export const getHamiOrdersApi = (prefix) =>
 
 export const getHamiToppingsApi = (prefix) =>
   `http://${prefix || "localhost"}/HamiOrder/GetToppingGoods.aspx`;
+
+// دریافت اطلاعات شعب
+export const getHamiBranchesApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/GetBranches.aspx`;
