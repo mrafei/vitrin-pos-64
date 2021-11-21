@@ -1,5 +1,6 @@
 import request from "../../utils/request";
 import {
+  getHamiBranchesApi,
   getHamiCustomersApi,
   getHamiDealCategoriesApi,
   getHamiDealItemApi,
@@ -425,4 +426,13 @@ export const createOrUpdateHamiOrders = async (
       "PATCH"
     );
   return ordersResult?.response?.data;
+};
+export const getHamiBranches = async () => {
+  const result = await request(
+    getHamiBranchesApi(localStorage.getItem("hamiIp")),
+    {
+      securityKey: localStorage.getItem("hamiSecurityKey"),
+    }
+  );
+  return result?.response?.Branches || [];
 };

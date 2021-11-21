@@ -69,6 +69,7 @@ import HamiModal from "./components/HamiModal";
 import {
   createOrUpdateHamiCRMMemberships,
   createOrUpdateHamiOrders,
+  getHamiBranches,
 } from "../../../integrations/hami/actions";
 import moment from "moment-jalaali";
 import request from "../../../utils/request";
@@ -210,7 +211,7 @@ const App = function ({
       orderInterval.current = setInterval(() => {
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
-      customersInterval.current = setInterval(() => {
+      customersInterval.current = setInterval(async () => {
         if (device && device.extra_data && device.extra_data.last_users_update)
           createOrUpdateHamiCRMMemberships(
             businessId,
@@ -220,20 +221,27 @@ const App = function ({
             moment(device.extra_data.last_users_update).format("HH/mm/ss"),
             moment().format("HH/mm/ss")
           );
-        if (device && device.extra_data && device.extra_data.last_orders_update)
-          createOrUpdateHamiOrders(
-            businessId,
-            undefined,
-            user.id,
-            moment(device.extra_data.last_orders_update).format(
-              "jYYYY/jMM/jDD"
-            ),
-            moment().format("jYYYY/jMM/jDD"),
-            moment(device.extra_data.last_orders_update).format("HH/mm/ss"),
-            moment().format("HH/mm/ss"),
-            device && device.extra_data
-          );
-      }, 120 * 60 * 1000);
+        if (device?.extra_data?.last_orders_update) {
+          const hamiBranches = await getHamiBranches();
+          hamiBranches.map((branch) => {
+            const _businessId = businesses.find(
+              (business) => business?.extra_data?.pos_id === branch.BranchId
+            )?.id;
+            console.log(_businessId);
+            createOrUpdateHamiOrders(
+              _businessId,
+              branch.BranchId,
+              user.id,
+              moment(device.extra_data.last_orders_update).format(
+                "jYYYY/jMM/jDD"
+              ),
+              moment().format("jYYYY/jMM/jDD"),
+              moment(device.extra_data.last_orders_update).format("HH/mm/ss"),
+              moment().format("HH/mm/ss")
+            );
+          });
+        }
+      }, (parseInt(localStorage.getItem("hamiInterval")) || 1) * 60 * 1000);
     }
     return () => {
       clearInterval(customersInterval.current);
