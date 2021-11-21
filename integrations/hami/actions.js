@@ -408,7 +408,6 @@ export const createOrUpdateHamiOrders = async (
       _total_packaging_price:
         order.PackingPrice *
         (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-      send_feedback_sms: true
     }));
   if (!orders.length) return true;
   const ordersResult = await request(UPSERT_POS_ORDERS_API, orders, "POST");
