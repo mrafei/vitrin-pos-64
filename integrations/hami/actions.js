@@ -352,11 +352,10 @@ export const createOrUpdateHamiOrders = async (
 
   if (!result.response.length) return true;
   const orders = result.response
-    .filter((order) => !order.Description.includes("وب سایت"))
+    // .filter((order) => !order.Description.includes("وب سایت"))
     .map((order) => ({
       business_id: businessId,
       pos_id: order.SaleInvoiceId,
-      is_offline: true,
       order_items: order.MApiInvoiceItems.map((orderItem) => ({
         amount: orderItem.GoodsCount,
         deal_pos_id: orderItem.GoodsId,
@@ -368,10 +367,6 @@ export const createOrUpdateHamiOrders = async (
         discounted_price:
           (orderItem.GoodsPrice -
             orderItem.SumDiscount / orderItem.GoodsCount) *
-          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-
-        final_unit_cost:
-          orderItem.GoodsPrice *
           (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
         packaging_price: 0,
       })),
@@ -388,13 +383,11 @@ export const createOrUpdateHamiOrders = async (
         order.SaleInvoiceTypeTitle === "مشترکین"
           ? "delivery_on_business_site"
           : "delivery_on_user_site",
-      payments: [],
-      sales_channel: 5,
-      created_at: moment(
+      _created_at: moment(
         `${order.InvoiceDate} ${order.InvoiceTime}`,
         "jYYYY/jMM/jDD HH:mm:ss"
       ).format("YYYY-MM-DD"),
-      submitted_at: moment(
+      _submitted_at: moment(
         `${order.InvoiceDate} ${order.InvoiceTime}`,
         "jYYYY/jMM/jDD HH:mm:ss"
       ).format("YYYY-MM-DD"),
@@ -402,8 +395,7 @@ export const createOrUpdateHamiOrders = async (
       _delivery_price:
         order.DeliveryPrice *
         (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-      pos_device_id: 0,
-      final_price:
+      _final_price:
         order.Payable * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
       _taxing_price:
         order.SumTax * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
@@ -416,9 +408,8 @@ export const createOrUpdateHamiOrders = async (
       _total_packaging_price:
         order.PackingPrice *
         (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-      payment_type: "onsite",
-      payment_status: 2,
     }));
+  if (!orders.length) return true;
   const ordersResult = await request(UPSERT_POS_ORDERS_API, orders, "POST");
   if (ordersResult?.response?.data && localStorage.getItem("hamiSecurityKey"))
     await request(

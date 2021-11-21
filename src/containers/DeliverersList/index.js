@@ -20,15 +20,15 @@ export function DeliverersList({ _getBusiness, deliverers }) {
   return (
     <div className="u-border-radius-8 container px-0 container-shadow overflow-hidden">
       <div className="px-5 text-left pt-3">
-        <Link
-          to="/delivery/deliverers/new"
-          className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"
-        >
-          <Icon icon={ICONS.PLUS} color="white" className="ml-2" size={12} />
-          <span className="u-fontWeightBold u-fontMedium u-text-white">
-            افزودن پیک جدید
-          </span>
-        </Link>
+        {/*<Link*/}
+        {/*  to="/delivery/deliverers/new"*/}
+        {/*  className="u-cursor-pointer u-background-primary-blue u-border-radius-4 d-inline-flex justify-content-center align-items-center pr-2 py-2 pl-3"*/}
+        {/*>*/}
+        {/*  <Icon icon={ICONS.PLUS} color="white" className="ml-2" size={12} />*/}
+        {/*  <span className="u-fontWeightBold u-fontMedium u-text-white">*/}
+        {/*    افزودن پیک جدید*/}
+        {/*  </span>*/}
+        {/*</Link>*/}
       </div>
       <div className="d-flex text-center px-5 py-3 u-fontWeightBold">
         <span className="px-0 col-1">ردیف</span>
@@ -40,7 +40,7 @@ export function DeliverersList({ _getBusiness, deliverers }) {
         style={{ height: 'calc(100% - 54px)' }}
       >
         {deliverers.map((deliverer, index) => (
-          <Link
+          <div
             className="d-flex text-center py-2 mt-1 bg-gray-melo u-border-radius-4"
             to={`/delivery/deliverers/${index}`}
             key={`deliverer-${deliverer.name}`}
@@ -52,7 +52,7 @@ export function DeliverersList({ _getBusiness, deliverers }) {
             <span className="px-0 col-5">
               {englishNumberToPersianNumber(deliverer.phone)}
             </span>
-          </Link>
+          </div>
         ))}
       </div>
     </div>
