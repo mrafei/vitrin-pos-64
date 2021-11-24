@@ -202,7 +202,6 @@ const App = function ({
     if (siteDomain) _getBusiness();
   }, [siteDomain]);
   useEffect(() => {
-    console.log(businesses);
     clearInterval(orderInterval.current);
     clearInterval(customersInterval.current);
 
@@ -211,7 +210,6 @@ const App = function ({
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
       customersInterval.current = setInterval(async () => {
-        console.log("&&&");
         businesses.map(async (business) => {
           if (
             !(
@@ -220,7 +218,6 @@ const App = function ({
           )
             return;
           const device = business.devices?.[0];
-          console.log(device);
           if (device?.extra_data?.last_users_update)
             createOrUpdateHamiCRMMemberships(
               businessId,
@@ -245,17 +242,16 @@ const App = function ({
                     ) || []
                   ).includes(business.site_domain)
               )?.id;
-              console.log(_businessId);
               if (_businessId)
                 createOrUpdateHamiOrders(
                   _businessId,
                   branch.BranchId,
                   user.id,
-                  moment(device.extra_data.last_orders_update).format(
+                  moment.unix(device.extra_data.last_orders_update).format(
                     "jYYYY/jMM/jDD"
                   ),
                   moment().format("jYYYY/jMM/jDD"),
-                  moment(device.extra_data.last_orders_update).format(
+                  moment.unix(device.extra_data.last_orders_update).format(
                     "HH/mm/ss"
                   ),
                   moment().format("HH/mm/ss")
