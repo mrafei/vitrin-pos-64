@@ -390,8 +390,8 @@ export const createOrUpdateHamiOrders = async (
       ).format("YYYY-MM-DDTHH:mm:ss"),
       _submitted_at: moment(
         `${order.InvoiceDate} ${order.InvoiceTime}`,
-        "jYYYY/jMM/jDDTHH:mm:ss"
-      ).format("YYYY-MM-DD"),
+        "jYYYY/jMM/jDD"
+      ).format("YYYY-MM-DDTHH:mm:ss"),
       pos_user_id: userId,
       _delivery_price:
         order.DeliveryPrice *
