@@ -417,7 +417,7 @@ export const createOrUpdateHamiOrders = async (
       UPDATE_DEVICE_API(localStorage.getItem("hamiSecurityKey")),
       {
         extra_data: {
-          initial_orders_date: moment(
+          last_orders_update: moment(
             `${toTime} ${InvoiceTimeEnd}`,
             "jYYYY/jMM/jDD HH:mm:ss"
           ).unix(),
