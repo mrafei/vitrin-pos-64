@@ -213,6 +213,12 @@ const App = function ({
       customersInterval.current = setInterval(async () => {
         console.log("&&&");
         businesses.map(async (business) => {
+          if (
+            !(
+              JSON.parse(localStorage.getItem("hamiIntegratedBusinesses")) || []
+            ).includes(business.site_domain)
+          )
+            return;
           const device = business.devices?.[0];
           console.log(device);
           if (device?.extra_data?.last_users_update)
