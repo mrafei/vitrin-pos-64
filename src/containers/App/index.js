@@ -231,7 +231,8 @@ const App = function ({
             hamiBranches.map((branch) => {
               const _businessId = businesses.find(
                 (business) =>
-                  business?.extra_data?.pos_id === branch.BranchId &&
+                  parseInt(business?.extra_data?.pos_id) ===
+                    parseInt(branch.BranchId) &&
                   (
                     JSON.parse(
                       localStorage.getItem("hamiIntegratedBusinesses")
