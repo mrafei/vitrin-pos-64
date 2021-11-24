@@ -37,7 +37,6 @@ import { getAdminOrders } from "../OnlineOrders/actions";
 import {
   makeSelectBusinessId,
   makeSelectBusinessTitle,
-  makeSelectPOSDevices,
 } from "../../../stores/business/selector";
 import DeliverersList from "../DeliverersList";
 import CreateDeliverer from "../CreateDeliverer";
@@ -101,7 +100,6 @@ const App = function ({
   businessId,
   user,
   _setUser,
-  devices,
   _setFirebaseToken,
   firebaseToken,
 }) {
@@ -111,7 +109,6 @@ const App = function ({
   const orderInterval = useRef(null);
   const customersInterval = useRef(null);
   const productsInterval = useRef(null);
-  const device = devices && devices[0];
   const getUserInfo = async () => {
     const {
       response: {
@@ -205,49 +202,67 @@ const App = function ({
     if (siteDomain) _getBusiness();
   }, [siteDomain]);
   useEffect(() => {
+    console.log(businesses);
     clearInterval(orderInterval.current);
     clearInterval(customersInterval.current);
-    if (siteDomain && localStorage.getItem("integrated") === "hami") {
+
+    if (localStorage.getItem("integrated") === "hami") {
       orderInterval.current = setInterval(() => {
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
       customersInterval.current = setInterval(async () => {
-        if (device && device.extra_data && device.extra_data.last_users_update)
-          createOrUpdateHamiCRMMemberships(
-            businessId,
-            undefined,
-            moment(device.extra_data.last_users_update).format("jYYYY/jMM/jDD"),
-            moment().format("jYYYY/jMM/jDD"),
-            moment(device.extra_data.last_users_update).format("HH/mm/ss"),
-            moment().format("HH/mm/ss")
-          );
-        if (device?.extra_data?.last_orders_update) {
-          const hamiBranches = await getHamiBranches();
-          hamiBranches.map((branch) => {
-            const _businessId = businesses.find(
-              (business) => business?.extra_data?.pos_id === branch.BranchId
-            )?.id;
-            console.log(_businessId);
-            createOrUpdateHamiOrders(
-              _businessId,
-              branch.BranchId,
-              user.id,
-              moment(device.extra_data.last_orders_update).format(
+        console.log("&&&");
+        businesses.map(async (business) => {
+          const device = business.devices?.[0];
+          console.log(device);
+          if (device?.extra_data?.last_users_update)
+            createOrUpdateHamiCRMMemberships(
+              businessId,
+              undefined,
+              moment(device.extra_data.last_users_update).format(
                 "jYYYY/jMM/jDD"
               ),
               moment().format("jYYYY/jMM/jDD"),
-              moment(device.extra_data.last_orders_update).format("HH/mm/ss"),
+              moment(device.extra_data.last_users_update).format("HH/mm/ss"),
               moment().format("HH/mm/ss")
             );
-          });
-        }
+          if (device?.extra_data?.last_orders_update) {
+            const hamiBranches = await getHamiBranches();
+            hamiBranches.map((branch) => {
+              const _businessId = businesses.find(
+                (business) =>
+                  business?.extra_data?.pos_id === branch.BranchId &&
+                  (
+                    JSON.parse(
+                      localStorage.getItem("hamiIntegratedBusinesses")
+                    ) || []
+                  ).includes(business.site_domain)
+              )?.id;
+              console.log(_businessId);
+              if (businessId)
+                createOrUpdateHamiOrders(
+                  _businessId,
+                  branch.BranchId,
+                  user.id,
+                  moment(device.extra_data.last_orders_update).format(
+                    "jYYYY/jMM/jDD"
+                  ),
+                  moment().format("jYYYY/jMM/jDD"),
+                  moment(device.extra_data.last_orders_update).format(
+                    "HH/mm/ss"
+                  ),
+                  moment().format("HH/mm/ss")
+                );
+            });
+          }
+        });
       }, (parseInt(localStorage.getItem("hamiInterval")) || 1) * 60 * 1000);
     }
     return () => {
       clearInterval(customersInterval.current);
       clearInterval(orderInterval.current);
     };
-  }, [device, siteDomain]);
+  }, [businesses]);
   if ((!siteDomain || !businessTitle) && location.pathname !== "/login")
     return (
       <div
@@ -391,7 +406,6 @@ const mapStateToProps = createStructuredSelector({
   businesses: makeSelectBusinesses(),
   showHamiModal: makeSelectHamiModal(),
   user: makeSelectUser(),
-  devices: makeSelectPOSDevices(),
   firebaseToken: makeSelectFirebaseToken(),
 });
 
