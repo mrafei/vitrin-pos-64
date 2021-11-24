@@ -246,7 +246,7 @@ const App = function ({
                   ).includes(business.site_domain)
               )?.id;
               console.log(_businessId);
-              if (businessId)
+              if (_businessId)
                 createOrUpdateHamiOrders(
                   _businessId,
                   branch.BranchId,
