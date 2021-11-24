@@ -226,8 +226,8 @@ const App = function ({
                 "jYYYY/jMM/jDD"
               ),
               moment().format("jYYYY/jMM/jDD"),
-              moment(device.extra_data.last_users_update).format("HH/mm/ss"),
-              moment().format("HH/mm/ss")
+              moment(device.extra_data.last_users_update).format("HH:mm:ss"),
+              moment().format("HH:mm:ss")
             );
           if (device?.extra_data?.last_orders_update) {
             const hamiBranches = await getHamiBranches();
@@ -247,14 +247,14 @@ const App = function ({
                   _businessId,
                   branch.BranchId,
                   user.id,
-                  moment.unix(device.extra_data.last_orders_update).format(
-                    "jYYYY/jMM/jDD"
-                  ),
+                  moment
+                    .unix(device.extra_data.last_orders_update)
+                    .format("jYYYY/jMM/jDD"),
                   moment().format("jYYYY/jMM/jDD"),
-                  moment.unix(device.extra_data.last_orders_update).format(
-                    "HH/mm/ss"
-                  ),
-                  moment().format("HH/mm/ss")
+                  moment
+                    .unix(device.extra_data.last_orders_update)
+                    .format("HH:mm:ss"),
+                  moment().format("HH:mm:ss")
                 );
             });
           }
