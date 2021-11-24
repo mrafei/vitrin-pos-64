@@ -2,7 +2,7 @@
  * Gets the repositories of the user from Github
  */
 import Axios from "axios";
-import { call, put, takeLatest, select, take } from "redux-saga/effects";
+import { call, put, takeLatest, select, take, all } from "redux-saga/effects";
 import {
   setSiteDomain,
   startLoading,
@@ -10,7 +10,9 @@ import {
 } from "../../src/containers/App/actions";
 import request from "../../utils/request";
 import {
+  BUSINESS_LIGHT_BY_SITE_DOMAIN_API,
   BUSINESSES_BY_OWNER_API,
+  GET_BUSINESS_DEVICES_API,
   LOGIN_API,
   USER_INFO_API,
   VERIFY_API,
@@ -25,6 +27,7 @@ import { setSnackBarMessage } from "../ui/actions";
 import { setLoginCallBack, setToken, setUser, setBusinesses } from "./actions";
 import { makeSelectLoginCallBack } from "./selector";
 import { getBusinessData } from "../business/saga";
+import { setBusiness } from "../business/actions";
 
 export function* login(payload) {
   try {
@@ -88,7 +91,29 @@ export function* getBusinesses() {
         (b) => b.get_vitrin_absolute_url
       );
       if (businessesWithVitrin.length !== 0) {
-        yield put(setBusinesses(businessesWithVitrin));
+        const fullBusinessData = {};
+        yield all(
+          businessesWithVitrin.map(async (business) => {
+            const {
+              response: { data: businessesData },
+            } = await request(
+              BUSINESS_LIGHT_BY_SITE_DOMAIN_API(business.site_domain),
+              {},
+              "GET"
+            );
+            const {
+              response: { meta, data: devicesData },
+            } = await request(GET_BUSINESS_DEVICES_API, {
+              business_slug: business.slug,
+            });
+
+            fullBusinessData[business.site_domain] = {
+              ...businessesData,
+              devices: devicesData,
+            };
+          })
+        );
+        yield put(setBusinesses([...Object.values(fullBusinessData)]));
         yield put(setSiteDomain(businessesWithVitrin[0].site_domain));
         yield call(getBusinessData);
       }
