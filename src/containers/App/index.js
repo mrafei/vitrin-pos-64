@@ -210,6 +210,7 @@ const App = function ({
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
       customersInterval.current = setInterval(async () => {
+
         businesses.map(async (business) => {
           if (
             !(
@@ -218,17 +219,6 @@ const App = function ({
           )
             return;
           const device = business.devices?.[0];
-          if (device?.extra_data?.last_users_update)
-            createOrUpdateHamiCRMMemberships(
-              businessId,
-              undefined,
-              moment(device.extra_data.last_users_update).format(
-                "jYYYY/jMM/jDD"
-              ),
-              moment().format("jYYYY/jMM/jDD"),
-              moment(device.extra_data.last_users_update).format("HH:mm:ss"),
-              moment().format("HH:mm:ss")
-            );
           if (device?.extra_data?.last_orders_update) {
             const hamiBranches = await getHamiBranches();
             hamiBranches.map((branch) => {
