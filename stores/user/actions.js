@@ -8,6 +8,7 @@ import {
   SET_LOGIN_CALLBACK,
   GET_BUSINESSES,
   SET_BUSINESSES,
+  UPDATE_DEVICE_BY_ID,
 } from "./constants";
 
 export function setUser(user) {
@@ -69,6 +70,12 @@ export function updateProfile(data) {
 export function setLoginCallBack(data) {
   return {
     type: SET_LOGIN_CALLBACK,
+    data,
+  };
+}
+export function updateDeviceById(data) {
+  return {
+    type: UPDATE_DEVICE_BY_ID,
     data,
   };
 }
