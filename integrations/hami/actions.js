@@ -346,14 +346,17 @@ export const createOrUpdateHamiOrders = async (
       InvoiceDateEnd: toTime,
       InvoiceTimeStart,
       InvoiceTimeEnd,
-      BranchId,
     }
   );
   if (!result?.response) return null;
 
   if (!result.response.length) return true;
   const orders = result.response
-    // .filter((order) => !order.Description.includes("وب سایت"))
+    .filter(
+      (order) =>
+        !order.Description.includes("وب سایت") &&
+        parseInt(order.BranchId) === parseInt(BranchId)
+    )
     .map((order) => ({
       business_id: businessId,
       pos_id: order.SaleInvoiceId,
