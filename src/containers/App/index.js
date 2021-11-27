@@ -15,7 +15,11 @@ import reducer from "./reducer";
 import saga from "./saga";
 import OnlineOrders from "../OnlineOrders";
 import Login from "../Login";
-import { getBusinesses, setUser } from "../../../stores/user/actions";
+import {
+  getBusinesses,
+  setUser,
+  updateDeviceById,
+} from "../../../stores/user/actions";
 import {
   makeSelectBusinesses,
   makeSelectUser,
@@ -102,6 +106,7 @@ const App = function ({
   _setUser,
   _setFirebaseToken,
   firebaseToken,
+  updateDeviceById,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
@@ -210,7 +215,6 @@ const App = function ({
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
       customersInterval.current = setInterval(async () => {
-
         businesses.map(async (business) => {
           if (
             !(
@@ -247,6 +251,7 @@ const App = function ({
                   moment().format("HH:mm:ss")
                 );
             });
+            updateDeviceById(business.slug);
           }
         });
       }, (parseInt(localStorage.getItem("hamiInterval")) || 1) * 60 * 1000);
@@ -415,6 +420,7 @@ function mapDispatchToProps(dispatch) {
     _acceptOrder: (data) => dispatch(acceptOrder(data)),
     _setUser: (data) => dispatch(setUser(data)),
     _setFirebaseToken: (data) => dispatch(setFirebaseToken(data)),
+    _updateDeviceById: (data) => dispatch(updateDeviceById(data)),
   };
 }
 

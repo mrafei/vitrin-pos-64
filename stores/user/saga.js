@@ -20,14 +20,14 @@ import {
 import {
   GET_BUSINESSES,
   LOGIN,
+  UPDATE_DEVICE_BY_ID,
   UPDATE_PROFILE,
   VERIFICATION,
 } from "./constants";
 import { setSnackBarMessage } from "../ui/actions";
 import { setLoginCallBack, setToken, setUser, setBusinesses } from "./actions";
-import { makeSelectLoginCallBack } from "./selector";
+import { makeSelectBusinesses, makeSelectLoginCallBack } from "./selector";
 import { getBusinessData } from "../business/saga";
-import { setBusiness } from "../business/actions";
 
 export function* login(payload) {
   try {
@@ -144,9 +144,31 @@ export function* updateProfile(action) {
   }
 }
 
+export function* updateDeviceByIdSaga(action) {
+  try {
+    const businesses = yield select(makeSelectBusinesses());
+    const {
+      response: { meta, data: devicesData },
+    } = yield call(request, GET_BUSINESS_DEVICES_API, {
+      business_slug: action.data,
+    });
+    yield put(
+      setBusinesses(
+        businesses.map((business) => {
+          if (business.slug !== action.data) return business;
+          else return { ...business, devices: devicesData };
+        })
+      )
+    );
+  } catch (err) {
+    console.log(err);
+    yield put(stopLoading());
+  }
+}
 export default [
   takeLatest(LOGIN, login),
   takeLatest(VERIFICATION, verify),
   takeLatest(UPDATE_PROFILE, updateProfile),
   takeLatest(GET_BUSINESSES, getBusinesses),
+  takeLatest(UPDATE_DEVICE_BY_ID, updateDeviceByIdSaga),
 ];
