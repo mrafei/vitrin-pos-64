@@ -106,7 +106,7 @@ const App = function ({
   _setUser,
   _setFirebaseToken,
   firebaseToken,
-  updateDeviceById,
+  _updateDeviceById,
 }) {
   useInjectReducer({ key: "app", reducer });
   useInjectSaga({ key: "app", saga });
@@ -251,7 +251,7 @@ const App = function ({
                   moment().format("HH:mm:ss")
                 );
             });
-            updateDeviceById(business.slug);
+            _updateDeviceById(business.slug);
           }
         });
       }, (parseInt(localStorage.getItem("hamiInterval")) || 1) * 60 * 1000);
