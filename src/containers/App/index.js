@@ -252,7 +252,9 @@ const App = function ({
                   moment
                     .unix(device.extra_data.last_orders_update)
                     .format("HH:mm:ss"),
-                  moment().format("HH:mm:ss")
+                  moment().format("HH:mm:ss"),
+                  false,
+                  device.id
                 );
             });
             _updateDeviceById(business.slug);
