@@ -336,7 +336,8 @@ export const createOrUpdateHamiOrders = async (
   toTime,
   InvoiceTimeStart = "00:00:00",
   InvoiceTimeEnd = "24:00:00",
-  archived
+  archived,
+  posDeviceId
 ) => {
   const result = await request(
     getHamiOrdersApi(localStorage.getItem("hamiIp")),
@@ -389,6 +390,7 @@ export const createOrUpdateHamiOrders = async (
         order.PartyPhone.indexOf("0"),
         11
       ),
+      pos_device_id: posDeviceId,
       delivery_site_type:
         order.SaleInvoiceTypeTitle === "مشترکین"
           ? "delivery_on_business_site"
