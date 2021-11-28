@@ -380,9 +380,15 @@ export const createOrUpdateHamiOrders = async (
       user_address: {
         name: order.PartyName,
         address: order.PartyAddress,
-        phone: order.PartyPhone,
+        phone: (order.PartyPhone || "").substr(
+          order.PartyPhone.indexOf("0"),
+          11
+        ),
       },
-      user_phone_number: order.PartyPhone,
+      user_phone_number: (order.PartyPhone || "").substr(
+        order.PartyPhone.indexOf("0"),
+        11
+      ),
       delivery_site_type:
         order.SaleInvoiceTypeTitle === "مشترکین"
           ? "delivery_on_business_site"
