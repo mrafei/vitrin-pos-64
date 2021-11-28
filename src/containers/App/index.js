@@ -1,7 +1,7 @@
 import "../../../styles/_main.scss";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { compose } from "redux";
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { createStructuredSelector } from "reselect";
 import Snackbar from "@material-ui/core/esm/Snackbar";
 import { connect } from "react-redux";
@@ -190,19 +190,23 @@ const App = function ({
       audio.play();
     }
   };
+  const businessSiteDomains = useMemo(
+    () => businesses?.map((business) => business.site_domain) || [],
+    [businesses]
+  );
   useEffect(() => {
     if (firebaseToken)
-      businesses?.map((business) => {
+      businessSiteDomains.map((siteDomain) => {
         request(
           PUSH_NOTIFICATION_API,
           {
-            label: `Admin Panel ${business.site_domain}`,
+            label: `Admin Panel ${siteDomain}`,
             token: firebaseToken,
           },
           "POST"
         );
       });
-  }, [firebaseToken, businesses]);
+  }, [firebaseToken, JSON.stringify(businessSiteDomains)]);
   useEffect(() => {
     if (siteDomain) _getBusiness();
   }, [siteDomain]);
