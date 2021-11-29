@@ -266,7 +266,7 @@ const App = function ({
       clearInterval(customersInterval.current);
       clearInterval(orderInterval.current);
     };
-  }, [businesses]);
+  }, [businesses, user?.id]);
   if ((!siteDomain || !businessTitle) && location.pathname !== "/login")
     return (
       <div
