@@ -395,14 +395,14 @@ export const createOrUpdateHamiOrders = async (
         order.SaleInvoiceTypeTitle === "مشترکین"
           ? "delivery_on_business_site"
           : "delivery_on_user_site",
-      _created_at: moment(
+      created_at: moment(
         `${order.InvoiceDate} ${order.InvoiceTime}`,
         "jYYYY/jMM/jDD HH:mm:ss"
-      ).format("YYYY-MM-DDTHH:mm:ss"),
-      _submitted_at: moment(
+      ).unix(),
+      submitted_at: moment(
         `${order.InvoiceDate} ${order.InvoiceTime}`,
         "jYYYY/jMM/jDD HH:mm:ss"
-      ).format("YYYY-MM-DDTHH:mm:ss"),
+      ).unix(),
       pos_user_id: userId,
       _delivery_price:
         order.DeliveryPrice *
