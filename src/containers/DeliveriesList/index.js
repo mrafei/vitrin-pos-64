@@ -5,21 +5,21 @@
  *
  */
 
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-import { createStructuredSelector } from 'reselect';
-import { connect } from 'react-redux';
+import React, { memo, useEffect, useRef, useState } from "react";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
 import {
   makeSelectDeliverers,
   makeSelectDeliveries,
   makeSelectDeliveriesPagination,
-} from '../../../stores/business/selector';
-import { getDeliveries } from '../../../stores/business/actions';
-import DelivererOrderCard from '../../components/DelivererOrderCard';
-import { getQueryParams } from '../../../utils/helper';
-import Pagination from '../../components/Pagination';
-import Flickity from '../../components/Flickity';
+} from "../../../stores/business/selector";
+import { getDeliveries } from "../../../stores/business/actions";
+import DelivererOrderCard from "../../components/DelivererOrderCard";
+import { getQueryParams } from "../../../utils/helper";
+import Pagination from "../../components/Pagination";
+import Flickity from "../../components/Flickity";
 
 export function DeliveriesList({
   _getDeliveries,
@@ -29,19 +29,23 @@ export function DeliveriesList({
   pagination,
 }) {
   const dragging = useRef(false);
-  const page = getQueryParams('page', location.search) || 1;
-  const [deliverer, setDeliverer] = useState('');
+  const page = getQueryParams("page", location.search) || 1;
+  const [deliverer, setDeliverer] = useState("");
   useEffect(() => {
-    if (deliverer.name) _getDeliveries(deliverer.name, page);
+    if (deliverer?.id) _getDeliveries(deliverer.id, page);
   }, [deliverer, location]);
   useEffect(() => {
-    if (deliverers[0]) setDeliverer(deliverers[0]);
+    if (Object.keys(deliverers)?.length)
+      setDeliverer({
+        ...Object.values(deliverers)[0],
+        id: Object.keys(deliverers)[0],
+      });
   }, [deliverers]);
   const flickityOptions = {
     rightToLeft: true,
     groupCells: true,
     contain: true,
-    cellAlign: 'right',
+    cellAlign: "right",
     prevNextButtons: false,
     freeScroll: true,
     pageDots: false,
@@ -54,16 +58,16 @@ export function DeliveriesList({
           className="w-100"
           options={flickityOptions} // takes flickity options {}
         >
-          {deliverers.map((d) => (
+          {Object.entries(deliverers).map(([delivererId, d]) => (
             <span
               key={`deliverer-${d.name}`}
               onClick={() => {
-                if (!dragging.current) setDeliverer(d);
+                if (!dragging.current) setDeliverer({ ...d, id: delivererId });
               }}
               className={`ml-1 u-cursor-pointer u-border-radius-68 px-2 py-1 u-no-wrap ${
                 deliverer.name === d.name
-                  ? 'u-text-black u-fontWeightBold u-background-white badge-shadow'
-                  : 'u-text-dark-grey'
+                  ? "u-text-black u-fontWeightBold u-background-white badge-shadow"
+                  : "u-text-dark-grey"
               }`}
             >
               {d.name}

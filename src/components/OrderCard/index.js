@@ -142,7 +142,7 @@ function OrderCard({
             <span className="u-font-semi-small"> تومان</span>
           </span>
           <div style={{ width: 30 }}>
-            {order.deliverer_name && (
+            {order.delivery_companies_data?.company_type && (
               <Icon icon={ICONS.DELIVERY} size={18} color="#00c896" />
             )}
           </div>

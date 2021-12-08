@@ -27,9 +27,13 @@ import {
 import { makeSelectLoading } from "../App/selectors";
 import Select from "../../components/Select";
 const filterOptions = [
-  { id: 1, text: "همه سفارش‌ها", value: "" },
-  { id: 2, text: "سفارش جدید", value: "False" },
-  { id: 3, text: "پیک تخصیص داده شده", value: "True" },
+  { id: 1, text: "همه سفارش‌ها", value: null },
+  { id: 2, text: "سفارش جدید", value: "null" },
+  {
+    id: 3,
+    text: "پیک تخصیص داده شده",
+    value: "all",
+  },
 ];
 const AssignDeliverer = function ({
   _getAdminOrders,
@@ -58,14 +62,11 @@ const AssignDeliverer = function ({
   useEffect(() => {
     setSelected(orders.map(() => false));
   }, [orders]);
-  const deliverers =
-    pluginData.data && pluginData.data.deliverers
-      ? pluginData.data.deliverers
-      : [];
+  const deliverers = pluginData?.data?.couriers || {};
   const assign = useCallback(
     (deliverer) => () => {
       if (loading) return;
-      setDeliverer(deliverer);
+      setDeliverer(deliverer?.name || null);
       const orderIds = [];
       selected.map((isSelected, index) => {
         if (isSelected) return orderIds.push(orders[index].id);
@@ -73,7 +74,7 @@ const AssignDeliverer = function ({
       if (!orderIds.length) return;
       const hasDeliverer = filterOptions.find((fo) => fo.text === filter).value;
       _setDeliverers({
-        deliverer,
+        deliverer: deliverer?.id || null,
         hasDeliverer,
         sendSms,
         orders: orderIds,
@@ -82,6 +83,7 @@ const AssignDeliverer = function ({
     },
     [selected, sendSms, filter]
   );
+  const selectedItemsCount = selected.filter((s) => s)?.length;
   return (
     <div
       className="d-flex flex-1 container px-0"
@@ -118,9 +120,13 @@ const AssignDeliverer = function ({
               </div>
             )}
           </div>
-          {selected.some(
-            (s, index) => s && orders[index] && orders[index].deliverer_name
-          ) && (
+          {selectedItemsCount &&
+          selected.filter(
+            (s, index) =>
+              s &&
+              orders[index]?.delivery_companies_data?.company_type ===
+                "personal"
+          ).length === selectedItemsCount ? (
             <div
               onClick={assign(null)}
               className="d-flex align-items-center u-text-primary-blue u-fontMedium u-cursor-pointer"
@@ -128,7 +134,7 @@ const AssignDeliverer = function ({
               <Icon icon={ICONS.TRASH} size={19} color="#0050FF" />
               حذف پیک
             </div>
-          )}
+          ) : null}
         </div>
         <div
           className="py-2 overflow-auto px-4"
@@ -155,7 +161,7 @@ const AssignDeliverer = function ({
         </div>
         <Pagination pagination={pagination} location={location} />
       </div>
-      {deliverers.length ? (
+      {Object.keys(deliverers).length ? (
         <div
           className="u-relative u-background-white overflow-auto box-shadow h-100 u-border-radius-8 mr-4"
           style={{ width: 395 }}
@@ -188,7 +194,7 @@ const AssignDeliverer = function ({
               />
             </div>
             <div className="mt-2">
-              {deliverers.map((d) => (
+              {Object.entries(deliverers).map(([id, d]) => (
                 <div
                   className={`d-flex py-2 px-3 u-fontWeightBold u-border-radius-8 u-cursor-pointer ${
                     loading && deliverer === d.name
@@ -196,7 +202,7 @@ const AssignDeliverer = function ({
                       : "u-background-melo-grey u-text-darkest-grey"
                   }`}
                   style={{ marginTop: 2 }}
-                  onClick={assign(d.name)}
+                  onClick={assign({ ...d, id })}
                   key={`deliverer-${d.name}`}
                 >
                   <span>{d.name}</span>

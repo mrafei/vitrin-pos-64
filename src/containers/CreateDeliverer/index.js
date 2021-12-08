@@ -12,6 +12,7 @@ import { PrimaryButton } from "../../components/Button";
 import {
   englishNumberToPersianNumber,
   persianToEnglishNumber,
+  uniqueid,
 } from "../../../utils/helper";
 import { makeSelectLoading } from "../App/selectors";
 
@@ -25,10 +26,10 @@ export function CreateDeliverer({
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const addDeliverer = useCallback(() => {
-    const deliverers = pluginData.data.deliverers || [];
+    const deliverers = pluginData.data.couriers || {};
     _setPluginData("shopping", {
       ...pluginData.data,
-      deliverers: [...deliverers, { name, phone }],
+      couriers: { ...deliverers, [uniqueid()]: { name, phone } },
     });
   }, [pluginData, name, phone]);
   return (

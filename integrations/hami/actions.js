@@ -216,12 +216,14 @@ export const createOrUpdateHamiDeals = async (
       pos_code: deal.GoodsCode,
       title: deal.GoodsName,
       description: deal.GoodsDescription,
-      discounted_price:
+      discounted_price: parseInt(
         deal.GoodsPrice *
-        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-      initial_price:
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+      ),
+      initial_price: parseInt(
         deal.GoodsPrice *
-        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+      ),
       extra_data: { packaging_price: deal.PackingPrice },
       categories:
         categories &&
@@ -365,14 +367,15 @@ export const createOrUpdateHamiOrders = async (
         amount: orderItem.GoodsCount,
         deal_pos_id: orderItem.GoodsId,
         deal_id: null,
-        initial_price:
+        initial_price: parseInt(
           orderItem.GoodsPrice *
-          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-
-        discounted_price:
+            (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+        ),
+        discounted_price: parseInt(
           (orderItem.GoodsPrice -
             orderItem.SumDiscount / orderItem.GoodsCount) *
-          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+            (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+        ),
         packaging_price: 0,
       })),
       archived: archived ?? localStorage.getItem("hamiKeepTracking") !== "true",
@@ -404,22 +407,28 @@ export const createOrUpdateHamiOrders = async (
         "jYYYY/jMM/jDD HH:mm:ss"
       ).unix(),
       pos_user_id: userId,
-      _delivery_price:
+      _delivery_price: parseInt(
         order.DeliveryPrice *
-        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-      _final_price:
-        order.Payable * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-      _taxing_price:
-        order.SumTax * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+      ),
+      _final_price: parseInt(
+        order.Payable * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+      ),
+      _taxing_price: parseInt(
+        order.SumTax * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+      ),
       description: order.description,
-      total_discount:
+      total_discount: parseInt(
         order.SumDiscount *
-        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-      total_items_price:
-        order.SumSell * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
-      _total_packaging_price:
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+      ),
+      total_items_price: parseInt(
+        order.SumSell * (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+      ),
+      _total_packaging_price: parseInt(
         order.PackingPrice *
-        (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1),
+          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+      ),
     }));
   if (!orders.length) return true;
   const ordersResult = await request(UPSERT_POS_ORDERS_API, orders, "POST");

@@ -344,8 +344,13 @@ export function* getDeliveries(action) {
       response: { data, pagination },
     } = yield call(
       request,
-      ORDER_DELIVERIES_BY_DELIVERER(page, DELIVERIES_PAGE_SIZE),
-      { domain, deliverer_name: action.data.deliverer },
+      ORDER_DELIVERIES_BY_DELIVERER,
+      {
+        domain,
+        courier: action.data.deliverer,
+        page,
+        page_size: DELIVERIES_PAGE_SIZE,
+      },
       "GET"
     );
     const pagesCount = Math.ceil(pagination.count / DELIVERIES_PAGE_SIZE);

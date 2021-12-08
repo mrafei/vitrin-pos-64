@@ -79,7 +79,7 @@ export function OnlineOrder({
     _getAdminOrder({ id: match.params.id });
   }, [match.params.id]);
   useEffect(() => {
-    setDeliverer(order.deliverer_name);
+    setDeliverer(order.courier);
     setDuration(
       order.delivery_time
         ? order.delivery_time / 60
@@ -119,14 +119,13 @@ export function OnlineOrder({
       id: order.id,
       plugin: "shopping",
       deliveryTime: duration ? parseInt(duration, 10) * 60 : "",
-      deliverer,
+      deliverer: Object.entries(deliverers).find(
+        ([id, d]) => d.name === deliverer
+      )?.[0],
       sendSms,
     });
   };
-  const deliverers =
-    pluginData.data && pluginData.data.deliverers
-      ? pluginData.data.deliverers
-      : [];
+  const deliverers = pluginData?.data?.couriers || {};
   let lastOrderTime = "ندارد";
   if (customerOrders && customerOrders.length > 1) {
     const lastOrderDate = new Date(customerOrders[1]._submitted_at);
@@ -412,7 +411,7 @@ export function OnlineOrder({
                 />
               </div>
             </div>
-            {deliverers.length ? (
+            {Object.keys(deliverers).length ? (
               <div
                 className="u-relative u-background-white box-shadow u-border-radius-8 mr-4 mt-4"
                 style={{ height: "fit-content" }}
@@ -438,7 +437,7 @@ export function OnlineOrder({
                     </div>
                   )}
                   <div className="d-flex flex-wrap mt-4">
-                    {deliverers.map((d) => (
+                    {Object.values(deliverers).map((d) => (
                       <div
                         className={`d-flex col-6 px-0 mt-2 u-cursor-pointer ${
                           order.order_status !== 0 && "u-pointer-events-none"

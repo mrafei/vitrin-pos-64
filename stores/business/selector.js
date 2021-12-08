@@ -104,12 +104,7 @@ const makeSelectProduct = (id) =>
 const makeSelectDeliverers = () =>
   createSelector(
     selectBusiness,
-    (state) =>
-      (state.business.plugins_config &&
-        state.business.plugins_config.shopping &&
-        state.business.plugins_config.shopping.data &&
-        state.business.plugins_config.shopping.data.deliverers) ||
-      []
+    (state) => state.business.plugins_config?.shopping?.data?.couriers || {}
   );
 const makeSelectDeliveries = () =>
   createSelector(selectBusiness, (state) => state.deliveries);

@@ -181,7 +181,7 @@ export function* acceptOrder(action) {
           request,
           ORDER_DELIVERER_API(action.data.id, "shopping"),
           {
-            deliverer_name: action.data.deliverer,
+            courier_id: action.data.deliverer,
             send_sms: action.data.sendSms,
           },
           "PATCH"
