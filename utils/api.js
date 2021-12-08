@@ -48,24 +48,23 @@ export const BUSINESS_ORDERS_SORTED_BY_DELIVERER_API = (
   page,
   pageSize
 ) =>
-  `${BASE_URL}${plugin}_orders/by_business_site_domain_deliverer_sort/?page=${page}&page_size=${pageSize}&orders_status=1&orders_status=3`;
+  `${BASE_URL}${plugin}_orders/by_business_site_domain/?page=${page}&page_size=${pageSize}&orders_status=1&orders_status=3`;
 
 export const ORDER_STATUS_PROGRESS_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/change_order_status_to_in_progress/`;
 export const ORDER_STATUS_CANCELLED_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/change_order_status_to_cancelled/`;
-export const ORDER_DELIVERIES_BY_DELIVERER = (page, pageSize) =>
-  `${BASE_URL}shopping_orders/by_deliverer_name/?page=${page}&page_size=${pageSize}`;
+export const ORDER_DELIVERIES_BY_DELIVERER = `${BASE_URL}shopping_orders/by_business_site_domain/`;
 
 export const ORDER_ONLINE_PAYMENT_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/payment_transaction/`;
 export const ORDER_DELIVERY_TIME_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/set_delivery_time/`;
 export const ORDER_DELIVERER_API = (id, plugin) =>
-  `${BASE_URL}${plugin}_orders/${id}/set_deliverer_name/`;
+  `${BASE_URL}${plugin}_orders/${id}/courier/`;
 
 export const ORDERS_LIST_DELIVERER_API = (id, plugin) =>
-  `${BASE_URL}${plugin}_orders/set_orders_list_deliverer/`;
+  `${BASE_URL}${plugin}_orders/bulk_update_couriers/`;
 export const REQUEST_ALOPEYK_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/apply_for_alopeyk/`;
 export const REQUEST_MIARE_API = (id) =>

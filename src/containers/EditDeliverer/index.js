@@ -24,17 +24,17 @@ export function EditDeliverer({
   match,
 }) {
   useEffect(() => {
-    if (pluginData && pluginData.data && pluginData.data.deliverers) {
-      setName(pluginData.data.deliverers[match.params.id].name);
-      setPhone(pluginData.data.deliverers[match.params.id].phone);
+    if (pluginData && pluginData.data && pluginData.data.couriers) {
+      setName(pluginData.data.couriers[match.params.id].name);
+      setPhone(pluginData.data.couriers[match.params.id].phone);
     }
   }, [pluginData]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const addDeliverer = useCallback(() => {
-    let deliverers = [...pluginData.data.deliverers];
+    let deliverers = {...pluginData.data.couriers};
     deliverers[match.params.id] = { name, phone };
-    _setPluginData("shopping", { ...pluginData.data, deliverers });
+    _setPluginData("shopping", { ...pluginData.data, couriers: deliverers });
   }, [pluginData, name, phone]);
   return (
     <div

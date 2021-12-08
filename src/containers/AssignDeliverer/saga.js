@@ -7,7 +7,11 @@ import {
   ORDERS_LIST_DELIVERER_API,
 } from "../../../utils/api";
 import { getAdminOrders, setAdminOrders } from "./actions";
-import { GET_ADMIN_ORDERS, ORDERS_PAGE_SIZE, SET_DELIVERERS } from "./constants";
+import {
+  GET_ADMIN_ORDERS,
+  ORDERS_PAGE_SIZE,
+  SET_DELIVERERS,
+} from "./constants";
 import { makeSelectSubDomain } from "../App/selectors";
 import {
   startLoading,
@@ -23,12 +27,16 @@ export function* getOrdersFunc(action) {
     const domain = yield select(makeSelectSubDomain());
     const page = action.data.page || 1;
     const body = { domain };
-    if (action.data.hasDeliverer) body.deliverer = action.data.hasDeliverer;
+    body.delivery_company = action.data.hasDeliverer;
     const {
       response: { data, pagination },
     } = yield call(
       request,
-      BUSINESS_ORDERS_SORTED_BY_DELIVERER_API("shopping", page, ORDERS_PAGE_SIZE),
+      BUSINESS_ORDERS_SORTED_BY_DELIVERER_API(
+        "shopping",
+        page,
+        ORDERS_PAGE_SIZE
+      ),
       { ...body },
       "GET"
     );
@@ -53,7 +61,7 @@ export function* setDeliverers(action) {
         request,
         ORDERS_LIST_DELIVERER_API(action.data.id, "shopping"),
         {
-          deliverer_name: action.data.deliverer,
+          courier_id: action.data.deliverer,
           send_sms: action.data.sendSms,
           orders: action.data.orders,
         },
@@ -61,8 +69,13 @@ export function* setDeliverers(action) {
       );
       if (data) {
         yield put(getAdminOrders(action.data.page, action.data.hasDeliverer));
-        yield put(setSnackBarMessage("تخصیص پیک با موفقیت انجام شد.", "success"));
-      } else yield put(setSnackBarMessage("در تخصیص پیک خطایی رخ داده است!", "fail"));
+        yield put(
+          setSnackBarMessage("تخصیص پیک با موفقیت انجام شد.", "success")
+        );
+      } else
+        yield put(
+          setSnackBarMessage("در تخصیص پیک خطایی رخ داده است!", "fail")
+        );
     }
     yield put(stopLoading());
   } catch (err) {
