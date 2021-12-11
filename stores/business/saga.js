@@ -212,10 +212,10 @@ export function* createProduct(action) {
     yield put(startLoading());
     yield put(startProgressLoading());
     const { product, images, history } = action.data;
-    const _business = yield select(makeSelectBusinessId());
+    const business = yield select(makeSelectBusinessId());
     const {
       response: { meta, data: deal },
-    } = yield call(request, DEALS_API, { ...product, _business }, "POST");
+    } = yield call(request, DEALS_API, { ...product, business }, "POST");
 
     if (meta.status_code >= 200 && meta.status_code <= 300) {
       for (let image = 0; image < images.length; image += 1) {
