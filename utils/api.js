@@ -48,7 +48,7 @@ export const BUSINESS_ORDERS_SORTED_BY_DELIVERER_API = (
   page,
   pageSize
 ) =>
-  `${BASE_URL}${plugin}_orders/by_business_site_domain/?page=${page}&page_size=${pageSize}&orders_status=1&orders_status=3`;
+  `${BASE_URL}${plugin}_orders/by_business_site_domain/?page=${page}&page_size=${pageSize}&status=1&status=3&status=6`;
 
 export const ORDER_STATUS_PROGRESS_API = (id, plugin) =>
   `${BASE_URL}${plugin}_orders/${id}/change_order_status_to_in_progress/`;
