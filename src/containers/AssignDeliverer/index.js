@@ -152,7 +152,7 @@ const AssignDeliverer = function ({
                   newSelected[index] = !selected[index];
                   setSelected(newSelected);
                 }}
-                isBold={order.deliverer_name === null}
+                isBold={order.courier === null}
                 key={`order-${order.id}`}
                 order={order}
               />
