@@ -65,11 +65,13 @@ export const submitHamiOrder = (order) => {
         CellPhone: order.user_address?.phone || "",
         LocationId: 0,
         DeliveryAddress: order.user_address?.address || "",
-        Comments: `${order.description}${Object.values(allItemModifiers).map(
-          (modifier) =>
+        Comments: `${order.description}${Object.values(allItemModifiers).reduce(
+          (text, modifier) =>
+            text +
             `-\n تاپینگ: ${englishNumberToPersianNumber(modifier.amount)} عدد ${
               modifier.title
-            }`
+            }`,
+          ""
         )}`,
         OrderType: 1,
         Price:
