@@ -213,35 +213,33 @@ export const createOrUpdateHamiDeals = async (
 
   return await request(
     UPSERT_DEALS_API,
-    result?.response["Goods"].map((deal) => ({
-      pos_id: deal.GoodsId,
-      pos_code: deal.GoodsCode,
-      title: deal.GoodsName,
-      description: deal.GoodsDescription,
-      discounted_price: parseInt(
-        deal.GoodsPrice *
-          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
-      ),
-      initial_price: parseInt(
-        deal.GoodsPrice *
-          (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
-      ),
-      extra_data: { packaging_price: deal.PackingPrice },
-      categories:
-        categories &&
-        categories.find(
-          (cat) => parseInt(cat.pos_id) === parseInt(deal.GoodsGroupId)
-        )
-          ? [
-              parseInt(
-                categories.find(
-                  (cat) => parseInt(cat.pos_id) === parseInt(deal.GoodsGroupId)
-                ).id
-              ),
-            ]
-          : [],
-      _business: businessId,
-    })),
+    result?.response["Goods"].map((deal) => {
+      const hamiCategories = deal.GoodsGroupId.split(",");
+      const vitrinCategories = (
+        categories?.filter((cat) =>
+          hamiCategories.some(
+            (hamiCategory) => parseInt(hamiCategory) === parseInt(cat.pos_id)
+          )
+        ) || []
+      ).map((cat) => parseInt(cat.pos_id));
+      return {
+        pos_id: deal.GoodsId,
+        pos_code: deal.GoodsCode,
+        title: deal.GoodsName,
+        description: deal.GoodsDescription,
+        discounted_price: parseInt(
+          deal.GoodsPrice *
+            (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+        ),
+        initial_price: parseInt(
+          deal.GoodsPrice *
+            (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
+        ),
+        extra_data: { packaging_price: deal.PackingPrice },
+        categories: vitrinCategories,
+        _business: businessId,
+      };
+    }),
     "POST"
   );
 };
