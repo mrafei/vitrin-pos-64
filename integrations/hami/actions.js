@@ -4,6 +4,7 @@ import {
   getHamiCustomersApi,
   getHamiDealCategoriesApi,
   getHamiDealItemApi,
+  getHamiInventoryApi,
   getHamiOrdersApi,
   getHamiToppingsApi,
   submitHamiOrderApi,
@@ -231,10 +232,6 @@ export const createOrUpdateHamiDeals = async (
           deal.GoodsPrice *
             (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
         ),
-        initial_price: parseInt(
-          deal.GoodsPrice *
-            (localStorage.getItem("hamiCurrencyConvert") ? 0.1 : 1)
-        ),
         extra_data: { packaging_price: deal.PackingPrice },
         categories: vitrinCategories,
         _business: businessId,
@@ -455,4 +452,24 @@ export const getHamiBranches = async () => {
     }
   );
   return result?.response?.Branches || [];
+};
+export const updateHamiDealsInventory = async (businessId) => {
+  const result = await request(
+    getHamiInventoryApi(localStorage.getItem("hamiIp")),
+    {
+      securityKey: localStorage.getItem("hamiSecurityKey"),
+    }
+  );
+  if (!result || !result.response) return null;
+  return await request(
+    UPSERT_DEALS_API,
+    result?.response["Quantity"].map((deal) => {
+      return {
+        pos_id: deal.GoodsId,
+        inventory_count: deal.Quantity,
+        _business: businessId,
+      };
+    }),
+    "POST"
+  );
 };

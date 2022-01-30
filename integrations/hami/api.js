@@ -76,3 +76,6 @@ export const getHamiToppingsApi = (prefix) =>
 // دریافت اطلاعات شعب
 export const getHamiBranchesApi = (prefix) =>
   `http://${prefix || "localhost"}/HamiOrder/GetBranches.aspx`;
+
+export const getHamiInventoryApi = (prefix) =>
+  `http://${prefix || "localhost"}/HamiOrder/GetGoodsBranchStock.aspx`;
