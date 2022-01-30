@@ -70,9 +70,9 @@ import Button from "@material-ui/core/Button";
 import HamiSettings from "../HamiSettings";
 import HamiModal from "./components/HamiModal";
 import {
-  createOrUpdateHamiCRMMemberships,
   createOrUpdateHamiOrders,
   getHamiBranches,
+  updateHamiDealsInventory,
 } from "../../../integrations/hami/actions";
 import moment from "moment-jalaali";
 import request from "../../../utils/request";
@@ -101,7 +101,6 @@ const App = function ({
   _toggleHamiModal,
   showHamiModal,
   _acceptOrder,
-  businessId,
   user,
   _setUser,
   _setFirebaseToken,
@@ -213,10 +212,22 @@ const App = function ({
   useEffect(() => {
     clearInterval(orderInterval.current);
     clearInterval(customersInterval.current);
+    clearInterval(productsInterval.current);
 
     if (localStorage.getItem("integrated") === "hami") {
       orderInterval.current = setInterval(() => {
         _getAdminOrders({ status: 0 });
+      }, 120 * 1000);
+      productsInterval.current = setInterval(() => {
+        businesses.map((business) => {
+          if (
+            !(
+              JSON.parse(localStorage.getItem("hamiIntegratedBusinesses")) || []
+            ).includes(business.site_domain)
+          )
+            return;
+          updateHamiDealsInventory(business.id);
+        });
       }, 120 * 1000);
       customersInterval.current = setInterval(async () => {
         businesses.map(async (business) => {
@@ -265,6 +276,7 @@ const App = function ({
     return () => {
       clearInterval(customersInterval.current);
       clearInterval(orderInterval.current);
+      clearInterval(productsInterval.current);
     };
   }, [businesses, user?.id]);
   if ((!siteDomain || !businessTitle) && location.pathname !== "/login")
@@ -404,7 +416,6 @@ const App = function ({
 const mapStateToProps = createStructuredSelector({
   siteDomain: makeSelectSubDomain(),
   businessTitle: makeSelectBusinessTitle(),
-  businessId: makeSelectBusinessId(),
   snackBarMessage: makeSelectSnackBarMessage(),
   progressLoading: makeSelectProgressLoading(),
   businesses: makeSelectBusinesses(),
