@@ -66,14 +66,7 @@ export const submitHamiOrder = (order) => {
         CellPhone: order.user_address?.phone || "",
         LocationId: 0,
         DeliveryAddress: order.user_address?.address || "",
-        Comments: `${order.description}${Object.values(allItemModifiers).reduce(
-          (text, modifier) =>
-            text +
-            `-\n تاپینگ: ${englishNumberToPersianNumber(modifier.amount)} عدد ${
-              modifier.title
-            }`,
-          ""
-        )}`,
+        Comments: order.description,
         OrderType: 1,
         Price:
           order.total_items_price *
@@ -140,7 +133,14 @@ export const submitHamiOrder = (order) => {
               (item.deal.discounted_price + modifiersPrice) *
               item.amount *
               (localStorage.getItem("hamiCurrencyConvert") ? 10 : 1),
-            Description: "",
+            Description: item.deal.modifiers.reduce(
+              (text, modifier) =>
+                text +
+                `-\n تاپینگ: ${englishNumberToPersianNumber(
+                  modifier.amount
+                )} عدد ${modifier.title}`,
+              ""
+            ),
           };
         }),
         ItemsTopping: [],
