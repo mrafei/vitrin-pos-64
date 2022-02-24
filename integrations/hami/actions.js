@@ -222,7 +222,7 @@ export const createOrUpdateHamiDeals = async (
             (hamiCategory) => parseInt(hamiCategory) === parseInt(cat.pos_id)
           )
         ) || []
-      ).map((cat) => parseInt(cat.pos_id));
+      ).map((cat) => parseInt(cat.id));
       return {
         pos_id: deal.GoodsId,
         pos_code: deal.GoodsCode,
