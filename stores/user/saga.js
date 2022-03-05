@@ -91,7 +91,7 @@ export function* getBusinesses() {
         (b) => b.get_vitrin_absolute_url
       );
       if (businessesWithVitrin.length !== 0) {
-        const fullBusinessData = {};
+        const fullBusinessData = [];
         yield all(
           businessesWithVitrin.map(async (business) => {
             const {
@@ -107,13 +107,26 @@ export function* getBusinesses() {
               business_slug: business.slug,
             });
 
-            fullBusinessData[business.site_domain] = {
+            fullBusinessData.push({
               ...businessesData,
               devices: devicesData,
-            };
+            });
           })
         );
-        yield put(setBusinesses([...Object.values(fullBusinessData)]));
+        fullBusinessData.sort((b1, b2) => {
+          const businessIndex1 = businessesWithVitrin.findIndex(
+            (bus) => bus.slug === b1.slug
+          );
+          const businessIndex2 = businessesWithVitrin.findIndex(
+            (bus) => bus.slug === b2.slug
+          );
+          if (businessIndex1 > businessIndex2) return 1;
+          else if (businessIndex1 < businessIndex2) return -1;
+          return 0 < businessesWithVitrin.findIndex((bus) => bus.slug === b2)
+            ? 1
+            : -1;
+        });
+        yield put(setBusinesses(fullBusinessData));
         yield put(setSiteDomain(businessesWithVitrin[0].site_domain));
         yield call(getBusinessData);
       }

@@ -83,6 +83,7 @@ import {
 } from "../../../utils/api";
 import pristine from "../../../assets/audio/pristine.mp3";
 import { amplifyMedia } from "../../../utils/helper";
+import ShoppingSettings from "../ShoppingSettings";
 
 const App = function ({
   history,
@@ -330,6 +331,11 @@ const App = function ({
               component={DeliveriesList}
             />
 
+            <Route
+              exact
+              path="/settings/shopping"
+              component={ShoppingSettings}
+            />
             <Route exact path="/settings/printer" component={PrinterSettings} />
             <Route exact path="/settings/sound" component={SoundSettings} />
             <Route exact path="/categories/:id" component={Products} />
