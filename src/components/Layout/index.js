@@ -147,12 +147,18 @@ const subRoutes = [
   [
     {
       id: 1,
+      title: "تنظیمات سفارشگیری",
+      path: "/settings/shopping",
+      icon: ICONS.VOLUME,
+    },
+    {
+      id: 2,
       title: "تنظیمات چاپگر",
       path: "/settings/printer",
       icon: ICONS.PRINT,
     },
     {
-      id: 2,
+      id: 3,
       title: "تنظیمات صدا",
       path: "/settings/sound",
       icon: ICONS.VOLUME,
@@ -194,7 +200,6 @@ function Layout({
 }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
   return (
     <div className={classes.root}>
       {location.pathname !== "/login" && (

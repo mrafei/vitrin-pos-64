@@ -215,7 +215,7 @@ export const createOrUpdateHamiDeals = async (
   return await request(
     UPSERT_DEALS_API,
     result?.response["Goods"].map((deal) => {
-      const hamiCategories = deal.GoodsGroupId.split(",");
+      const hamiCategories = (deal.GoodsGroupId?.toString() || "").split(",");
       const vitrinCategories = (
         categories?.filter((cat) =>
           hamiCategories.some(
