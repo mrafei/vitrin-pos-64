@@ -64,6 +64,20 @@ function PriceSection({ order }) {
             </span>
           </div>
         ) : null}
+        {order.wallet_credit_used ? (
+          <div className="mt-1">
+            <span>مبلغ پرداختی از کیف پول: </span>
+            <span
+              className="u-fontWeightBold"
+              style={{ whiteSpace: "pre-wrap" }}
+            >
+              {priceFormatter(order.wallet_credit_used)}
+              <span style={{ marginRight: 2 }}>-</span>
+              <span className="mr-1">تومان</span>
+            </span>
+          </div>
+        ) : null}
+
         {order.discount_code_amount ? (
           <div className="d-flex flex-row justify-content-between mt-1">
             <span className="u-textBlack">کد تخفیف: </span>

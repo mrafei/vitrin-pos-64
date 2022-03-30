@@ -35,6 +35,15 @@ export default class ComponentToPrint extends React.Component {
       if (firstTotal < secondTotal) return 1;
       return 0;
     });
+    const pelateChar = order?.user_address?.extra_data?.plate_number?.replace(
+      /[0-9]/g,
+      ""
+    );
+    const plateNums = order?.user_address?.extra_data?.plate_number?.replace(
+      pelateChar,
+      ""
+    );
+
     return (
       <div
         className="bg-white u-text-black w-100 printable px-3"
@@ -159,6 +168,66 @@ export default class ComponentToPrint extends React.Component {
               </span>
             </div>
           ) : null}
+          {order?.delivery_site_type?.toUpperCase() === "DELIVERY_ON_CAR" &&
+            (order?.user_address?.extra_data?.model_name ||
+              order?.user_address?.extra_data?.color ||
+              order?.user_address?.extra_data?.plate_number) && (
+              <div className="mt-3">
+                <div className="u-textBlack" style={{ fontWeight: 500 }}>
+                  اطلاعات خودرو
+                </div>
+                <div className="row d-flex align-items-center">
+                  {order?.user_address?.extra_data?.model_name && (
+                    <div className="text-nowrap">
+                      مدل: {order?.user_address?.extra_data?.model_name}
+                    </div>
+                  )}
+                  {order?.user_address?.extra_data?.color && (
+                    <div className="mr-4">
+                      رنگ:{order?.user_address?.extra_data?.color}
+                    </div>
+                  )}
+                  {order?.user_address?.extra_data?.plate_number && (
+                    <div className="d-flex align-items-center mr-4 mb-3">
+                      <span>پلاک: </span>
+                      <div
+                        className="d-flex mr-1"
+                        style={{
+                          textAlign: "center",
+                        }}
+                      >
+                        <div
+                          className="d-flex justify-content-center py-1 px-3 position-relative"
+                          style={{
+                            border: "1px solid gray",
+                          }}
+                        >
+                          <span
+                            className="position-absolute"
+                            style={{ top: 0 }}
+                          >
+                            ایران
+                          </span>
+                          <span className="ml-2 pt-3">
+                            {plateNums?.slice(5)}
+                          </span>
+                        </div>
+                        <div
+                          className="py-1 pt-3 px-3"
+                          style={{
+                            border: "1px solid gray",
+                          }}
+                        >
+                          <span className="ml-2">{plateNums?.slice(2, 5)}</span>
+                          <span className="ml-2">{pelateChar}</span>
+                          <span>{plateNums?.slice(0, 2)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
         </div>
 
         {!printOptions.hideItems && (
@@ -329,6 +398,20 @@ export default class ComponentToPrint extends React.Component {
                 </span>
               </div>
             ) : null}
+            {order.wallet_credit_used ? (
+              <div className="mt-1">
+                <span>مبلغ پرداختی از کیف پول: </span>
+                <span
+                  className="u-fontWeightBold"
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {priceFormatter(order.wallet_credit_used)}
+                  <span style={{ marginRight: 2 }}>-</span>
+                  <span className="mr-1">تومان</span>
+                </span>
+              </div>
+            ) : null}
+
             <div className="mt-1">
               <span>هزینه ارسال: </span>
               <span className="u-fontWeightBold">{cost}</span>

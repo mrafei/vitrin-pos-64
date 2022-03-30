@@ -33,6 +33,15 @@ function DeliverySection({ order }) {
     }-${orderDate.getDate()}`,
     "YYYY-MM-DD"
   );
+  const pelateChar = order?.user_address?.extra_data?.plate_number?.replace(
+    /[0-9]/g,
+    ""
+  );
+  const plateNums = order?.user_address?.extra_data?.plate_number?.replace(
+    pelateChar,
+    ""
+  );
+
   return (
     <div className="w-100 flex-1 py-2 u-background-white mt-1 px-3">
       <div className="flex-1 u-fontWeightBold mb-2 u-text-black">
@@ -118,6 +127,64 @@ function DeliverySection({ order }) {
                 : null}
             </span>
           </div>
+          {order?.delivery_site_type?.toUpperCase() === "DELIVERY_ON_CAR" &&
+            (order?.user_address?.extra_data?.model_name ||
+              order?.user_address?.extra_data?.color ||
+              order?.user_address?.extra_data?.plate_number) && (
+              <div className="mt-3">
+                <div className="u-textBlack" style={{ fontWeight: 500 }}>اطلاعات خودرو</div>
+                <div className="row d-flex align-items-center">
+                  {order?.user_address?.extra_data?.model_name && (
+                    <div className="text-nowrap col-sm-3">
+                      مدل: {order?.user_address?.extra_data?.model_name}
+                    </div>
+                  )}
+                  {order?.user_address?.extra_data?.color && (
+                    <div className="col-sm-4">
+                      رنگ:{order?.user_address?.extra_data?.color}
+                    </div>
+                  )}
+                  {order?.user_address?.extra_data?.plate_number && (
+                    <div className="d-flex align-items-center col-sm-5 mb-3">
+                      <span className="ml-1">پلاک: </span>
+                      <div
+                        className="d-flex"
+                        style={{
+                          textAlign: "center",
+                        }}
+                      >
+                        <div
+                          className="d-flex justify-content-center py-1 px-3 position-relative"
+                          style={{
+                            border: "1px solid gray",
+                          }}
+                        >
+                          <span
+                            className="position-absolute"
+                            style={{ top: 0 }}
+                          >
+                            ایران
+                          </span>
+                          <span className="ml-2 pt-3">
+                            {plateNums?.slice(5)}
+                          </span>
+                        </div>
+                        <div
+                          className="py-1 pt-3 px-3"
+                          style={{
+                            border: "1px solid gray",
+                          }}
+                        >
+                          <span className="ml-2">{plateNums?.slice(2, 5)}</span>
+                          <span className="ml-2">{pelateChar}</span>
+                          <span>{plateNums?.slice(0, 2)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
         </div>
         <Map options={mapOptions} />
       </div>
