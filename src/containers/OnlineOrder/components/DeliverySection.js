@@ -7,7 +7,7 @@ import {
 } from "../../../../utils/helper";
 import moment from "moment-jalaali";
 
-function DeliverySection({ order }) {
+function DeliverySection({ order, business }) {
   const mapOptions = {
     height: 150,
     width: 150,
@@ -94,9 +94,13 @@ function DeliverySection({ order }) {
           </div>
           <div className="mt-2">
             <span className="u-textBlack"> آدرس سفارش دهنده: </span>
-            {order.delivery_on_site && (
-              <span className="u-text-darkest-grey">تحویل در محل رستوران</span>
-            )}
+            {order.delivery_on_site ? (
+              <span className="u-text-darkest-grey">
+                {order.delivery_site_type === "delivery_on_car"
+                  ? "تحویل در ماشین"
+                  : `تحویل در محل ${business.revised_title}`}
+              </span>
+            ) : null}
             {order.user_address && !order.delivery_on_site ? (
               <span
                 className="u-text-darkest-grey"
@@ -132,7 +136,9 @@ function DeliverySection({ order }) {
               order?.user_address?.extra_data?.color ||
               order?.user_address?.extra_data?.plate_number) && (
               <div className="mt-3">
-                <div className="u-textBlack" style={{ fontWeight: 500 }}>اطلاعات خودرو</div>
+                <div className="u-textBlack" style={{ fontWeight: 500 }}>
+                  اطلاعات خودرو
+                </div>
                 <div className="row d-flex align-items-center">
                   {order?.user_address?.extra_data?.model_name && (
                     <div className="text-nowrap col-sm-3">
