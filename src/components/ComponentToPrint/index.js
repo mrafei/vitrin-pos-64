@@ -43,6 +43,8 @@ export default class ComponentToPrint extends React.Component {
       pelateChar,
       ""
     );
+    let finalCost = order.final_price;
+    if (order.wallet_credit_used) finalCost = order.should_pay;
 
     return (
       <div
@@ -116,14 +118,16 @@ export default class ComponentToPrint extends React.Component {
           {!printOptions.hideCustomerAddress && (
             <div className="mt-1">
               <span> آدرس سفارش دهنده: </span>
-              {order.delivery_on_site && (
+              {order.delivery_on_site ? (
                 <span
                   style={{ fontSize: isLarge ? 18 : 16 }}
                   className="u-fontWeightBold"
                 >
-                  تحویل در محل {business.revised_title}
+                  {order.delivery_site_type === "delivery_on_car"
+                    ? "تحویل در ماشین"
+                    : `تحویل در محل ${business.revised_title}`}
                 </span>
-              )}
+              ) : null}
               {order.user_address && !order.delivery_on_site ? (
                 <span
                   style={{ fontSize: isLarge ? 18 : 16 }}
@@ -427,17 +431,33 @@ export default class ComponentToPrint extends React.Component {
                 </span>
               </div>
             ) : null}
+            {order.wallet_credit_used ? (
+              <div className="mt-1">
+                <span>مبلغ قابل پرداخت: </span>
+                <span
+                  className="u-fontWeightBold"
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {priceFormatter(order.final_price)} تومان
+                </span>
+              </div>
+            ) : null}
+
             <div className="mt-1">
-              <span>قابل پرداخت: </span>
+              <span>
+                {order.wallet_credit_used
+                  ? "باقیمانده جهت پرداخت:"
+                  : "مبلغ قابل پرداخت:"}{" "}
+              </span>
               <span
                 className="u-fontWeightBold px-3 py-1 u-fontLarge u-background-black u-text-white"
                 style={{ whiteSpace: "pre-wrap" }}
               >
-                {priceFormatter(order.final_price)} تومان
+                {priceFormatter(finalCost)} تومان
               </span>
             </div>
             <span className="u-fontWeightBold mt-2">
-              {order.final_price === 0
+              {order.finalCost === 0
                 ? "اعتبار هدیه"
                 : order.payment_status === 1
                 ? "آنلاین"
