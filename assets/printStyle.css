@@ -92,6 +92,10 @@ body {
   color: white;
 }
 
+.mx-1 {
+  margin-right: 2px;
+  margin-left: 5px;
+}
 .mr-2 {
   margin-right: 10px;
 }

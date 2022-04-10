@@ -195,7 +195,7 @@ export default class ComponentToPrint extends React.Component {
                     <div className="d-flex align-items-center mr-4 mb-3">
                       <span>پلاک: </span>
                       <div
-                        className="d-flex mr-1"
+                        className="d-flex mx-1"
                         style={{
                           textAlign: "center",
                         }}
@@ -360,8 +360,8 @@ export default class ComponentToPrint extends React.Component {
                   style={{ whiteSpace: "pre-wrap" }}
                 >
                   {priceFormatter(order.total_discount_amount)}
-                  <span style={{ marginRight: 2 }}>-</span>
-                  <span className="mr-1">تومان</span>
+                  <span className="mx-1">-</span>
+                  <span>تومان</span>
                 </span>
               </div>
             ) : null}
@@ -373,8 +373,8 @@ export default class ComponentToPrint extends React.Component {
                   style={{ whiteSpace: "pre-wrap" }}
                 >
                   {priceFormatter(order.gift_credit_used)}
-                  <span style={{ marginRight: 2 }}>-</span>
-                  <span className="mr-1">تومان</span>
+                  <span className="mx-1">-</span>
+                  <span>تومان</span>
                 </span>
               </div>
             ) : null}
@@ -386,8 +386,8 @@ export default class ComponentToPrint extends React.Component {
                   style={{ whiteSpace: "pre-wrap" }}
                 >
                   {priceFormatter(order.discount_code_amount)}
-                  <span style={{ marginRight: 2 }}>-</span>
-                  <span className="mr-1">تومان</span>
+                  <span className="mx-1">-</span>
+                  <span>تومان</span>
                 </span>
               </div>
             ) : null}
@@ -399,19 +399,6 @@ export default class ComponentToPrint extends React.Component {
                   style={{ whiteSpace: "pre-wrap" }}
                 >
                   {priceFormatter(order.total_packaging_price)} تومان
-                </span>
-              </div>
-            ) : null}
-            {order.wallet_credit_used ? (
-              <div className="mt-1">
-                <span>مبلغ پرداختی از کیف پول: </span>
-                <span
-                  className="u-fontWeightBold"
-                  style={{ whiteSpace: "pre-wrap" }}
-                >
-                  {priceFormatter(order.wallet_credit_used)}
-                  <span style={{ marginRight: 2 }}>-</span>
-                  <span className="mr-1">تومان</span>
                 </span>
               </div>
             ) : null}
@@ -432,17 +419,29 @@ export default class ComponentToPrint extends React.Component {
               </div>
             ) : null}
             {order.wallet_credit_used ? (
-              <div className="mt-1">
-                <span>مبلغ قابل پرداخت: </span>
-                <span
-                  className="u-fontWeightBold"
-                  style={{ whiteSpace: "pre-wrap" }}
-                >
-                  {priceFormatter(order.final_price)} تومان
-                </span>
-              </div>
+              <>
+                <div className="mt-1">
+                  <span>مبلغ قابل پرداخت: </span>
+                  <span
+                    className="u-fontWeightBold"
+                    style={{ whiteSpace: "pre-wrap" }}
+                  >
+                    {priceFormatter(order.final_price)} تومان
+                  </span>
+                </div>
+                <div className="mt-1">
+                  <span>مبلغ پرداختی از کیف پول: </span>
+                  <span
+                    className="u-fontWeightBold"
+                    style={{ whiteSpace: "pre-wrap" }}
+                  >
+                    {priceFormatter(order.wallet_credit_used)}
+                    <span className="mx-1">-</span>
+                    <span>تومان</span>
+                  </span>
+                </div>
+              </>
             ) : null}
-
             <div className="mt-1">
               <span>
                 {order.wallet_credit_used
