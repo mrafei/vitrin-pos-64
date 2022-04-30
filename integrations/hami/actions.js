@@ -461,9 +461,12 @@ export const updateHamiDealsInventory = async (businessId) => {
     }
   );
   if (!result || !result.response) return null;
+  const dealsInventoryList =
+    result?.response["Quantity"] || result?.response["Inventory"] || [];
+  if (!dealsInventoryList.length) return null;
   return await request(
     UPSERT_DEALS_API,
-    result?.response["Quantity"].map((deal) => {
+    dealsInventoryList.map((deal) => {
       return {
         pos_id: deal.GoodsId,
         inventory_count: deal.Quantity,

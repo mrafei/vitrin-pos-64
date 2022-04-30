@@ -116,7 +116,7 @@ export function OnlineOrder({
 
   const accept = () => {
     _acceptOrder({
-      id: order.id,
+      order,
       plugin: "shopping",
       deliveryTime: duration ? parseInt(duration, 10) * 60 : "",
       deliverer: Object.entries(deliverers).find(

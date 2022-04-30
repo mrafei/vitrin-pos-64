@@ -157,12 +157,10 @@ const App = function ({
     );
   }, []);
   const receiveOrder = async (payload) => {
-    _getAdminOrders();
     let split = payload.click_action.split("/");
     const orderId = split[split.length - 1];
     const response = await request(USER_ORDERS_ITEMS_API(orderId, "shopping"));
     const order = response?.response?.data || {};
-    if (order.order_status !== 0) return;
     const isBusinessHamiIntegrated =
       localStorage.getItem("integrated") === "hami" &&
       (
@@ -173,7 +171,7 @@ const App = function ({
       !localStorage.getItem("hamiPreventSendOrders")
     ) {
       _acceptOrder({
-        id: orderId,
+        order,
         plugin: "shopping",
         preventSms: true,
       });
@@ -189,6 +187,7 @@ const App = function ({
       if (localStorage.getItem("volume") !== "0") audio.play();
       audio.play();
     }
+    setTimeout(_getAdminOrders, 200);
   };
   const businessSiteDomains = useMemo(
     () => businesses?.map((business) => business.site_domain) || [],
@@ -215,7 +214,10 @@ const App = function ({
     clearInterval(customersInterval.current);
     clearInterval(productsInterval.current);
 
-    if (localStorage.getItem("integrated") === "hami") {
+    if (
+      localStorage.getItem("integrated") === "hami" &&
+      !localStorage.getItem("hamiPreventSendOrders")
+    ) {
       orderInterval.current = setInterval(() => {
         _getAdminOrders({ status: 0 });
       }, 120 * 1000);
