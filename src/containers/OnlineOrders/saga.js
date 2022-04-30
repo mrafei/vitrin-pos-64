@@ -20,7 +20,12 @@ export function* getAdminOrdersFunc(action) {
     } = yield call(
       request,
       BUSINESS_ORDERS_API("shopping"),
-      { page_size: ADMIN_ORDERS_PAGE_SIZE, domain, ...action.data },
+      {
+        page_size: ADMIN_ORDERS_PAGE_SIZE,
+        domain,
+        sales_channel: "vitrin",
+        ...action.data,
+      },
       "GET"
     );
     const pagesCount = Math.ceil(pagination.count / ADMIN_ORDERS_PAGE_SIZE);

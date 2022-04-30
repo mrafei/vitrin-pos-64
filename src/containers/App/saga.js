@@ -1,4 +1,12 @@
-import { call, put, takeLatest, all, take, select } from "redux-saga/effects";
+import {
+  call,
+  put,
+  takeLatest,
+  all,
+  take,
+  select,
+  takeEvery,
+} from "redux-saga/effects";
 import { ImageCompressor } from "image-compressor";
 
 import userSaga from "../../../stores/user/saga";
@@ -161,28 +169,32 @@ export function* acceptOrder(action) {
   try {
     yield put(startLoading());
     let meta = {};
-    if (!action.data.preventSms) {
+    const {
+      preventSms,
+      sendSms,
+      deliverer,
+      deliveryTime,
+      plugin,
+      order: { id: orderId } = {},
+    } = action.data;
+    if (!orderId) return;
+    if (!preventSms) {
       const { response } = yield call(
         request,
-        ORDER_DELIVERY_TIME_API(action.data.id, action.data.plugin),
-        {
-          delivery_time: action.data.deliveryTime,
-        },
+        ORDER_DELIVERY_TIME_API(orderId, plugin),
+        { delivery_time: deliveryTime },
         "PATCH"
       );
       meta = response.meta || {};
     }
-    if (
-      action.data.preventSms ||
-      (meta.status_code >= 200 && meta.status_code <= 300)
-    ) {
-      if (action.data.deliverer)
+    if (preventSms || (meta.status_code >= 200 && meta.status_code <= 300)) {
+      if (deliverer)
         yield call(
           request,
-          ORDER_DELIVERER_API(action.data.id, "shopping"),
+          ORDER_DELIVERER_API(orderId, "shopping"),
           {
-            courier_id: action.data.deliverer,
-            send_sms: action.data.sendSms,
+            courier_id: deliverer,
+            send_sms: sendSms,
           },
           "PATCH"
         );
@@ -191,8 +203,8 @@ export function* acceptOrder(action) {
         response: { data },
       } = yield call(
         request,
-        ORDER_STATUS_PROGRESS_API(action.data.id, "shopping"),
-        action.data.preventSms ? { pos_device: 0 } : {},
+        ORDER_STATUS_PROGRESS_API(orderId, "shopping"),
+        preventSms ? { pos_device: 0 } : {},
         "PATCH"
       );
       if (data) {
@@ -241,7 +253,7 @@ export default function* generalSaga() {
     ...businessSaga,
     ...uiSaga,
     ...transactionSaga,
-    takeLatest(ACCEPT_ORDER, acceptOrder),
+    takeEvery(ACCEPT_ORDER, acceptOrder),
     takeLatest(SEND_EMAIL, sendEmail),
     takeLatest(UPLOAD_FILE, uploadFiles),
   ]);
