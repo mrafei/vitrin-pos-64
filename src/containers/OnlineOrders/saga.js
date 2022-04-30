@@ -45,7 +45,7 @@ export function* getAdminOrdersFunc(action) {
             .map((order) =>
               put(
                 acceptOrder({
-                  id: order.id,
+                  order,
                   plugin: "shopping",
                   preventSms: true,
                 })
