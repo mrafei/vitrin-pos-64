@@ -460,9 +460,9 @@ export const updateHamiDealsInventory = async (businessId) => {
       securityKey: localStorage.getItem("hamiSecurityKey"),
     }
   );
-  if (!result || !result.response) return null;
+  if (!result?.response) return null;
   const dealsInventoryList =
-    result?.response["Quantity"] || result?.response["Inventory"] || [];
+    result.response["Quantity"] || result.response["Inventory"] || [];
   if (!dealsInventoryList.length) return null;
   return await request(
     UPSERT_DEALS_API,
