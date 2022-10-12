@@ -189,15 +189,16 @@ const subRoutes = [
   ],
 ];
 function Layout({
-  children,
-  loading,
-  location,
-  title,
-  history,
-  changeBusiness,
-  businesses,
-  reload,
-}) {
+                  children,
+                  loading,
+                  location,
+                  title,
+                  history,
+                  changeBusiness,
+                  businesses,
+                  reload,
+                  siteDomain
+                }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   return (
@@ -277,6 +278,7 @@ function Layout({
                     className="u-fontWeightBold u-text-primary-blue"
                     id="default"
                     value={business.site_domain}
+                    selected={siteDomain === business.site_domain}
                   >
                     {business.title}
                   </option>
