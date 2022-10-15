@@ -214,7 +214,6 @@ const App = function ({
   //     });
   // }, [firebaseToken, JSON.stringify(businessSiteDomains)]);
   useEffect(() => {
-    console.log(siteDomain,"siteDomain 1 ")
     if (siteDomain) _getBusiness();
     history.push('/orders')
   }, [siteDomain]);
